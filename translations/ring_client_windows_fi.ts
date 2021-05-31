@@ -123,32 +123,32 @@
 <context>
     <name>CallAdapter</name>
     <message>
-        <location filename="../src/calladapter.cpp" line="120"/>
+        <location filename="../src/calladapter.cpp" line="129"/>
         <source>Missed call</source>
         <translation>Vastaamaton puhelu</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="121"/>
+        <location filename="../src/calladapter.cpp" line="130"/>
         <source>Missed call from %1</source>
         <translation>Vastaamaton puhelu %1</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="358"/>
+        <location filename="../src/calladapter.cpp" line="489"/>
         <source>me</source>
         <translation>minä</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="419"/>
+        <location filename="../src/calladapter.cpp" line="550"/>
         <source>Incoming call</source>
         <translation>Saapuva puhelu</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="420"/>
+        <location filename="../src/calladapter.cpp" line="551"/>
         <source>%1 is calling you</source>
         <translation>%1 soittaa sinulle</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="431"/>
+        <location filename="../src/calladapter.cpp" line="562"/>
         <source>is calling you</source>
         <translation>soittaa sinulle</translation>
     </message>
@@ -424,1424 +424,1516 @@ Jami sulkeutuu nyt.</translation>
 <context>
     <name>JamiStrings</name>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="30"/>
+        <location filename="../src/constant/JamiStrings.qml" line="35"/>
         <source>Find a user or search for a conversation</source>
         <translation>Etsi käyttäjä tai hae keskustelua</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="31"/>
+        <location filename="../src/constant/JamiStrings.qml" line="36"/>
         <source>Search your invitations</source>
         <translation>Hae kutsuistasi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="32"/>
+        <location filename="../src/constant/JamiStrings.qml" line="37"/>
         <source>Invitations</source>
         <translation>Kutsut</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="33"/>
+        <location filename="../src/constant/JamiStrings.qml" line="38"/>
         <source>Jami is free software for universal communication which respects the freedoms and the privacy of its users.</source>
         <translation>Jami on ilmainen ohjelmisto yleiseen viestintään, jossa kunnioitetaan käyttäjän vapauksia ja yksityisyyttä.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="36"/>
+        <location filename="../src/constant/JamiStrings.qml" line="41"/>
         <source>Version</source>
         <translation>Versio</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="39"/>
+        <location filename="../src/constant/JamiStrings.qml" line="44"/>
         <source>Jami is a free software for universal communication which respects the freedom and privacy of its users.</source>
         <translation>Jami on ilmainen ohjelmisto yleiseen viestintään, jossa kunnioitetaan käyttäjän vapauksia ja yksityisyyttä.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="40"/>
+        <location filename="../src/constant/JamiStrings.qml" line="45"/>
         <source>Credits</source>
         <translation>Tekijät</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="43"/>
+        <location filename="../src/constant/JamiStrings.qml" line="48"/>
         <source>Display QR code</source>
         <translation>Näytä QR-koodi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="44"/>
+        <location filename="../src/constant/JamiStrings.qml" line="49"/>
         <source>Open settings</source>
         <translation>Avaa asetukset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="45"/>
+        <location filename="../src/constant/JamiStrings.qml" line="50"/>
         <source>Close settings</source>
         <translation>Sulje asetukset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="48"/>
+        <location filename="../src/constant/JamiStrings.qml" line="53"/>
         <source>Authentication required</source>
         <translation>Todennus vaaditaan</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="49"/>
+        <location filename="../src/constant/JamiStrings.qml" line="54"/>
         <source>Your session has expired or been revoked on this device. Please enter your password.</source>
         <translation>Istunto on vanhentunut tai peruutettu tällä laitteella. Anna salasanasi.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="50"/>
+        <location filename="../src/constant/JamiStrings.qml" line="55"/>
         <source>JAMS server</source>
         <translation>JAMS palvelin</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="51"/>
+        <location filename="../src/constant/JamiStrings.qml" line="56"/>
         <source>Authenticate</source>
         <translation>Todennus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="52"/>
+        <location filename="../src/constant/JamiStrings.qml" line="57"/>
         <source>Delete account</source>
         <translation>Poista tunnus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="54"/>
+        <location filename="../src/constant/JamiStrings.qml" line="59"/>
         <source>Authentication failed</source>
         <translation>Todennusvirhe</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="55"/>
+        <location filename="../src/constant/JamiStrings.qml" line="60"/>
         <source>Password</source>
         <translation>Salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="56"/>
+        <location filename="../src/constant/JamiStrings.qml" line="61"/>
         <source>Username</source>
         <translation>Käyttäjänimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="57"/>
+        <location filename="../src/constant/JamiStrings.qml" line="62"/>
         <source>Alias</source>
         <translation>Lempinimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="60"/>
+        <location filename="../src/constant/JamiStrings.qml" line="65"/>
         <source>Call Settings</source>
         <translation>Puheluasetukset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="61"/>
+        <location filename="../src/constant/JamiStrings.qml" line="66"/>
         <source>Allow incoming calls from unknown contacts</source>
         <translation>Salli tuntemattomien yhteyshenkilöiden saapuvat puhelut</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="53"/>
+        <location filename="../src/constant/JamiStrings.qml" line="58"/>
         <source>In progress…</source>
         <translation>Meneillään…</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="62"/>
+        <location filename="../src/constant/JamiStrings.qml" line="30"/>
+        <source>Accept</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="31"/>
+        <source>Refuse</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="33"/>
+        <source>Incoming audio call from {}</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="34"/>
+        <source>Incoming video call from {}</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="67"/>
         <source>Convert your account into a rendezvous point</source>
         <translation>Muunna tunnus tapaamispaikaksi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="63"/>
+        <location filename="../src/constant/JamiStrings.qml" line="68"/>
         <source>Automatically answer calls</source>
         <translation>Vastaa puheluihin automaattisesti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="64"/>
+        <location filename="../src/constant/JamiStrings.qml" line="69"/>
         <source>Enable custom ringtone</source>
         <translation>Aseta oma soittoääni</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="65"/>
+        <location filename="../src/constant/JamiStrings.qml" line="70"/>
         <source>Select custom ringtone</source>
         <translation>Valitse oma soittoääni</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="66"/>
+        <location filename="../src/constant/JamiStrings.qml" line="71"/>
         <source>Add a custom ringtone</source>
         <translation>Lisää oma soittoääni</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="67"/>
+        <location filename="../src/constant/JamiStrings.qml" line="72"/>
         <source>Select a new ringtone</source>
         <translation>Valitse uusi soittoääni</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="70"/>
+        <location filename="../src/constant/JamiStrings.qml" line="75"/>
         <source>Voicemail</source>
         <translation>Ääniviesti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="71"/>
+        <location filename="../src/constant/JamiStrings.qml" line="76"/>
         <source>Voicemail dial code</source>
         <translation>Vastaajan valintakoodi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="74"/>
+        <location filename="../src/constant/JamiStrings.qml" line="79"/>
         <source>Security</source>
         <translation>Turvallisuus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="75"/>
+        <location filename="../src/constant/JamiStrings.qml" line="80"/>
         <source>Encrypt media streams (SRTP)</source>
         <translation>Salattu mediavirta (SRTP)</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="76"/>
+        <location filename="../src/constant/JamiStrings.qml" line="81"/>
         <source>Enable SDES key exchange</source>
         <translation>Ota käyttöön SDES-avainten vaihto</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="77"/>
+        <location filename="../src/constant/JamiStrings.qml" line="82"/>
         <source>Allow fallback on RTP</source>
         <translation>Salli paluu RTP:hen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="78"/>
+        <location filename="../src/constant/JamiStrings.qml" line="83"/>
         <source>Encrypt negotiation (TLS)</source>
         <translation>Salaa neuvottelu (TLS)</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="79"/>
+        <location filename="../src/constant/JamiStrings.qml" line="84"/>
         <source>CA certificate</source>
         <translation>CA-varmenne</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="80"/>
+        <location filename="../src/constant/JamiStrings.qml" line="85"/>
         <source>User certificate</source>
         <translation>Käyttäjävarmenne</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="81"/>
+        <location filename="../src/constant/JamiStrings.qml" line="86"/>
         <source>Private key</source>
         <translation>Henkilökohtainen salausavain</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="82"/>
+        <location filename="../src/constant/JamiStrings.qml" line="87"/>
         <source>Private key password</source>
         <translation>Henkilökohtaisen salausavaimen salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="83"/>
+        <location filename="../src/constant/JamiStrings.qml" line="88"/>
         <source>Verify certificates for incoming TLS connections</source>
         <translation>Tarkista saapuvien TLS-yhteyksien varmenteet</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="84"/>
+        <location filename="../src/constant/JamiStrings.qml" line="89"/>
         <source>Verify server TLS certificates</source>
         <translation>Tarkista palvelimen TLS-varmenteet</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="85"/>
+        <location filename="../src/constant/JamiStrings.qml" line="90"/>
         <source>Require certificate for incoming TLS connections</source>
         <translation>Vaadi varmenne saapuville TLS-yhteyksille</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="86"/>
+        <location filename="../src/constant/JamiStrings.qml" line="91"/>
         <source>TLS protocol method</source>
         <translation>Menetelmä TLS-protokolla</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="87"/>
+        <location filename="../src/constant/JamiStrings.qml" line="92"/>
         <source>Audio input device selector</source>
         <translation>Äänen sisääntulon valitsin</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="88"/>
+        <location filename="../src/constant/JamiStrings.qml" line="93"/>
         <source>TLS server name</source>
         <translation>TLS-palvelimen nimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="89"/>
+        <location filename="../src/constant/JamiStrings.qml" line="94"/>
         <source>Negotiation timeout (seconds)</source>
         <translation>Neuvottelun aikakatkaisu (sekunteja)</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="90"/>
+        <location filename="../src/constant/JamiStrings.qml" line="95"/>
         <source>Select a private key</source>
         <translation>Valitse salausavain</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="91"/>
+        <location filename="../src/constant/JamiStrings.qml" line="96"/>
         <source>Select a user certificate</source>
         <translation>Valitse käyttäjän varmenne</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="110"/>
+        <location filename="../src/constant/JamiStrings.qml" line="102"/>
+        <source>Registration expiration time (seconds)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="115"/>
         <source>Use custom address and port</source>
         <translation>Käytä mukautettua osoitetta ja porttia</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="127"/>
+        <location filename="../src/constant/JamiStrings.qml" line="132"/>
         <source>Enable local peer discovery</source>
         <translation>Salli paikallisten vertaislaitteiden haku</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="138"/>
+        <location filename="../src/constant/JamiStrings.qml" line="143"/>
         <source>Audio and Video Settings</source>
         <translation>Ääni- ja videoasetukset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="156"/>
+        <location filename="../src/constant/JamiStrings.qml" line="161"/>
         <source>Frames per second</source>
         <translation>Kuvaa sekunnissa</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="157"/>
+        <location filename="../src/constant/JamiStrings.qml" line="162"/>
         <source>Select video frame rate (frames per second)</source>
         <translation>Valitse videon nopeus (kuvaa sekunnissa)</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="162"/>
+        <location filename="../src/constant/JamiStrings.qml" line="167"/>
         <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
         <translation>Sinun tunnus on olemassa vain tällä laitteella. Jos kadotat laitteen tai poistat sovelluksen asennuksen, tunnus poistetaan eikä sitä voi palauttaa. Voit varmuuskopioida tunnuksen nyt tai myöhemmin.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="187"/>
+        <location filename="../src/constant/JamiStrings.qml" line="32"/>
+        <location filename="../src/constant/JamiStrings.qml" line="192"/>
         <source>End call</source>
         <translation>Lopeta puhelu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="188"/>
+        <location filename="../src/constant/JamiStrings.qml" line="193"/>
         <source>Pause call</source>
         <translation>Keskeytä puhelu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="189"/>
+        <location filename="../src/constant/JamiStrings.qml" line="194"/>
         <source>Resume call</source>
         <translation>Jatka puhelua</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="190"/>
+        <location filename="../src/constant/JamiStrings.qml" line="195"/>
         <source>Pause video</source>
         <translation>Keskeytä video</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="191"/>
+        <location filename="../src/constant/JamiStrings.qml" line="196"/>
         <source>Resume video</source>
         <translation>Jatka videota</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="223"/>
+        <location filename="../src/constant/JamiStrings.qml" line="230"/>
         <source>Creating account…</source>
         <translation>Luodaan tunnusta...</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="229"/>
+        <location filename="../src/constant/JamiStrings.qml" line="236"/>
         <source>Encrypt account with password</source>
         <translation>Salaa tunnus salasanalla</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="230"/>
+        <location filename="../src/constant/JamiStrings.qml" line="237"/>
         <source>Create a rendezvous point</source>
         <translation>Luo tapaamispaikka</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="233"/>
+        <location filename="../src/constant/JamiStrings.qml" line="240"/>
         <source>Choose a password to encrypt your account on this device. Note that the password cannot be recovered.</source>
         <translation>Valitse salasana, joka salaa tunnuksen tällä laitteella. Huomaa, että salasanaa ei voi palauttaa.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="235"/>
+        <location filename="../src/constant/JamiStrings.qml" line="242"/>
         <source>Choose a name for your rendezvous point</source>
         <translation>Valitse tapaamispaikan nimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="275"/>
+        <location filename="../src/constant/JamiStrings.qml" line="282"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
         <translation>Jos sinun tunnusta ei ole varmuuskopioitu tai lisätty toiseen laitteeseen, tunnus ja rekisteröity nimi menetetään lopullisesti.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="288"/>
+        <location filename="../src/constant/JamiStrings.qml" line="295"/>
         <source>Launch at startup</source>
         <translation>Käynnistä käynnistettäessä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="295"/>
+        <location filename="../src/constant/JamiStrings.qml" line="302"/>
         <source>Enable typing indicators</source>
         <translation>Kirjoittamisen merkki käyttöön</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="296"/>
+        <location filename="../src/constant/JamiStrings.qml" line="303"/>
         <source>Display images and videos in the chatview</source>
         <translation>Näytä kuvat ja videot chatti näkymään</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="308"/>
+        <location filename="../src/constant/JamiStrings.qml" line="315"/>
         <source>Network error</source>
         <translation>Verkkovirhe</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="309"/>
+        <location filename="../src/constant/JamiStrings.qml" line="316"/>
         <source>SSL error</source>
         <translation>SSL virhe</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="330"/>
+        <location filename="../src/constant/JamiStrings.qml" line="354"/>
         <source>Enter the PIN from another configured Jami account. Use the &quot;Link Another Device&quot; feature to obtain a PIN.</source>
         <translation>Syötä toisen määritetyn Jami tunnuksen PIN-koodi. Käytä PIN-koodin &quot;Yhdistä toinen laite&quot; -ominaisuutta.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="332"/>
+        <location filename="../src/constant/JamiStrings.qml" line="356"/>
         <source>Link device</source>
         <translation>Linkitä laite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="406"/>
+        <location filename="../src/constant/JamiStrings.qml" line="430"/>
         <source>Conversations</source>
         <translation>Keskustelu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="356"/>
+        <location filename="../src/constant/JamiStrings.qml" line="380"/>
         <source>Enable</source>
         <translation>Päällä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="364"/>
+        <location filename="../src/constant/JamiStrings.qml" line="388"/>
         <source>Display or hide preferences</source>
         <translation>Näytä tai piilota asetukset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="367"/>
+        <location filename="../src/constant/JamiStrings.qml" line="391"/>
         <source>Add new plugin</source>
         <translation>Lisää uusi laajennus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="370"/>
+        <location filename="../src/constant/JamiStrings.qml" line="394"/>
         <source>Select a file</source>
         <translation>Valitse tiedosto</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="371"/>
+        <location filename="../src/constant/JamiStrings.qml" line="395"/>
         <source>Select</source>
         <translation>Valitse</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="372"/>
+        <location filename="../src/constant/JamiStrings.qml" line="396"/>
         <source>Choose image file</source>
         <translation>Valitse kuvatiedosto</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="376"/>
+        <location filename="../src/constant/JamiStrings.qml" line="400"/>
         <source>Enter the rendezvous point&apos;s name</source>
         <translation>Anna kohtaamispaikan nimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="377"/>
+        <location filename="../src/constant/JamiStrings.qml" line="401"/>
         <source>Creating rendezvous point…</source>
         <translation>Luodaan kohtaamispaikkaa…</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="397"/>
+        <location filename="../src/constant/JamiStrings.qml" line="421"/>
         <source>Create account from Jami Account Management Server (JAMS)</source>
         <translation>Luo tunnus Jami Account Management Server (JAMS) palvelimeen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="400"/>
+        <location filename="../src/constant/JamiStrings.qml" line="424"/>
         <source>Create new rendezvous point</source>
         <translation>Luo uusi kohtaamispaikka</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="401"/>
+        <location filename="../src/constant/JamiStrings.qml" line="425"/>
         <source>Create a Jami account</source>
         <translation>Luo Jami tunnus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="402"/>
+        <location filename="../src/constant/JamiStrings.qml" line="426"/>
         <source>About Jami</source>
         <translation>Tietoa Jamista</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="410"/>
+        <location filename="../src/constant/JamiStrings.qml" line="434"/>
         <source>Decline contact request</source>
         <translation>Hylkää yhteyspyyntö</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="411"/>
+        <location filename="../src/constant/JamiStrings.qml" line="435"/>
         <source>Accept contact request</source>
         <translation>Hyväksy yhteyspyyntö</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="414"/>
+        <location filename="../src/constant/JamiStrings.qml" line="438"/>
         <source>Automatically check for updates</source>
         <translation>Tarkista päivitykset automaattisesti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="417"/>
+        <location filename="../src/constant/JamiStrings.qml" line="441"/>
         <source>Ok</source>
         <translation>Vahvista</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="418"/>
+        <location filename="../src/constant/JamiStrings.qml" line="339"/>
+        <location filename="../src/constant/JamiStrings.qml" line="442"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="92"/>
+        <location filename="../src/constant/JamiStrings.qml" line="97"/>
         <source>Select a CA certificate</source>
         <translation>Valitse CA-varmenne</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="95"/>
+        <location filename="../src/constant/JamiStrings.qml" line="100"/>
         <source>Connectivity</source>
         <translation>Yhteydet</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="96"/>
+        <location filename="../src/constant/JamiStrings.qml" line="101"/>
         <source>Auto Registration After Expired</source>
         <translation>Rekisteröinnin vanhentumisen jälkeen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="97"/>
-        <source>Registration expire timeout (seconds)</source>
-        <translation>Rekistöröinnin aikakatkaisu (sekunneissa)</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="98"/>
+        <location filename="../src/constant/JamiStrings.qml" line="103"/>
         <source>Network interface</source>
         <translation>Verkkoliitäntä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="99"/>
+        <location filename="../src/constant/JamiStrings.qml" line="104"/>
         <source>Use UPnP</source>
         <translation>Käytä UPnP</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="100"/>
+        <location filename="../src/constant/JamiStrings.qml" line="105"/>
         <source>Use TURN</source>
         <translation>Käytä TURNia</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="101"/>
+        <location filename="../src/constant/JamiStrings.qml" line="106"/>
         <source>TURN address</source>
         <translation>TURN osoite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="102"/>
+        <location filename="../src/constant/JamiStrings.qml" line="107"/>
         <source>TURN username</source>
         <translation>TURN käyttäjänimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="103"/>
+        <location filename="../src/constant/JamiStrings.qml" line="108"/>
         <source>TURN password</source>
         <translation>TURN salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="104"/>
+        <location filename="../src/constant/JamiStrings.qml" line="109"/>
         <source>TURN Realm</source>
         <translation>TURN alueella</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="105"/>
+        <location filename="../src/constant/JamiStrings.qml" line="110"/>
         <source>Use STUN</source>
         <translation>Käytä STUNia</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="106"/>
+        <location filename="../src/constant/JamiStrings.qml" line="111"/>
         <source>STUN address</source>
         <translation>STUN osoite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="109"/>
+        <location filename="../src/constant/JamiStrings.qml" line="114"/>
         <source>Public address</source>
         <translation>Julkinen osoite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="111"/>
+        <location filename="../src/constant/JamiStrings.qml" line="116"/>
         <source>Address</source>
         <translation>Osoite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="112"/>
+        <location filename="../src/constant/JamiStrings.qml" line="117"/>
         <source>Port</source>
         <translation>Portti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="115"/>
+        <location filename="../src/constant/JamiStrings.qml" line="120"/>
         <source>Media</source>
         <translation>Media</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="116"/>
+        <location filename="../src/constant/JamiStrings.qml" line="121"/>
         <source>Enable video</source>
         <translation>Video käyttöön</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="119"/>
+        <location filename="../src/constant/JamiStrings.qml" line="124"/>
         <source>SDP Session Negotiation (ICE Fallback)</source>
         <translation>SDP-istunnon neuvottelut (ICE Fallback)</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="120"/>
+        <location filename="../src/constant/JamiStrings.qml" line="125"/>
         <source>Only used during negotiation in case ICE is not supported</source>
         <translation>Käytetään vain neuvottelun aikana, jos ICE ei ole tuettu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="121"/>
+        <location filename="../src/constant/JamiStrings.qml" line="126"/>
         <source>Audio RTP minimum Port</source>
         <translation>Äänelle RTP alin portti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="122"/>
+        <location filename="../src/constant/JamiStrings.qml" line="127"/>
         <source>Audio RTP maximum Port</source>
         <translation>Äänelle RTP ylin portti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="123"/>
+        <location filename="../src/constant/JamiStrings.qml" line="128"/>
         <source>Video RTP minimum Port</source>
         <translation>Videolle RTP alin portti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="124"/>
+        <location filename="../src/constant/JamiStrings.qml" line="129"/>
         <source>Video RTP maximum port</source>
         <translation>Videolle RTP ylin portti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="128"/>
+        <location filename="../src/constant/JamiStrings.qml" line="133"/>
         <source>Connect to other DHT nodes advertising on your local network.</source>
         <translation>Yhdistä muihin DHT-solmuihin, jotka ilmoittautuu paikallisessa verkossa.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="129"/>
+        <location filename="../src/constant/JamiStrings.qml" line="134"/>
         <source>OpenDHT Configuration</source>
         <translation>OpenDHT-määritykset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="130"/>
+        <location filename="../src/constant/JamiStrings.qml" line="135"/>
         <source>Enable proxy</source>
         <translation>Proxy käyttöön</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="131"/>
+        <location filename="../src/constant/JamiStrings.qml" line="136"/>
         <source>Proxy address</source>
         <translation>Proxy osoite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="132"/>
+        <location filename="../src/constant/JamiStrings.qml" line="137"/>
         <source>Bootstrap</source>
         <translation>Bootstrap</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="135"/>
+        <location filename="../src/constant/JamiStrings.qml" line="140"/>
         <source>Back</source>
         <translation>Takaisin</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="141"/>
+        <location filename="../src/constant/JamiStrings.qml" line="146"/>
         <source>Audio</source>
         <translation>Ääni</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="142"/>
+        <location filename="../src/constant/JamiStrings.qml" line="147"/>
         <source>Microphone</source>
         <translation>Mikrofoni</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="143"/>
+        <location filename="../src/constant/JamiStrings.qml" line="148"/>
         <source>Select audio input device</source>
         <translation>Valitse äänen sisääntulo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="144"/>
+        <location filename="../src/constant/JamiStrings.qml" line="149"/>
         <source>Output device</source>
         <translation>Ulostulon laite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="145"/>
+        <location filename="../src/constant/JamiStrings.qml" line="150"/>
         <source>Select audio output device</source>
         <translation>Valitse äänen ulostulo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="146"/>
+        <location filename="../src/constant/JamiStrings.qml" line="151"/>
         <source>Ringtone device</source>
         <translation>Soittoäänen laite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="147"/>
+        <location filename="../src/constant/JamiStrings.qml" line="152"/>
         <source>Select ringtone output device</source>
         <translation>Valitse soittoäänen ulostulo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="148"/>
+        <location filename="../src/constant/JamiStrings.qml" line="153"/>
         <source>Audio manager</source>
         <translation>Äänenhallinta</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="151"/>
+        <location filename="../src/constant/JamiStrings.qml" line="156"/>
         <source>Video</source>
         <translation>Video</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="152"/>
+        <location filename="../src/constant/JamiStrings.qml" line="157"/>
         <source>Select video device</source>
         <translation>Valitse laite videolle</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="153"/>
+        <location filename="../src/constant/JamiStrings.qml" line="158"/>
         <source>Device</source>
         <translation>Laite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="154"/>
+        <location filename="../src/constant/JamiStrings.qml" line="159"/>
         <source>Resolution</source>
         <translation>Tarkkuus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="155"/>
+        <location filename="../src/constant/JamiStrings.qml" line="160"/>
         <source>Select video resolution</source>
         <translation>Valitse videon tarkkuus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="158"/>
+        <location filename="../src/constant/JamiStrings.qml" line="163"/>
         <source>Enable hardware acceleration</source>
         <translation>Kytke laitteiston kiihdytys</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="159"/>
+        <location filename="../src/constant/JamiStrings.qml" line="164"/>
         <source>Preview unavailable</source>
         <translation>Esikatselua ei käytettävissä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="166"/>
+        <location filename="../src/constant/JamiStrings.qml" line="171"/>
         <source>Backup account here</source>
         <translation>Varmuuskopioi tunnus täällä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="167"/>
+        <location filename="../src/constant/JamiStrings.qml" line="172"/>
         <source>Backup your account!</source>
         <translation>Varmuuskopioi tunnuksesi!</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="168"/>
+        <location filename="../src/constant/JamiStrings.qml" line="173"/>
         <source>Backup account</source>
         <translation>Varmuuskopioi tunnus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="169"/>
+        <location filename="../src/constant/JamiStrings.qml" line="174"/>
         <source>Skip</source>
         <translation>Ohita</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="170"/>
+        <location filename="../src/constant/JamiStrings.qml" line="175"/>
         <source>Never show me this again</source>
         <translation>Älä näytä tätä uudestaan</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="171"/>
+        <location filename="../src/constant/JamiStrings.qml" line="176"/>
         <source>Recommended</source>
         <translation>Suositus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="174"/>
+        <location filename="../src/constant/JamiStrings.qml" line="179"/>
         <source>Reinstate as contact</source>
         <translation>Palauta yhteystiedot</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="175"/>
+        <location filename="../src/constant/JamiStrings.qml" line="180"/>
         <source>name</source>
         <translation>nimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="176"/>
+        <location filename="../src/constant/JamiStrings.qml" line="181"/>
         <source>Identifier</source>
         <translation>Tunniste</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="179"/>
+        <location filename="../src/constant/JamiStrings.qml" line="184"/>
         <source>is recording</source>
         <translation>tallentaa</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="180"/>
+        <location filename="../src/constant/JamiStrings.qml" line="185"/>
         <source>are recording</source>
         <translation>tallentavat</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="181"/>
+        <location filename="../src/constant/JamiStrings.qml" line="186"/>
         <source>Peer stopped recording</source>
         <translation>Lopetti tallennuksen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="182"/>
+        <location filename="../src/constant/JamiStrings.qml" line="187"/>
         <source>is calling you</source>
-        <translation type="unfinished"/>
+        <translation>soittaa sinulle</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="185"/>
-        <location filename="../src/constant/JamiStrings.qml" line="423"/>
+        <location filename="../src/constant/JamiStrings.qml" line="190"/>
+        <location filename="../src/constant/JamiStrings.qml" line="447"/>
         <source>Mute</source>
         <translation>Mykistä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="186"/>
-        <location filename="../src/constant/JamiStrings.qml" line="424"/>
+        <location filename="../src/constant/JamiStrings.qml" line="191"/>
+        <location filename="../src/constant/JamiStrings.qml" line="448"/>
         <source>Unmute</source>
         <translation>Poista mykistys</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="192"/>
+        <location filename="../src/constant/JamiStrings.qml" line="197"/>
         <source>Add participants</source>
         <translation>Lisää osallistujia</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="193"/>
+        <location filename="../src/constant/JamiStrings.qml" line="198"/>
         <source>Chat</source>
         <translation>keskustelu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="194"/>
+        <location filename="../src/constant/JamiStrings.qml" line="199"/>
         <source>More options</source>
         <translation>Lisää vaihtoehtoja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="197"/>
+        <location filename="../src/constant/JamiStrings.qml" line="200"/>
+        <source>Mosaic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="203"/>
         <source>Hold</source>
         <translation>Laita pitoon</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="198"/>
+        <location filename="../src/constant/JamiStrings.qml" line="204"/>
         <source>Sip input panel</source>
         <translation>Sip-kirjoitusalue</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="199"/>
+        <location filename="../src/constant/JamiStrings.qml" line="205"/>
         <source>Transfer call</source>
         <translation>Siirrä puhelu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="200"/>
+        <location filename="../src/constant/JamiStrings.qml" line="206"/>
         <source>Stop recording</source>
         <translation>Lopeta tallennus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="201"/>
+        <location filename="../src/constant/JamiStrings.qml" line="207"/>
         <source>Start recording</source>
         <translation>Aloita tallennus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="202"/>
+        <location filename="../src/constant/JamiStrings.qml" line="208"/>
         <source>Exit full screen</source>
         <translation>Poistu koko näytöstä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="203"/>
+        <location filename="../src/constant/JamiStrings.qml" line="209"/>
         <source>Full screen</source>
         <translation>Koko näyttö</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="204"/>
+        <location filename="../src/constant/JamiStrings.qml" line="210"/>
         <source>Share screen</source>
         <translation>Jaa näyttö</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="205"/>
+        <location filename="../src/constant/JamiStrings.qml" line="211"/>
+        <source>Stop sharing screen</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="212"/>
         <source>Share screen area</source>
         <translation>Jaa osa näytöstä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="206"/>
+        <location filename="../src/constant/JamiStrings.qml" line="213"/>
         <source>Share file</source>
         <translation>Jaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="207"/>
+        <location filename="../src/constant/JamiStrings.qml" line="214"/>
         <source>View plugin</source>
         <translation>Näytä laajennus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="208"/>
+        <location filename="../src/constant/JamiStrings.qml" line="215"/>
         <source>No video device</source>
         <translation>Ei videolaitetta</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="211"/>
+        <location filename="../src/constant/JamiStrings.qml" line="218"/>
         <source>Hide chat view</source>
         <translation>Piilota chat-näkymä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="212"/>
+        <location filename="../src/constant/JamiStrings.qml" line="219"/>
         <source>Place audio call</source>
         <translation>Aloita äänipuhelu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="213"/>
+        <location filename="../src/constant/JamiStrings.qml" line="220"/>
         <source>Place video call</source>
         <translation>Aloita videopuhelu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="214"/>
+        <location filename="../src/constant/JamiStrings.qml" line="221"/>
         <source>Show available plugins</source>
         <translation>Näytä saatavat laajennukset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="215"/>
+        <location filename="../src/constant/JamiStrings.qml" line="222"/>
         <source>Add to conversations</source>
         <translation>Lisää keskusteluihin</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="218"/>
+        <location filename="../src/constant/JamiStrings.qml" line="225"/>
         <source>Enter Jami Account Management Server (JAMS) URL</source>
         <translation>Anna Jami Account Management Serverin (JAMS) verkko-osoite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="219"/>
+        <location filename="../src/constant/JamiStrings.qml" line="226"/>
         <source>Required</source>
         <translation>Vaaditaan</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="220"/>
+        <location filename="../src/constant/JamiStrings.qml" line="227"/>
         <source>Jami Account Management Server URL</source>
         <translation>Jami Account Management Server verkko-osoite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="221"/>
+        <location filename="../src/constant/JamiStrings.qml" line="228"/>
         <source>Enter your JAMS credentials</source>
         <translation>Anna JAMS-tunnuksesi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="222"/>
+        <location filename="../src/constant/JamiStrings.qml" line="229"/>
         <source>Connect</source>
         <translation>Yhdistä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="224"/>
+        <location filename="../src/constant/JamiStrings.qml" line="231"/>
         <source>Back to welcome page</source>
         <translation>Takaisin tervetulosivulle</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="227"/>
+        <location filename="../src/constant/JamiStrings.qml" line="234"/>
         <source>Choose name</source>
         <translation>Valitse nimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="228"/>
+        <location filename="../src/constant/JamiStrings.qml" line="235"/>
         <source>Choose username</source>
         <translation>Valitse käyttäjänimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="231"/>
+        <location filename="../src/constant/JamiStrings.qml" line="238"/>
         <source>Create account</source>
         <translation>Luo tunnus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="232"/>
+        <location filename="../src/constant/JamiStrings.qml" line="239"/>
         <source>Confirm password</source>
         <translation>Varmista salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="234"/>
+        <location filename="../src/constant/JamiStrings.qml" line="241"/>
         <source>Optional</source>
         <translation>Valinnainen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="238"/>
+        <location filename="../src/constant/JamiStrings.qml" line="245"/>
         <source>Proxy</source>
         <translation>Välityspalvelin</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="239"/>
+        <location filename="../src/constant/JamiStrings.qml" line="246"/>
         <source>Server</source>
         <translation>Palvelin</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="240"/>
+        <location filename="../src/constant/JamiStrings.qml" line="247"/>
         <source>Create SIP account</source>
         <translation>Luo SIP tunnus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="241"/>
+        <location filename="../src/constant/JamiStrings.qml" line="248"/>
         <source>Configure an existing SIP account</source>
         <translation>Määritä olemassa oleva SIP tunnus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="244"/>
+        <location filename="../src/constant/JamiStrings.qml" line="251"/>
         <source>Backup successful</source>
         <translation>Varmuuskopiointi onnistui</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="245"/>
+        <location filename="../src/constant/JamiStrings.qml" line="252"/>
         <source>Backup failed</source>
         <translation>Varmuuskopiointi epäonnistui</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="246"/>
+        <location filename="../src/constant/JamiStrings.qml" line="253"/>
         <source>Password changed successfully</source>
         <translation>Salasana vaihdettu onnistuneesti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="247"/>
+        <location filename="../src/constant/JamiStrings.qml" line="254"/>
         <source>Password change failed</source>
         <translation>Salasanan vaihto epäonnistui</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="248"/>
+        <location filename="../src/constant/JamiStrings.qml" line="255"/>
         <source>Password set successfully</source>
         <translation>Salasana asetettu onnistuneesti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="249"/>
+        <location filename="../src/constant/JamiStrings.qml" line="256"/>
         <source>Password set failed</source>
         <translation>Salasanan asettaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="250"/>
+        <location filename="../src/constant/JamiStrings.qml" line="257"/>
         <source>Change password</source>
         <translation>Vaihda salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="251"/>
-        <location filename="../src/constant/JamiStrings.qml" line="252"/>
+        <location filename="../src/constant/JamiStrings.qml" line="258"/>
+        <location filename="../src/constant/JamiStrings.qml" line="259"/>
         <source>Set password</source>
         <translation>Aseta salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="253"/>
+        <location filename="../src/constant/JamiStrings.qml" line="260"/>
         <source>Change current password</source>
         <translation>Vaihda nykyinen salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="254"/>
+        <location filename="../src/constant/JamiStrings.qml" line="261"/>
         <source>Backup account to a .gz file</source>
         <translation>Varmuuskopioi tunnus .gz-tiedostoon</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="255"/>
+        <location filename="../src/constant/JamiStrings.qml" line="262"/>
         <source>Display or hide advanced settings</source>
         <translation>Näytä tai piilota lisäasetukset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="256"/>
+        <location filename="../src/constant/JamiStrings.qml" line="263"/>
         <source>Enable account</source>
         <translation>Hyväksy tunnus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="259"/>
+        <location filename="../src/constant/JamiStrings.qml" line="266"/>
         <source>Set username</source>
         <translation>Aseta käyttäjänimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="260"/>
+        <location filename="../src/constant/JamiStrings.qml" line="267"/>
         <source>Registering name</source>
         <translation>Rekisteröidään nimeä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="263"/>
+        <location filename="../src/constant/JamiStrings.qml" line="270"/>
         <source>Register a username</source>
         <translation>Rekisteröi käyttäjänimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="264"/>
+        <location filename="../src/constant/JamiStrings.qml" line="271"/>
         <source>Register username</source>
         <translation>Rekisteröi käyttäjänimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="267"/>
+        <location filename="../src/constant/JamiStrings.qml" line="274"/>
         <source>Link a new device to this account</source>
         <translation>Linkitä uusi laite tähän tunnukseen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="268"/>
+        <location filename="../src/constant/JamiStrings.qml" line="275"/>
         <source>Link another device</source>
         <translation>Linkitä toinen laite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="271"/>
+        <location filename="../src/constant/JamiStrings.qml" line="278"/>
         <source>Display or hide banned contacts</source>
         <translation>Näytä piilotetut tai estetyt yhteystiedot</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="274"/>
+        <location filename="../src/constant/JamiStrings.qml" line="281"/>
         <source>Do you really want to delete this account?</source>
         <translation>Haluatko varmasti poistaa tämän tunnuksen?</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="278"/>
+        <location filename="../src/constant/JamiStrings.qml" line="285"/>
         <source>Save new device name</source>
         <translation>Tallenna uuden laitteen nimi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="279"/>
+        <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>Edit device name</source>
         <translation>Muokkaa laitteen nimeä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="280"/>
+        <location filename="../src/constant/JamiStrings.qml" line="287"/>
         <source>Unlink device from account</source>
         <translation>Poista laitteen linkitys tunnukselta</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="283"/>
+        <location filename="../src/constant/JamiStrings.qml" line="290"/>
         <source>Select a folder</source>
         <translation>Valitse kansio</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="284"/>
+        <location filename="../src/constant/JamiStrings.qml" line="291"/>
         <source>Enable notifications</source>
         <translation>Ota ilmoitukset käyttöön</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="285"/>
+        <location filename="../src/constant/JamiStrings.qml" line="292"/>
         <source>Enable dark theme</source>
         <translation>Käytä tummaa teemaa</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="286"/>
+        <location filename="../src/constant/JamiStrings.qml" line="293"/>
         <source>Keep minimized on close</source>
         <translation>Pidä pienennettynä suljettaessa</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="287"/>
+        <location filename="../src/constant/JamiStrings.qml" line="294"/>
         <source>Run application on system startup</source>
         <translation>Aja sovellus järjestelmän käynnistyksen yhteydessä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="289"/>
+        <location filename="../src/constant/JamiStrings.qml" line="296"/>
         <source>Downloads directory</source>
         <translation>Lataukset hakemisto</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="290"/>
+        <location filename="../src/constant/JamiStrings.qml" line="297"/>
         <source>Choose download directory</source>
         <translation>Valitse lataukset hakemisto</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="291"/>
+        <location filename="../src/constant/JamiStrings.qml" line="298"/>
         <source>Record call</source>
         <translation>Tallenna puhelu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="294"/>
+        <location filename="../src/constant/JamiStrings.qml" line="301"/>
         <source>Chatview</source>
         <translation>Chat-näkymä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="299"/>
+        <location filename="../src/constant/JamiStrings.qml" line="306"/>
         <source>Install beta version</source>
         <translation>Asenna beetaversio</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="300"/>
+        <location filename="../src/constant/JamiStrings.qml" line="307"/>
         <source>Check for updates now</source>
         <translation>Tarkista päivitykset nyt</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="301"/>
+        <location filename="../src/constant/JamiStrings.qml" line="308"/>
         <source>Enable/Disable automatic updates</source>
         <translation>Hyväksy/Poista automaattiset päivitykset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="302"/>
+        <location filename="../src/constant/JamiStrings.qml" line="309"/>
         <source>toggle automatic updates</source>
         <translation>vaihda automaattiset päivitykset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="303"/>
+        <location filename="../src/constant/JamiStrings.qml" line="310"/>
         <source>Updates</source>
         <translation>Päivitykset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="304"/>
+        <location filename="../src/constant/JamiStrings.qml" line="311"/>
         <source>Update</source>
         <translation>Päivitä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="305"/>
+        <location filename="../src/constant/JamiStrings.qml" line="312"/>
         <source>A new version of Jami was found
  Would you like to update now?</source>
         <translation>Jamista löytyi uusi versio
 Haluatko päivittää nyt?</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="306"/>
+        <location filename="../src/constant/JamiStrings.qml" line="313"/>
         <source>No new version of Jami was found</source>
         <translation>Jamista ei löytynyt uutta versiota</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="307"/>
+        <location filename="../src/constant/JamiStrings.qml" line="314"/>
         <source>An error occured when checking for a new version</source>
         <translation>Uuden version tarkistuksessa tapahtui virhe</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="310"/>
+        <location filename="../src/constant/JamiStrings.qml" line="317"/>
         <source>Installer download canceled</source>
         <translation>Asentajan lataus peruutettu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="312"/>
+        <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>This will uninstall your current Release version and you can always download the latest Release version on our website</source>
         <translation>Tämä poistaa nykyisen version asennuksen ja voit aina ladata uusimman julkaisun verkkosivustoltamme</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="313"/>
+        <location filename="../src/constant/JamiStrings.qml" line="320"/>
         <source>Network disconnected</source>
         <translation>Ei verkkoyhteyttä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="314"/>
+        <location filename="../src/constant/JamiStrings.qml" line="321"/>
         <source>Something went wrong</source>
         <translation>Jokin meni pieleen.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="317"/>
+        <location filename="../src/constant/JamiStrings.qml" line="324"/>
+        <source>Troubleshoot</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="325"/>
+        <source>Open logs</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="326"/>
+        <source>Get logs</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>Select a record directory</source>
         <translation>Valitse tallennuksen hakemisto</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="320"/>
+        <location filename="../src/constant/JamiStrings.qml" line="332"/>
+        <source>Debug</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="333"/>
+        <source>Show Stats</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="334"/>
+        <source>Start</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="335"/>
+        <source>Stop</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="336"/>
+        <source>Copy</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="337"/>
+        <source>Report Bug</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="338"/>
+        <source>Clear</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="340"/>
+        <source>Copied to clipboard!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="341"/>
+        <source>Receive Logs</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="344"/>
         <source>Archive</source>
         <translation>Arkisto</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="321"/>
+        <location filename="../src/constant/JamiStrings.qml" line="345"/>
         <source>Open file</source>
         <translation>Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="322"/>
+        <location filename="../src/constant/JamiStrings.qml" line="346"/>
         <source>Create your account from a backup</source>
         <translation>Luo tunnus varmuuskopiosta</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="323"/>
+        <location filename="../src/constant/JamiStrings.qml" line="347"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
         <translation>Voit tehdä pakatun varmistuksen napsauttamalla &quot;Varmuuskopioi tunnus&quot;  Tunnuksen asetuksissa. Tämä luo gz-tiedoston laitteellesi.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="326"/>
+        <location filename="../src/constant/JamiStrings.qml" line="350"/>
         <source>Restore an account from backup</source>
         <translation>Tunnuksen palauttaminen varmuuskopiosta</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="329"/>
+        <location filename="../src/constant/JamiStrings.qml" line="353"/>
         <source>Enter Jami account password</source>
         <translation>Anna Jami tunnuksen salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="335"/>
+        <location filename="../src/constant/JamiStrings.qml" line="359"/>
         <source>The PIN and the account password should be entered in your device within 10 minutes.</source>
         <translation>PIN-koodi ja tunnuksen salasana tulee antaa laitteellesi 10 minuutin kuluessa.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="336"/>
+        <location filename="../src/constant/JamiStrings.qml" line="360"/>
         <source>Close</source>
         <translation>Sulje</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="337"/>
+        <location filename="../src/constant/JamiStrings.qml" line="361"/>
         <source>Enter your account password</source>
         <translation>Anna tunnuksen salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="338"/>
+        <location filename="../src/constant/JamiStrings.qml" line="362"/>
         <source>Add Device</source>
         <translation>Lisää laite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="341"/>
+        <location filename="../src/constant/JamiStrings.qml" line="365"/>
         <source>Enter the password</source>
         <translation>Anna salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="342"/>
+        <location filename="../src/constant/JamiStrings.qml" line="366"/>
         <source>Enter current password</source>
         <translation>Anna nykyinen salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="343"/>
+        <location filename="../src/constant/JamiStrings.qml" line="367"/>
         <source>Enter new password</source>
         <translation>Anna uusi salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="344"/>
+        <location filename="../src/constant/JamiStrings.qml" line="368"/>
         <source>Confirm new password</source>
         <translation>Vahvista uusi salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="345"/>
+        <location filename="../src/constant/JamiStrings.qml" line="369"/>
         <source>Change</source>
         <translation>Vaihda</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="346"/>
+        <location filename="../src/constant/JamiStrings.qml" line="370"/>
         <source>Confirm</source>
         <translation>Vahvista</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="347"/>
+        <location filename="../src/constant/JamiStrings.qml" line="371"/>
         <source>Export</source>
         <translation>Vie</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="350"/>
+        <location filename="../src/constant/JamiStrings.qml" line="374"/>
         <source>Choose a picture as avatar</source>
         <translation>Valitse hahmosi kuva</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="351"/>
+        <location filename="../src/constant/JamiStrings.qml" line="375"/>
         <source>Import avatar from image file</source>
         <translation>Tuo hahmosi kuvatiedostosta</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="352"/>
+        <location filename="../src/constant/JamiStrings.qml" line="376"/>
         <source>Take photo</source>
         <translation>Ota valokuva</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="353"/>
+        <location filename="../src/constant/JamiStrings.qml" line="377"/>
         <source>Retake photo</source>
         <translation>Ota valokuva uudelleen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="359"/>
+        <location filename="../src/constant/JamiStrings.qml" line="383"/>
         <source>Reset</source>
         <translation>Nollaa</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="360"/>
+        <location filename="../src/constant/JamiStrings.qml" line="384"/>
         <source>Select a plugin to install</source>
         <translation>Valitse asennettava laajennus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="361"/>
+        <location filename="../src/constant/JamiStrings.qml" line="385"/>
         <source>Install plugin</source>
         <translation>Asenna laajennus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="375"/>
+        <location filename="../src/constant/JamiStrings.qml" line="399"/>
         <source>Save profile</source>
         <translation>Tallenna profiili</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="380"/>
+        <location filename="../src/constant/JamiStrings.qml" line="404"/>
         <source>Enter the account password to confirm the removal of this device</source>
         <translation>Vahvista laitteen poisto antamalla tunnuksen salasana</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="383"/>
+        <location filename="../src/constant/JamiStrings.qml" line="407"/>
         <source>Select a screen to share</source>
         <translation>Valitse jaettava näyttö</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="386"/>
+        <location filename="../src/constant/JamiStrings.qml" line="410"/>
         <source>QR code</source>
         <translation>QR-koodi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="389"/>
+        <location filename="../src/constant/JamiStrings.qml" line="413"/>
         <source>Account QR</source>
         <translation>Tunnuksen QR</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="392"/>
+        <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>This is your Jami username.
 Copy and share it with your friends!</source>
         <translation>Tämä on sinun Jami käyttäjätunnus.
 Kopioi ja jaa se ystäviesi kanssa!</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="393"/>
+        <location filename="../src/constant/JamiStrings.qml" line="417"/>
         <source>Link this device to an existing account</source>
         <translation>Yhdistä tämä laite olemassa olevaan tunnukseen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="394"/>
+        <location filename="../src/constant/JamiStrings.qml" line="418"/>
         <source>Advanced features</source>
         <translation>Lisäominaisuudet</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="395"/>
+        <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Show advanced features</source>
         <translation>Näytä lisäominaisuudet</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="396"/>
+        <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Connect to a JAMS server</source>
         <translation>Yhdistä JAMS-palvelimeen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="398"/>
+        <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Add a SIP account</source>
         <translation>Lisää SIP tunnus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="399"/>
+        <location filename="../src/constant/JamiStrings.qml" line="423"/>
         <source>Error while creating your account. Check your credentials.</source>
         <translation>Virhe luotaessa tunnusta. Tarkista kirjautumistietosi.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="405"/>
+        <location filename="../src/constant/JamiStrings.qml" line="429"/>
         <source>Clear Text</source>
         <translation>Tyhjennä teksti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="407"/>
+        <location filename="../src/constant/JamiStrings.qml" line="431"/>
         <source>Search Results</source>
         <translation>Hakutulokset</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="421"/>
+        <location filename="../src/constant/JamiStrings.qml" line="445"/>
         <source>Set moderator</source>
         <translation>Aseta valvoja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="422"/>
+        <location filename="../src/constant/JamiStrings.qml" line="446"/>
         <source>Unset moderator</source>
         <translation>Poista valvoja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="425"/>
+        <location filename="../src/constant/JamiStrings.qml" line="449"/>
         <source>Maximize</source>
         <translation>Suurenna</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="426"/>
+        <location filename="../src/constant/JamiStrings.qml" line="450"/>
         <source>Minimize</source>
         <translation>Pienennä</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="427"/>
+        <location filename="../src/constant/JamiStrings.qml" line="451"/>
         <source>Hangup</source>
         <translation>Katkaistu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="428"/>
+        <location filename="../src/constant/JamiStrings.qml" line="452"/>
         <source>local muted</source>
         <translation>paikallinen mykistetty</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="431"/>
+        <location filename="../src/constant/JamiStrings.qml" line="455"/>
         <source>Conference moderation</source>
         <translation>Kokouksen valvonta</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="432"/>
+        <location filename="../src/constant/JamiStrings.qml" line="456"/>
         <source>Default moderators</source>
         <translation>Oletus valvojat</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="433"/>
+        <location filename="../src/constant/JamiStrings.qml" line="457"/>
         <source>Enable local moderators</source>
         <translation>Paikallisten valvojien ottaminen käyttöön</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="434"/>
+        <location filename="../src/constant/JamiStrings.qml" line="458"/>
         <source>Make all participants moderators</source>
         <translation>Tee kaikista osallistujista valvojia</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="435"/>
+        <location filename="../src/constant/JamiStrings.qml" line="459"/>
         <source>Add default moderator</source>
         <translation>Lisää oletusvalvoja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="436"/>
+        <location filename="../src/constant/JamiStrings.qml" line="460"/>
         <source>Remove default moderator</source>
         <translation>Poista oletus valvoja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="439"/>
+        <location filename="../src/constant/JamiStrings.qml" line="463"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
         <translation>Yritetään muodostaa yhteys Jami-taustapalveluun (dring)...</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="440"/>
+        <location filename="../src/constant/JamiStrings.qml" line="464"/>
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
         <translation>Ei voinut muodostaa yhteyttä uudelleen Jami-taustapalveluun (dring).
@@ -1899,67 +1991,67 @@ Jami sulkeutuu nyt.</translation>
         <translation>Koko näyttö</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="85"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="91"/>
         <source>Start an audio call</source>
         <translation>Aloita äänipuhelu</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="90"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="96"/>
         <source>Start a video call</source>
         <translation>Aloita videopuhelu</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="95"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="101"/>
         <source>Clear history</source>
         <translation>Tyhjennä historia</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="100"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="106"/>
         <source>Block contact</source>
         <translation>Estä yhteystieto</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="105"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="111"/>
         <source>Accept contact request</source>
         <translation>Hyväksy yhteyspyyntö</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="113"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="119"/>
         <source>Media settings</source>
         <translation>Viestintä asetukset</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="118"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="124"/>
         <source>General settings</source>
         <translation>Yleiset asetukset</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="123"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="129"/>
         <source>Account settings</source>
         <translation>Tunnuksen asetukset</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="128"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="134"/>
         <source>Open account creation wizard</source>
         <translation>Ohjattu tunnuksen luominen</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="133"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="139"/>
         <source>Open window</source>
         <translation>Avaa ikkuna</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="141"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="147"/>
         <source>Answer an incoming call</source>
         <translation>Vastaa puheluun</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="146"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="152"/>
         <source>End call</source>
         <translation>Lopeta puhelu</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="151"/>
+        <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="157"/>
         <source>Decline the call request</source>
         <translation>Hylkää puhelu</translation>
     </message>
@@ -2060,9 +2152,14 @@ Yritä myöhemmin uudelleen.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="482"/>
-        <source>Exit</source>
-        <translation>Poistu</translation>
+        <location filename="../src/mainapplication.cpp" line="484"/>
+        <source>E&amp;xit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainapplication.cpp" line="486"/>
+        <source>&amp;Quit</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2120,13 +2217,13 @@ Yritä myöhemmin uudelleen.</translation>
         <translation>Kaikki tiedostot</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="253"/>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="261"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="250"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="258"/>
         <source>Take photo</source>
         <translation>Ota valokuva</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="258"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="255"/>
         <source>Retake photo</source>
         <translation>Ota valokuva uudelleen</translation>
     </message>
@@ -2481,14 +2578,6 @@ Yritä myöhemmin uudelleen.</translation>
         <location filename="../src/settingsview/components/UserIdentity.qml" line="50"/>
         <source>Identity</source>
         <translation>Tunnistetiedot</translation>
-    </message>
-</context>
-<context>
-    <name>UserInfoCallPage</name>
-    <message>
-        <location filename="../src/mainview/components/UserInfoCallPage.qml" line="70"/>
-        <source>Toggle to display side panel</source>
-        <translation>Vaihda näyttöön sivupaneeli</translation>
     </message>
 </context>
 <context>
