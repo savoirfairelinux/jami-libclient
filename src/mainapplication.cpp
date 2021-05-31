@@ -492,8 +492,17 @@ MainApplication::initSystray()
     connect(systemTray_.get(),
             &QSystemTrayIcon::activated,
             [this](QSystemTrayIcon::ActivationReason reason) {
-                if (reason != QSystemTrayIcon::ActivationReason::Context)
+                if (reason != QSystemTrayIcon::ActivationReason::Context) {
+#ifdef Q_OS_WINDOWS
                     restoreApp();
+#else
+                    QWindow* window = focusWindow();
+                    if (window)
+                        window->close();
+                    else
+                        restoreApp();
+#endif
+                }
             });
 
     systrayMenu->addAction(quitAction);
