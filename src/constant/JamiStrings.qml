@@ -199,6 +199,19 @@ Item {
     property string moreOptions: qsTr("More options")
     property string mosaic: qsTr("Mosaic")
 
+    // LineEditContextMenu
+    property string copy: qsTr("Copy")
+    property string cut: qsTr("Cut")
+    property string paste: qsTr("Paste")
+
+    // ConversationContextMenu
+    property string startVideoCall: qsTr("Start video call")
+    property string startAudioCall: qsTr("Start audio call")
+    property string clearConversation: qsTr("Clear conversation")
+    property string removeContact: qsTr("Remove contact")
+    property string blockContact: qsTr("Block contact")
+    property string contactDetails: qsTr("Contact details")
+
     // CallViewContextMenu
     property string hold: qsTr("Hold")
     property string sipInputPanel: qsTr("Sip input panel")
@@ -208,7 +221,7 @@ Item {
     property string exitFullScreen: qsTr("Exit full screen")
     property string fullScreen: qsTr("Full screen")
     property string shareScreen: qsTr("Share screen")
-    property string stopSharingScreen: qsTr("Stop sharing screen")
+    property string stopSharing: qsTr("Stop sharing screen or file")
     property string shareScreenArea: qsTr("Share screen area")
     property string shareFile: qsTr("Share file")
     property string viewPlugin: qsTr("View plugin")

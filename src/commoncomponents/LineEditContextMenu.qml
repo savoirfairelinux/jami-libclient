@@ -24,49 +24,69 @@ import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
-import "js/contextmenugenerator.js" as ContextMenuGenerator
+import "contextmenu"
 
-Item {
+ContextMenuAutoLoader {
     id: root
 
-    function openMenu(lineEditObj, mouseEvent) {
-        ContextMenuGenerator.initMenu(Qt.size(150, 25), 2)
+    // lineEdit (TextEdit) selection will be lost when menu is opened
+    property var lineEditObj
+    property var selectionStart
+    property var selectionEnd
 
-        if (lineEditObj.selectedText.length) {
-            ContextMenuGenerator.addMenuItem(qsTr("Copy"),
-                                             "",
-                                             function (){
-                                                 lineEditObj.copy()
-                                             })
+    property list<GeneralMenuItem> menuItems: [
+        GeneralMenuItem {
+            id: copy
 
-            ContextMenuGenerator.addMenuItem(qsTr("Cut"),
-                                             "",
-                                             function (){
-                                                 lineEditObj.cut()
-                                             })
+            canTrigger: lineEditObj.selectedText.length
+            itemName: JamiStrings.copy
+            onClicked: {
+                lineEditObj.copy()
+            }
+        },
+        GeneralMenuItem {
+            id: cut
+
+            canTrigger: lineEditObj.selectedText.length
+            itemName: JamiStrings.cut
+
+            onClicked: {
+                lineEditObj.cut()
+            }
+        },
+        GeneralMenuItem {
+            id: paste
+
+            itemName: JamiStrings.paste
+            onClicked: {
+                lineEditObj.paste()
+            }
         }
+    ]
 
-        ContextMenuGenerator.addMenuItem(qsTr("Paste"),
-                                         "",
-                                         function (){
-                                             lineEditObj.paste()
-                                         })
+    function openMenuAt(mouseEvent) {
+        x = mouseEvent.x
+        y = mouseEvent.y
 
-        root.height = ContextMenuGenerator.getMenu().height
-        root.width = ContextMenuGenerator.getMenu().width
-        ContextMenuGenerator.getMenu().x = mouseEvent.x
-        ContextMenuGenerator.getMenu().y = mouseEvent.y
+        selectionStart = lineEditObj.selectionStart
+        selectionEnd = lineEditObj.selectionEnd
 
-        // lineEdit (TextEdit) selection will be lost when menu is opened
-        var selectionStartTemp = lineEditObj.selectionStart
-        var selectionEndTemp = lineEditObj.selectionEnd
+        root.openMenu()
 
-        ContextMenuGenerator.getMenu().open()
-
-        lineEditObj.select(selectionStartTemp, selectionEndTemp)
+        lineEditObj.select(selectionStart, selectionEnd)
     }
 
-    Component.onCompleted: {
-        ContextMenuGenerator.createBaseContextMenuObjects(root)
+    contextMenuItemPreferredHeight: JamiTheme.lineEditContextMenuItemsHeight
+    contextMenuItemPreferredWidth: JamiTheme.lineEditContextMenuItemsWidth
+    contextMenuSeparatorPreferredHeight: JamiTheme.lineEditContextMenuSeparatorsHeight
+
+    Connections {
+        target: root.item
+        enabled: root.status === Loader.Ready
+        function onOpened() {
+            lineEditObj.select(selectionStart, selectionEnd)
+        }
     }
+
+    Component.onCompleted: menuItemsToLoad = menuItems
 }

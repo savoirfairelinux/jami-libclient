@@ -48,6 +48,8 @@ Rectangle {
 
     LineEditContextMenu {
         id: lineEditContextMenu
+
+        lineEditObj: contactSearchBar
     }
 
     ResponsiveImage {
@@ -99,7 +101,7 @@ Rectangle {
         onTextChanged: root.contactSearchBarTextChanged(contactSearchBar.text)
         onReleased: {
             if (event.button == Qt.RightButton)
-                lineEditContextMenu.openMenu(contactSearchBar, event)
+                lineEditContextMenu.openMenuAt(event)
         }
     }
 

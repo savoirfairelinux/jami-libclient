@@ -25,108 +25,131 @@ import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
 import "../../commoncomponents"
-import "../../commoncomponents/js/contextmenugenerator.js" as ContextMenuGenerator
+import "../../commoncomponents/contextmenu"
 
-Item {
+ContextMenuAutoLoader {
     id: root
 
     property string responsibleAccountId: ""
     property string responsibleConvUid: ""
     property int contactType: Profile.Type.INVALID
-
-    function isOpen() { return ContextMenuGenerator.getMenu().visible }
-
-    function openMenu() {
-        ContextMenuGenerator.initMenu()
-        var hasCall = UtilsAdapter.getCallId(responsibleAccountId, responsibleConvUid) !== ""
-        if (!hasCall) {
-            ContextMenuGenerator.addMenuItem(qsTr("Start video call"),
-                                             "qrc:/images/icons/videocam-24px.svg",
-                                             function (){
-                                                 LRCInstance.selectConversation(responsibleConvUid, responsibleAccountId)
-                                                 CallAdapter.placeCall()
-                                                 communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
-                                             })
-            ContextMenuGenerator.addMenuItem(qsTr("Start audio call"),
-                                             "qrc:/images/icons/place_audiocall-24px.svg",
-                                             function (){
-                                                 LRCInstance.selectConversation(responsibleConvUid, responsibleAccountId)
-                                                 CallAdapter.placeAudioOnlyCall()
-                                                 communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
-                                             })
-
-            ContextMenuGenerator.addMenuItem(qsTr("Clear conversation"),
-                                             "qrc:/images/icons/ic_clear_24px.svg",
-                                             function (){
-                                                 MessagesAdapter.clearConversationHistory(
-                                                             responsibleAccountId,
-                                                             responsibleConvUid)
-                                             })
-
-            if (contactType === Profile.Type.RING || contactType === Profile.Type.SIP)  {
-                ContextMenuGenerator.addMenuItem(qsTr("Remove contact"),
-                                                 "qrc:/images/icons/ic_hangup_participant-24px.svg",
-                                                 function (){
-                                                     MessagesAdapter.removeConversation(
-                                                                 responsibleAccountId,
-                                                                 responsibleConvUid)
-                                                 })
-            }
-
-        } else {
-            ContextMenuGenerator.addMenuItem(JamiStrings.hangup,
-                                             "qrc:/images/icons/ic_call_end_white_24px.svg",
-                                             function (){
-                                                 CallAdapter.hangUpACall(responsibleAccountId,
-                                                                         responsibleConvUid)
-                                             })
-        }
-
-        if ((contactType === Profile.Type.RING || contactType === Profile.Type.PENDING
-             || contactType === Profile.Type.TEMPORARY)) {
-            if (contactType === Profile.Type.PENDING || !hasCall) {
-                ContextMenuGenerator.addMenuSeparator()
-            }
-
-            if (contactType === Profile.Type.PENDING) {
-                ContextMenuGenerator.addMenuItem(JamiStrings.acceptContactRequest,
-                                                 "qrc:/images/icons/add_people-24px.svg",
-                                                 function (){
-                                                     MessagesAdapter.acceptInvitation(
-                                                                 responsibleConvUid)
-                                                     communicationPageMessageWebView.
-                                                     setSendContactRequestButtonVisible(false)
-                                                 })
-
-                ContextMenuGenerator.addMenuItem(JamiStrings.declineContactRequest,
-                                                 "qrc:/images/icons/round-close-24px.svg",
-                                                 function (){
-                                                     MessagesAdapter.refuseInvitation(
-                                                                 responsibleConvUid)
-                                                 })
-            }
-            if (!hasCall) {
-                ContextMenuGenerator.addMenuItem(qsTr("Block contact"),
-                                                 "qrc:/images/icons/ic_block_24px.svg",
-                                                 function (){
-                                                     MessagesAdapter.blockConversation(
-                                                                 responsibleConvUid)
-                                                 })
-            }
-            ContextMenuGenerator.addMenuSeparator()
-            ContextMenuGenerator.addMenuItem(qsTr("Contact details"),
-                                             "qrc:/images/icons/person-24px.svg",
-                                             function (){
-                                                 userProfile.open()
-                                             })
-        }
-
-        root.height = ContextMenuGenerator.getMenu().height
-        root.width = ContextMenuGenerator.getMenu().width
-        ContextMenuGenerator.getMenu().open()
+    property bool hasCall: {
+        if (responsibleAccountId && responsibleConvUid)
+            return UtilsAdapter.getCallId(responsibleAccountId,
+                                          responsibleConvUid) !== ""
+        return false
     }
 
-    Component.onCompleted: {
-        ContextMenuGenerator.createBaseContextMenuObjects(root)
-    }
+    property list<GeneralMenuItem> menuItems: [
+        GeneralMenuItem {
+            id: startVideoCallItem
+
+            canTrigger: !hasCall
+            itemName: JamiStrings.startVideoCall
+            iconSource: "qrc:/images/icons/videocam-24px.svg"
+            onClicked: {
+                LRCInstance.selectConversation(responsibleConvUid,
+                                               responsibleAccountId)
+                CallAdapter.placeCall()
+                communicationPageMessageWebView.setSendContactRequestButtonVisible(
+                            false)
+            }
+        },
+        GeneralMenuItem {
+            id: startAudioCall
+
+            canTrigger: !hasCall
+            itemName: JamiStrings.startAudioCall
+            iconSource: "qrc:/images/icons/place_audiocall-24px.svg"
+            onClicked: {
+                LRCInstance.selectConversation(responsibleConvUid,
+                                               responsibleAccountId)
+                CallAdapter.placeAudioOnlyCall()
+                communicationPageMessageWebView.setSendContactRequestButtonVisible(
+                            false)
+            }
+        },
+        GeneralMenuItem {
+            id: clearConversation
+
+            canTrigger: !hasCall
+            itemName: JamiStrings.clearConversation
+            iconSource: "qrc:/images/icons/ic_clear_24px.svg"
+            onClicked: {
+                MessagesAdapter.clearConversationHistory(responsibleAccountId,
+                                                         responsibleConvUid)
+            }
+        },
+        GeneralMenuItem {
+            id: removeContact
+
+            canTrigger: !hasCall && (contactType === Profile.Type.RING
+                                     || contactType === Profile.Type.SIP)
+            itemName: JamiStrings.removeContact
+            iconSource: "qrc:/images/icons/ic_hangup_participant-24px.svg"
+            onClicked: {
+                MessagesAdapter.removeConversation(responsibleAccountId,
+                                                   responsibleConvUid)
+            }
+        },
+        GeneralMenuItem {
+            id: hangup
+
+            canTrigger: hasCall
+            itemName: JamiStrings.hangup
+            iconSource: "qrc:/images/icons/ic_call_end_white_24px.svg"
+            addMenuSeparatorAfter: contactType !== Profile.Type.SIP
+                                   && (contactType === Profile.Type.PENDING
+                                       || !hasCall)
+            onClicked: {
+                CallAdapter.hangUpACall(responsibleAccountId,
+                                        responsibleConvUid)
+            }
+        },
+        GeneralMenuItem {
+            id: acceptContactRequest
+
+            canTrigger: contactType === Profile.Type.PENDING
+            itemName: JamiStrings.acceptContactRequest
+            iconSource: "qrc:/images/icons/add_people-24px.svg"
+            onClicked: {
+                MessagesAdapter.acceptInvitation(responsibleConvUid)
+                communicationPageMessageWebView.setSendContactRequestButtonVisible(
+                            false)
+            }
+        },
+        GeneralMenuItem {
+            id: declineContactRequest
+
+            canTrigger: contactType === Profile.Type.PENDING
+            itemName: JamiStrings.declineContactRequest
+            iconSource: "qrc:/images/icons/round-close-24px.svg"
+            onClicked: {
+                MessagesAdapter.refuseInvitation(responsibleConvUid)
+            }
+        },
+        GeneralMenuItem {
+            id: blockContact
+
+            canTrigger: !hasCall && contactType !== Profile.Type.SIP
+            itemName: JamiStrings.blockContact
+            iconSource: "qrc:/images/icons/ic_block_24px.svg"
+            addMenuSeparatorAfter: contactType !== Profile.Type.SIP
+            onClicked: {
+                MessagesAdapter.blockConversation(responsibleConvUid)
+            }
+        },
+        GeneralMenuItem {
+            id: contactDetails
+
+            canTrigger: contactType !== Profile.Type.SIP
+            itemName: JamiStrings.contactDetails
+            iconSource: "qrc:/images/icons/person-24px.svg"
+            onClicked: {
+                userProfile.open()
+            }
+        }
+    ]
+
+    Component.onCompleted: menuItemsToLoad = menuItems
 }

@@ -39,7 +39,7 @@ Control {
     signal addToConferenceClicked
     signal transferClicked // TODO: bind this
     signal shareScreenClicked
-    signal stopSharingScreenClicked
+    signal stopSharingClicked
     signal shareScreenAreaClicked // TODO: bind this
     signal pluginsClicked
 
@@ -189,7 +189,7 @@ Control {
         Action {
             id: shareAction
             onTriggered: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
-                             root.stopSharingScreenClicked() :
+                             root.stopSharingClicked() :
                              root.shareScreenClicked()
             icon.source: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
                              "qrc:/images/icons/share_stop_black_24dp.svg" :
@@ -197,7 +197,7 @@ Control {
             icon.color: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
                             "red" : "white"
             text: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
-                      JamiStrings.stopSharingScreen :
+                      JamiStrings.stopSharing :
                       JamiStrings.shareScreen
             property real size: 34
         },
@@ -248,7 +248,7 @@ Control {
         if (isModerator && !isSIP)
             CallOverlayModel.addSecondaryControl(addPersonAction)
         CallOverlayModel.addSecondaryControl(chatAction)
-        if (!isAudioOnly)
+        if (!isAudioOnly && !isSIP)
             CallOverlayModel.addSecondaryControl(shareAction)
         CallOverlayModel.addSecondaryControl(recordAction)
         if (UtilsAdapter.checkShowPluginsButton(true))

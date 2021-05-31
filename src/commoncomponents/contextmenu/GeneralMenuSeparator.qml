@@ -24,16 +24,16 @@ import net.jami.Constants 1.0
 MenuSeparator {
     id: menuSeparator
 
-    property int preferredWidth: 10
-    property int preferredHeight: 1
+    property int separatorPreferredWidth: JamiTheme.menuItemsPreferredWidth
+    property int separatorPreferredHeight: 1
     property string separatorColor: JamiTheme.tabbarBorderColor
 
     padding: 0
     topPadding: 1
     bottomPadding: 1
     contentItem: Rectangle {
-        implicitWidth: preferredWidth
-        implicitHeight: preferredHeight
+        implicitWidth: separatorPreferredWidth
+        implicitHeight: separatorPreferredHeight
         color: separatorColor
     }
 }

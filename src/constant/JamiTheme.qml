@@ -34,6 +34,7 @@ Item {
 
     // General
     property color blackColor: "#000000"
+    property color redColor: "red"
     property color whiteColor: "#ffffff"
     property color darkGreyColor: "#272727"
     property color darkGreyColorOpacity: "#be272727" // 77%
@@ -214,6 +215,11 @@ Item {
     property int mosaicButtonPreferredWidth: 70
     property int mosaicButtonMaxWidth: 100
 
+    property int menuItemsPreferredWidth: 220
+    property int menuItemsPreferredHeight: 48
+    property int menuItemsCommonBorderWidth: 1
+    property int menuBorderPreferredHeight: 8
+
     property real maximumWidthSettingsView: 600
     property real settingsHeaderpreferredHeight: 64
     property real preferredFieldWidth: 256
@@ -224,6 +230,10 @@ Item {
     property real minimumPreviewWidth: 120
     property real pluginHandlersPopupViewHeight: 200
     property real pluginHandlersPopupViewDelegateHeight: 50
+
+    property real lineEditContextMenuItemsHeight: 15
+    property real lineEditContextMenuItemsWidth: 100
+    property real lineEditContextMenuSeparatorsHeight: 2
 
     // main application spec
     property real mainViewMinWidth: 300

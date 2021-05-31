@@ -45,9 +45,6 @@ Q_SIGNALS:
 protected:
     void safeInit() override {};
 
-    // Return needed info for populating video device context menu item.
-    Q_INVOKABLE QVariantMap populateVideoDeviceContextMenuItem();
-
     // switch preview video input by device name
     Q_INVOKABLE void selectVideoInputDeviceByName(const QString& deviceName);
 
@@ -72,8 +69,8 @@ protected:
     // Select screen area to display (from all screens).
     Q_INVOKABLE void shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned height);
 
-    // Stop sharing the screen
-    Q_INVOKABLE void stopSharingScreen();
+    // Stop sharing the screen or file
+    Q_INVOKABLE void stopSharing();
 
     Q_INVOKABLE void startAudioMeter(bool async);
     Q_INVOKABLE void stopAudioMeter(bool async);

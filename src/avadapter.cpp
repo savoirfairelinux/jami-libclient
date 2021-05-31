@@ -46,33 +46,6 @@ AvAdapter::AvAdapter(LRCInstance* instance, QObject* parent)
     });
 }
 
-QVariantMap
-AvAdapter::populateVideoDeviceContextMenuItem()
-{
-    auto activeDevice = lrcInstance_->avModel().getCurrentVideoCaptureDevice();
-
-    /*
-     * Create a list of video input devices.
-     */
-    QVariantMap deciveContextMenuNeededInfo;
-    auto devices = lrcInstance_->avModel().getDevices();
-    for (int i = 0; i < devices.size(); i++) {
-        try {
-            auto settings = lrcInstance_->avModel().getDeviceSettings(devices[i]);
-            deciveContextMenuNeededInfo[settings.name] = QVariant(settings.id == activeDevice);
-        } catch (...) {
-            qDebug().noquote() << "Error in getting device settings";
-        }
-    }
-
-    /*
-     * Add size parameter into the map since in qml there is no way to get the size.
-     */
-    deciveContextMenuNeededInfo["size"] = QVariant(deciveContextMenuNeededInfo.size());
-
-    return deciveContextMenuNeededInfo;
-}
-
 void
 AvAdapter::selectVideoInputDeviceByName(const QString& deviceName)
 {
@@ -242,7 +215,7 @@ AvAdapter::shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned heig
 }
 
 void
-AvAdapter::stopSharingScreen()
+AvAdapter::stopSharing()
 {
     auto callId = getCurrentCallId();
     if (!callId.isEmpty())

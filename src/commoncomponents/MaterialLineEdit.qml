@@ -83,6 +83,8 @@ TextField {
 
     LineEditContextMenu {
         id: lineEditContextMenu
+
+        lineEditObj: root
     }
 
     Image {
@@ -142,6 +144,6 @@ TextField {
 
     onReleased: {
         if (event.button == Qt.RightButton)
-            lineEditContextMenu.openMenu(root, event)
+            lineEditContextMenu.openMenuAt(event)
     }
 }

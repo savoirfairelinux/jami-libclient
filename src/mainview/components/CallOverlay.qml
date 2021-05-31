@@ -54,11 +54,6 @@ Item {
 
     signal chatButtonClicked
 
-    onVisibleChanged: {
-        if (!visible)
-            callViewContextMenu.close()
-    }
-
     ParticipantsLayer {
         id: __participantsLayer
         anchors.fill: parent
@@ -195,7 +190,7 @@ Item {
             function onAddToConferenceClicked() { openContactPicker(ContactList.CONFERENCE) }
             function onTransferClicked() { openContactPicker(ContactList.TRANSFER) }
             function onShareScreenClicked() { openShareScreen() }
-            function onStopSharingScreenClicked() { AvAdapter.stopSharingScreen() }
+            function onStopSharingClicked() { AvAdapter.stopSharing() }
             function onShareScreenAreaClicked() { openShareScreenArea() }
             function onPluginsClicked() { openPluginsMenu() }
         }

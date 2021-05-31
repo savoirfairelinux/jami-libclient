@@ -27,12 +27,11 @@ import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
 import "../../commoncomponents"
-import "../../commoncomponents/js/contextmenugenerator.js" as ContextMenuGenerator
-import "../js/videodevicecontextmenuitemcreation.js" as VideoDeviceContextMenuItemCreation
+import "../../commoncomponents/contextmenu"
 import "../js/selectscreenwindowcreation.js" as SelectScreenWindowCreation
 import "../js/screenrubberbandcreation.js" as ScreenRubberBandCreation
 
-Item {
+ContextMenuAutoLoader {
     id: root
 
     property bool isSIP: false
@@ -44,140 +43,130 @@ Item {
     signal pluginItemClicked
     signal transferCallButtonClicked
 
-    function close() {
-        // leave this debug line is a reminder of a design failure
-        console.debug("call view context menu close")
-        const menu = ContextMenuGenerator.getMenu()
-        if (menu)
-            menu.close()
-    }
+    property list<GeneralMenuItem> menuItems: [
+        GeneralMenuItem {
+            id: resumePauseCall
 
-    function openMenu() {
-        ContextMenuGenerator.initMenu()
-        if (isSIP) {
-            ContextMenuGenerator.addMenuItem(
-                        isPaused ? JamiStrings.resumeCall : JamiStrings.pauseCall,
-                        isPaused ? "qrc:/images/icons/play_circle_outline-24px.svg" :
-                                   "qrc:/images/icons/pause_circle_outline-24px.svg",
-                        function () {
-                            CallAdapter.holdThisCallToggle()
-                        })
-            ContextMenuGenerator.addMenuItem(JamiStrings.sipInputPanel,
-                                             "qrc:/images/icons/ic_keypad.svg",
-                                             function () {
-                                                 sipInputPanel.open()
-                                             })
-            ContextMenuGenerator.addMenuItem(
-                        JamiStrings.transferCall,
-                        "qrc:/images/icons/phone_forwarded-24px.svg",
-                        function () {
-                            root.transferCallButtonClicked()
-                        })
-
-            ContextMenuGenerator.addMenuSeparator()
-        }
-
-        ContextMenuGenerator.addMenuItem(
-                    localIsRecording ? JamiStrings.stopRec : JamiStrings.startRec,
-                    "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg",
-                    function () {
-                        CallAdapter.recordThisCallToggle()
-                        localIsRecording = CallAdapter.isRecordingThisCall()
-                    }, JamiTheme.recordIconColor)
-
-        if (isAudioOnly && !isPaused)
-            ContextMenuGenerator.addMenuItem(
-                        JamiQmlUtils.callIsFullscreen ? JamiStrings.exitFullScreen : JamiStrings.fullScreen,
-                        JamiQmlUtils.callIsFullscreen ? "qrc:/images/icons/close_fullscreen-24px.svg" :
-                                                        "qrc:/images/icons/open_in_full-24px.svg",
-                        function () {
-                            callStackView.toggleFullScreen()
-                        })
-
-        if (!isAudioOnly && !isPaused) {
-            ContextMenuGenerator.addMenuItem(
-                        JamiQmlUtils.callIsFullscreen ? JamiStrings.exitFullScreen : JamiStrings.fullScreen,
-                        JamiQmlUtils.callIsFullscreen ? "qrc:/images/icons/close_fullscreen-24px.svg" :
-                                                        "qrc:/images/icons/open_in_full-24px.svg",
-                        function () {
-                            callStackView.toggleFullScreen()
-                        })
-
-            ContextMenuGenerator.addMenuSeparator()
-
-            generateDeviceMenuItem()
-
-            ContextMenuGenerator.addMenuSeparator()
-
-            if (AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY) {
-                ContextMenuGenerator.addMenuItem(
-                            JamiStrings.stopSharingScreen,
-                            "qrc:/images/icons/share_stop_black_24dp.svg",
-                            function () {
-                                AvAdapter.stopSharingScreen()
-                            })
-            } else {
-                ContextMenuGenerator.addMenuItem(
-                            JamiStrings.shareScreen,
-                            "qrc:/images/icons/share_screen_black_24dp.svg",
-                            function () {
-                                if (Qt.application.screens.length === 1) {
-                                    AvAdapter.shareEntireScreen(0)
-                                } else {
-                                    SelectScreenWindowCreation.createSelectScreenWindowObject()
-                                    SelectScreenWindowCreation.showSelectScreenWindow()
-                                }
-                            })
-                ContextMenuGenerator.addMenuItem(
-                            JamiStrings.shareScreenArea,
-                            "qrc:/images/icons/share_screen_black_24dp.svg",
-                            function () {
-                                if (Qt.platform.os !== "windows") {
-                                    AvAdapter.shareScreenArea(0, 0, 0, 0)
-                                } else {
-                                    ScreenRubberBandCreation.createScreenRubberBandWindowObject()
-                                    ScreenRubberBandCreation.showScreenRubberBandWindow()
-                                }
-                            })
+            canTrigger: isSIP
+            itemName: isPaused ? JamiStrings.resumeCall : JamiStrings.pauseCall
+            iconSource: isPaused ? "qrc:/images/icons/play_circle_outline-24px.svg" :
+                                   "qrc:/images/icons/pause_circle_outline-24px.svg"
+            onClicked: {
+                CallAdapter.holdThisCallToggle()
             }
+        },
+        GeneralMenuItem {
+            id: inputPanelSIP
 
-            ContextMenuGenerator.addMenuItem(
-                        JamiStrings.shareFile,
-                        "qrc:/images/icons/insert_photo-24px.svg", function () {
-                            jamiFileDialog.open()
-                        })
+            canTrigger: isSIP
+            itemName: JamiStrings.sipInputPanel
+            iconSource: "qrc:/images/icons/ic_keypad.svg"
+            onClicked: {
+                sipInputPanel.open()
+            }
+        },
+        GeneralMenuItem {
+            id: callTransfer
+
+            canTrigger: isSIP
+            itemName: JamiStrings.transferCall
+            iconSource: "qrc:/images/icons/phone_forwarded-24px.svg"
+            addMenuSeparatorAfter: isSIP
+            onClicked: {
+                root.transferCallButtonClicked()
+            }
+        },
+        GeneralMenuItem {
+            id: localRecord
+
+            itemName: localIsRecording ? JamiStrings.stopRec : JamiStrings.startRec
+            iconSource: "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg"
+            iconColor: JamiTheme.recordIconColor
+            onClicked: {
+                CallAdapter.recordThisCallToggle()
+                localIsRecording = CallAdapter.isRecordingThisCall()
+            }
+        },
+        GeneralMenuItem {
+            id: fullScreen
+
+            itemName: JamiQmlUtils.callIsFullscreen ?
+                          JamiStrings.exitFullScreen : JamiStrings.fullScreen
+            iconSource: JamiQmlUtils.callIsFullscreen ?
+                            "qrc:/images/icons/close_fullscreen-24px.svg" :
+                            "qrc:/images/icons/open_in_full-24px.svg"
+            onClicked: {
+                callStackView.toggleFullScreen()
+            }
+        },
+        GeneralMenuItem {
+            id: stopSharing
+
+            canTrigger: !isAudioOnly
+                        && AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY
+                        && !isSIP
+            itemName: JamiStrings.stopSharing
+            iconSource: "qrc:/images/icons/share_stop_black_24dp.svg"
+            iconColor: JamiTheme.redColor
+            onClicked: {
+                AvAdapter.stopSharing()
+            }
+        },
+        GeneralMenuItem {
+            id: shareScreen
+
+            canTrigger: !isAudioOnly
+                        && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY
+                        && !isSIP
+            itemName: JamiStrings.shareScreen
+            iconSource: "qrc:/images/icons/share_screen_black_24dp.svg"
+            onClicked: {
+                if (Qt.application.screens.length === 1) {
+                    AvAdapter.shareEntireScreen(0)
+                } else {
+                    SelectScreenWindowCreation.createSelectScreenWindowObject()
+                    SelectScreenWindowCreation.showSelectScreenWindow()
+                }
+            }
+        },
+        GeneralMenuItem {
+            id: shareScreenArea
+
+            canTrigger: !isAudioOnly
+                        && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY
+                        && !isSIP
+            itemName: JamiStrings.shareScreenArea
+            iconSource: "qrc:/images/icons/share_screen_black_24dp.svg"
+            onClicked: {
+                if (Qt.platform.os !== "windows") {
+                    AvAdapter.shareScreenArea(0, 0, 0, 0)
+                } else {
+                    ScreenRubberBandCreation.createScreenRubberBandWindowObject()
+                    ScreenRubberBandCreation.showScreenRubberBandWindow()
+                }
+            }
+        },
+        GeneralMenuItem {
+            id: shareFile
+
+            canTrigger: !isAudioOnly && !isSIP
+            itemName: JamiStrings.shareFile
+            iconSource: "qrc:/images/icons/insert_photo-24px.svg"
+            onClicked: {
+                jamiFileDialog.open()
+            }
+        },
+        GeneralMenuItem {
+            id: viewPlugin
+
+            canTrigger: UtilsAdapter.checkShowPluginsButton(true)
+            itemName: JamiStrings.viewPlugin
+            iconSource: "qrc:/images/icons/extension_24dp.svg"
+            onClicked: {
+                root.pluginItemClicked()
+            }
         }
-
-        if (UtilsAdapter.checkShowPluginsButton(true)) {
-            ContextMenuGenerator.addMenuItem(
-                        JamiStrings.viewPlugin,
-                        "qrc:/images/icons/extension_24dp.svg", function () {
-                            root.pluginItemClicked()
-                        })
-        }
-
-        root.height = ContextMenuGenerator.getMenu().height
-        root.width = ContextMenuGenerator.getMenu().width
-        ContextMenuGenerator.getMenu().open()
-    }
-
-    function generateDeviceMenuItem() {
-        var deviceContextMenuInfoMap = AvAdapter.populateVideoDeviceContextMenuItem()
-
-        // Somehow, the map size is undefined, so use this instead.
-        var mapSize = deviceContextMenuInfoMap["size"]
-
-        if (mapSize === 0)
-            VideoDeviceContextMenuItemCreation.createVideoDeviceContextMenuItemObjects(
-                        JamiStrings.noVideoDevice, false)
-
-        for (var deviceName in deviceContextMenuInfoMap) {
-            if (deviceName === "size")
-                continue
-            VideoDeviceContextMenuItemCreation.createVideoDeviceContextMenuItemObjects(
-                        deviceName, deviceContextMenuInfoMap[deviceName])
-        }
-    }
+    ]
 
     JamiFileDialog {
         id: jamiFileDialog
@@ -187,28 +176,5 @@ Item {
         onAccepted: AvAdapter.shareFile(jamiFileDialog.file)
     }
 
-    Component.onCompleted: {
-        ContextMenuGenerator.createBaseContextMenuObjects(root)
-        VideoDeviceContextMenuItemCreation.setVideoContextMenuObject(
-                    ContextMenuGenerator.getMenu())
-
-        ContextMenuGenerator.getMenu().closed.connect(function () {
-            VideoDeviceContextMenuItemCreation.removeCreatedItems()
-        })
-    }
-
-    // TODO: In the future we want to implement this
-
-    // GeneralMenuItem {
-    //     id: advancedInfosItem
-
-    //     itemName: qsTr("Advanced informations")
-    //     iconSource: "qrc:/images/icons/info-24px.svg"
-    //     leftBorderWidth: commonBorderWidth
-    //     rightBorderWidth: commonBorderWidth
-
-    //     onClicked: {
-    //         root.close()
-    //     }
-    // }
+    Component.onCompleted: menuItemsToLoad = menuItems
 }

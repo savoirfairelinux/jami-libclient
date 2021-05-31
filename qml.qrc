@@ -17,13 +17,9 @@
         <file>src/commoncomponents/PushButton.qml</file>
         <file>src/commoncomponents/JamiFileDialog.qml</file>
         <file>src/commoncomponents/TintedButton.qml</file>
-        <file>src/commoncomponents/GeneralMenuItem.qml</file>
-        <file>src/commoncomponents/GeneralMenuSeparator.qml</file>
         <file>src/commoncomponents/AccountMigrationDialog.qml</file>
         <file>src/commoncomponents/MaterialButton.qml</file>
         <file>src/commoncomponents/ElidedTextLabel.qml</file>
-        <file>src/commoncomponents/js/contextmenugenerator.js</file>
-        <file>src/commoncomponents/BaseContextMenu.qml</file>
         <file>src/commoncomponents/SpinnerButton.qml</file>
         <file>src/commoncomponents/UsernameLineEdit.qml</file>
         <file>src/commoncomponents/Scaffold.qml</file>
@@ -125,7 +121,6 @@
         <file>src/mainview/components/RecordBox.qml</file>
         <file>src/mainview/components/SipInputPanel.qml</file>
         <file>src/mainview/components/ParticipantOverlayMenu.qml</file>
-        <file>src/mainview/js/videodevicecontextmenuitemcreation.js</file>
         <file>src/mainview/js/selectscreenwindowcreation.js</file>
         <file>src/mainview/js/screenrubberbandcreation.js</file>
         <file>src/mainview/js/contactpickercreation.js</file>
@@ -145,5 +140,9 @@
         <file>src/mainview/components/ParticipantCallInStatusView.qml</file>
         <file>src/settingsview/components/TroubleshootSettings.qml</file>
         <file>src/settingsview/components/LogsView.qml</file>
+        <file>src/commoncomponents/contextmenu/ContextMenuAutoLoader.qml</file>
+        <file>src/commoncomponents/contextmenu/BaseContextMenu.qml</file>
+        <file>src/commoncomponents/contextmenu/GeneralMenuItem.qml</file>
+        <file>src/commoncomponents/contextmenu/GeneralMenuSeparator.qml</file>
     </qresource>
 </RCC>
