@@ -270,7 +270,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     auto callId = isAudioOnly
                       ? CallManager::instance().placeCall(owner.id, uri, {{"AUDIO_ONLY", "true"}})
                       : CallManager::instance().placeCall(owner.id, uri);
-#else // dbus
+#else  // dbus
     // do not use auto here (QDBusPendingReply<QString>)
     QString callId = isAudioOnly
                          ? CallManager::instance().placeCallWithDetails(owner.id,
@@ -632,8 +632,12 @@ NewCallModelPimpl::initCallFromDaemon()
             callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
             callInfo->audioMuted = details["AUDIO_MUTED"] == "true";
             callInfo->type = call::Type::DIALOG;
+
+            callInfo->participantsInfos.clear();
             VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
-            callInfo->participantsInfos = infos;
+            for (const auto& item : infos) {
+                callInfo->participantsInfos.push_back(call::ParticipantInfo(item, callId));
+            }
             calls.emplace(callId, std::move(callInfo));
             // NOTE/BUG: the videorenderer can't know that the client has restarted
             // So, for now, a user will have to manually restart the medias until
@@ -670,8 +674,13 @@ NewCallModelPimpl::initConferencesFromDaemon()
         if (!isForThisAccount)
             break;
         callInfo->type = call::Type::CONFERENCE;
+
+        callInfo->participantsInfos.clear();
         VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
-        callInfo->participantsInfos = infos;
+        for (const auto& item : infos) {
+            callInfo->participantsInfos.push_back(call::ParticipantInfo(item, callId));
+        }
+
         calls.emplace(callId, std::move(callInfo));
     }
 }
@@ -785,8 +794,8 @@ NewCallModel::isModerator(const QString& confId, const QString& uri)
                            : false;
     if (!isModerator && call->second->participantsInfos.size() != 0) {
         for (const auto& participant : call->second->participantsInfos) {
-            if (participant["uri"] == uriToCheck) {
-                isModerator = participant["isModerator"] == "true";
+            if (participant.uri == uriToCheck) {
+                isModerator = participant.isModerator;
                 break;
             }
         }
@@ -1021,15 +1030,19 @@ NewCallModelPimpl::slotOnConferenceInfosUpdated(const QString& confId,
 
     qDebug() << "New conference layout received for call " << confId;
 
+    it->second->participantsInfos.clear();
+    for (auto& item : infos) {
+        it->second->participantsInfos.push_back(call::ParticipantInfo(item, confId));
+    }
+
     // if Jami, remove @ring.dht
-    it->second->participantsInfos = infos;
     for (auto& i : it->second->participantsInfos) {
-        i["uri"].replace("@ring.dht", "");
-        if (i["uri"].isEmpty()) {
+        i.uri.replace("@ring.dht", "");
+        if (i.uri.isEmpty()) {
             if (it->second->type == call::Type::CONFERENCE) {
-                i["uri"] = linked.owner.profileInfo.uri;
+                i.uri = linked.owner.profileInfo.uri;
             } else {
-                i["uri"] = it->second->peerUri.replace("ring:", "");
+                i.uri = it->second->peerUri.replace("ring:", "");
             }
         }
     }
@@ -1068,9 +1081,15 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     callInfo->status = call::Status::IN_PROGRESS;
     callInfo->type = call::Type::CONFERENCE;
     callInfo->startTime = std::chrono::steady_clock::now();
-    callInfo->participantsInfos = CallManager::instance().getConferenceInfos(confId);
+
+    callInfo->participantsInfos.clear();
+    VectorMapStringString infos = CallManager::instance().getConferenceInfos(confId);
+    for (auto& item : infos) {
+        callInfo->participantsInfos.push_back(call::ParticipantInfo(item, confId));
+    }
+
     for (auto& i : callInfo->participantsInfos)
-        i["uri"].replace("@ring.dht", "");
+        i.uri.replace("@ring.dht", "");
     calls[confId] = callInfo;
     foreach (const auto& call, callList) {
         emit linked.callAddedToConference(call, confId);
