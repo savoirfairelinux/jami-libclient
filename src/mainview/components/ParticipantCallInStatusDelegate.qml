@@ -80,9 +80,9 @@ SpinningAnimation {
                 id: name
 
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-                Layout.preferredWidth: JamiTheme.participantCallInStatusTextWidth
+                Layout.preferredWidth: callStatus.Layout.preferredWidth
 
-                font.weight: Font.ExtraBold
+                font.weight: Font.Bold
                 font.pointSize: JamiTheme.participantCallInNameFontSize
                 color: JamiTheme.participantCallInStatusTextColor
                 text: PrimaryName
