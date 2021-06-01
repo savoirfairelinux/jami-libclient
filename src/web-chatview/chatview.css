@@ -478,7 +478,7 @@ a:hover {
     color: black;
 }
 
-.file_wrapper .svg-icon {
+.file_wrapper .svgicon {
     position: absolute;
     max-width: 2em;
     max-height: 25px;
@@ -488,13 +488,13 @@ a:hover {
     fill: var(--message-in-txt);
 }
 
-.file_wrapper .svg-icon path,
-.file_wrapper .svg-icon polygon,
-.file_wrapper .svg-icon rect {
+.file_wrapper .svgicon path,
+.file_wrapper .svgicon polygon,
+.file_wrapper .svgicon rect {
     fill:  var(--message-in-txt);
 }
 
-.file_wrapper .svg-icon circle {
+.file_wrapper .svgicon circle {
     stroke: #4691f6;
     stroke-width: 1;
 }
