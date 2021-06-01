@@ -222,8 +222,8 @@ ItemDelegate {
                     source: menuItem.ListView.isCurrentItem ?
                                 "qrc:/images/icons/check_box-24px.svg" :
                                 "qrc:/images/icons/check_box_outline_blank-24px.svg"
-                    layer.enabled: true
-                    layer.effect: ColorOverlay { color: "white" }
+                    smooth: true
+                    color: "white"
                 }
                 Text {
                     Layout.fillWidth: true
@@ -241,10 +241,10 @@ ItemDelegate {
             id: itemPopup
 
             y: isVertical ?
-                   -(implicitHeight - wrapper.height) / 2 :
+                   -(implicitHeight - wrapper.height) / 2 - 18 :
                    -implicitHeight - 12
             x: isVertical ?
-                   -implicitWidth - 18 :
+                   -implicitWidth - 12 :
                    -(implicitWidth - wrapper.width) / 2 - 18
 
             implicitWidth: contentItem.implicitWidth
