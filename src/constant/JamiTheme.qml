@@ -197,6 +197,8 @@ Item {
     property real smartListAvatarSize: 52
     property real avatarSizeInCall: 130
     property real callButtonPreferredSize: 50
+    property real contextMenuItemTextPreferredWidth: 142
+    property real contextMenuItemTextMaxWidth: 182
     property int participantCallInStatusViewWidth: 175
     property int participantCallInStatusViewHeight: 300
     property int participantCallInStatusDelegateHeight: 85

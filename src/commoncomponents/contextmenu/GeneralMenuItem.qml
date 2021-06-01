@@ -37,6 +37,7 @@ MenuItem {
     property string iconColor: ""
     property bool canTrigger: true
     property bool addMenuSeparatorAfter: false
+    property bool autoTextSizeAdjustment: true
     property BaseContextMenu parentMenu
 
     property int itemPreferredWidth: JamiTheme.menuItemsPreferredWidth
@@ -59,35 +60,53 @@ MenuItem {
 
         anchors.fill: parent
 
-        ResponsiveImage {
-            id: contextMenuItemImage
+        RowLayout {
+            spacing: 0
 
-            anchors.left: status === Image.Ready ? menuItemContentRect.left : undefined
-            anchors.leftMargin: (status === Image.Ready ? 24 : 0)
-            anchors.verticalCenter: menuItemContentRect.verticalCenter
+            anchors.fill: menuItemContentRect
 
-            color: iconColor !== "" ? iconColor : JamiTheme.textColor
+            ResponsiveImage {
+                id: contextMenuItemImage
 
-            smooth: true
-            opacity: 0.7
-        }
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                Layout.leftMargin: status === Image.Ready ? 24 : 0
 
-        Text {
-            id: contextMenuItemText
+                visible: status === Image.Ready
 
-            anchors.left: contextMenuItemImage.status === Image.Ready ?
-                              contextMenuItemImage.right : menuItemContentRect.left
-            anchors.leftMargin: contextMenuItemImage.status === Image.Ready ? 20 : 10
-            anchors.verticalCenter: menuItemContentRect.verticalCenter
+                color: iconColor !== "" ? iconColor : JamiTheme.textColor
+                smooth: true
+                opacity: 0.7
+            }
 
-            height: itemPreferredHeight
+            Text {
+                id: contextMenuItemText
 
-            text: itemName
-            color: JamiTheme.textColor
-            wrapMode: Text.WordWrap
-            font.pointSize: JamiTheme.textFontSize
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignVCenter
+                Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+                Layout.leftMargin: contextMenuItemImage.status === Image.Ready ? 20 : 10
+                Layout.rightMargin: contextMenuItemImage.status === Image.Ready ? 20 : 10
+                Layout.preferredHeight: itemPreferredHeight
+                Layout.preferredWidth: JamiTheme.contextMenuItemTextPreferredWidth
+
+                text: itemName
+                color: JamiTheme.textColor
+                font.pointSize: JamiTheme.textFontSize
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+
+                onWidthChanged: {
+                    if (autoTextSizeAdjustment
+                            && width > contextMenuItemText.Layout.preferredWidth) {
+                        if (width > JamiTheme.contextMenuItemTextMaxWidth)
+                            contextMenuItemText.Layout.preferredWidth
+                                    = JamiTheme.contextMenuItemTextMaxWidth
+                        else
+                            contextMenuItemText.Layout.preferredWidth = width
+                        itemPreferredWidth += contextMenuItemText.Layout.preferredWidth
+                                - JamiTheme.contextMenuItemTextPreferredWidth
+                    }
+                }
+            }
         }
 
         onReleased: {
@@ -97,12 +116,20 @@ MenuItem {
 
         states: [
             State {
-                name: "hovered"; when: hovered
-                PropertyChanges { target: background; color: JamiTheme.hoverColor }
+                name: "hovered"
+                when: hovered
+                PropertyChanges {
+                    target: background
+                    color: JamiTheme.hoverColor
+                }
             },
             State {
-                name: "normal"; when: !hovered
-                PropertyChanges { target: background; color: JamiTheme.backgroundColor }
+                name: "normal"
+                when: !hovered
+                PropertyChanges {
+                    target: background
+                    color: JamiTheme.backgroundColor
+                }
             }
         ]
     }

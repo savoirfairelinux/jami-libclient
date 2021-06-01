@@ -50,6 +50,14 @@ Menu {
     function loadMenuItems(menuItems) {
         root.addItem(menuTopBorder)
 
+        // use the maximum text width as the preferred width for menu
+        for (var j = 0; j < menuItems.length; ++j) {
+            var currentItemWidth = menuItems[j].itemPreferredWidth
+            if (currentItemWidth !== JamiTheme.menuItemsPreferredWidth
+                    && currentItemWidth > menuPreferredWidth)
+                menuPreferredWidth = currentItemWidth
+        }
+
         for (var i = 0; i < menuItems.length; ++i) {
             if (menuItems[i].canTrigger) {
                 menuItems[i].parentMenu = root
