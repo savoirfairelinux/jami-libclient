@@ -34,13 +34,13 @@ Rectangle {
 
     Component.onCompleted: {
         listModel.append({ 'type': SettingsView.Account, 'name': qsTr("Account"),
-                         'iconSource': "qrc:/images/icons/baseline-people-24px.svg"})
+                         'iconSource': "qrc:/images/icons/account_black-24dp.svg"})
         listModel.append({ 'type': SettingsView.General, 'name': qsTr("General"),
-                         'iconSource': "qrc:/images/icons/round-settings-24px.svg"})
+                         'iconSource': "qrc:/images/icons/gear_black-24dp.svg"})
         listModel.append({ 'type': SettingsView.Media, 'name': qsTr("Audio/Video"),
-                         'iconSource': "qrc:/images/icons/baseline-desktop_windows-24px.svg"})
+                         'iconSource': "qrc:/images/icons/media_black-24dp.svg"})
         listModel.append({ 'type': SettingsView.Plugin, 'name': qsTr("Plugin"),
-                         'iconSource': "qrc:/images/icons/extension_24dp.svg"})
+                         'iconSource': "qrc:/images/icons/plugin_settings_black-24dp.svg"})
     }
 
     anchors.fill: parent
@@ -71,18 +71,23 @@ Rectangle {
 
                 width: root.width
                 height: 64
+                preferredMargin: 24
 
                 buttonText: name
+                buttonTextFont.pointSize: JamiTheme.textFontSize + 2
+                textHAlign: Text.AlignLeft
+
                 source: iconSource
                 imageColor: JamiTheme.textColor
+                imageContainerHeight: 40
+                imageContainerWidth: 40
+
+                normalColor: root.color
                 pressedColor: Qt.lighter(JamiTheme.pressedButtonColor, 1.25)
                 checkedColor: JamiTheme.selectedColor
                 hoveredColor: JamiTheme.hoverColor
-                buttonTextFont.pointSize: JamiTheme.textFontSize + 2
+
                 duration: 0
-                textHAlign: Text.AlignLeft
-                preferredMargin: 24
-                normalColor: root.color
                 checkable: true
                 radius: 0
             }

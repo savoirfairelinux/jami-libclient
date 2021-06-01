@@ -79,7 +79,6 @@
         <file>images/icons/ic_hide_password.png</file>
         <file>images/icons/ic_show_password.png</file>
         <file>images/icons/baseline-desktop_windows-24px.svg</file>
-        <file>images/icons/baseline-people-24px.svg</file>
         <file>images/icons/ic_high_quality_24px.svg</file>
         <file>images/icons/insert_photo-24px.svg</file>
         <file>images/icons/round-add_a_photo-24px.svg</file>
@@ -135,6 +134,10 @@
         <file>images/icons/quote.svg</file>
         <file>images/icons/plugins-24px.svg</file>
         <file>images/icons/record_black_24dp.svg</file>
+        <file>images/icons/account_black-24dp.svg</file>
+        <file>images/icons/gear_black-24dp.svg</file>
+        <file>images/icons/media_black-24dp.svg</file>
+        <file>images/icons/plugin_settings_black-24dp.svg</file>
         <file>images/icons/share_stop_black_24dp.svg</file>
         <file>images/icons/share_screen_black_24dp.svg</file>
         <file>images/icons/chat_black_24dp.svg</file>
