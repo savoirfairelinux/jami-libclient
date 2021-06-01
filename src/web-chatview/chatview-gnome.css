@@ -31,3 +31,14 @@
     word-break: break-word;
     word-wrap: break-word;
 }
+
+#sendMessage {
+    height: var(--navbar-height);
+}
+
+#sendMessage .nav-button, #sendMessage .nav-button.deactivated {
+    height: 28px;
+    width: 28px;
+    margin: 1px;
+    padding: 2px;
+}
