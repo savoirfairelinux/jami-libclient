@@ -210,6 +210,10 @@ Control {
             text: !checked ? JamiStrings.startRec : JamiStrings.stopRec
             property bool blinksWhenChecked: true
             property real size: 28
+            onCheckedChanged: {
+                CallOverlayModel.setUrgentCount(recordAction,
+                                                checked ? -1 : 0)
+            }
         },
         Action {
             id: pluginsAction
@@ -345,9 +349,10 @@ Control {
                                    "#80777777" :
                                    "#80444444"
                     type: {
-                        if ((overflowItemListView.count &&
-                                !urgentOverflowListView.count) ||
-                                overflowHiddenListView.count) {
+                        if (overflowItemListView.count ||
+                                urgentOverflowListView.count ||
+                                (overflowHiddenListView.count &&
+                                overflowButton.popup.visible)) {
                             return HalfPill.None
                         } else {
                             return HalfPill.Left
@@ -370,7 +375,10 @@ Control {
 
                         spacing: itemSpacing
                         anchors.fill: parent
-                        model: CallOverlayModel.overflowVisibleModel()
+                        model: !overflowButton.popup.visible ?
+                                   CallOverlayModel.overflowVisibleModel() :
+                                   null
+
                         delegate: buttonDelegate
                         ScrollIndicator.vertical: ScrollIndicator {}
 

@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,70 +22,6 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QQuickWindow>
-
-CallControlListModel::CallControlListModel(QObject* parent)
-    : QAbstractListModel(parent)
-{}
-
-int
-CallControlListModel::rowCount(const QModelIndex& parent) const
-{
-    if (parent.isValid())
-        return 0;
-    return data_.size();
-}
-
-QVariant
-CallControlListModel::data(const QModelIndex& index, int role) const
-{
-    if (!index.isValid())
-        return QVariant();
-
-    using namespace CallControl;
-    auto item = data_.at(index.row());
-
-    switch (role) {
-    case Role::ItemAction:
-        return QVariant::fromValue(item.itemAction);
-    case Role::BadgeCount:
-        return QVariant::fromValue(item.badgeCount);
-    }
-    return QVariant();
-}
-
-QHash<int, QByteArray>
-CallControlListModel::roleNames() const
-{
-    using namespace CallControl;
-    QHash<int, QByteArray> roles;
-    roles[ItemAction] = "ItemAction";
-    roles[BadgeCount] = "BadgeCount";
-    return roles;
-}
-
-void
-CallControlListModel::setBadgeCount(int row, int count)
-{
-    if (row >= rowCount())
-        return;
-    data_[row].badgeCount = count;
-    auto idx = index(row, 0);
-    Q_EMIT dataChanged(idx, idx);
-}
-
-void
-CallControlListModel::addItem(const CallControl::Item& item)
-{
-    beginResetModel();
-    data_.append(item);
-    endResetModel();
-}
-
-void
-CallControlListModel::clearData()
-{
-    data_.clear();
-}
 
 IndexRangeFilterProxyModel::IndexRangeFilterProxyModel(QAbstractListModel* parent)
     : QSortFilterProxyModel(parent)
@@ -188,13 +125,13 @@ PendingConferenceesListModel::connectSignals()
     disconnect(beginRemovePendingConferencesRows_);
     disconnect(endRemovePendingConferencesRows_);
 
+    using namespace PendingConferences;
     callsStatusChanged_ = connect(lrcInstance_->getCurrentCallModel(),
                                   &NewCallModel::callStatusChanged,
-                                  this,
-                                  [this]() {
-                                      dataChanged(index(0, 0),
-                                                  index(rowCount() - 1),
-                                                  {PendingConferences::Role::CallStatus});
+                                  [this](const QString&, int) {
+                                      Q_EMIT dataChanged(index(0, 0),
+                                                         index(rowCount() - 1),
+                                                         {Role::CallStatus});
                                   });
 
     beginInsertPendingConferencesRows_ = connect(
@@ -233,6 +170,77 @@ PendingConferenceesListModel::connectSignals()
     endResetModel();
 }
 
+CallControlListModel::CallControlListModel(QObject* parent)
+    : QAbstractListModel(parent)
+{}
+
+int
+CallControlListModel::rowCount(const QModelIndex& parent) const
+{
+    if (parent.isValid())
+        return 0;
+    return data_.size();
+}
+
+QVariant
+CallControlListModel::data(const QModelIndex& index, int role) const
+{
+    if (!index.isValid())
+        return QVariant();
+
+    using namespace CallControl;
+    auto item = data_.at(index.row());
+
+    switch (role) {
+    case Role::ItemAction:
+        return QVariant::fromValue(item.itemAction);
+    case Role::UrgentCount:
+        return QVariant::fromValue(item.urgentCount);
+    }
+    return QVariant();
+}
+
+QHash<int, QByteArray>
+CallControlListModel::roleNames() const
+{
+    using namespace CallControl;
+    QHash<int, QByteArray> roles;
+    roles[ItemAction] = "ItemAction";
+    roles[UrgentCount] = "UrgentCount";
+    return roles;
+}
+
+void
+CallControlListModel::setUrgentCount(QVariant item, int count)
+{
+    const auto* obj = item.value<QObject*>();
+    auto it = std::find_if(data_.cbegin(), data_.cend(), [obj](const auto& item) {
+        return item.itemAction == obj;
+    });
+    if (it != data_.cend()) {
+        auto row = std::distance(data_.cbegin(), it);
+        if (row >= rowCount())
+            return;
+        data_[row].urgentCount = count;
+        auto idx = index(row, 0);
+        Q_EMIT dataChanged(idx, idx);
+    }
+}
+
+void
+CallControlListModel::addItem(const CallControl::Item& item)
+{
+    beginResetModel();
+    data_.append(item);
+    endResetModel();
+}
+
+void
+CallControlListModel::clearData()
+{
+    data_.clear();
+}
+
 CallOverlayModel::CallOverlayModel(LRCInstance* instance, QObject* parent)
     : QObject(parent)
     , lrcInstance_(instance)
@@ -247,7 +255,7 @@ CallOverlayModel::CallOverlayModel(LRCInstance* instance, QObject* parent)
             &CallOverlayModel::overflowIndexChanged,
             this,
             &CallOverlayModel::setControlRanges);
-    overflowVisibleModel_->setFilterRole(CallControl::Role::BadgeCount);
+    overflowVisibleModel_->setFilterRole(CallControl::Role::UrgentCount);
 }
 
 void
@@ -264,9 +272,9 @@ CallOverlayModel::addSecondaryControl(const QVariant& action)
 }
 
 void
-CallOverlayModel::setBadgeCount(int row, int count)
+CallOverlayModel::setUrgentCount(QVariant row, int count)
 {
-    secondaryModel_->setBadgeCount(row, count);
+    secondaryModel_->setUrgentCount(row, count);
 }
 
 QVariant

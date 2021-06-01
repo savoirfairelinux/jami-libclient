@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,13 +36,13 @@
 
 namespace CallControl {
 Q_NAMESPACE
-enum Role { ItemAction = Qt::UserRole + 1, BadgeCount };
+enum Role { ItemAction = Qt::UserRole + 1, UrgentCount };
 Q_ENUM_NS(Role)
 
 struct Item
 {
     QObject* itemAction;
-    int badgeCount {0};
+    int urgentCount {0};
 };
 } // namespace CallControl
 
@@ -55,24 +56,6 @@ enum Role {
 };
 Q_ENUM_NS(Role)
 } // namespace PendingConferences
-
-class CallControlListModel : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    CallControlListModel(QObject* parent = nullptr);
-
-    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-    QHash<int, QByteArray> roleNames() const override;
-
-    void setBadgeCount(int row, int count);
-    void addItem(const CallControl::Item& item);
-    void clearData();
-
-private:
-    QList<CallControl::Item> data_;
-};
 
 class IndexRangeFilterProxyModel : public QSortFilterProxyModel
 {
@@ -112,6 +95,24 @@ private:
     QMetaObject::Connection endRemovePendingConferencesRows_;
 };
 
+class CallControlListModel : public QAbstractListModel
+{
+    Q_OBJECT
+public:
+    CallControlListModel(QObject* parent = nullptr);
+
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QHash<int, QByteArray> roleNames() const override;
+
+    void setUrgentCount(QVariant item, int count);
+    void addItem(const CallControl::Item& item);
+    void clearData();
+
+private:
+    QList<CallControl::Item> data_;
+};
+
 class CallOverlayModel : public QObject
 {
     Q_OBJECT
@@ -122,7 +123,7 @@ public:
 
     Q_INVOKABLE void addPrimaryControl(const QVariant& action);
     Q_INVOKABLE void addSecondaryControl(const QVariant& action);
-    Q_INVOKABLE void setBadgeCount(int row, int count);
+    Q_INVOKABLE void setUrgentCount(QVariant item, int count);
     Q_INVOKABLE void clearControls();
 
     Q_INVOKABLE QVariant primaryModel();
