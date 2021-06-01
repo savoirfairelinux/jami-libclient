@@ -189,6 +189,8 @@ Item {
             function onChatClicked() { root.chatButtonClicked() }
             function onAddToConferenceClicked() { openContactPicker(ContactList.CONFERENCE) }
             function onTransferClicked() { openContactPicker(ContactList.TRANSFER) }
+            function onResumePauseCallClicked() { CallAdapter.holdThisCallToggle() }
+            function onShowInputPanelClicked() { sipInputPanel.open() }
             function onShareScreenClicked() { openShareScreen() }
             function onStopSharingClicked() { AvAdapter.stopSharing() }
             function onShareScreenAreaClicked() { openShareScreenArea() }

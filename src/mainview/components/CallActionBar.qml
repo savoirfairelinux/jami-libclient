@@ -37,7 +37,9 @@ Control {
 
     signal chatClicked
     signal addToConferenceClicked
-    signal transferClicked // TODO: bind this
+    signal transferClicked
+    signal resumePauseCallClicked
+    signal showInputPanelClicked
     signal shareScreenClicked
     signal stopSharingClicked
     signal shareScreenAreaClicked // TODO: bind this
@@ -187,6 +189,28 @@ Control {
             text: JamiStrings.chat
         },
         Action {
+            id: resumePauseCallAction
+            onTriggered: root.resumePauseCallClicked()
+            icon.source: isPaused ? "qrc:/images/icons/play_circle_outline-24px.svg" :
+                                    "qrc:/images/icons/pause_circle_outline-24px.svg"
+            icon.color: "white"
+            text: isPaused ? JamiStrings.resumeCall : JamiStrings.pauseCall
+        },
+        Action {
+            id: inputPanelSIPAction
+            onTriggered: root.showInputPanelClicked()
+            icon.source: "qrc:/images/icons/ic_keypad.svg"
+            icon.color: "white"
+            text: JamiStrings.sipInputPanel
+        },
+        Action {
+            id: callTransferAction
+            onTriggered: root.transferClicked()
+            icon.source: "qrc:/images/icons/phone_forwarded-24px.svg"
+            icon.color: "white"
+            text: JamiStrings.transferCall
+        },
+        Action {
             id: shareAction
             onTriggered: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
                              root.stopSharingClicked() :
@@ -247,6 +271,11 @@ Control {
         CallOverlayModel.addSecondaryControl(audioOutputAction)
         if (isModerator && !isSIP)
             CallOverlayModel.addSecondaryControl(addPersonAction)
+        if (isSIP) {
+            CallOverlayModel.addSecondaryControl(resumePauseCallAction)
+            CallOverlayModel.addSecondaryControl(inputPanelSIPAction)
+            CallOverlayModel.addSecondaryControl(callTransferAction)
+        }
         CallOverlayModel.addSecondaryControl(chatAction)
         if (!isAudioOnly && !isSIP)
             CallOverlayModel.addSecondaryControl(shareAction)
