@@ -53,9 +53,11 @@ PluginModel::setPluginsEnabled(bool enable)
 {
     PluginManager::instance().setPluginsEnabled(enable);
     if (!enable)
-        emit chatHandlerStatusUpdated(false);
+        Q_EMIT chatHandlerStatusUpdated(false);
     else
-        emit chatHandlerStatusUpdated(getChatHandlers().size() > 0);
+        Q_EMIT chatHandlerStatusUpdated(getChatHandlers().size() > 0);
+
+    Q_EMIT modelUpdated();
 }
 
 bool
@@ -102,7 +104,9 @@ bool
 PluginModel::installPlugin(const QString& jplPath, bool force)
 {
     if (getPluginsEnabled()) {
-        return PluginManager::instance().installPlugin(jplPath, force);
+        auto result = PluginManager::instance().installPlugin(jplPath, force);
+        Q_EMIT modelUpdated();
+        return result;
     }
     return false;
 }
@@ -110,13 +114,16 @@ PluginModel::installPlugin(const QString& jplPath, bool force)
 bool
 PluginModel::uninstallPlugin(const QString& rootPath)
 {
-    return PluginManager::instance().uninstallPlugin(rootPath);
+    auto result = PluginManager::instance().uninstallPlugin(rootPath);
+    Q_EMIT modelUpdated();
+    return result;
 }
 
 bool
 PluginModel::loadPlugin(const QString& path)
 {
     bool status = PluginManager::instance().loadPlugin(path);
+    Q_EMIT modelUpdated();
     if (getChatHandlers().size() > 0)
         emit chatHandlerStatusUpdated(getPluginsEnabled());
     return status;
@@ -126,6 +133,7 @@ bool
 PluginModel::unloadPlugin(const QString& path)
 {
     bool status = PluginManager::instance().unloadPlugin(path);
+    Q_EMIT modelUpdated();
     if (getChatHandlers().size() <= 0)
         emit chatHandlerStatusUpdated(false);
     return status;
@@ -143,6 +151,7 @@ PluginModel::toggleCallMediaHandler(const QString& mediaHandlerId,
                                     bool toggle)
 {
     PluginManager::instance().toggleCallMediaHandler(mediaHandlerId, callId, toggle);
+    Q_EMIT modelUpdated();
 }
 
 VectorString
@@ -158,6 +167,7 @@ PluginModel::toggleChatHandler(const QString& chatHandlerId,
                                bool toggle)
 {
     PluginManager::instance().toggleChatHandler(chatHandlerId, accountId, peerId, toggle);
+    Q_EMIT modelUpdated();
 }
 
 VectorString
@@ -219,7 +229,9 @@ PluginModel::getPluginPreferences(const QString& path)
 bool
 PluginModel::setPluginPreference(const QString& path, const QString& key, const QString& value)
 {
-    return PluginManager::instance().setPluginPreference(path, key, value);
+    auto result = PluginManager::instance().setPluginPreference(path, key, value);
+    Q_EMIT modelUpdated();
+    return result;
 }
 
 MapStringString
@@ -231,7 +243,9 @@ PluginModel::getPluginPreferencesValues(const QString& path)
 bool
 PluginModel::resetPluginPreferencesValues(const QString& path)
 {
-    return PluginManager::instance().resetPluginPreferencesValues(path);
+    auto result = PluginManager::instance().resetPluginPreferencesValues(path);
+    Q_EMIT modelUpdated();
+    return result;
 }
 
 } // namespace lrc
