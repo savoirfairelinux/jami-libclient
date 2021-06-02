@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c3bab308_7e6f0d87",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-06-02T15:19:52Z",
+      "side": 1,
+      "message": "I wonder if we need to update for every state change ?\n\nI think we should use the new struct DRING_PUBLIC MediaNegotiationStatus signal. It was meant for this use case. The media status will be final from this point, until a re-invite is sent/received (in this case we will receive this signal again).",
+      "revId": "094734f1de455035d6975a4bde5f56a6b9deace8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
