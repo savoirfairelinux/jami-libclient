@@ -179,7 +179,7 @@ Rectangle {
         var item = ConversationsAdapter.getConvInfoMap(convId)
         if (item.convId === undefined)
             return
-        communicationPageMessageWebView.headerUserAliasLabelText = item.bestName
+        communicationPageMessageWebView.headerUserAliasLabelText = item.title
         communicationPageMessageWebView.headerUserUserNameLabelText = item.bestId
         if (item.callStackViewShouldShow) {
             if (inSettingsView) {

@@ -409,7 +409,7 @@ ConversationsAdapter::getConvInfoMap(const QString& convId)
     // titles should come from conversation, not contact model
     return {{"convId", convId},
             {"bestId", contactModel->bestIdForContact(peerUri)},
-            {"bestName", contactModel->bestNameForContact(peerUri)},
+            {"title", lrcInstance_->getCurrentConversationModel()->title(convId)},
             {"uri", peerUri},
             {"isSwarm", !convInfo.isNotASwarm()},
             {"contactType", static_cast<int>(contact.profileInfo.type)},

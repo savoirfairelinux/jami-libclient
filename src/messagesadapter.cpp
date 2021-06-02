@@ -78,16 +78,6 @@ MessagesAdapter::setupChatView(const QString& convUid)
     auto selectedAccountId = lrcInstance_->getCurrentAccountId();
     auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(selectedAccountId);
 
-    lrc::api::contact::Info contactInfo;
-    QString bestName;
-    try {
-        contactInfo = accountInfo.contactModel->getContact(contactURI);
-        bestName = accountInfo.contactModel->bestNameForContact(contactURI);
-    } catch (...) {
-    }
-
-    bool isPending = contactInfo.profileInfo.type == profile::Type::TEMPORARY;
-
     QMetaObject::invokeMethod(qmlObj_,
                               "setSendContactRequestButtonVisible",
                               Q_ARG(QVariant, convInfo.isNotASwarm() && convInfo.isRequest));
@@ -100,7 +90,7 @@ MessagesAdapter::setupChatView(const QString& convUid)
     setMessagesVisibility(false);
     setIsSwarm(!convInfo.isNotASwarm());
     setInvitation(convInfo.isRequest or convInfo.needsSyncing,
-                  bestName,
+                  convModel->title(convInfo.uid),
                   contactURI,
                   !convInfo.isNotASwarm(),
                   convInfo.needsSyncing);
