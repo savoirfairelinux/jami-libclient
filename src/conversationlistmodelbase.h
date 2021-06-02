@@ -23,7 +23,7 @@
 
 // TODO: many of these roles should probably be factored out
 #define CONV_ROLES \
-    X(BestName) \
+    X(Title) \
     X(BestId) \
     X(Presence) \
     X(Alias) \

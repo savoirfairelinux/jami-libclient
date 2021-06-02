@@ -83,7 +83,7 @@ ItemDelegate {
                 Layout.preferredHeight: 20
                 Layout.alignment: Qt.AlignVCenter
                 elide: Text.ElideRight
-                text: BestName === undefined ? "" : BestName
+                text: Title === undefined ? "" : Title
                 font.pointSize: JamiTheme.smartlistItemFontSize
                 font.weight: UnreadMessagesCount ? Font.Bold : Font.Normal
                 color: JamiTheme.textColor

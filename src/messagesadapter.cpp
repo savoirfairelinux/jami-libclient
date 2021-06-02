@@ -90,7 +90,7 @@ MessagesAdapter::setupChatView(const QString& convUid)
 
     QMetaObject::invokeMethod(qmlObj_,
                               "setSendContactRequestButtonVisible",
-                              Q_ARG(QVariant, convInfo.isNotASwarm() && isPending));
+                              Q_ARG(QVariant, convInfo.isNotASwarm() && convInfo.isRequest));
     QMetaObject::invokeMethod(qmlObj_,
                               "setMessagingHeaderButtonsVisible",
                               Q_ARG(QVariant,
@@ -510,13 +510,7 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
         return;
     }
     try {
-        auto& contact = accInfo->contactModel->getContact(contactUri);
-        auto bestName = accInfo->contactModel->bestNameForContact(contactUri);
-        bool isPending = contact.profileInfo.type == profile::Type::TEMPORARY;
-
-        QMetaObject::invokeMethod(qmlObj_,
-                                  "setSendContactRequestButtonVisible",
-                                  Q_ARG(QVariant, convInfo.isNotASwarm() && isPending));
+        auto title = accInfo->conversationModel->title(convInfo.uid);
         QMetaObject::invokeMethod(qmlObj_,
                                   "setMessagingHeaderButtonsVisible",
                                   Q_ARG(QVariant,
@@ -524,10 +518,17 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
                                           && (convInfo.isRequest || convInfo.needsSyncing))));
 
         setInvitation(convInfo.isRequest or convInfo.needsSyncing,
-                      bestName,
+                      title,
                       contactUri,
                       !convInfo.isNotASwarm(),
                       convInfo.needsSyncing);
+        if (!convInfo.isNotASwarm())
+            return;
+        auto& contact = accInfo->contactModel->getContact(contactUri);
+        bool isPending = contact.profileInfo.type == profile::Type::TEMPORARY;
+        QMetaObject::invokeMethod(qmlObj_,
+                                  "setSendContactRequestButtonVisible",
+                                  Q_ARG(QVariant, isPending));
         if (!contact.profileInfo.avatar.isEmpty()) {
             setSenderImage(contactUri, contact.profileInfo.avatar);
         } else {

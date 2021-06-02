@@ -59,14 +59,13 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
         contactModel = accountInfo.contactModel.get();
         contact = contactModel->getContact(peerUri);
     } catch (...) {
-        return QVariant(false);
     }
 
     // Since we are using image provider right now, image url representation should be unique to
     // be able to use the image cache, account avatar will only be updated once PictureUid changed
     switch (role) {
-    case Role::BestName:
-        return QVariant(contactModel->bestNameForContact(peerUri));
+    case Role::Title:
+        return QVariant(model_->title(item.uid));
     case Role::BestId:
         return QVariant(contactModel->bestIdForContact(peerUri));
     case Role::Presence:
