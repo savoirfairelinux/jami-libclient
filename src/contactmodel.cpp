@@ -501,7 +501,7 @@ ContactModel::bestNameForContact(const QString& contactUri) const
         qDebug() << "ContactModel::bestNameForContact" << e.what();
     }
 
-    return {};
+    return contactUri;
 }
 
 const QString
@@ -518,7 +518,7 @@ ContactModel::bestIdForContact(const QString& contactUri) const
         qDebug() << "ContactModel::bestIdForContact" << e.what();
     }
 
-    return {};
+    return contactUri;
 }
 
 const QString

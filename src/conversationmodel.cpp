@@ -87,7 +87,7 @@ public:
      * @return a reference to a conversation with given uid
      */
     std::reference_wrapper<conversation::Info> getConversation(
-        const FilterPredicate& pred, const bool searchResultIncluded = false);
+        const FilterPredicate& pred, const bool searchResultIncluded = false) const;
 
     /**
      * return a reference to a conversation with given uid.
@@ -96,7 +96,7 @@ public:
      * @return a reference to a conversation with the given uid.
      */
     std::reference_wrapper<conversation::Info> getConversationForUid(
-        const QString& uid, const bool searchResultIncluded = false);
+        const QString& uid, const bool searchResultIncluded = false) const;
 
     /**
      * return a reference to a conversation with participant.
@@ -107,7 +107,7 @@ public:
      * return an active one-to-one conversation.
      */
     std::reference_wrapper<conversation::Info> getConversationForPeerUri(
-        const QString& uri, const bool searchResultIncluded = false);
+        const QString& uri, const bool searchResultIncluded = false) const;
 
     /**
      * return a conversation index from conversations or -1 if no index is found.
@@ -627,7 +627,7 @@ ConversationModel::getFilteredConversations(const profile::Type& profileType,
 }
 
 OptRef<conversation::Info>
-ConversationModel::getConversationForUid(const QString& uid)
+ConversationModel::getConversationForUid(const QString& uid) const
 {
     try {
         return std::make_optional(pimpl_->getConversationForUid(uid, true));
@@ -637,7 +637,7 @@ ConversationModel::getConversationForUid(const QString& uid)
 }
 
 OptRef<conversation::Info>
-ConversationModel::getConversationForPeerUri(const QString& uri)
+ConversationModel::getConversationForPeerUri(const QString& uri) const
 {
     try {
         return std::make_optional(pimpl_->getConversation(
@@ -657,7 +657,7 @@ ConversationModel::getConversationForPeerUri(const QString& uri)
 }
 
 OptRef<conversation::Info>
-ConversationModel::getConversationForCallId(const QString& callId)
+ConversationModel::getConversationForCallId(const QString& callId) const
 {
     try {
         return std::make_optional(pimpl_->getConversation(
@@ -993,6 +993,36 @@ ConversationModel::pendingRequestCount() const
                   pimpl_->conversations.end(),
                   [&pendingRequestCount](const auto& c) { pendingRequestCount += c.isRequest; });
     return pendingRequestCount;
+}
+
+QString
+ConversationModel::title(const QString& conversationId) const
+{
+    auto conversationOpt = getConversationForUid(conversationId);
+    if (!conversationOpt.has_value()) {
+        return {};
+    }
+    auto& conversation = conversationOpt->get();
+    if (conversation.mode == conversation::Mode::NON_SWARM) {
+        // In this case, we can just display contact name
+        return owner.contactModel->bestNameForContact(conversation.participants.at(0));
+    }
+    // In this case, it depends if we have infos from daemon (TODO conferencesInfo() support)
+    // NOTE: Do not call any daemon method there as title() is called a lot for drawing
+    QString title;
+    auto idx = 0;
+    for (const auto& member : conversation.participants) {
+        if (member == owner.profileInfo.uri) {
+            title += owner.accountModel->bestNameForAccount(owner.id);
+        } else {
+            title += owner.contactModel->bestNameForContact(member);
+        }
+        idx += 1;
+        if (idx != conversation.participants.size()) {
+            title += ", ";
+        }
+    }
+    return title;
 }
 
 void
@@ -2789,7 +2819,8 @@ ConversationModelPimpl::indexOf(const QString& uid) const
 }
 
 std::reference_wrapper<conversation::Info>
-ConversationModelPimpl::getConversation(const FilterPredicate& pred, const bool searchResultIncluded)
+ConversationModelPimpl::getConversation(const FilterPredicate& pred,
+                                        const bool searchResultIncluded) const
 {
     auto conv = std::find_if(conversations.cbegin(), conversations.cend(), pred);
     if (conv != conversations.cend()) {
@@ -2807,7 +2838,8 @@ ConversationModelPimpl::getConversation(const FilterPredicate& pred, const bool 
 }
 
 std::reference_wrapper<conversation::Info>
-ConversationModelPimpl::getConversationForUid(const QString& uid, const bool searchResultIncluded)
+ConversationModelPimpl::getConversationForUid(const QString& uid,
+                                              const bool searchResultIncluded) const
 {
     return getConversation([uid](const conversation::Info& conv) -> bool { return uid == conv.uid; },
                            searchResultIncluded);
@@ -2815,7 +2847,7 @@ ConversationModelPimpl::getConversationForUid(const QString& uid, const bool sea
 
 std::reference_wrapper<conversation::Info>
 ConversationModelPimpl::getConversationForPeerUri(const QString& uri,
-                                                  const bool searchResultIncluded)
+                                                  const bool searchResultIncluded) const
 {
     return getConversation(
         [this, uri](const conversation::Info& conv) -> bool {
