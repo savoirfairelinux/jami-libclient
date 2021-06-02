@@ -111,21 +111,21 @@ public:
      * @param uid conversation uid
      * @return reference to conversation info with given uid
      */
-    OptRef<conversation::Info> getConversationForUid(const QString& uid);
+    OptRef<conversation::Info> getConversationForUid(const QString& uid) const;
 
     /**
      * Get conversation for a given peer uri
      * @param uri peer uri
      * @return reference to conversation info with given peer uri
      */
-    OptRef<conversation::Info> getConversationForPeerUri(const QString& uri);
+    OptRef<conversation::Info> getConversationForPeerUri(const QString& uri) const;
 
     /**
      * Get conversation for a given call id
      * @param callId call id
      * @return reference to conversation info with given call id
      */
-    OptRef<conversation::Info> getConversationForCallId(const QString& callId);
+    OptRef<conversation::Info> getConversationForCallId(const QString& callId) const;
 
     /**
      * Get conversations that could be added to conference
@@ -279,7 +279,9 @@ public:
 
     void cancelTransfer(const QString& convUid, const QString& interactionId);
 
-    void getTransferInfo(const QString& conversationId, const QString& interactionId, api::datatransfer::Info& info);
+    void getTransferInfo(const QString& conversationId,
+                         const QString& interactionId,
+                         api::datatransfer::Info& info);
     /**
      * @param convUid, uid of the conversation
      * @return the number of unread messages for the conversation
@@ -297,8 +299,7 @@ public:
      * @param size number of messages should be loaded. Default 1
      * @return id for loading request. -1 if not loaded
      */
-    int loadConversationMessages(const QString& conversationId,
-                                      const int size = 1);
+    int loadConversationMessages(const QString& conversationId, const int size = 1);
     /**
      * accept request for conversation
      * @param conversationId conversation's id
@@ -343,13 +344,22 @@ public:
 
     /**
      * @return if conversations requests exists.
-    */
+     */
     bool hasPendingRequests() const;
     /**
      * @return number of conversations requests
      */
     int pendingRequestCount() const;
     const VectorString peersForConversation(const QString& conversationId);
+
+    // Presentation
+
+    /**
+     * Get conversation title. This means the title to show in the smartlist
+     * @param conversationId
+     * @return the title to display
+     */
+    QString title(const QString& conversationId) const;
 
 Q_SIGNALS:
     /**
@@ -410,8 +420,8 @@ Q_SIGNALS:
      */
     void allHistoryCleared() const;
     /**
-     * Emitted at the end of slotContactAdded and at conversationReady for swarm conversation to notify that an existing conversation can
-     * be modified
+     * Emitted at the end of slotContactAdded and at conversationReady for swarm conversation to
+     * notify that an existing conversation can be modified
      * @param uid
      */
     void conversationReady(QString uid, QString participantURI) const;
@@ -462,11 +472,15 @@ Q_SIGNALS:
     /**
      * Emitted when creation of conversation started, finished with success or finisfed with error
      * @param accountId  account id
-     * @param conversationId conversation Id, when conversation creation started conversationId = participantURI
+     * @param conversationId conversation Id, when conversation creation started conversationId =
+     * participantURI
      * @param participantURI participant uri
      * @param status 0 -started, 1 -created with success, -1 -error
      */
-    void creatingConversationEvent(const QString& accountId, const QString& conversationId, const QString& participantURI, int status) const;
+    void creatingConversationEvent(const QString& accountId,
+                                   const QString& conversationId,
+                                   const QString& participantURI,
+                                   int status) const;
 
     /**
      * The following signals are intended for QAbtractListModel compatibility
