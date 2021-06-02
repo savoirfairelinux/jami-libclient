@@ -168,13 +168,5 @@ ContextMenuAutoLoader {
         }
     ]
 
-    JamiFileDialog {
-        id: jamiFileDialog
-
-        mode: JamiFileDialog.Mode.OpenFile
-
-        onAccepted: AvAdapter.shareFile(jamiFileDialog.file)
-    }
-
     Component.onCompleted: menuItemsToLoad = menuItems
 }

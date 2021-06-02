@@ -224,6 +224,7 @@ Item {
     property string stopSharing: qsTr("Stop sharing screen or file")
     property string shareScreenArea: qsTr("Share screen area")
     property string shareFile: qsTr("Share file")
+    property string selectShareMethod: qsTr("Select sharing method")
     property string viewPlugin: qsTr("View plugin")
     property string noVideoDevice: qsTr("No video device")
     property string notAvailable: qsTr("N/A")

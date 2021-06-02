@@ -135,6 +135,14 @@ Item {
         y: root.height / 2 - sipInputPanel.height / 2
     }
 
+    JamiFileDialog {
+        id: jamiFileDialog
+
+        mode: JamiFileDialog.Mode.OpenFile
+
+        onAccepted: AvAdapter.shareFile(jamiFileDialog.file)
+    }
+
     ResponsiveImage {
         id: onHoldImage
 
@@ -194,6 +202,7 @@ Item {
             function onShareScreenClicked() { openShareScreen() }
             function onStopSharingClicked() { AvAdapter.stopSharing() }
             function onShareScreenAreaClicked() { openShareScreenArea() }
+            function onShareFileClicked() { jamiFileDialog.open() }
             function onPluginsClicked() { openPluginsMenu() }
         }
     }

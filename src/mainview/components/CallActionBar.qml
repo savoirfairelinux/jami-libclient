@@ -29,6 +29,11 @@ import "../../commoncomponents"
 Control {
     id: root
 
+    enum ActionPopupMode {
+        MediaDevice = 0,
+        ListElement
+    }
+
     property alias overflowOpen: overflowButton.popup.visible
     property bool subMenuOpen: false
 
@@ -42,7 +47,8 @@ Control {
     signal showInputPanelClicked
     signal shareScreenClicked
     signal stopSharingClicked
-    signal shareScreenAreaClicked // TODO: bind this
+    signal shareScreenAreaClicked
+    signal shareFileClicked
     signal pluginsClicked
 
     Component {
@@ -104,6 +110,36 @@ Control {
                                         listModel.index(index, 0),
                                         AudioDeviceModel.RawDeviceName))
                 AvAdapter.startAudioMeter(false)
+            }
+        },
+        Action {
+            id: shareMenuAction
+            text: JamiStrings.selectShareMethod
+            property int popupMode: CallActionBar.ActionPopupMode.ListElement
+            property var listModel: ListModel {
+                id: shareModel
+
+                Component.onCompleted: {
+                    shareModel.append({"Name": JamiStrings.shareScreen,
+                                       "IconSource": "qrc:/images/icons/share_screen_black_24dp.svg"})
+                    shareModel.append({"Name": JamiStrings.shareScreenArea,
+                                       "IconSource" :"qrc:/images/icons/share_screen_black_24dp.svg"})
+                    shareModel.append({"Name": JamiStrings.shareFile,
+                                       "IconSource" :"qrc:/images/icons/insert_photo-24px.svg"})
+                }
+            }
+            function accept(index) {
+                switch(shareModel.get(index).Name) {
+                  case JamiStrings.shareScreen:
+                      shareScreenClicked()
+                      break
+                  case JamiStrings.shareScreenArea:
+                      shareScreenAreaClicked()
+                      break
+                  case JamiStrings.shareFile:
+                      shareFileClicked()
+                      break
+                }
             }
         },
         Action {
@@ -177,8 +213,8 @@ Control {
         Action {
             id: audioOutputAction
             // temp hack for missing back-end, just open device selection
-            property bool bypassMuteAction: true
-            checkable: !bypassMuteAction
+            property bool openPopupWhenClicked: true
+            checkable: !openPopupWhenClicked
             icon.source: "qrc:/images/icons/spk_black_24dp.svg"
             icon.color: "white"
             text: JamiStrings.selectAudioOutputDevice
@@ -222,9 +258,12 @@ Control {
         },
         Action {
             id: shareAction
-            onTriggered: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
-                             root.stopSharingClicked() :
-                             root.shareScreenClicked()
+            property bool openPopupWhenClicked: AvAdapter.currentRenderingDeviceType
+                                                !== Video.DeviceType.DISPLAY
+            onTriggered: {
+                if (AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY)
+                    root.stopSharingClicked()
+            }
             icon.source: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
                              "qrc:/images/icons/share_stop_black_24dp.svg" :
                              "qrc:/images/icons/share_screen_black_24dp.svg"
@@ -232,8 +271,9 @@ Control {
                             "red" : "white"
             text: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
                       JamiStrings.stopSharing :
-                      JamiStrings.shareScreen
+                      JamiStrings.selectShareMethod
             property real size: 34
+            property var menuAction: shareMenuAction
         },
         Action {
             id: recordAction

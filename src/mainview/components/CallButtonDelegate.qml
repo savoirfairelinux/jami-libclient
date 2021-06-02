@@ -47,8 +47,8 @@ ItemDelegate {
 
     // TODO: remove this when output volume control is implemented
     MouseArea {
-        visible: ItemAction.bypassMuteAction !== undefined &&
-                 ItemAction.bypassMuteAction && !menu.popup.visible
+        visible: ItemAction.openPopupWhenClicked !== undefined
+                 && ItemAction.openPopupWhenClicked && !menu.popup.visible
         anchors.fill: wrapper
         onClicked: menu.popup.open()
     }
@@ -59,11 +59,8 @@ ItemDelegate {
         color: {
             if (supplimentaryBackground.visible)
                 return "#c4272727"
-            return wrapper.down ?
-                        "#c4777777" :
-                        wrapper.hovered && !menu.hovered ?
-                            "#c4444444" :
-                            "#c4272727"
+            return wrapper.down ? "#c4777777" : wrapper.hovered
+                                  && !menu.hovered ? "#c4444444" : "#c4272727"
         }
         type: {
             if (isVertical) {
@@ -75,13 +72,15 @@ ItemDelegate {
                 if (isFirst)
                     return HalfPill.Left
                 else if (isLast && hasLast)
-                     return HalfPill.Right
+                    return HalfPill.Right
             }
             return HalfPill.None
         }
 
         Behavior on color {
-            ColorAnimation { duration: JamiTheme.shortFadeDuration }
+            ColorAnimation {
+                duration: JamiTheme.shortFadeDuration
+            }
         }
     }
 
@@ -90,17 +89,18 @@ ItemDelegate {
         id: supplimentaryBackground
 
         visible: ItemAction.hasBg !== undefined
-        color: wrapper.down ?
-                   Qt.lighter(JamiTheme.refuseRed, 1.5) :
-                   wrapper.hovered && !menu.hovered ?
-                       JamiTheme.refuseRed :
-                       JamiTheme.refuseRedTransparent
+        color: wrapper.down ? Qt.lighter(JamiTheme.refuseRed, 1.5) :
+                              wrapper.hovered && !menu.hovered ?
+                                  JamiTheme.refuseRed :
+                                  JamiTheme.refuseRedTransparent
         anchors.fill: parent
         radius: isLast ? 5 : width / 2
         type: isLast ? HalfPill.Right : HalfPill.None
 
         Behavior on color {
-            ColorAnimation { duration: JamiTheme.shortFadeDuration }
+            ColorAnimation {
+                duration: JamiTheme.shortFadeDuration
+            }
         }
     }
 
@@ -108,8 +108,7 @@ ItemDelegate {
         id: icon
 
         // TODO: remove this when the icons are size corrected
-        property real size: ItemAction.size !== undefined ?
-                                ItemAction.size : 30
+        property real size: ItemAction.size !== undefined ? ItemAction.size : 30
         containerWidth: size
         containerHeight: size
 
@@ -120,12 +119,20 @@ ItemDelegate {
 
         SequentialAnimation on opacity {
             loops: Animation.Infinite
-            running: ItemAction !== undefined &&
-                     ItemAction.blinksWhenChecked !== undefined &&
-                     ItemAction.blinksWhenChecked && checked
+            running: ItemAction !== undefined
+                     && ItemAction.blinksWhenChecked !== undefined
+                     && ItemAction.blinksWhenChecked && checked
             onStopped: icon.opacity = 1
-            NumberAnimation { from: 1; to: 0; duration: JamiTheme.recordBlinkDuration }
-            NumberAnimation { from: 0; to: 1; duration: JamiTheme.recordBlinkDuration }
+            NumberAnimation {
+                from: 1
+                to: 0
+                duration: JamiTheme.recordBlinkDuration
+            }
+            NumberAnimation {
+                from: 0
+                to: 1
+                duration: JamiTheme.recordBlinkDuration
+            }
         }
     }
 
@@ -144,9 +151,8 @@ ItemDelegate {
             id: toolTip
             parent: parent
             visible: text.length > 0 && (wrapper.hovered || menu.hovered)
-            text: menu.hovered ?
-                      menuAction.text :
-                      (ItemAction !== undefined ? ItemAction.text : null)
+            text: menu.hovered ? menuAction.text : (ItemAction
+                                                    !== undefined ? ItemAction.text : null)
             verticalPadding: 1
             font.pointSize: 9
         }
@@ -163,40 +169,29 @@ ItemDelegate {
 
         y: isVertical ? 0 : -4
         x: isVertical ? -4 : 0
-        anchors.horizontalCenter: isVertical ?
-                                      undefined :
-                                      parent.horizontalCenter
-        anchors.verticalCenter: isVertical ?
-                                    parent.verticalCenter :
-                                    undefined
+        anchors.horizontalCenter: isVertical ? undefined : parent.horizontalCenter
+        anchors.verticalCenter: isVertical ? parent.verticalCenter : undefined
 
         width: 18
         height: width
 
         Connections {
-            target: menuAction !== undefined ?
-                        menuAction :
-                        null
+            target: menuAction !== undefined ? menuAction : null
             function onTriggered() {
-                itemListView.currentIndex =
-                        menuAction.listModel.getCurrentIndex()
+                if (menuAction.popupMode !== CallActionBar.ActionPopupMode.ListElement)
+                    itemListView.currentIndex = menuAction.listModel.getCurrentIndex()
             }
         }
 
         contentItem: ResponsiveImage {
-            source: isVertical ?
-                        "qrc:/images/icons/chevron_left_black_24dp.svg" :
-                        "qrc:/images/icons/expand_less-24px.svg"
+            source: isVertical ? "qrc:/images/icons/chevron_left_black_24dp.svg" :
+                                 "qrc:/images/icons/expand_less-24px.svg"
             smooth: true
             color: "white"
         }
 
         background: Rectangle {
-            color: menu.down ?
-                       "#aaaaaa" :
-                       menu.hovered ?
-                           "#777777" :
-                           "#444444"
+            color: menu.down ? "#aaaaaa" : menu.hovered ? "#777777" : "#444444"
             radius: 4
         }
 
@@ -209,19 +204,16 @@ ItemDelegate {
             height: itemListView.menuItemHeight
             background: Rectangle {
                 anchors.fill: parent
-                color: menuItem.down ?
-                           "#c4aaaaaa" :
-                           menuItem.hovered ?
-                               "#c4777777" :
-                               "transparent"
+                color: menuItem.down ? "#c4aaaaaa" : menuItem.hovered ? "#c4777777" : "transparent"
             }
             contentItem: RowLayout {
                 anchors.fill: parent
                 anchors.margins: 6
                 ResponsiveImage {
-                    source: menuItem.ListView.isCurrentItem ?
-                                "qrc:/images/icons/check_box-24px.svg" :
-                                "qrc:/images/icons/check_box_outline_blank-24px.svg"
+                    source: menuAction.popupMode === CallActionBar.ActionPopupMode.ListElement ?
+                                IconSource : (menuItem.ListView.isCurrentItem ?
+                                                  "qrc:/images/icons/check_box-24px.svg" :
+                                                  "qrc:/images/icons/check_box_outline_blank-24px.svg")
                     smooth: true
                     color: "white"
                 }
@@ -229,7 +221,8 @@ ItemDelegate {
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignLeft
                     verticalAlignment: Text.AlignVCenter
-                    text: DeviceName
+                    text: menuAction.popupMode
+                          === CallActionBar.ActionPopupMode.ListElement ? Name : DeviceName
                     elide: Text.ElideRight
                     font.pointSize: 9
                     color: "white"
@@ -240,12 +233,8 @@ ItemDelegate {
         popup: Popup {
             id: itemPopup
 
-            y: isVertical ?
-                   -(implicitHeight - wrapper.height) / 2 - 18 :
-                   -implicitHeight - 12
-            x: isVertical ?
-                   -implicitWidth - 12 :
-                   -(implicitWidth - wrapper.width) / 2 - 18
+            y: isVertical ? -(implicitHeight - wrapper.height) / 2 - 18 : -implicitHeight - 12
+            x: isVertical ? -implicitWidth - 12 : -(implicitWidth - wrapper.width) / 2 - 18
 
             implicitWidth: contentItem.implicitWidth
             implicitHeight: contentItem.implicitHeight
@@ -263,8 +252,7 @@ ItemDelegate {
                 pixelAligned: true
                 orientation: ListView.Vertical
                 implicitWidth: menuItemWidth
-                implicitHeight: Math.min(contentHeight,
-                                         menuItemHeight * 6) + 24
+                implicitHeight: Math.min(contentHeight, menuItemHeight * 6) + 24
 
                 ScrollIndicator.vertical: ScrollIndicator {}
 
@@ -272,16 +260,24 @@ ItemDelegate {
 
                 model: menu.delegateModel
 
-                TextMetrics { id: itemTextMetrics }
+                TextMetrics {
+                    id: itemTextMetrics
+
+                    font.pointSize: 9
+                }
 
                 // recalc list width based on max item width
                 onCountChanged: {
-                    // Hack: use AudioDeviceModel.DeviceName role for video as well
                     var maxWidth = 0
                     for (var i = 0; i < count; ++i) {
-                        var idx = menuAction.listModel.index(i, 0)
-                        itemTextMetrics.text = menuAction.listModel.data(
-                                    idx, AudioDeviceModel.DeviceName)
+                        if (menuAction.popupMode === CallActionBar.ActionPopupMode.ListElement) {
+                            itemTextMetrics.text = menuAction.listModel.get(i).Name
+                        } else {
+                            // Hack: use AudioDeviceModel.DeviceName role for video as well
+                            var idx = menuAction.listModel.index(i, 0)
+                            itemTextMetrics.text = menuAction.listModel.data(
+                                        idx, AudioDeviceModel.DeviceName)
+                        }
                         if (itemTextMetrics.boundingRect.width > maxWidth)
                             maxWidth = itemTextMetrics.boundingRect.width
                     }
