@@ -51,7 +51,7 @@ Item {
     property bool participantIsModeratorMuted: false
     property bool participantMenuActive: false
 
-    z: -1
+    z: 1
 
     function setAvatar(show, avatar, uri, local, isContact) {
         if (!show)
@@ -232,8 +232,14 @@ Item {
             // as a parent object or some property passed in. But, this
             // will still fail when hovering over menus, etc.
         }
-        onExited: participantRect.opacity = 0
-        onEntered: participantRect.opacity = 1
+        onExited: {
+            root.z = 1
+            participantRect.opacity = 0
+        }
+        onEntered: {
+            root.z = 2
+            participantRect.opacity = 1
+        }
 
         // Timer to decide when ParticipantOverlay fade out
         Timer {
