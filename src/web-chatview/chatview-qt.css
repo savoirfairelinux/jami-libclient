@@ -116,7 +116,7 @@ body {
 
 .single_message.message_in .message_wrapper,
 .single_message.message_out .message_wrapper {
-    border-radius: 20px 20px 20px 20px !important;
+    border-radius: 20px 20px 20px 20px;
 }
 
 .last_of_sequence.message_in .message_wrapper {
