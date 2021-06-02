@@ -1325,3 +1325,159 @@ video {
             transform: scale(1.05);
   }
 }
+
+.preview_wrapper_in {
+	margin: 0px;
+  padding: 0px 0px;
+  box-sizing: border-box;
+  max-width: 300px;
+  min-width: 100px;
+  height: auto;
+  width: calc(20vw);
+  position: relative;
+  word-wrap: break-word;
+  overflow: hidden;
+  float: left;
+  border-bottom-right-radius: 20px;
+}
+
+.preview_wrapper_out {
+  margin: 0px;
+  padding: 0px 0px;
+  box-sizing: border-box;
+  max-width: 300px;
+  min-width: 100px;
+  height: auto;
+  width: calc(20vw);
+  position: relative;
+  word-wrap: break-word;
+  overflow: hidden;
+  border-bottom-right-radius: 20px;
+}
+
+.preview_container_link {
+  text-decoration: none;
+  display: inline-block;
+  border-bottom: none;
+  height: auto;
+  max-width: 300px;
+  width: inherit;
+  min-width: inherit;
+}
+
+.preview_card_container {
+  font-family: emoji;
+  display: flex;
+  align-items: center;
+  max-width: 300px;
+  height: auto;
+  float: right;
+  width: inherit;
+  min-width: inherit;
+}
+
+.message_wrapper_with_image_preview{
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  margin-right: 0px;
+  margin-left: -1px;
+  width: calc(20vw);
+  max-width: 300px !important;
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+  min-width: 100px;
+}
+
+.message_wrapper_without_image_preview{
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  width: calc(20vw);
+  max-width: 300px !important;
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+  min-width: 100px;
+}
+
+.msg_cell_with_preview{
+  max-width: 300px;
+  padding-bottom: 0px;
+  width: calc(20vw);
+  min-width: 100px;
+}
+
+.card_container_out {
+  border-radius: 20px;
+  height: auto;
+  width: inherit;
+  background-color: #ffff;
+  min-width: inherit;
+}
+
+.card_container_in {
+  border-radius: 20px;
+  height: auto;
+  width: inherit;
+  background-color: #ffff;
+  min-width: inherit;
+}
+
+.preview_image {
+  height: auto;
+  width: 101%;
+  right: 0px;
+  max-height: 200px;
+  background-color: #ffff;
+  object-fit: cover;
+  max-width: 300px;
+  min-width: inherit;
+}
+
+.preview_text_container {
+  padding: 15px 20px;
+  height: auto;
+  background-color: #ececec;
+  border-bottom-left-radius: 20px;
+  width: inherit;
+  border-bottom-right-radius: 20px
+}
+
+.preview_card_title {
+  font-size: 0.875em emoji;
+  color: #000;
+  width: 85%;
+  height: auto;
+  white-space: nowrap;
+  margin-top: 0px;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.preview_card_subtitle {
+  font-size: 11px;
+  margin-top: 5px;
+  color: #000;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 85%;
+  height: auto;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+}
+
+.preview_card_link {
+  font-size: 11px;
+  color: var(--timestamp-color);
+  margin-top: 15px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 85%;
+  height: 12px;
+}
+
+.message_text_with_preview {
+  padding-left: 14px;
+  padding-right: 14px;
+}
