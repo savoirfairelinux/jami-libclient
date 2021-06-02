@@ -306,6 +306,9 @@ Control {
         function onIsAudioOnlyChanged() { reset() }
         function onIsSIPChanged() { reset() }
         function onIsModeratorChanged() { reset() }
+        function onIsAudioMutedChanged() { reset() }
+        function onIsVideoMutedChanged() { reset() }
+        function onRecordingVisibleChanged() { reset() }
     }
 
     function reset() {
