@@ -49,7 +49,6 @@ Item {
     property bool participantIsModerator: false
     property bool participantIsMuted: false
     property bool participantIsModeratorMuted: false
-    property bool participantMenuActive: false
 
     z: 1
 

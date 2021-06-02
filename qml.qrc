@@ -144,5 +144,7 @@
         <file>src/commoncomponents/contextmenu/BaseContextMenu.qml</file>
         <file>src/commoncomponents/contextmenu/GeneralMenuItem.qml</file>
         <file>src/commoncomponents/contextmenu/GeneralMenuSeparator.qml</file>
+        <file>src/mainview/components/ParticipantOverlayButton.qml</file>
+        <file>src/mainview/components/ParticipantControlLayout.qml</file>
     </qresource>
 </RCC>
