@@ -820,12 +820,22 @@ function getMessageHtml(message_text) {
     const escaped_message = escapeHtml(message_text)
 
     var linkified_message = linkifyHtml(escaped_message, linkifyOptions)  // eslint-disable-line no-undef
-
     const textPart = document.createElement("pre")
     if (use_qt) {
         textPart.innerHTML = linkified_message
+
+        var i;
+        var hyperlinks = textPart.getElementsByTagName("a")
+        for (i = 0; i < hyperlinks.length; i++){
+            hyperlinks[i].classList.add("text_link")
+        }
     } else {
         textPart.innerHTML = replace_emojis(linkified_message)
+        var i;
+        var hyperlinks = textPart.getElementsByTagName("a")
+        for (i = 0; i < hyperlinks.length; i++){
+            hyperlinks[i].classList.add("text_link")
+        }
     }
 
     return textPart.outerHTML
@@ -1408,6 +1418,304 @@ function mediaInteraction(message_id, message_direction, link, ytid, errorHandle
 }
 
 /**
+ * Retrieves the title of a webpage which is used to fill out the preview of a hyperlink
+ * @param doc the DOM of the url that is being previewed
+ * @returns the title of the given webpage
+ */
+
+function getTitle(doc){
+    const ogTitle = doc.querySelector('meta[property="og:title"]');
+    if (ogTitle != null && ogTitle.content.length > 0) {
+      return ogTitle.content;
+    }
+    const twitterTitle = doc.querySelector('meta[name="twitter:title"]');
+    if (twitterTitle != null && twitterTitle.content.length > 0) {
+      return twitterTitle.content;
+    }
+    const docTitle = doc.title;
+    if (docTitle != null && docTitle.length > 0) {
+      return docTitle;
+    }
+    const h1 = doc.querySelector("h1").innerHTML;
+    if (h1 != null && h1.length > 0) {
+        console.log(h1)
+      return h1;
+    }
+    const h2 = doc.querySelector("h1").innerHTML;
+    if (h2 != null && h2.length > 0) {
+      return h2;
+    }
+    console.log("null")
+    return null;
+}
+/**
+ * Obtains a description of the webpage for the hyperlink preview
+ * @param doc the DOM of the url that is being previewed
+ * @returns a description of the webpage
+ */
+function getDescription(doc){
+    const ogDescription = doc.querySelector('meta[property="og:description"]');
+      if (ogDescription != null && ogDescription.content.length > 0) {
+        return ogDescription.content;
+      }
+      const twitterDescription = doc.querySelector(
+        'meta[name="twitter:description"]'
+      );
+      if (twitterDescription != null && twitterDescription.content.length > 0) {
+        return twitterDescription.content;
+      }
+      const metaDescription = doc.querySelector('meta[name="description"]');
+      if (metaDescription != null && metaDescription.content.length > 0) {
+        return metaDescription.content;
+      }
+      var paragraphs = doc.querySelectorAll("p");
+      let fstVisibleParagraph = null;
+      for (let i = 0; i < paragraphs.length; i++) {
+        if (
+          // if object is visible in dom
+          paragraphs[i].offsetParent !== null &&
+          !paragraphs[i].childElementCount != 0
+        ) {
+          fstVisibleParagraph = paragraphs[i].textContent;
+          break;
+        }
+      }
+      return fstVisibleParagraph;
+}
+/**
+ * Gets the domain of the provided url
+ * @param doc the DOM of the url that is being previewed
+ * @returns the domain of the website
+ */
+function getDomain(doc, url) {
+    const canonicalLink = doc.querySelector("link[rel=canonical]");
+    if (canonicalLink != null && canonicalLink.href.length > 0) {
+      return canonicalLink.href;
+    }
+    const ogUrlMeta = doc.querySelector('meta[property="og:url"]');
+    if (ogUrlMeta != null && ogUrlMeta.content.length > 0) {
+      return ogUrlMeta.content;
+    }
+
+    var domain = url
+    console.log("before")
+    console.log(domain)
+    domain = domain.replace ("https://", "")
+    domain = domain.replace("http://", "")
+    domain = domain.replace("www.", "")
+    console.log("DOMAIN")
+    console.log(domain)
+    return domain
+}
+/**
+ * Gets the image that represents a webpage.
+ * @param doc the DOM of the url that is being previewed
+ * @returns the image representing the url or null if no such image was found
+ */
+function getImage(doc, url) {
+    const ogImg = doc.querySelector('meta[property="og:image"]');
+    if (
+      ogImg != null &&
+      ogImg.content.length > 0)
+     {
+      return ogImg.content;
+    }
+    const imgRelLink = doc.querySelector('link[rel="image_src"]');
+    if (
+      imgRelLink != null &&
+      imgRelLink.href.length > 0)
+     {
+      return imgRelLink.href;
+    }
+    const twitterImg = doc.querySelector('meta[name="twitter:image"]');
+    if (twitterImg != null &&
+      twitterImg.content.length > 0) {
+      return twitterImg.content;
+    }
+
+    let imgs = Array.from(doc.getElementsByTagName("img"));
+    if (imgs.length > 0) {
+      imgs = imgs.filter(img => {
+        let addImg = true;
+        if (img.naturalWidth > img.naturalHeight) {
+          if (img.naturalWidth / img.naturalHeight > 3) {
+            addImg = false;
+          }
+        } else {
+          if (img.naturalHeight / img.naturalWidth > 3) {
+            addImg = false;
+          }
+        }
+        if (img.naturalHeight <= 50 || img.naturalWidth <= 50) {
+          addImg = false;
+        }
+        return addImg;
+      });
+      imgs.forEach(img =>
+        img.src.indexOf("//") === -1
+          ? (img.src = `${new URL(uri).origin}/${src}`)
+          : img.src
+      );
+      if (imgs[0] != undefined && ims[0] != null){
+        return imgs[0].src;
+      }
+    }
+
+    return null;
+
+}
+
+
+/** 
+ * Retrieves information needed for hyperlink preview and creates html element accordingly
+ * @param message_id id of the message that contains specificied url
+ * @param message_text text containing hyperlink
+ * @param message_direction string determining whether the message had been sent or received
+ */
+function fillPreview(message_id, message_text, message_direction) {
+    var title = null;
+    var description = null;
+    var img = null;
+    var linkArray = linkify.find(message_text);
+    var url = linkArray[0].href
+
+    //scrolling
+    var atEnd = messages.scrollTop >= messages.scrollHeight - messages.clientHeight - scrollDetectionThresh
+
+    fetch(url).then(function (response) {
+        return response.text();
+    }).then(function (html) {
+        // create DOM from html string
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, 'text/html');
+
+        if (url.includes("twitter.com")){
+            title = "Twitter. It's what's happening."
+        } else{
+            title = getTitle(doc);
+            img = getImage(doc, url)
+            description = getDescription(doc)
+        }
+
+        // Retrieve message that will be manipulated
+        var message_string = "message_"
+        var message_id_string = message_string.concat(message_id)
+        var main_text = document.getElementById(message_id_string)
+        // Get message wrapper
+        var internal_message_wrapper = main_text.getElementsByClassName("internal_mes_wrapper")[0]
+        var table = internal_message_wrapper.getElementsByTagName("table")[0]
+
+        internal_message_wrapper.getElementsByClassName("message_wrapper")[0].classList.add("message_wrapper_with_image_preview") 
+        internal_message_wrapper.getElementsByClassName("msg_cell")[0].classList.add("msg_cell_with_preview") 
+        // Create a new row in the message content table
+        var row_preview = document.createElement("tr");
+        // Create the cell that will wrap the preview
+        var preview_wrapper = document.createElement("td")
+
+        table.insertBefore(row_preview, table.getElementsByTagName("tr")[1])
+
+        var container;
+        preview_wrapper.setAttribute("class", message_direction === "in" ? "preview_wrapper_in" : "preview_wrapper_out")
+        container = document.createElement("div")
+        container.setAttribute("class", "containerTT")
+
+        row_preview.appendChild(preview_wrapper)
+        preview_wrapper.appendChild(container)
+        var cardContainer = document.createElement("div")
+        message_direction === "in" ? cardContainer.setAttribute("class", "card_container_in_TT") : cardContainer.setAttribute("class", "card_container_out_TT")
+        cardContainer.setAttribute("id", "preview_card_container")
+        container.appendChild(cardContainer)
+
+        var containerLink = document.createElement("a")
+        containerLink.setAttribute("class", "preview_container_link")
+        // add http to ensure that users will be taken to the webpage when the element is clicked
+        if (!url.includes("http://") && !url.includes("https://")){
+            url = "http://".concat(url)
+        }
+        if (url !== null){
+            containerLink.setAttribute("href", url)
+            containerLink.setAttribute("target", "_self")
+        }
+        cardContainer.appendChild(containerLink)
+
+        var cardImage = document.createElement("img")
+        cardImage.setAttribute("class", "preview_image")
+        if (img !== null){
+            cardImage.setAttribute("src", img)
+        }
+        containerLink.appendChild(cardImage)
+    
+        var textContainer = document.createElement("div")
+        textContainer.setAttribute("class", "preview_text_container")
+        containerLink.appendChild(textContainer)
+    
+        var cardTitle = document.createElement("pre")
+        cardTitle.setAttribute("class", "preview_card_title")
+        title !== null ? cardTitle.appendChild(document.createTextNode(title)) : cardTitle.appendChild(document.createTextNode("Page Title Unavailable"))
+        textContainer.appendChild(cardTitle)
+    
+        if (description !== null && description !== "" && description !== undefined){
+            var cardSubtitle = document.createElement("p")
+            cardSubtitle.setAttribute("class", "preview_card_subtitle")
+            cardSubtitle.appendChild(document.createTextNode(description))
+            textContainer.appendChild(cardSubtitle)
+        }
+        var domain = (new URL(url));
+        domain = (domain.hostname).replace("www.", "")
+        var cardLink = document.createElement("p")
+        cardLink.setAttribute("class", "preview_card_link")
+        cardLink.appendChild(document.createTextNode(domain))
+        
+        textContainer.appendChild(cardLink)
+
+        if (img != null){
+            var image_check = preview_wrapper.getElementsByTagName("img")[0]
+            image_check.onerror = function(){
+                this.src = null
+                var msg_wrap = internal_message_wrapper.getElementsByClassName("message_wrapper_with_image_preview")[0]
+                msg_wrap.classList.remove("message_wrapper_with_image_preview")
+                msg_wrap.classList.add("message_wrapper_without_image_preview")
+            }
+        } else{
+            var msg_wrap = internal_message_wrapper.getElementsByClassName("message_wrapper_with_image_preview")[0]
+            msg_wrap.classList.remove("message_wrapper_with_image_preview")
+            msg_wrap.classList.add("message_wrapper_without_image_preview")
+        }
+        
+        // Dummy cell added next to preview_wrapper to ensure correct spacing in table
+        var dummy_cell = document.createElement("td")
+        dummy_cell.setAttribute("class", "dummy_cell")
+        // The location of the dummy cell depends on the direction of the message
+        message_direction === "in" ? row_preview.insertBefore(dummy_cell, preview_wrapper) : row_preview.appendChild(dummy_cell)
+
+        if (atEnd) {
+            messages.scrollTop = messages.scrollHeight
+        }
+
+    }).catch(function (err) {
+        // Error occured while fetching document
+        console.warn('Warning', err);
+    });
+    
+   
+
+}
+/** 
+ * Build a new hyperlink interaction
+ * @param message_id id of the message
+ * @param message_direction string determining whether the message had been sent or received
+ * @param the text itself of the message
+ * @param htmlText the DOM to show
+ */
+function hyperlinkInteraction(message_id, message_direction, message_text, htmlText) {
+    var main_text = textInteraction(message_id, message_direction, htmlText)
+    exec_keeping_scroll_position(fillPreview,[message_id, message_text, message_direction])
+    return main_text
+
+}
+
+
+/**
  * Build a new text interaction
  * @param message_id
  * @param htmlText the DOM to show
@@ -1711,11 +2019,19 @@ function buildNewMessage(message_object) {
                 const ytid = (isYoutubeVideo(message_text)) ? youtube_id(message_text) : ""
                 if (!isTextToShow && (ytid || isImage(message_text))) {
                     type = "media"
-                    message_div.append(mediaInteraction(message_id, message_direction, message_text, ytid))
+                   // message_div.append(mediaInteraction(message_id, message_direction, message_text, ytid))
+                   message_div.append(hyperlinkInteraction(message_id, message_direction, message_text, htmlText))
                 }
             }
         }
-        if (type !== "media") {
+
+        if (type !== "media" && linkify.find(message_text).length > 0 && displayLinksEnabled){
+
+            message_div.append(hyperlinkInteraction(message_id, message_direction, message_text, htmlText))
+    
+        }
+    
+        else if (type !== "media") {
             type = "text"
             message_div.append(textInteraction(message_id, message_direction, htmlText))
         }
@@ -2592,3 +2908,5 @@ function setSendMessageContent(contentStr) {
     grow_text_area();
     reduce_send_container();
 }
+
+
