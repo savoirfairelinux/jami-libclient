@@ -386,6 +386,7 @@ SET(libringclient_WEB_chatview
    src/web-chatview/linkify-html.js
    src/web-chatview/linkify-string.js
    src/web-chatview/linkify.js
+   src/web-chatview/previewInfo.js
    src/web-chatview/qwebchannel.js
    src/web-chatview/web.gresource.xml
 )
