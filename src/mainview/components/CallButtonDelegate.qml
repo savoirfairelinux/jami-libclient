@@ -159,7 +159,7 @@ ItemDelegate {
 
         indicator: null
 
-        visible: menuAction !== undefined && !UrgentCount
+        visible: menuAction !== undefined && !UrgentCount && menuAction.enabled
 
         y: isVertical ? 0 : -4
         x: isVertical ? -4 : 0

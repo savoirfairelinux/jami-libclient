@@ -39,6 +39,8 @@ RowLayout {
     property string tipText: ""
     property string role: ""
 
+    property alias placeholderText: comboBoxOfLayout.placeholderText
+
     signal indexChanged
 
     function setCurrentIndex(index, emitIndexChanged = false) {

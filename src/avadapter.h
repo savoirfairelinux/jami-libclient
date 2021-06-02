@@ -37,8 +37,8 @@ public:
 
 Q_SIGNALS:
 
-    // Emitted when the size of the video capture device list changes.
-    void videoDeviceListChanged(bool listIsEmpty);
+    void audioDeviceListChanged(int inputs, int outputs);
+    void videoDeviceListChanged(int inputs);
 
     void screenCaptured(int screenNumber, QString source);
 
@@ -75,6 +75,10 @@ protected:
     Q_INVOKABLE void startAudioMeter(bool async);
     Q_INVOKABLE void stopAudioMeter(bool async);
 
+private Q_SLOTS:
+    void onAudioDeviceEvent();
+    void onVideoDeviceEvent();
+
 private:
     // Get screens arrangement rect relative to primary screen.
     const QRect getAllScreensBoundingRect();
@@ -87,9 +91,6 @@ private:
 
     // Used to track the capture device count.
     int deviceListSize_;
-
-    // Device changed slot.
-    void slotDeviceEvent();
 
     // Get the screen number
     int getScreenNumber() const;

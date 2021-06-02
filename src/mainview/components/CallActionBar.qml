@@ -58,9 +58,16 @@ Control {
     Connections {
         target: AvAdapter
 
-        // TODO: audio device list updates
-        function onVideoDeviceListChanged(listIsEmpty) {
+        function onAudioDeviceListChanged(inputs, outputs) {
+            audioInputDeviceListModel.reset();
+            audioInputMenuAction.enabled = inputs
+            audioOutputDeviceListModel.reset();
+            audioOutputMenuAction.enabled = outputs
+        }
+
+        function onVideoDeviceListChanged(inputs) {
             videoInputDeviceListModel.reset();
+            videoInputMenuAction.enabled = inputs
         }
     }
 
@@ -68,6 +75,7 @@ Control {
         Action {
             id: audioInputMenuAction
             text: JamiStrings.selectAudioInputDevice
+            Component.onCompleted: enabled = audioInputDeviceListModel.rowCount()
             property var listModel: AudioDeviceModel {
                 id: audioInputDeviceListModel
                 lrcInstance: LRCInstance
@@ -84,6 +92,7 @@ Control {
         Action {
             id: audioOutputMenuAction
             text: JamiStrings.selectAudioOutputDevice
+            Component.onCompleted: enabled = audioOutputDeviceListModel.rowCount()
             property var listModel: AudioDeviceModel {
                 id: audioOutputDeviceListModel
                 lrcInstance: LRCInstance
@@ -100,6 +109,7 @@ Control {
         Action {
             id: videoInputMenuAction
             text: JamiStrings.selectVideoDevice
+            Component.onCompleted: enabled = videoInputDeviceListModel.rowCount()
             property var listModel: VideoInputDeviceModel {
                 id: videoInputDeviceListModel
                 lrcInstance: LRCInstance

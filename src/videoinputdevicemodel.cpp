@@ -20,9 +20,6 @@
 
 #include "lrcinstance.h"
 
-#include "api/account.h"
-#include "api/contact.h"
-#include "api/conversation.h"
 #include "api/newdevicemodel.h"
 
 VideoInputDeviceModel::VideoInputDeviceModel(QObject* parent)
@@ -35,30 +32,9 @@ int
 VideoInputDeviceModel::rowCount(const QModelIndex& parent) const
 {
     if (!parent.isValid() && lrcInstance_) {
-        /*
-         * Count.
-         */
-        int deviceListSize = lrcInstance_->avModel().getDevices().size();
-        if (deviceListSize > 0) {
-            return deviceListSize;
-        } else {
-            return 1;
-        }
+        return lrcInstance_->avModel().getDevices().size();
     }
-    /*
-     * A valid QModelIndex returns 0 as no entry has sub-elements.
-     */
     return 0;
-}
-
-int
-VideoInputDeviceModel::columnCount(const QModelIndex& parent) const
-{
-    Q_UNUSED(parent);
-    /*
-     * Only need one column.
-     */
-    return 1;
 }
 
 QVariant
@@ -67,15 +43,6 @@ VideoInputDeviceModel::data(const QModelIndex& index, int role) const
     auto deviceList = lrcInstance_->avModel().getDevices();
     if (!index.isValid()) {
         return QVariant();
-    }
-
-    if (deviceList.size() == 0 && index.row() == 0) {
-        switch (role) {
-        case Role::DeviceName:
-            return QVariant(QObject::tr("No device"));
-        case Role::DeviceName_UTF8:
-            return QVariant(QObject::tr("No device").toUtf8());
-        }
     }
 
     if (deviceList.size() <= index.row()) {
@@ -115,37 +82,6 @@ VideoInputDeviceModel::roleNames() const
     roles[DeviceName_UTF8] = "DeviceName_UTF8";
     roles[isCurrent] = "isCurrent";
     return roles;
-}
-
-QModelIndex
-VideoInputDeviceModel::index(int row, int column, const QModelIndex& parent) const
-{
-    Q_UNUSED(parent);
-    if (column != 0) {
-        return QModelIndex();
-    }
-
-    if (row >= 0 && row < rowCount()) {
-        return createIndex(row, column);
-    }
-    return QModelIndex();
-}
-
-QModelIndex
-VideoInputDeviceModel::parent(const QModelIndex& child) const
-{
-    Q_UNUSED(child);
-    return QModelIndex();
-}
-
-Qt::ItemFlags
-VideoInputDeviceModel::flags(const QModelIndex& index) const
-{
-    auto flags = QAbstractItemModel::flags(index) | Qt::ItemNeverHasChildren | Qt::ItemIsSelectable;
-    if (!index.isValid()) {
-        return QAbstractItemModel::flags(index);
-    }
-    return flags;
 }
 
 void

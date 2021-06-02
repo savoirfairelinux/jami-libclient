@@ -226,6 +226,7 @@ Item {
     property string shareFile: qsTr("Share file")
     property string viewPlugin: qsTr("View plugin")
     property string noVideoDevice: qsTr("No video device")
+    property string notAvailable: qsTr("N/A")
 
     // Chatview header
     property string hideChatView: qsTr("Hide chat view")

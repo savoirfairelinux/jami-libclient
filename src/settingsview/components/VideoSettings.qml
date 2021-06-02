@@ -50,20 +50,19 @@ ColumnLayout {
         deviceComboBoxSetting.comboModel.reset()
 
         var count = deviceComboBoxSetting.comboModel.deviceCount()
-        var deviceListIsEmpty = count === 0
 
         previewWidget.visible = count > 0
         deviceComboBoxSetting.setEnabled(count > 0)
         resolutionComboBoxSetting.setEnabled(count > 0)
         fpsComboBoxSetting.setEnabled(count > 0)
 
-        if (deviceListIsEmpty) {
+        if (count === 0) {
             resolutionComboBoxSetting.comboModel.reset()
             fpsComboBoxSetting.comboModel.reset()
+        } else {
+            deviceComboBoxSetting.setCurrentIndex(
+                        deviceComboBoxSetting.comboModel.getCurrentIndex(), true)
         }
-
-        deviceComboBoxSetting.setCurrentIndex(
-                    deviceComboBoxSetting.comboModel.getCurrentIndex(), true)
         hardwareAccelControl.checked = AVModel.getHardwareAcceleration()
     }
 
@@ -132,8 +131,8 @@ ColumnLayout {
         }
 
         try {
-           SettingsAdapter.set_Video_Settings_Rate_And_Resolution(
-               AVModel.getCurrentVideoCaptureDevice(),rate, resolution)
+            SettingsAdapter.set_Video_Settings_Rate_And_Resolution(
+                        AVModel.getCurrentVideoCaptureDevice(),rate, resolution)
             updatePreviewRatio(resolution)
         } catch(error){ console.warn(error.message) }
     }
@@ -176,6 +175,8 @@ ColumnLayout {
         onIndexChanged: {
             slotDeviceBoxCurrentIndexChanged(modelIndex)
         }
+
+        placeholderText: JamiStrings.noVideoDevice
     }
 
     SettingsComboBox {
@@ -220,7 +221,6 @@ ColumnLayout {
         }
     }
 
-    // Toggle switch to enable hardware acceleration
     ToggleSwitch {
         id: hardwareAccelControl
 

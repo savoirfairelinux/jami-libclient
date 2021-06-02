@@ -36,7 +36,8 @@ AvAdapter::AvAdapter(LRCInstance* instance, QObject* parent)
     auto& avModel = lrcInstance_->avModel();
 
     deviceListSize_ = avModel.getDevices().size();
-    connect(&avModel, &lrc::api::AVModel::deviceEvent, this, &AvAdapter::slotDeviceEvent);
+    connect(&avModel, &lrc::api::AVModel::audioDeviceEvent, this, &AvAdapter::onAudioDeviceEvent);
+    connect(&avModel, &lrc::api::AVModel::deviceEvent, this, &AvAdapter::onVideoDeviceEvent);
     connect(lrcInstance_->renderer(), &RenderManager::previewFrameStarted, [this]() {
         // TODO: listen to the correct signals that are needed to be added in daemon or lrc
         auto callId = getCurrentCallId();
@@ -235,21 +236,17 @@ AvAdapter::stopAudioMeter(bool async)
     lrcInstance_->stopAudioMeter(async);
 }
 
-QString
-AvAdapter::getCurrentCallId()
+void
+AvAdapter::onAudioDeviceEvent()
 {
-    try {
-        const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-            lrcInstance_->get_selectedConvUid());
-        auto call = lrcInstance_->getCallInfoForConversation(convInfo);
-        return call ? call->id : QString();
-    } catch (...) {
-        return QString();
-    }
+    auto& avModel = lrcInstance_->avModel();
+    auto inputs = avModel.getAudioInputDevices().size();
+    auto outputs = avModel.getAudioOutputDevices().size();
+    Q_EMIT audioDeviceListChanged(inputs, outputs);
 }
 
 void
-AvAdapter::slotDeviceEvent()
+AvAdapter::onVideoDeviceEvent()
 {
     auto& avModel = lrcInstance_->avModel();
     auto defaultDevice = avModel.getDefaultDevice();
@@ -305,9 +302,22 @@ AvAdapter::slotDeviceEvent()
         }
     }
 
-    Q_EMIT videoDeviceListChanged(currentDeviceListSize == 0);
+    Q_EMIT videoDeviceListChanged(currentDeviceListSize);
 
     deviceListSize_ = currentDeviceListSize;
+}
+
+QString
+AvAdapter::getCurrentCallId()
+{
+    try {
+        const auto& convInfo = lrcInstance_->getConversationFromConvUid(
+            lrcInstance_->get_selectedConvUid());
+        auto call = lrcInstance_->getCallInfoForConversation(convInfo);
+        return call ? call->id : QString();
+    } catch (...) {
+        return QString();
+    }
 }
 
 int

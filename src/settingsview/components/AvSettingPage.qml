@@ -49,7 +49,6 @@ Rectangle {
 
         width: Math.min(JamiTheme.maximumWidthSettingsView, root.width)
 
-        // Audio
         AudioSettings {
             id: audioSettings
 
@@ -60,7 +59,6 @@ Rectangle {
             itemWidth: preferredColumnWidth
         }
 
-        // Video
         VideoSettings {
             id: videoSettings
 

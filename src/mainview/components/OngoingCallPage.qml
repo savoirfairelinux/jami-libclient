@@ -215,8 +215,8 @@ Rectangle {
                     Connections {
                         target: AvAdapter
 
-                        function onVideoDeviceListChanged(listIsEmpty) {
-                            previewRenderer.visible = !listIsEmpty
+                        function onVideoDeviceListChanged(inputs) {
+                            previewRenderer.visible = (inputs !== 0)
                         }
                     }
 

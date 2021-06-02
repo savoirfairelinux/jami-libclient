@@ -28,8 +28,15 @@ import net.jami.Constants 1.0
 ComboBox {
     id: root
 
-    property string tooltipText:""
+    property string tooltipText
     property string comboBoxBackgroundColor: JamiTheme.editBackgroundColor
+    property string placeholderText
+
+    displayText: currentIndex !== -1 ?
+                     currentText :
+                     (placeholderText !== "" ?
+                          placeholderText :
+                          JamiStrings.notAvailable)
 
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
     ToolTip.visible: hovered && (tooltipText.length > 0)
@@ -39,8 +46,11 @@ ComboBox {
         width: root.width
         contentItem: Text {
             text: {
-                var currentItem = root.delegateModel.items.get(index)
-                return currentItem.model[root.textRole].toString()
+                if (index >= 0) {
+                    var currentItem = root.delegateModel.items.get(index)
+                    return currentItem.model[root.textRole].toString()
+                }
+                return ""
             }
             color: JamiTheme.textColor
             font: root.font
@@ -106,9 +116,10 @@ ComboBox {
         padding: 1
 
         contentItem: ListView {
+            id: listView
             clip: true
             implicitHeight: contentHeight
-            model:  root.delegateModel
+            model: root.delegateModel
             currentIndex: root.highlightedIndex
 
             ScrollIndicator.vertical: ScrollIndicator { }
