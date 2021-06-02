@@ -181,6 +181,7 @@ public:
 
 Q_SIGNALS:
     void chatHandlerStatusUpdated(bool isVisible);
+    void modelUpdated();
 };
 
 } // namespace api
