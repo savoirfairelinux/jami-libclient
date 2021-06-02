@@ -159,7 +159,7 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: viewPlugin
 
-            canTrigger: UtilsAdapter.checkShowPluginsButton(true)
+            canTrigger: PluginAdapter.callMediaHandlersListCount
             itemName: JamiStrings.viewPlugin
             iconSource: "qrc:/images/icons/extension_24dp.svg"
             onClicked: {

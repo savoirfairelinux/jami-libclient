@@ -31,6 +31,9 @@
 class PluginAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
+    QML_PROPERTY(int, callMediaHandlersListCount)
+    QML_PROPERTY(int, chatHandlersListCount)
+
 public:
     explicit PluginAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~PluginAdapter() = default;
@@ -55,6 +58,8 @@ Q_SIGNALS:
     void pluginUninstalled();
 
 private:
+    void updateHandlersListCount();
+
     std::unique_ptr<PluginHandlerItemListModel> pluginHandlerListModel_;
     std::unique_ptr<PreferenceItemListModel> preferenceItemListModel_;
     std::unique_ptr<PluginItemListModel> pluginItemListModel_;

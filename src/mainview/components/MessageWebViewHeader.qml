@@ -186,14 +186,7 @@ Rectangle {
             PushButton {
                 id: selectPluginButton
 
-                visible: UtilsAdapter.checkShowPluginsButton(false)
-
-                Connections {
-                    target: PluginAdapter
-                    function onPluginHandlersUpdateStatus() {
-                        selectPluginButton.visible = UtilsAdapter.checkShowPluginsButton(false)
-                    }
-                }
+                visible: PluginAdapter.chatHandlersListCount
 
                 anchors.right: sendContactRequestButton.visible ?
                                    sendContactRequestButton.left :

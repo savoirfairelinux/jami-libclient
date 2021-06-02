@@ -22,7 +22,13 @@
 
 PluginAdapter::PluginAdapter(LRCInstance* instance, QObject* parent)
     : QmlAdapterBase(instance, parent)
-{}
+{
+    updateHandlersListCount();
+    connect(&lrcInstance_->pluginModel(),
+            &lrc::api::PluginModel::modelUpdated,
+            this,
+            &PluginAdapter::updateHandlersListCount);
+}
 
 QVariant
 PluginAdapter::getMediaHandlerSelectableModel(const QString& callId)
@@ -80,4 +86,16 @@ PluginAdapter::getPluginPreferencesCategories(const QString& pluginId, bool remo
     if (removeLast)
         categories.pop_back();
     return categories;
+}
+
+void
+PluginAdapter::updateHandlersListCount()
+{
+    if (lrcInstance_->pluginModel().getPluginsEnabled()) {
+        set_callMediaHandlersListCount(lrcInstance_->pluginModel().getCallMediaHandlers().size());
+        set_chatHandlersListCount(lrcInstance_->pluginModel().getChatHandlers().size());
+    } else {
+        set_callMediaHandlersListCount(0);
+        set_chatHandlersListCount(0);
+    }
 }

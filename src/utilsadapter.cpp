@@ -300,17 +300,6 @@ UtilsAdapter::getAbsPath(QString path)
 #endif
 }
 
-bool
-UtilsAdapter::checkShowPluginsButton(bool isCall)
-{
-    if (isCall)
-        return lrcInstance_->pluginModel().getPluginsEnabled()
-               && (lrcInstance_->pluginModel().getCallMediaHandlers().size() > 0);
-    else
-        return lrcInstance_->pluginModel().getPluginsEnabled()
-               && (lrcInstance_->pluginModel().getChatHandlers().size() > 0);
-}
-
 QString
 UtilsAdapter::fileName(const QString& path)
 {

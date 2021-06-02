@@ -71,7 +71,6 @@ public:
     Q_INVOKABLE QString toFileInfoName(QString inputFileName);
     Q_INVOKABLE QString toFileAbsolutepath(QString inputFileName);
     Q_INVOKABLE QString getAbsPath(QString path);
-    Q_INVOKABLE bool checkShowPluginsButton(bool isCall);
     Q_INVOKABLE QString fileName(const QString& path);
     Q_INVOKABLE QString getExt(const QString& path);
     Q_INVOKABLE bool isImage(const QString& fileExt);
