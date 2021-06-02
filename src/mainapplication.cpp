@@ -489,6 +489,9 @@ MainApplication::initSystray()
     QAction* quitAction = new QAction(quitString, this);
     connect(quitAction, &QAction::triggered, this, &MainApplication::cleanup);
 
+    QAction* restoreAction = new QAction(tr("&Show Jami"), this);
+    connect(restoreAction, &QAction::triggered, this, &MainApplication::restoreApp);
+
     connect(systemTray_.get(),
             &QSystemTrayIcon::activated,
             [this](QSystemTrayIcon::ActivationReason reason) {
@@ -505,6 +508,7 @@ MainApplication::initSystray()
                 }
             });
 
+    systrayMenu->addAction(restoreAction);
     systrayMenu->addAction(quitAction);
     systemTray_->setContextMenu(systrayMenu);
     systemTray_->show();
