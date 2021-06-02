@@ -889,12 +889,15 @@ function getMessageHtml(message_text) {
     const escaped_message = escapeHtml(message_text)
 
     var linkified_message = linkifyHtml(escaped_message, linkifyOptions)  // eslint-disable-line no-undef
-
     const textPart = document.createElement("pre")
     if (use_qt) {
         textPart.innerHTML = linkified_message
     } else {
         textPart.innerHTML = replace_emojis(linkified_message)
+    }
+    var hyperlinks = textPart.getElementsByTagName("a")
+    for (var i = 0; i < hyperlinks.length; i++){
+        hyperlinks[i].classList.add("text_link")
     }
 
     return textPart.outerHTML
@@ -1379,13 +1382,12 @@ function buildVideoContainer(linkElt) {
 }
 
 /**
- * Try to show an image or a video link (youtube for now)
+ * Try to show an image
  * @param message_id
  * @param link to show
- * @param ytid if it's a youtube video
  * @param errorHandler the new media's onerror field will be set to this function
  */
-function mediaInteraction(message_id, message_direction, link, ytid, errorHandler) {
+function mediaInteraction(message_id, message_direction, link, errorHandler) {
     /* TODO promise?
      Try to display images. */
     const media_wrapper = document.createElement("div")
@@ -1396,7 +1398,7 @@ function mediaInteraction(message_id, message_direction, link, ytid, errorHandle
     linkElt.style.border = "none"
     const imageElt = document.createElement("img")
 
-    imageElt.src = ytid ? `http://img.youtube.com/vi/${ytid}/0.jpg` : link
+    imageElt.src = link
 
     /* Note, here, we don't check the size of the image.
      in the future, we can check the content-type and content-length with a request
@@ -1440,18 +1442,276 @@ function mediaInteraction(message_id, message_direction, link, ytid, errorHandle
     }
 
     linkElt.appendChild(imageElt)
-
-    if (ytid) {
-        media_wrapper.appendChild(buildVideoContainer(linkElt))
-    } else {
-        media_wrapper.appendChild(linkElt)
-    }
-
+    media_wrapper.appendChild(linkElt)
     const internal_mes_wrapper = document.createElement("div")
     internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
     internal_mes_wrapper.appendChild(media_wrapper)
 
     return internal_mes_wrapper
+}
+
+/**
+ * Retrieves the title of a webpage which is used to fill out the preview of a hyperlink
+ * @param doc the DOM of the url that is being previewed
+ * @returns the title of the given webpage
+ */
+
+function getTitle(doc){
+    const og_title = doc.querySelector("meta[property=\"og:title\"]")
+    if (og_title !== null && og_title.content.length > 0) {
+        return og_title.content
+    }
+    const twitter_title = doc.querySelector("meta[name=\"twitter:title\"]")
+    if (twitter_title !== null && twitter_title.content.length > 0) {
+        return twitter_title.content
+    }
+    const doc_title = doc.title
+    if (doc_title !== null && doc_title.length > 0) {
+        return doc_title
+    }
+    if (doc.querySelector("h1") !== null){
+        const header_1 = doc.querySelector("h1").innerHTML
+        if (header_1 !== null && header_1.length > 0) {
+            return header_1
+        }
+    }
+    if (doc.querySelector("h2") !== null){
+        const header_2 = doc.querySelector("h2").innerHTML
+        if (header_2 !== null && header_2.length > 0) {
+            return header_2
+        }
+    }
+    return null
+}
+
+/**
+ * Obtains a description of the webpage for the hyperlink preview
+ * @param doc the DOM of the url that is being previewed
+ * @returns a description of the webpage
+ */
+function getDescription(doc){
+    const og_description = doc.querySelector("meta[property=\"og:description\"]")
+    if (og_description !== null && og_description.content.length > 0) {
+        return og_description.content
+    }
+    const twitter_description = doc.querySelector("meta[name=\"twitter:description\"]")
+    if (twitter_description !== null && twitter_description.content.length > 0) {
+        return twitter_description.content
+    }
+    const meta_description = doc.querySelector("meta[name=\"description\"]")
+    if (meta_description !== null && meta_description.content.length > 0) {
+        return meta_description.content
+    }
+    var all_paragraphs = doc.querySelectorAll("p")
+    let first_visible_paragraph = null
+    for (var i = 0; i < all_paragraphs.length; i++) {
+        if ( all_paragraphs[i].offsetParent !== null && !all_paragraphs[i].childElementCount != 0 ) {
+            first_visible_paragraph = all_paragraphs[i].textContent
+            break
+        }
+    }
+    return first_visible_paragraph
+}
+
+/**
+ * Gets the image that represents a webpage.
+ * @param doc the DOM of the url that is being previewed
+ * @returns the image representing the url or null if no such image was found
+ */
+function getImage(doc) {
+    const og_image = doc.querySelector("meta[property=\"og:image\"]")
+    if (og_image !== null && og_image.content.length > 0){
+        return og_image.content
+    }
+    const image_rel_link = doc.querySelector("link[rel=\"image_src\"]")
+    if (image_rel_link !== null && image_rel_link.href.length > 0){
+        return image_rel_link.href
+    }
+    const twitter_img = doc.querySelector("meta[name=\"twitter:image\"]")
+    if (twitter_img !== null && twitter_img.content.length > 0) {
+        return twitter_img.content
+    }
+
+    let imgs = Array.from(doc.getElementsByTagName("img"))
+    if (imgs.length > 0) {
+        imgs = imgs.filter(img => {
+            let add_image = true
+            if (img.naturalWidth > img.naturalHeight) {
+                if (img.naturalWidth / img.naturalHeight > 3) {
+                    add_image = false
+                }
+            } else {
+                if (img.naturalHeight / img.naturalWidth > 3) {
+                    add_image = false
+                }
+            }
+            if (img.naturalHeight <= 50 || img.naturalWidth <= 50) {
+                add_image = false
+            }
+            return add_image
+        })
+    }
+    return null
+}
+
+/**
+ * @param container_link the anchor tag that is the parent of the text container
+ * @param title title of the website page
+ * @param description description of the website
+ * @param url url that is sent in the message
+ */
+function buildPreviewTextContainer(container_link, title, description, url){
+    var text_container = document.createElement("div")
+    text_container.setAttribute("class", "preview_text_container")
+    container_link.appendChild(text_container)
+
+    var card_title = document.createElement("pre")
+    card_title.setAttribute("class", "preview_card_title")
+    title !== null ? card_title.appendChild(document.createTextNode(title)) : card_title.appendChild(document.createTextNode(""))
+    text_container.appendChild(card_title)
+    if (description !== null && description !== "" && description !== undefined){
+        var card_subtitle = document.createElement("p")
+        card_subtitle.setAttribute("class", "preview_card_subtitle")
+        card_subtitle.appendChild(document.createTextNode(description))
+        text_container.appendChild(card_subtitle)
+    }
+    // reduce url to just its domain for aesthetic purposes
+    var domain = (new URL(url))
+    domain = (domain.hostname).replace("www.", "")
+    var card_link = document.createElement("p")
+    card_link.setAttribute("class", "preview_card_link")
+    card_link.appendChild(document.createTextNode(domain))
+    text_container.appendChild(card_link)
+}
+
+/**
+ * @param internal_message_wrapper the message wrapper of the message being manipulated
+ * @param title title retrieved from url
+ * @param img image retrieved form url
+ * @param description description of website
+ * @param url url that was sent
+ * @param message_direction whether the message is being received or sent
+ */
+function buildPreviewHtml(internal_message_wrapper, title, img, description, url, message_direction) {
+    // Create a wrapper for the preview
+    var external_preview_wrapper = document.createElement("div")
+    external_preview_wrapper.setAttribute("class", "msg_cell_with_preview")
+    // Create the cell that will wrap the preview
+    var preview_wrapper = document.createElement("div")
+    external_preview_wrapper.appendChild(preview_wrapper)
+    var timestamp = internal_message_wrapper.getElementsByClassName("timestamp")[0]
+    // check if theres a timesstamp and append accordingly
+    timestamp ? internal_message_wrapper.insertBefore(external_preview_wrapper, timestamp) : internal_message_wrapper.appendChild(external_preview_wrapper)
+    preview_wrapper.setAttribute("class", message_direction === "in" ? "preview_wrapper_in" : "preview_wrapper_out")
+    var container = document.createElement("div")
+    container.setAttribute("class", "preview_card_container")
+    preview_wrapper.appendChild(container)
+    var card_container = document.createElement("div")
+    message_direction === "in" ? card_container.setAttribute("class", "card_container_in") : card_container.setAttribute("class", "card_container_out")
+    container.appendChild(card_container)
+    var container_link = document.createElement("a")
+    container_link.setAttribute("class", "preview_container_link")
+    // add http to ensure that users will be taken
+    // to the webpage when the element is clicked
+    // and set url of anchor tag
+    if (url !== null){
+        if (!url.includes("http://") && !url.includes("https://")){
+            url = "http://".concat(url)
+        }
+        container_link.setAttribute("href", url)
+        container_link.setAttribute("target", "_self")
+    }
+    card_container.appendChild(container_link)
+    // create image and set image found as property if one exists
+    var card_image = document.createElement("img")
+    card_image.setAttribute("class", "preview_image")
+    if (img !== null && img !== undefined){
+        card_image.setAttribute("src", img)
+        card_image.onerror = function(){
+            card_image.remove()
+            var msg_wrap = internal_message_wrapper.getElementsByClassName("message_wrapper_with_image_preview")
+            if (msg_wrap.length > 0){
+                msg_wrap[0].classList.add("message_wrapper_without_image_preview")
+                msg_wrap[0].classList.remove("message_wrapper_with_image_preview")
+            }
+        }
+    }
+    else if (img === null){
+        var msg_wrap = internal_message_wrapper.getElementsByClassName("message_wrapper_with_image_preview")[0]
+        msg_wrap.classList.remove("message_wrapper_with_image_preview")
+        msg_wrap.classList.add("message_wrapper_without_image_preview")
+    }
+    // if there is an image associated with the hyperlink
+    // then the message's css must be adjusted accordingly
+    container_link.appendChild(card_image)
+    // create container that will hold the title, description and domain
+    buildPreviewTextContainer(container_link, title, description, url)
+}
+
+/**
+ * Retrieves information needed for hyperlink preview and creates html element accordingly
+ * @param message_id id of the message that contains specificied url
+ * @param message_text text containing hyperlink
+ * @param message_direction string determining whether the message had been sent or received
+ */
+function createHyperlinkPreview(message_id, message_text, message_direction) {
+    var title = null
+    var description = null
+    var img = null
+    var link_array = linkify.find(message_text)
+    console.log(link_array)
+    var url = link_array[0].href
+    //scrolling
+    var atEnd = messages.scrollTop >= messages.scrollHeight - messages.clientHeight - scrollDetectionThresh
+
+    fetch(url).then(function (response) {
+        return response.text()
+    }).then(function (html) {
+        // create DOM from html string
+        var parser = new DOMParser()
+        var doc = parser.parseFromString(html, "text/html")
+        if (!url.includes("twitter.com")){
+            title = getTitle(doc)
+            img = getImage(doc, url)
+            description = getDescription(doc)
+        } else{
+            title = "Twitter. It's what's happening."
+        }
+        // Retrieve message that will be manipulated
+        var message_string = "message_"
+        var message_id_string = message_string.concat(message_id)
+        var main_text = document.getElementById(message_id_string)
+        // ensure that message exists
+        if (main_text === null ){
+            return
+        }
+        // Get message wrapper
+        var internal_message_wrapper = main_text.getElementsByClassName("internal_mes_wrapper")[0]
+        internal_message_wrapper.getElementsByClassName("message_wrapper")[0].classList.add("message_wrapper_with_image_preview")
+        internal_message_wrapper.getElementsByClassName("message_text")[0].classList.add("message_text_with_preview")
+
+        buildPreviewHtml(internal_message_wrapper, title, img, description, url, message_direction)
+        // fix scrolling
+        if (atEnd) {
+            messages.scrollTop = messages.scrollHeight
+        }
+    }).catch(function (err) {
+        // Error occured while fetching document
+        console.warn("Warning", err)
+    })
+}
+
+/**
+ * Build a new hyperlink interaction
+ * @param message_id id of the message
+ * @param message_direction string determining whether the message had been sent or received
+ * @param the text itself of the message
+ * @param htmlText the DOM to show
+ */
+function hyperlinkInteraction(message_id, message_direction, message_text, htmlText) {
+    var main_text = textInteraction(message_id, message_direction, htmlText)
+    createHyperlinkPreview (message_id, message_text, message_direction)
+    return main_text
 }
 
 /**
@@ -1684,14 +1944,16 @@ function buildNewMessage(message_object) {
             const links = DOMMsg.querySelectorAll("a")
             if (DOMMsg.childNodes.length && links.length) {
                 var isTextToShow = (DOMMsg.childNodes[0].childNodes.length > 1)
-                const ytid = (isYoutubeVideo(message_text)) ? youtube_id(message_text) : ""
-                if (!isTextToShow && (ytid || isImage(message_text))) {
+                if (!isTextToShow && (isImage(message_text))) {
                     type = "media"
-                    message_div.append(mediaInteraction(message_id, message_direction, message_text, ytid))
+                    message_div.append(mediaInteraction(message_id, message_direction, message_text))
                 }
             }
         }
-        if (type !== "media") {
+        if (type !== "media" && linkify.find(message_text).length > 0 && displayLinksEnabled){
+            message_div.append(hyperlinkInteraction(message_id, message_direction, message_text, htmlText))
+        }
+        else if (type !== "media") {
             type = "text"
             message_div.append(textInteraction(message_id, message_direction, htmlText))
         }
