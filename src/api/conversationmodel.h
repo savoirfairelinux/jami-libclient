@@ -111,21 +111,21 @@ public:
      * @param uid conversation uid
      * @return reference to conversation info with given uid
      */
-    OptRef<conversation::Info> getConversationForUid(const QString& uid);
+    OptRef<conversation::Info> getConversationForUid(const QString& uid) const;
 
     /**
      * Get conversation for a given peer uri
      * @param uri peer uri
      * @return reference to conversation info with given peer uri
      */
-    OptRef<conversation::Info> getConversationForPeerUri(const QString& uri);
+    OptRef<conversation::Info> getConversationForPeerUri(const QString& uri) const;
 
     /**
      * Get conversation for a given call id
      * @param callId call id
      * @return reference to conversation info with given call id
      */
-    OptRef<conversation::Info> getConversationForCallId(const QString& callId);
+    OptRef<conversation::Info> getConversationForCallId(const QString& callId) const;
 
     /**
      * Get conversations that could be added to conference
@@ -359,6 +359,15 @@ public:
      */
     int pendingRequestCount() const;
     const VectorString peersForConversation(const QString& conversationId);
+
+    // Presentation
+
+    /**
+     * Get conversation title. This means the title to show in the smartlist
+     * @param conversationId
+     * @return the title to display
+     */
+    QString title(const QString& conversationId) const;
 
 Q_SIGNALS:
     /**
