@@ -52,8 +52,8 @@ private:
     QSharedMemory sharedMem_;
     QSystemSemaphore memLock_;
 
-    QLocalSocket* socket_;
-    QLocalServer* server_;
+    QLocalSocket* socket_ {nullptr};
+    QLocalServer* server_ {nullptr};
 
     Q_DISABLE_COPY(RunGuard)
 };
