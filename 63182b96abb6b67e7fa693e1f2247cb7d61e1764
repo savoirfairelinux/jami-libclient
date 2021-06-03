@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "7660c888_894c3aa4",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 1574,
+      "author": {
+        "id": 920
+      },
+      "writtenOn": "2021-06-03T17:59:24Z",
+      "side": 1,
+      "message": "I used eslint on the rest of my code except for line 1573 where it says \"linkify is not defined\". However, if i remove it and just use the find function alone, the code doesn\u0027t work.",
+      "parentUuid": "36bdcd5e_e6da939f",
+      "range": {
+        "startLine": 1572,
+        "startChar": 19,
+        "endLine": 1574,
+        "endChar": 31
+      },
+      "revId": "63182b96abb6b67e7fa693e1f2247cb7d61e1764",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8440b09b_5c69516b",
         "filename": "src/web-chatview/chatview.js",
         "patchSetId": 5
