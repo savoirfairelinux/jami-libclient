@@ -116,7 +116,6 @@ ItemDelegate {
         containerHeight: size
 
         anchors.centerIn: parent
-        horizontalAlignment: Text.AlignHCenter
         source: ItemAction ? ItemAction.icon.source : ""
         color: ItemAction ? ItemAction.icon.color : null
 
@@ -189,7 +188,6 @@ ItemDelegate {
         contentItem: ResponsiveImage {
             source: isVertical ? "qrc:/images/icons/chevron_left_black_24dp.svg" :
                                  "qrc:/images/icons/expand_less-24px.svg"
-            smooth: true
             color: "white"
         }
 
@@ -217,7 +215,6 @@ ItemDelegate {
                                 IconSource : (menuItem.ListView.isCurrentItem ?
                                                   "qrc:/images/icons/check_box-24px.svg" :
                                                   "qrc:/images/icons/check_box_outline_blank-24px.svg")
-                    smooth: true
                     color: "white"
                 }
                 Text {

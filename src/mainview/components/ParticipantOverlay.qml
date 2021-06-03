@@ -129,57 +129,46 @@ Item {
             ResponsiveImage {
                 id: isHostIndicator
 
-                visible: participantIsHost
-
                 Layout.alignment: Qt.AlignVCenter
                 Layout.leftMargin: 6
+
                 containerHeight: 12
                 containerWidth: 12
 
+                visible: participantIsHost
+
                 source: "qrc:/images/icons/star_outline-24px.svg"
-                layer {
-                    enabled: true
-                    effect: ColorOverlay { color: JamiTheme.whiteColor }
-                    mipmap: false
-                    smooth: true
-                }
+                color: JamiTheme.whiteColor
             }
 
             ResponsiveImage {
                 id: isModeratorIndicator
 
-                visible: participantIsModerator
-
                 Layout.alignment: Qt.AlignVCenter
                 Layout.leftMargin: 6
+
                 containerHeight: 12
                 containerWidth: 12
 
+                visible: participantIsModerator
+
                 source: "qrc:/images/icons/moderator.svg"
-                layer {
-                    enabled: true
-                    effect: ColorOverlay { color: JamiTheme.whiteColor }
-                    mipmap: false
-                    smooth: true
-                }
+                color: JamiTheme.whiteColor
             }
 
             ResponsiveImage {
                 id: isMutedIndicator
 
-                visible: participantIsMuted
                 Layout.alignment: Qt.AlignVCenter
                 Layout.leftMargin: 6
+
                 containerHeight: 12
                 containerWidth: 12
 
+                visible: participantIsMuted
+
                 source: "qrc:/images/icons/mic_off-24px.svg"
-                layer {
-                    enabled: true
-                    effect: ColorOverlay { color: JamiTheme.whiteColor }
-                    mipmap: false
-                    smooth: true
-                }
+                color: JamiTheme.whiteColor
             }
         }
     }

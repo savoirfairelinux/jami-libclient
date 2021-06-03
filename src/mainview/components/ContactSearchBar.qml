@@ -63,11 +63,7 @@ Rectangle {
         height: 20
 
         source: "qrc:/images/icons/ic_baseline-search-24px.svg"
-
-        layer.enabled: true
-        layer.effect: ColorOverlay {
-            color: JamiTheme.primaryForegroundColor
-        }
+        color: JamiTheme.primaryForegroundColor
     }
 
     TextField {

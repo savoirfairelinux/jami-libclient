@@ -74,7 +74,6 @@ MenuItem {
                 visible: status === Image.Ready
 
                 color: iconColor !== "" ? iconColor : JamiTheme.textColor
-                smooth: true
                 opacity: 0.7
             }
 

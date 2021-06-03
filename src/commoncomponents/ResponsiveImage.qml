@@ -22,7 +22,7 @@ import QtGraphicalEffects 1.14
 
 import net.jami.Models 1.0
 
-Image {
+Item {
     id: root
 
     property real containerWidth: 30
@@ -31,8 +31,8 @@ Image {
     property int padding: 0
     property point offset: Qt.point(0, 0)
 
-    property string normalSource
-    property string checkedSource
+    property alias source: image.source
+    property alias status: image.status
     property string color: "transparent"
 
     property bool isSvg: {
@@ -47,29 +47,37 @@ Image {
     width: Math.trunc(containerWidth * Math.sqrt(2) * 0.5) + 3 - padding
     height: Math.trunc(containerHeight * Math.sqrt(2) * 0.5) + 3 - padding
 
-    fillMode: Image.PreserveAspectFit
-    smooth: false
-    antialiasing: false
-    asynchronous: true
-
-    layer {
-        enabled: true
-        effect: ColorOverlay { color: root.color }
-    }
-
-    function setSourceSize() {
-        sourceSize = undefined
-        if (isSvg)
-            sourceSize = Qt.size(width, height)
-    }
-
     Connections {
         target: ScreenInfo
 
         function onDevicePixelRatioChanged() {
-            setSourceSize()
+            image.setSourceSize()
         }
     }
 
-    Component.onCompleted: setSourceSize()
+    Image {
+        id: image
+
+        anchors.fill: root
+
+        fillMode: Image.PreserveAspectFit
+        smooth: true
+        antialiasing: true
+        asynchronous: true
+        visible: false
+
+        function setSourceSize() {
+            sourceSize = undefined
+            if (isSvg)
+                sourceSize = Qt.size(width, height)
+        }
+
+        Component.onCompleted: setSourceSize()
+    }
+
+    ColorOverlay {
+        anchors.fill: image
+        source: image
+        color: root.color
+    }
 }

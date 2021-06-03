@@ -54,10 +54,9 @@ Rectangle {
                 Layout.preferredHeight: Math.min(welcomePageColumnLayout.width / 3, 110)
                 Layout.bottomMargin: 10
 
-                smooth: true
-                antialiasing: true
-
-                source: JamiTheme.darkTheme? "qrc:/images/logo-jami-standard-coul-white.svg" : "qrc:/images/logo-jami-standard-coul.svg"
+                source: JamiTheme.darkTheme ?
+                            "qrc:/images/logo-jami-standard-coul-white.svg" :
+                            "qrc:/images/logo-jami-standard-coul.svg"
             }
 
             Label {

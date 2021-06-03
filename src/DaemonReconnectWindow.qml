@@ -62,8 +62,6 @@ ApplicationWindow {
 
         anchors.fill: parent
 
-        smooth: true
-        antialiasing: true
         source: "qrc:/images/logo-jami-standard-coul.svg"
     }
 

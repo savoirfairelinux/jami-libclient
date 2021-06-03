@@ -188,16 +188,12 @@ Label {
             ResponsiveImage {
                 id: arrowDropDown
 
-                width: 24
-                height: 24
                 anchors.verticalCenter: parent.verticalCenter
 
-                layer {
-                    enabled: true
-                    effect: ColorOverlay {
-                        color: JamiTheme.textColor
-                    }
-                }
+                width: 24
+                height: 24
+
+                color: JamiTheme.textColor
 
                 source: !root.popup.opened ?
                             "qrc:/images/icons/expand_more-24px.svg" :

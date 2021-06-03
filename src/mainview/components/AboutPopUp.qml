@@ -66,9 +66,6 @@ ModalPopup {
                         Layout.preferredWidth: 250
                         Layout.preferredHeight: 88
 
-                        smooth: true
-                        antialiasing: true
-
                         source: JamiTheme.darkTheme?
                                     "qrc:/images/logo-jami-standard-coul-white.svg" :
                                     "qrc:/images/logo-jami-standard-coul.svg"

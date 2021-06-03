@@ -102,22 +102,13 @@ AbstractButton {
                 return normalImageSource
         }
 
-        layer {
-            enabled: imageColor || checkedColor
-            effect: ColorOverlay {
-                id: overlay
-                color: {
-                    if (checked && checkedImageColor)
-                        return checkedImageColor
-                    else if (imageColor)
-                        return imageColor
-                    else
-                        return JamiTheme.transparentColor
-                }
-            }
-            // Mipmap does not render correctly on linux
-            mipmap: false
-            smooth: true
+        color: {
+            if (checked && checkedImageColor)
+                return checkedImageColor
+            else if (imageColor)
+                return imageColor
+            else
+                return JamiTheme.transparentColor
         }
     }
 
