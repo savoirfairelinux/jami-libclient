@@ -55,6 +55,18 @@ public:
                                       code);
                     Q_EMIT callStateChanged(QString(callID.c_str()), QString(state.c_str()), code);
                 }),
+            exportable_callback<CallSignal::MediaNegotiationStatus>(
+                [this](const std::string& callID,
+                       const std::string& event,
+                       const std::vector<std::map<std::string, std::string>>& mediaList) {
+                    LOG_DRING_SIGNAL3("mediaNegotiationStatus",
+                                      QString(callID.c_str()),
+                                      QString(event.c_str()),
+                                      convertVecMap(mediaList));
+                    Q_EMIT mediaNegotiationStatus(QString(callID.c_str()),
+                                                  QString(event.c_str()),
+                                                  convertVecMap(mediaList));
+                }),
             exportable_callback<CallSignal::TransferFailed>([this]() {
                 LOG_DRING_SIGNAL("transferFailed", "");
                 Q_EMIT transferFailed();
@@ -456,6 +468,9 @@ public Q_SLOTS: // METHODS
 
 Q_SIGNALS: // SIGNALS
     void callStateChanged(const QString& callID, const QString& state, int code);
+    void mediaNegotiationStatus(const QString& callID,
+                                const QString& event,
+                                const VectorMapStringString& mediaList);
     void transferFailed();
     void transferSucceeded();
     void recordPlaybackStopped(const QString& filepath);

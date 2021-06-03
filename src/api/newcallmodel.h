@@ -84,9 +84,9 @@ public:
     /**
      * Request a media change in a ongoing call.
      * @param  callId
-     * @param  mediaList new media list for call
+     * @param  mediaLabel label of media to be changed
      */
-    void requestMediaChange(const QString& callId, bool activateVideo);
+    void requestMediaChange(const QString& callId, const QString& mediaLabel);
 
     /**
      * Get the call from its call id
@@ -165,6 +165,7 @@ public:
     void togglePause(const QString& callId) const;
 
     /**
+     * @deprecated Use requestMediaChange instead
      * Toggle a media on a call
      * @param callId
      * @param media {AUDIO, VIDEO}
