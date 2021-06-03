@@ -425,10 +425,10 @@ Control {
                     implicitHeight: implicitWidth
                     radius: type === HalfPill.None ? 0 : 5
                     color: overflowButton.down ?
-                               "#80aaaaaa" :
+                               "#c4777777":
                                overflowButton.hovered ?
-                                   "#80777777" :
-                                   "#80444444"
+                                   "#c4444444" :
+                                   "#c4272727"
                     type: {
                         if (overflowItemListView.count ||
                                 urgentOverflowListView.count ||

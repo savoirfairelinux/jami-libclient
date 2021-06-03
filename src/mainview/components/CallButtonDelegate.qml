@@ -59,8 +59,11 @@ ItemDelegate {
         color: {
             if (supplimentaryBackground.visible)
                 return "#c4272727"
-            return wrapper.down ? "#c4777777" : wrapper.hovered
-                                  && !menu.hovered ? "#c4444444" : "#c4272727"
+            return wrapper.down ?
+                        "#c4777777" :
+                        (wrapper.hovered && !menu.hovered) ?
+                            "#c4444444" :
+                            "#c4272727"
         }
         type: {
             if (isVertical) {
