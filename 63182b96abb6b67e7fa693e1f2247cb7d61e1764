@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "36bdcd5e_e6da939f",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 1574,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-06-03T12:54:13Z",
+      "side": 1,
+      "message": "homogeneize style. There is a eslint file to do this",
+      "range": {
+        "startLine": 1572,
+        "startChar": 19,
+        "endLine": 1574,
+        "endChar": 31
+      },
+      "revId": "63182b96abb6b67e7fa693e1f2247cb7d61e1764",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8440b09b_5c69516b",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 2016,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-06-03T12:54:13Z",
+      "side": 1,
+      "message": "remove if unnecessary",
+      "range": {
+        "startLine": 2016,
+        "startChar": 20,
+        "endLine": 2016,
+        "endChar": 109
+      },
+      "revId": "63182b96abb6b67e7fa693e1f2247cb7d61e1764",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
