@@ -181,6 +181,15 @@ public Q_SLOTS:
      */
     void slotCallStateChanged(const QString& callId, const QString& state, int code);
     /**
+     * Listen from CallbacksHandler when a call medias are ready
+     * @param callId
+     * @param event
+     * @param mediaList
+     */
+    void slotMediaNegotiationStatusChanged(const QString& callId,
+                                           const QString& event,
+                                           const VectorMapStringString& mediaList);
+    /**
      * Listen from CallbacksHandler when a VCard chunk is incoming
      * @param callId
      * @param from
@@ -328,6 +337,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     callInfo->status = call::Status::SEARCHING;
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = isAudioOnly;
+    callInfo->videoMuted = isAudioOnly;
     callInfo->mediaList = mediaList;
     pimpl_->calls.emplace(callId, std::move(callInfo));
 
@@ -335,35 +345,46 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
 }
 
 void
-NewCallModel::requestMediaChange(const QString& callId, bool activateVideo)
+NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabel)
 {
+    // Main audio: audio_0
+    // Main video: video_0
+
     auto& callInfo = pimpl_->calls[callId];
     if (!callInfo)
         return;
 
     auto proposedList = callInfo->mediaList;
 
-    bool found {false};
+    int found = 0;
     for (auto& item : proposedList) {
-        if (item["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO") {
-            item["ENABLED"] = activateVideo ? "true" : "false";
-            item["MUTED"] = activateVideo ? "false" : "true";
-            found = true;
+        if (item["LABEL"] == mediaLabel) {
+            item["ENABLED"] = "true";
+            item["MUTED"] = item["MUTED"] == "true" ? "false" : "true";
+            break;
         }
+        found++;
     }
-    if (!found && activateVideo) {
+    if (found == proposedList.size() && mediaLabel == "video_0") {
         MapStringString mediaAttribute = {{"MEDIA_TYPE", "MEDIA_TYPE_VIDEO"},
                                           {"ENABLED", "true"},
                                           {"MUTED", "false"},
                                           {"SOURCE", ""},
                                           {"LABEL", "video_0"}};
         proposedList.push_back(mediaAttribute);
+        // We should prepare it here for adding file and screen sharing
+        // for now it supports only adding main video to an audio only call
     }
-    if (CallManager::instance().requestMediaChange(callId, proposedList)) {
-        callInfo->isAudioOnly &= !activateVideo;
-        callInfo->videoMuted = !activateVideo;
-        callInfo->mediaList = proposedList;
-        emit callInfosChanged(owner.id, callId);
+    CallManager::instance().requestMediaChange(callId, proposedList);
+    // If media existed and its mute state was changed here, then we should
+    // update the mediaList because we will not receive signal
+    // mediaNegotiationStatus
+    if (found < callInfo->mediaList.size()) {
+        callInfo->mediaList[found]["MUTED"] = callInfo->mediaList[found]["MUTED"] == "true"
+                                                  ? "false"
+                                                  : "true";
+        if (callInfo->status == call::Status::IN_PROGRESS)
+            emit callInfosChanged(owner.id, callId);
     }
 }
 
@@ -461,30 +482,9 @@ NewCallModel::toggleMedia(const QString& callId, const NewCallModel::Media media
         return;
     auto& call = pimpl_->calls[callId];
 
-    if (call->isAudioOnly && media == NewCallModel::Media::VIDEO) {
-        requestMediaChange(callId, true);
-        return;
-    }
-
-    switch (media) {
-    case NewCallModel::Media::AUDIO:
-        CallManager::instance().muteLocalMedia(callId,
-                                               DRing::Media::Details::MEDIA_TYPE_AUDIO,
-                                               !call->audioMuted);
-        call->audioMuted = !call->audioMuted;
-        break;
-
-    case NewCallModel::Media::VIDEO:
-        CallManager::instance().muteLocalMedia(callId,
-                                               DRing::Media::Details::MEDIA_TYPE_VIDEO,
-                                               !call->videoMuted);
-        call->videoMuted = !call->videoMuted;
-        break;
-
-    case NewCallModel::Media::NONE:
-    default:
-        break;
-    }
+    auto mediaLabel = media == NewCallModel::Media::VIDEO ? "video_0" : "audio_0";
+    requestMediaChange(callId, mediaLabel);
+    return;
 }
 
 void
@@ -668,6 +668,10 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
             &CallbacksHandler::callStateChanged,
             this,
             &NewCallModelPimpl::slotCallStateChanged);
+    connect(&callbacksHandler,
+            &CallbacksHandler::mediaNegotiationStatusChanged,
+            this,
+            &NewCallModelPimpl::slotMediaNegotiationStatusChanged);
     connect(&callbacksHandler,
             &CallbacksHandler::incomingVCardChunk,
             this,
@@ -960,9 +964,6 @@ NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
     //    return;
     //}
 
-    // do not use auto here (QDBusPendingReply<MapStringString>)
-    MapStringString callDetails = CallManager::instance().getCallDetails(callId);
-
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = callId;
     // peer uri = ring:<jami_id> or sip number
@@ -973,7 +974,13 @@ NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
     callInfo->isOutgoing = false;
     callInfo->status = call::Status::INCOMING_RINGING;
     callInfo->type = call::Type::DIALOG;
-    callInfo->isAudioOnly = callDetails["AUDIO_ONLY"] == "true" ? true : false;
+    callInfo->isAudioOnly = true;
+    for (const auto& item : mediaList) {
+        if (item["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO") {
+            callInfo->isAudioOnly = false;
+            break;
+        }
+    }
     callInfo->mediaList = mediaList;
     calls.emplace(callId, std::move(callInfo));
 
@@ -989,7 +996,7 @@ NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
     if (!linked.owner.confProperties.isRendezVous && linked.owner.confProperties.autoAnswer) {
         linked.accept(callId);
     }
-}
+} // namespace lrc
 
 void
 NewCallModelPimpl::slotMediaChangeRequested(const QString& accountId,
@@ -1006,15 +1013,13 @@ NewCallModelPimpl::slotMediaChangeRequested(const QString& accountId,
 
     for (auto& item : answerMedia) {
         if (item["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO") {
-            item["MUTED"] = (callInfo->isAudioOnly || callInfo->videoMuted) ? "true" : "false";
+            item["MUTED"] = callInfo->videoMuted ? "true" : "false";
             item["ENABLED"] = "true";
-            callInfo->isAudioOnly = false;
-            callInfo->videoMuted = true;
         }
     }
-    callInfo->mediaList = QVector<MapStringString>::fromList(answerMedia);
-    CallManager::instance().answerMediaChangeRequest(callId, callInfo->mediaList);
-    emit linked.callInfosChanged(linked.owner.id, callId);
+    CallManager::instance().answerMediaChangeRequest(callId,
+                                                     QVector<MapStringString>::fromList(
+                                                         answerMedia));
 }
 
 void
@@ -1088,6 +1093,49 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
     } else if (call->status == call::Status::PAUSED) {
         currentCall_ = "";
     }
+}
+
+void
+NewCallModelPimpl::slotMediaNegotiationStatusChanged(const QString& callId,
+                                                     const QString& event,
+                                                     const VectorMapStringString& mediaList)
+{
+    if (!linked.hasCall(callId)) {
+        return;
+    }
+
+    auto& callInfo = calls[callId];
+    if (!callInfo) {
+        return;
+    }
+
+    qDebug() << QString("slotMediaNegotiationStatusChanged (call: %1), event: %2")
+                    .arg(callId)
+                    .arg(event);
+    qDebug() << mediaList;
+
+    callInfo->isAudioOnly = true;
+    for (const auto& item : mediaList) {
+        if (item["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO") {
+            callInfo->isAudioOnly = false;
+            callInfo->videoMuted = item["MUTED"] == "true";
+        }
+        if (item["MEDIA_TYPE"] == "MEDIA_TYPE_AUDIO") {
+            callInfo->audioMuted = item["MUTED"] == "true";
+        }
+    }
+
+    callInfo->mediaList = mediaList;
+    if (callInfo->status == call::Status::IN_PROGRESS)
+        emit linked.callInfosChanged(linked.owner.id, callId);
+
+    // Populate callInfo->participantsInfos to have a "participant" for each video stream.
+    // callId and the media label should be used to form a sinkId.
+    // The sinkId will be used to access a sinkClient in Daemon with this identification.
+    // Daemon must be aligned on how to create the sinks with same id as expected in lrc.
+
+    // In the client call view, each call participant will have its own controls, similar as
+    // we have for conferences.
 }
 
 void

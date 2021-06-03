@@ -139,6 +139,12 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             Qt::QueuedConnection);
 
     connect(&CallManager::instance(),
+            &CallManagerInterface::mediaNegotiationStatus,
+            this,
+            &CallbacksHandler::slotMediaNegotiationStatusChanged,
+            Qt::QueuedConnection);
+
+    connect(&CallManager::instance(),
             &CallManagerInterface::conferenceCreated,
             this,
             &CallbacksHandler::slotConferenceCreated,
@@ -401,6 +407,14 @@ void
 CallbacksHandler::slotCallStateChanged(const QString& callId, const QString& state, int code)
 {
     emit callStateChanged(callId, state, code);
+}
+
+void
+CallbacksHandler::slotMediaNegotiationStatusChanged(const QString& callId,
+                                                    const QString& event,
+                                                    const VectorMapStringString& mediaList)
+{
+    emit mediaNegotiationStatusChanged(callId, event, mediaList);
 }
 
 void
