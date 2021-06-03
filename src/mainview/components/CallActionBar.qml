@@ -258,11 +258,11 @@ Control {
         },
         Action {
             id: shareAction
-            property bool openPopupWhenClicked: AvAdapter.currentRenderingDeviceType
-                                                !== Video.DeviceType.DISPLAY
             onTriggered: {
                 if (AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY)
                     root.stopSharingClicked()
+                else
+                    root.shareScreenClicked()
             }
             icon.source: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
                              "qrc:/images/icons/share_stop_black_24dp.svg" :
@@ -271,7 +271,7 @@ Control {
                             "red" : "white"
             text: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
                       JamiStrings.stopSharing :
-                      JamiStrings.selectShareMethod
+                      JamiStrings.shareScreen
             property real size: 34
             property var menuAction: shareMenuAction
         },
