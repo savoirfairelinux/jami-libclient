@@ -84,9 +84,9 @@ public:
     /**
      * Request a media change in a ongoing call.
      * @param  callId
-     * @param  mediaList new media list for call
+     * @param  isVideoMedia media to be changed
      */
-    void requestMediaChange(const QString& callId, bool activateVideo);
+    void requestMediaChange(const QString& callId, bool isVideoMedia);
 
     /**
      * Get the call from its call id

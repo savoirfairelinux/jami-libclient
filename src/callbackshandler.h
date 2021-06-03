@@ -129,6 +129,12 @@ Q_SIGNALS:
      */
     void callStateChanged(const QString& callId, const QString& state, int code);
     /**
+     * Connect this signal to know when a call medias are available
+     * @param callId the call id
+     * @param event
+     */
+    void mediaNegotiationStatusChanged(const QString& callId, const QString& event);
+    /**
      * Connect this signal to know when the account details have changed
      * @param accountId the one who changes
      * @param details the new details
@@ -436,6 +442,12 @@ private Q_SLOTS:
      * @param code unused for now
      */
     void slotCallStateChanged(const QString& callId, const QString& state, int code);
+    /**
+     * Emit mediaNegotiationStatusChanged
+     * @param callId the call which changes.
+     * @param eventstate the new state
+     */
+    void slotMediaNegotiationStatusChanged(const QString& callId, const QString& event);
     /**
      * Parse a call message and emit incomingVCardChunk if it's a VCard chunk
      * else incomingCallMessage if it's a text message
