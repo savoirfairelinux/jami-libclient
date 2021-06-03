@@ -77,14 +77,13 @@ ColumnLayout {
             verticalAlignment: Text.AlignVCenter
         }
 
-        TextField {
+        MaterialLineEdit {
             id: currentRingID
-
-            property var backgroundColor: "transparent"
-            property var borderColor: "transparent"
 
             anchors.verticalCenter: parent.verticalCenter
 
+            width: parent.width - idLabel.width
+                   - JamiTheme.preferredMarginSize
             height: JamiTheme.preferredFieldHeight
 
             font.pointSize: JamiTheme.textFontSize
@@ -95,19 +94,12 @@ ColumnLayout {
             readOnly: true
             selectByMouse: true
 
+            wrapMode: Text.NoWrap
             text: currentRingIDText.elidedText
             color: JamiTheme.textColor
 
             horizontalAlignment: Text.AlignRight
             verticalAlignment: Text.AlignVCenter
-
-            background: Rectangle {
-                anchors.fill: parent
-                radius: 0
-                border.color: currentRingID.borderColor
-                border.width: 0
-                color: currentRingID.backgroundColor
-            }
 
             TextMetrics {
                 id: currentRingIDText

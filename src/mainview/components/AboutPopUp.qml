@@ -69,29 +69,28 @@ ModalPopup {
                         smooth: true
                         antialiasing: true
 
-                        source: JamiTheme.darkTheme? "qrc:/images/logo-jami-standard-coul-white.svg" : "qrc:/images/logo-jami-standard-coul.svg"
+                        source: JamiTheme.darkTheme?
+                                    "qrc:/images/logo-jami-standard-coul-white.svg" :
+                                    "qrc:/images/logo-jami-standard-coul.svg"
                     }
 
-                    Label {
+                    MaterialLineEdit {
                         id: jamiVersionText
 
                         Layout.alignment: Qt.AlignCenter
                         Layout.preferredWidth: contentRect.width
-                        Layout.preferredHeight: textMetricsjamiVersionText.boundingRect.height
 
                         font.pointSize: JamiTheme.textFontSize
 
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                        padding: 0
+                        readOnly: true
+                        selectByMouse: true
 
-                        text: textMetricsjamiVersionText.text
+                        text: JamiStrings.version + ": " + UtilsAdapter.getVersionStr()
                         color: JamiTheme.textColor
 
-                        TextMetrics {
-                            id: textMetricsjamiVersionText
-                            font: jamiVersionText.font
-                            text: JamiStrings.version + ": " + UtilsAdapter.getVersionStr()
-                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     Label {
@@ -132,7 +131,6 @@ ModalPopup {
 
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
-
 
                         // TextMetrics does not work for multi-line.
                         text: JamiStrings.declaration

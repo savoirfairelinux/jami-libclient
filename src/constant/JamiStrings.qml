@@ -414,6 +414,7 @@ Item {
     property string saveProfile: qsTr("Save profile")
     property string enterRVName: qsTr("Enter the rendezvous point's name")
     property string generatingRV: qsTr("Creating rendezvous point…")
+    property string information: qsTr("Information")
 
     // RevokeDevicePasswordDialog
     property string confirmRemovalRequest: qsTr("Enter the account password to confirm the removal of this device")

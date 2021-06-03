@@ -71,21 +71,31 @@ BaseDialog {
             }
 
             // Visible when user alias is not empty or equals to id.
-            Text {
+            MaterialLineEdit {
                 id: contactAlias
 
                 Layout.alignment: Qt.AlignLeft
 
                 font.pointSize: JamiTheme.titleFontSize
-                text: textMetricsContactAliasText.elidedText
+                font.kerning: true
                 color: JamiTheme.textColor
                 visible: aliasText ? (aliasText === idText ? false : true) : false
+
+                padding: 0
+                readOnly: true
+                selectByMouse: true
+
+                wrapMode: Text.NoWrap
+                text: textMetricsContactAliasText.elidedText
+
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
 
                 TextMetrics {
                     id: textMetricsContactAliasText
                     font: contactAlias.font
                     text: aliasText
-                    elideWidth: userProfileContentRect.width-200
+                    elideWidth: userProfileContentRect.width - 200
                     elide: Qt.ElideMiddle
                 }
             }
@@ -98,7 +108,7 @@ BaseDialog {
             Text {
                 Layout.alignment: Qt.AlignRight
                 font.pointSize: JamiTheme.menuFontSize
-                text: qsTr("Information")
+                text: JamiStrings.information
                 color: JamiTheme.textColor
             }
 
@@ -113,15 +123,25 @@ BaseDialog {
             }
 
             // Visible when user name is not empty or equals to alias.
-            Text {
+            MaterialLineEdit {
                 id: contactDisplayName
 
                 Layout.alignment: Qt.AlignLeft
 
                 font.pointSize: JamiTheme.textFontSize
-                text: textMetricsContactDisplayNameText.elidedText
+                font.kerning: true
                 color: JamiTheme.textColor
                 visible: registeredNameText ? (registeredNameText === idText ? false : true) : false
+
+                padding: 0
+                readOnly: true
+                selectByMouse: true
+
+                wrapMode: Text.NoWrap
+                text: textMetricsContactDisplayNameText.elidedText
+
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
 
                 TextMetrics {
                     id: textMetricsContactDisplayNameText
@@ -139,22 +159,30 @@ BaseDialog {
                 color: JamiTheme.faddedFontColor
             }
 
-            TextEdit {
+            MaterialLineEdit {
                 id: contactId
 
                 Layout.alignment: Qt.AlignLeft
 
-                selectByMouse: true
-                readOnly: true
                 font.pointSize: JamiTheme.textFontSize
-                text: textMetricsContactIdText.elidedText
+                font.kerning: true
                 color: JamiTheme.textColor
+
+                padding: 0
+                readOnly: true
+                selectByMouse: true
+
+                wrapMode: Text.NoWrap
+                text: textMetricsContactIdText.elidedText
+
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
 
                 TextMetrics {
                     id: textMetricsContactIdText
                     font: contactId.font
                     text: idText
-                    elideWidth: userProfileContentRect.width-200
+                    elideWidth: userProfileContentRect.width - 200
                     elide: Qt.ElideMiddle
                 }
             }

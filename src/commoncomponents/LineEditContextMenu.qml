@@ -33,6 +33,7 @@ ContextMenuAutoLoader {
     property var lineEditObj
     property var selectionStart
     property var selectionEnd
+    property bool selectOnly: false
 
     property list<GeneralMenuItem> menuItems: [
         GeneralMenuItem {
@@ -47,7 +48,7 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: cut
 
-            canTrigger: lineEditObj.selectedText.length
+            canTrigger: lineEditObj.selectedText.length && !selectOnly
             itemName: JamiStrings.cut
 
             onClicked: {
@@ -57,6 +58,7 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: paste
 
+            canTrigger: !selectOnly
             itemName: JamiStrings.paste
             onClicked: {
                 lineEditObj.paste()
@@ -65,6 +67,9 @@ ContextMenuAutoLoader {
     ]
 
     function openMenuAt(mouseEvent) {
+        if (lineEditObj.selectedText.length === 0 && selectOnly)
+            return
+
         x = mouseEvent.x
         y = mouseEvent.y
 

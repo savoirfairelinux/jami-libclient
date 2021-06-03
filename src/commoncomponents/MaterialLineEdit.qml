@@ -85,6 +85,7 @@ TextField {
         id: lineEditContextMenu
 
         lineEditObj: root
+        selectOnly: readOnly
     }
 
     Image {
