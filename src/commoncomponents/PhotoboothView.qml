@@ -141,7 +141,9 @@ ColumnLayout {
             AvatarImage {
                 id: avatarImg
 
-                anchors.fill: parent
+                anchors.centerIn: avatarLabelBackground
+                width: avatarLabelBackground.width + avatarImg.spinningAnimationWidth
+                height: avatarLabelBackground.height + avatarImg.spinningAnimationWidth
 
                 showPresenceIndicator: false
 

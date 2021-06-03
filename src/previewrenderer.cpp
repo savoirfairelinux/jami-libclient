@@ -137,9 +137,8 @@ QString
 PhotoboothPreviewRender::takePhoto(int size)
 {
     if (auto previewImage = lrcInstance_->renderer()->getPreviewFrame()) {
-        return Utils::byteArrayToBase64String(Utils::QImageToByteArray(
-            previewImage->copy()
-                .scaled(size, size, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+        return Utils::byteArrayToBase64String(
+            Utils::QImageToByteArray(Utils::getCirclePhoto(previewImage->copy(), size)));
     }
     return {};
 }
