@@ -53,6 +53,14 @@ main(int argc, char* argv[])
     setlocale(LC_ALL, "en_US.utf8");
 #ifdef Q_OS_LINUX
     setenv("QT_QPA_PLATFORMTHEME", "gtk3", true);
+#ifdef __GLIBC__
+    // Current glibc is causing some bugs with font loading
+    // See https://bugreports.qt.io/browse/QTBUG-92969
+    // As I prefer to not use custom patched Qt, just wait for a
+    // new version with this bug fixed
+    if (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 33))
+        setenv("QTWEBENGINE_CHROMIUM_FLAGS", "--no-sandbox", true);
+#endif
 #endif
     QApplication::setApplicationName("Jami");
     QApplication::setOrganizationDomain("jami.net");
