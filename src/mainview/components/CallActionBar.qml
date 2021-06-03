@@ -308,7 +308,7 @@ Control {
         function onIsModeratorChanged() { reset() }
         function onIsAudioMutedChanged() { reset() }
         function onIsVideoMutedChanged() { reset() }
-        function onRecordingVisibleChanged() { reset() }
+        function onIsRecordingChanged() { reset() }
     }
 
     function reset() {
