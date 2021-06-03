@@ -173,7 +173,7 @@ struct Info
     QString peerUri;
     bool isOutgoing;
     bool audioMuted = false;
-    bool videoMuted = false;
+    bool videoMuted = true;
     bool isAudioOnly = false;
     Layout layout = Layout::GRID;
     QList<ParticipantInfo> participantsInfos = {};

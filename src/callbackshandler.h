@@ -129,6 +129,15 @@ Q_SIGNALS:
      */
     void callStateChanged(const QString& callId, const QString& state, int code);
     /**
+     * Connect this signal to know when a call medias are available
+     * @param callId the call id
+     * @param event
+     * @param mediaList new mediaList for the call
+     */
+    void mediaNegotiationStatus(const QString& callId,
+                                const QString& event,
+                                const VectorMapStringString& mediaList);
+    /**
      * Connect this signal to know when the account details have changed
      * @param accountId the one who changes
      * @param details the new details
@@ -405,14 +414,14 @@ private Q_SLOTS:
      * Get the URI of the peer and emit incomingCall
      * @param accountId account linked
      * @param callId the incoming call id
-     * @param fromQString the uri of the peer
+     * @param fromUri the uri of the peer
      */
     void slotIncomingCall(const QString& accountId, const QString& callId, const QString& fromUri);
     /**
      * Get the URI of the peer and emit incomingCallWithMedia
      * @param accountId account linked
      * @param callId the incoming call id
-     * @param fromQString the uri of the peer
+     * @param fromUri the uri of the peer
      * @param mediaList the mediaList received
      */
     void slotIncomingCallWithMedia(const QString& accountId,
@@ -423,7 +432,6 @@ private Q_SLOTS:
      * Get the URI of the peer and emit mediaChangeRequested
      * @param accountId account linked
      * @param callId the incoming call id
-     * @param fromQString the uri of the peer
      * @param mediaList the mediaList received
      */
     void slotMediaChangeRequested(const QString& accountId,
@@ -436,6 +444,15 @@ private Q_SLOTS:
      * @param code unused for now
      */
     void slotCallStateChanged(const QString& callId, const QString& state, int code);
+    /**
+     * Emit mediaNegotiationStatus
+     * @param callId the call which changes.
+     * @param eventstate the new state
+     * @param mediaList new mediaList for the call
+     */
+    void slotMediaNegotiationStatus(const QString& callId,
+                                    const QString& event,
+                                    const VectorMapStringString& mediaList);
     /**
      * Parse a call message and emit incomingVCardChunk if it's a VCard chunk
      * else incomingCallMessage if it's a text message
