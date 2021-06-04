@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c731dae1_69234cb3",
+        "filename": "src/api/call.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-06-04T17:28:31Z",
+      "side": 1,
+      "message": "maybe we should start using media attribute list instead, as in Daemon",
+      "revId": "3880444ff1e199cdf868275f4a7e4f81d45d2e9d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6002428_7cb58300",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-06-04T17:28:31Z",
+      "side": 1,
+      "message": "we should use a list of media as in Daemon",
+      "revId": "3880444ff1e199cdf868275f4a7e4f81d45d2e9d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ec12f96_38fa7d2e",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-06-04T17:28:31Z",
+      "side": 1,
+      "message": "we could provide the list of new media as discussed",
+      "revId": "3880444ff1e199cdf868275f4a7e4f81d45d2e9d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c626f4a8_70122f18",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-06-04T17:28:31Z",
+      "side": 1,
+      "message": "we should start using media list instead of audio/video",
+      "revId": "3880444ff1e199cdf868275f4a7e4f81d45d2e9d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
