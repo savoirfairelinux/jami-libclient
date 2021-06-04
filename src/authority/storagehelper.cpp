@@ -470,6 +470,9 @@ addOrUpdateMessage(Database& db,
                                       {{":author", msg.authorUri}, {":daemon_id", daemonId}})
                                 .payloads;
     if (msgAlreadyExists.empty()) {
+        auto extra_data_JSON = JSONFromString("");
+        writeJSONValue(extra_data_JSON, "duration", QString::number(msg.duration));
+        auto extra_data = stringFromJSON(extra_data_JSON);
         return db.insertInto("interactions",
                              {{":author", "author"},
                               {":conversation", "conversation"},
@@ -477,14 +480,16 @@ addOrUpdateMessage(Database& db,
                               {":body", "body"},
                               {":type", "type"},
                               {":status", "status"},
-                              {":daemon_id", "daemon_id"}},
+                              {":daemon_id", "daemon_id"},
+                              {":extra_data", "extra_data"}},
                              {{":author", msg.authorUri.isEmpty() ? "" : msg.authorUri},
                               {":conversation", conversationId},
                               {":timestamp", toQString(msg.timestamp)},
                               {msg.body.isEmpty() ? "" : ":body", msg.body},
                               {":type", to_string(msg.type)},
                               {daemonId.isEmpty() ? "" : ":daemon_id", daemonId},
-                              {":status", to_string(msg.status)}});
+                              {":status", to_string(msg.status)},
+                              {extra_data.isEmpty() ? "" : ":extra_data", extra_data}});
     } else {
         // already exists @ id(msgAlreadyExists[0])
         auto id = msgAlreadyExists[0];
