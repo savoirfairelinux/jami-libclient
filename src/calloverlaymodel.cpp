@@ -125,17 +125,18 @@ PendingConferenceesListModel::connectSignals()
     disconnect(beginRemovePendingConferencesRows_);
     disconnect(endRemovePendingConferencesRows_);
 
+    auto currentCallModel = lrcInstance_->getCurrentCallModel();
+    if (!currentCallModel)
+        return;
+
     using namespace PendingConferences;
-    callsStatusChanged_ = connect(lrcInstance_->getCurrentCallModel(),
-                                  &NewCallModel::callStatusChanged,
-                                  [this](const QString&, int) {
-                                      Q_EMIT dataChanged(index(0, 0),
-                                                         index(rowCount() - 1),
-                                                         {Role::CallStatus});
-                                  });
+    callsStatusChanged_
+        = connect(currentCallModel, &NewCallModel::callStatusChanged, [this](const QString&, int) {
+              Q_EMIT dataChanged(index(0, 0), index(rowCount() - 1), {Role::CallStatus});
+          });
 
     beginInsertPendingConferencesRows_ = connect(
-        lrcInstance_->getCurrentCallModel(),
+        currentCallModel,
         &NewCallModel::beginInsertPendingConferenceesRows,
         this,
         [this](int position, int rows) {
@@ -144,14 +145,14 @@ PendingConferenceesListModel::connectSignals()
         Qt::DirectConnection);
 
     endInsertPendingConferencesRows_ = connect(
-        lrcInstance_->getCurrentCallModel(),
+        currentCallModel,
         &NewCallModel::endInsertPendingConferenceesRows,
         this,
         [this]() { endInsertRows(); },
         Qt::DirectConnection);
 
     beginRemovePendingConferencesRows_ = connect(
-        lrcInstance_->getCurrentCallModel(),
+        currentCallModel,
         &NewCallModel::beginRemovePendingConferenceesRows,
         this,
         [this](int position, int rows) {
@@ -160,7 +161,7 @@ PendingConferenceesListModel::connectSignals()
         Qt::DirectConnection);
 
     endRemovePendingConferencesRows_ = connect(
-        lrcInstance_->getCurrentCallModel(),
+        currentCallModel,
         &NewCallModel::endRemovePendingConferenceesRows,
         this,
         [this]() { endRemoveRows(); },
