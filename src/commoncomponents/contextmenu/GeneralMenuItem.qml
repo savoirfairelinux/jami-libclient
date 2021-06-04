@@ -45,6 +45,9 @@ MenuItem {
     property int leftBorderWidth: JamiTheme.menuItemsCommonBorderWidth
     property int rightBorderWidth: JamiTheme.menuItemsCommonBorderWidth
 
+    property int itemImageLeftMargin: 24
+    property int itemTextMargin: 20
+
     signal clicked
 
     contentItem: AbstractButton {
@@ -69,7 +72,7 @@ MenuItem {
                 id: contextMenuItemImage
 
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                Layout.leftMargin: status === Image.Ready ? 24 : 0
+                Layout.leftMargin: status === Image.Ready ? itemImageLeftMargin : 0
 
                 visible: status === Image.Ready
 
@@ -81,28 +84,41 @@ MenuItem {
                 id: contextMenuItemText
 
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                Layout.leftMargin: contextMenuItemImage.status === Image.Ready ? 20 : 10
-                Layout.rightMargin: contextMenuItemImage.status === Image.Ready ? 20 : 10
+                Layout.leftMargin: contextMenuItemImage.status === Image.Ready ?
+                                       itemTextMargin : itemTextMargin / 2
+                Layout.rightMargin: contextMenuItemImage.status === Image.Ready ?
+                                        itemTextMargin : itemTextMargin / 2
                 Layout.preferredHeight: itemPreferredHeight
-                Layout.preferredWidth: JamiTheme.contextMenuItemTextPreferredWidth
+                Layout.fillWidth: true
 
                 text: itemName
                 color: JamiTheme.textColor
                 font.pointSize: JamiTheme.textFontSize
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
-                elide: Text.ElideRight
 
-                onWidthChanged: {
-                    if (autoTextSizeAdjustment
-                            && width > contextMenuItemText.Layout.preferredWidth) {
-                        if (width > JamiTheme.contextMenuItemTextMaxWidth)
-                            contextMenuItemText.Layout.preferredWidth
-                                    = JamiTheme.contextMenuItemTextMaxWidth
-                        else
-                            contextMenuItemText.Layout.preferredWidth = width
-                        itemPreferredWidth += contextMenuItemText.Layout.preferredWidth
-                                - JamiTheme.contextMenuItemTextPreferredWidth
+                TextMetrics {
+                    id: contextMenuItemTextMetrics
+
+                    font: contextMenuItemText.font
+                    text: contextMenuItemText.text
+
+                    onBoundingRectChanged: {
+                        var sizeToCompare = itemPreferredWidth -
+                                (contextMenuItemImage.source.toString().length > 0 ?
+                                     itemTextMargin + itemImageLeftMargin + contextMenuItemImage.width :
+                                     itemTextMargin / 2)
+                        if (autoTextSizeAdjustment
+                                && boundingRect.width > sizeToCompare) {
+                            if (boundingRect.width > JamiTheme.contextMenuItemTextMaxWidth) {
+                                itemPreferredWidth += JamiTheme.contextMenuItemTextMaxWidth
+                                        - JamiTheme.contextMenuItemTextPreferredWidth
+                                        + itemTextMargin
+                                contextMenuItemText.elide = Text.ElideRight
+                            } else
+                                itemPreferredWidth += boundingRect.width + itemTextMargin
+                                        - sizeToCompare
+                        }
                     }
                 }
             }

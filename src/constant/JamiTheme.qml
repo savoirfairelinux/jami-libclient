@@ -198,7 +198,7 @@ Item {
     property real avatarSizeInCall: 130
     property real aboutButtonPreferredWidth: 150
     property real callButtonPreferredSize: 50
-    property real contextMenuItemTextPreferredWidth: 142
+    property real contextMenuItemTextPreferredWidth: 152
     property real contextMenuItemTextMaxWidth: 182
     property int participantCallInStatusViewWidth: 175
     property int participantCallInStatusViewHeight: 300
