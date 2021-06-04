@@ -184,8 +184,11 @@ public Q_SLOTS:
      * Listen from CallbacksHandler when a call medias are ready
      * @param callId
      * @param event
+     * @param mediaList
      */
-    void slotMediaNegotiationStatusChanged(const QString& callId, const QString& event);
+    void slotMediaNegotiationStatusChanged(const QString& callId,
+                                           const QString& event,
+                                           const VectorMapStringString& mediaList);
     /**
      * Listen from CallbacksHandler when a VCard chunk is incoming
      * @param callId
@@ -1076,7 +1079,9 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
 }
 
 void
-NewCallModelPimpl::slotMediaNegotiationStatusChanged(const QString& callId, const QString& event)
+NewCallModelPimpl::slotMediaNegotiationStatusChanged(const QString& callId,
+                                                     const QString& event,
+                                                     const VectorMapStringString& mediaList)
 {
     if (!linked.hasCall(callId)) {
         return;

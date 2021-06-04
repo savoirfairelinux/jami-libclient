@@ -410,9 +410,11 @@ CallbacksHandler::slotCallStateChanged(const QString& callId, const QString& sta
 }
 
 void
-CallbacksHandler::slotMediaNegotiationStatusChanged(const QString& callId, const QString& event)
+CallbacksHandler::slotMediaNegotiationStatusChanged(const QString& callId,
+                                                    const QString& event,
+                                                    const VectorMapStringString& mediaList)
 {
-    emit mediaNegotiationStatusChanged(callId, event);
+    emit mediaNegotiationStatusChanged(callId, event, mediaList);
 }
 
 void
