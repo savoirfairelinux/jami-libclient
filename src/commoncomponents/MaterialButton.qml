@@ -41,7 +41,9 @@ Button {
     property var iconPreferredHeight: 18
     property var iconPreferredWidth: 18
 
+    property bool enableElide: true
     property int elide: Text.ElideRight
+    property int textActualWidth: buttonTextMetrics.boundingRect.width
 
     font.kerning: true
     font.pointSize: JamiTheme.textFontSize
@@ -71,25 +73,8 @@ Button {
                 visible: animatedImageSource.length !== 0
             }
 
-            Image {
+            ResponsiveImage {
                 id: buttonImage
-
-                property real pixelDensity: Screen.pixelDensity
-                property real isSvg: {
-                    var match = /[^.]+$/.exec(source)
-                    return match !== null && match[0] === 'svg'
-                }
-
-                function setSourceSize() {
-                    if (isSvg) {
-                        sourceSize.width = width
-                        sourceSize.height = height
-                    } else
-                        sourceSize = undefined
-                }
-
-                onPixelDensityChanged: setSourceSize()
-                Component.onCompleted: setSourceSize()
 
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -99,20 +84,14 @@ Button {
                 width: iconPreferredWidth
 
                 visible: source.toString().length !== 0
-                layer {
-                    enabled: true
-                    effect: ColorOverlay {
-                        id: overlay
-                        color:{
-                            if (!outlined)
-                                return "white"
-                            if (hovered && root.hoveredColor)
-                                return root.hoveredColor
-                            if (checked && root.pressedColor)
-                                return root.pressedColor
-                            return root.color
-                        }
-                    }
+                color: {
+                    if (!outlined)
+                        return "white"
+                    if (hovered && root.hoveredColor)
+                        return root.hoveredColor
+                    if (checked && root.pressedColor)
+                        return root.pressedColor
+                    return root.color
                 }
             }
 
@@ -128,8 +107,15 @@ Button {
                             JamiTheme.preferredMarginSize / 2 - minimumIconTextSpacing) * 2
                 }
 
+                TextMetrics {
+                    id: buttonTextMetrics
+
+                    font: buttonText.font
+                    text: buttonText.text
+                }
+
                 text: root.text
-                elide: root.elide
+                elide: enableElide ? root.elide : Text.ElideNone
                 color: {
                     if (!outlined)
                         return "white"
