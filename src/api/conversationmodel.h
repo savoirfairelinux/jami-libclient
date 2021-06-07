@@ -358,7 +358,7 @@ public:
      * @return number of conversations requests
      */
     int pendingRequestCount() const;
-    const VectorString peersForConversation(const QString& conversationId);
+    const VectorString peersForConversation(const QString& conversationId) const;
 
     // Presentation
 
