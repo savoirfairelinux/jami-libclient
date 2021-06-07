@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1de58929_76e682d5",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-06-07T19:07:25Z",
+      "side": 1,
+      "message": "fixed in https://review.jami.net/c/ring-lrc/+/18316",
+      "parentUuid": "0f03427b_1e9026a5",
+      "range": {
+        "startLine": 406,
+        "startChar": 14,
+        "endLine": 406,
+        "endChar": 25
+      },
+      "revId": "5baea8bb37d7e4685978aac82a026971e4d464f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4e4fce5e_383cade2",
         "filename": "src/newcallmodel.cpp",
         "patchSetId": 17
@@ -36,6 +60,30 @@
       "writtenOn": "2021-06-07T18:26:15Z",
       "side": 1,
       "message": "question, when doesn the media list is empty? Should we always call acceptWitHMedia instead?",
+      "range": {
+        "startLine": 334,
+        "startChar": 19,
+        "endLine": 338,
+        "endChar": 81
+      },
+      "revId": "5baea8bb37d7e4685978aac82a026971e4d464f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cbeb1be6_6c4d5c1a",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-06-07T19:07:25Z",
+      "side": 1,
+      "message": "mediaList is empty when we receive incomingCall instead of incomingCallWithMedia",
+      "parentUuid": "4e4fce5e_383cade2",
       "range": {
         "startLine": 334,
         "startChar": 19,
