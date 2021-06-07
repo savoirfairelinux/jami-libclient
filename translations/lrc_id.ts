@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/api/call.h" line="67"/>
         <source>Incoming</source>
-        <translation type="unfinished"/>
+        <translation>Panggilan masuk</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="69"/>
@@ -40,7 +40,7 @@
     <message>
         <location filename="../src/api/call.h" line="73"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Mencari</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="75"/>
@@ -79,7 +79,7 @@
         <location filename="../src/authority/storagehelper.cpp" line="127"/>
         <location filename="../src/authority/storagehelper.cpp" line="896"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Kontak ditambahkan</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="104"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="55"/>
         <source>Ringing</source>
-        <translation type="unfinished"/>
+        <translation>Berdering</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="56"/>
@@ -150,7 +150,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>Oke</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="64"/>
@@ -307,7 +307,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Sibuk</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
@@ -442,7 +442,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Send file</source>
-        <translation type="unfinished"/>
+        <translation>Kirim berkas</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
