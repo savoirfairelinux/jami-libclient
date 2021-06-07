@@ -30,21 +30,24 @@ void
 SelectableListProxyModel::bindSourceModel(QAbstractListModel* model)
 {
     setSourceModel(model);
-    connect(sourceModel(),
-            &QAbstractListModel::dataChanged,
-            this,
-            &SelectableListProxyModel::updateSelection,
-            Qt::UniqueConnection);
-    connect(model,
-            &QAbstractListModel::rowsInserted,
-            this,
-            &SelectableListProxyModel::updateSelection,
-            Qt::UniqueConnection);
-    connect(model,
-            &QAbstractListModel::rowsRemoved,
-            this,
-            &SelectableListProxyModel::updateSelection,
-            Qt::UniqueConnection);
+    connect(
+        sourceModel(),
+        &QAbstractListModel::dataChanged,
+        this,
+        [this] { updateSelection(); },
+        Qt::UniqueConnection);
+    connect(
+        model,
+        &QAbstractListModel::rowsInserted,
+        this,
+        [this] { updateSelection(); },
+        Qt::UniqueConnection);
+    connect(
+        model,
+        &QAbstractListModel::rowsRemoved,
+        this,
+        [this] { updateSelection(true); },
+        Qt::UniqueConnection);
     connect(sourceModel(),
             &QAbstractListModel::modelReset,
             this,
@@ -106,7 +109,7 @@ SelectableListProxyModel::updateContactAvatarUid(const QString& contactUri)
 }
 
 void
-SelectableListProxyModel::updateSelection()
+SelectableListProxyModel::updateSelection(bool rowsRemoved)
 {
     // if there has been no valid selection made, there is
     // nothing to update
@@ -117,7 +120,7 @@ SelectableListProxyModel::updateSelection()
     auto filteredIndex = mapFromSource(selectedSourceIndex_);
 
     // if the source model is empty, invalidate the selection
-    if (sourceModel()->rowCount() == 0) {
+    if (rowCount() == 0 && rowsRemoved) {
         set_currentFilteredRow(-1);
         Q_EMIT validSelectionChanged();
         return;

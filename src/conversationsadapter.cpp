@@ -56,6 +56,7 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
             // deselected
             convModel_->deselect();
             searchModel_->deselect();
+            Q_EMIT navigateToWelcomePageRequested();
         } else {
             // selected
             const auto& convInfo = lrcInstance_->getConversationFromConvUid(convId);
@@ -97,6 +98,7 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
         auto row = lrcInstance_->indexOf(convInfo.uid);
         const auto index = convSrcModel_->index(row, 0);
         Q_EMIT convSrcModel_->dataChanged(index, index);
+        lrcInstance_->set_selectedConvUid();
     });
 
 #ifdef Q_OS_LINUX
@@ -172,13 +174,6 @@ ConversationsAdapter::safeInit()
     connectConversationModel();
 
     set_currentTypeFilter(lrcInstance_->getCurrentAccountInfo().profileInfo.type);
-}
-
-void
-ConversationsAdapter::backToWelcomePage()
-{
-    lrcInstance_->deselectConversation();
-    Q_EMIT navigateToWelcomePageRequested();
 }
 
 void
@@ -313,12 +308,6 @@ ConversationsAdapter::onNewConversation(const QString& convUid)
 {
     conversationSmartListModel_->fillConversationsList();
     updateConversationForNewContact(convUid);
-}
-
-void
-ConversationsAdapter::onConversationRemoved(const QString&)
-{
-    backToWelcomePage();
 }
 
 void
@@ -465,12 +454,6 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                      &lrc::api::ConversationModel::newConversation,
                      this,
                      &ConversationsAdapter::onNewConversation,
-                     Qt::UniqueConnection);
-
-    QObject::connect(currentConversationModel,
-                     &lrc::api::ConversationModel::conversationRemoved,
-                     this,
-                     &ConversationsAdapter::onConversationRemoved,
                      Qt::UniqueConnection);
 
     QObject::connect(currentConversationModel,

@@ -419,10 +419,6 @@ Rectangle {
         Connections {
             target: MessagesAdapter
 
-            function onNavigateToWelcomePageRequested() {
-                backToMainView()
-            }
-
             function onInvitationAccepted() {
                 mainViewSidePanel.selectTab(SidePanelTabBar.Conversations)
             }

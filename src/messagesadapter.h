@@ -101,7 +101,6 @@ protected:
 
 Q_SIGNALS:
     void contactBanned();
-    void navigateToWelcomePageRequested();
     void invitationAccepted();
     void newInteraction(int type);
 

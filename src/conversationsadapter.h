@@ -80,7 +80,6 @@ private Q_SLOTS:
     void onConversationUpdated(const QString&);
     void onFilterChanged();
     void onNewConversation(const QString&);
-    void onConversationRemoved(const QString&);
     void onConversationCleared(const QString&);
     void onSearchStatusChanged(const QString&);
     void onSearchResultUpdated();
@@ -88,7 +87,6 @@ private Q_SLOTS:
     void updateConversationFilterData();
 
 private:
-    void backToWelcomePage();
     void updateConversationForNewContact(const QString& convUid);
 
     SmartListModel* conversationSmartListModel_;

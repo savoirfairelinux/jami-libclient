@@ -47,7 +47,7 @@ public:
     Q_INVOKABLE void updateContactAvatarUid(const QString& contactUri);
 
 public Q_SLOTS:
-    void updateSelection();
+    void updateSelection(bool rowsRemoved = false);
 
 Q_SIGNALS:
     void validSelectionChanged();
