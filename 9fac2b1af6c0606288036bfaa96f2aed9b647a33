@@ -22,6 +22,29 @@
       "revId": "9fac2b1af6c0606288036bfaa96f2aed9b647a33",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34bcb3bb_03f51309",
+        "filename": "src/qtwrapper/callmanager_wrap.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-06-07T19:48:30Z",
+      "side": 1,
+      "message": "you need to name this as mediaNegotiationStatus to be able to compile",
+      "range": {
+        "startLine": 471,
+        "startChar": 9,
+        "endLine": 471,
+        "endChar": 38
+      },
+      "revId": "9fac2b1af6c0606288036bfaa96f2aed9b647a33",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
