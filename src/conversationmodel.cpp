@@ -987,14 +987,18 @@ ConversationModel::title(const QString& conversationId) const
     // NOTE: Do not call any daemon method there as title() is called a lot for drawing
     QString title;
     auto idx = 0;
-    for (const auto& member : conversation.participants) {
+    auto members = peersForConversation(conversationId);
+    if (members.empty()) {
+        return tr("Empty swarm");
+    }
+    for (const auto& member : members) {
         if (member == owner.profileInfo.uri) {
             title += owner.accountModel->bestNameForAccount(owner.id);
         } else {
             title += owner.contactModel->bestNameForContact(member);
         }
         idx += 1;
-        if (idx != conversation.participants.size()) {
+        if (idx != members.size()) {
             title += ", ";
         }
     }
@@ -1006,6 +1010,10 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
 {
     try {
         auto& conversation = pimpl_->getConversationForUid(uid, true).get();
+        if (!conversation.isNotASwarm()) {
+            ConfigurationManager::instance().sendMessage(owner.id, uid, body, parentId);
+        }
+
         auto& peers = pimpl_->peersForConversation(conversation);
         if (peers.isEmpty()) {
             // Should not
@@ -1013,16 +1021,6 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
                         "with no participant";
             return;
         }
-
-        /* isTemporary, and conversationReady callback used only for non-swarm conversation,
-         because for swarm, conversation already configured at this point.
-         Conversations for new contact from search result are NON_SWARM but after receiving
-         conversationReady callback could be updated to ONE_TO_ONE. We still use conversationReady
-         callback for swarm conversation with one participant to check if contact is blocked*/
-        if (peers.size() != 1) {
-            ConfigurationManager::instance().sendMessage(owner.id, uid, body, parentId);
-        }
-
         auto convId = uid;
         auto& peerId = peers.front();
         bool isTemporary = peerId == convId;
@@ -1550,7 +1548,7 @@ ConversationModel::declineConversationRequest(const QString& conversationId, boo
 }
 
 const VectorString
-ConversationModel::peersForConversation(const QString& conversationId)
+ConversationModel::peersForConversation(const QString& conversationId) const
 {
     const auto conversationOpt = getConversationForUid(conversationId);
     if (!conversationOpt.has_value()) {
@@ -2690,11 +2688,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     for (auto& member : members) {
         // this check should be removed once all usage of participants replaced by
         // peersForConversation. We should have ourself in participants list
-        if (member["uri"] != accountURI)
-            participants.append(member["uri"]);
-    }
-    if (participants.isEmpty()) {
-        return;
+        participants.append(member["uri"]);
     }
     conversation::Info conversation;
     conversation.uid = convId;
