@@ -3685,7 +3685,7 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid,
             qWarning() << "Too much duplicates for " << destinationDir << path;
             return;
         }
-        linked.owner.dataTransferModel->download(linked.owner.id, convUid, fileId, path);
+        linked.owner.dataTransferModel->download(linked.owner.id, convUid, interactionId, fileId, path);
     } else {
         qWarning() << "Cannot download file without valid interaction";
     }

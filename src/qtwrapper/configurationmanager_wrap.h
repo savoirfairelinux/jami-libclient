@@ -841,19 +841,12 @@ public Q_SLOTS: // METHODS
         return error;
     }
 
-    <arg type = "s" name = "accountId" direction = "in" />
-        <arg type = "s" name = "to" direction = "in" />
-        <arg type = "s" name = "fileId" direction = "in" />
-        <arg type = "s" name = "path" direction = "out" />
-        <arg type = "x" name = "totalSize" direction = "out" />
-        <arg type = "x" name = "bytesProgress" direction = "out" />
-
-            uint64_t fileTransferInfo(QString accountId,
-                                      QString conversationId,
-                                      QString fileId,
-                                      QString& path,
-                                      int64_t& total,
-                                      int64_t& progress)
+    uint64_t fileTransferInfo(QString accountId,
+                              QString conversationId,
+                              QString fileId,
+                              QString& path,
+                              int64_t& total,
+                              int64_t& progress)
     {
         std::string pathstr;
         auto result = uint32_t(DRing::fileTransferInfo(accountId.toStdString(),

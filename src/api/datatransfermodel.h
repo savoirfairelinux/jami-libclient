@@ -73,6 +73,7 @@ public:
 
     void download(const QString& accountId,
                   const QString& convId,
+                  const QString& interactionId,
                   const QString& fileId,
                   const QString& path);
 

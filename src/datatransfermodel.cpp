@@ -213,10 +213,11 @@ DataTransferModel::accept(const QString& accountId,
 void
 DataTransferModel::download(const QString& accountId,
                             const QString& convId,
+                            const QString& interactionId,
                             const QString& fileId,
                             const QString& path)
 {
-    ConfigurationManager::instance().downloadFile(accountId, convId, fileId, path);
+    ConfigurationManager::instance().downloadFile(accountId, convId, interactionId, fileId, path);
 }
 
 void
