@@ -218,9 +218,9 @@ struct Info
     bool valid = true;
     QString registeredName;
     Status status = account::Status::INVALID;
+    std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::ContactModel> contactModel;
     std::unique_ptr<lrc::api::ConversationModel> conversationModel;
-    std::unique_ptr<lrc::api::NewCallModel> callModel;
     std::unique_ptr<lrc::api::NewDeviceModel> deviceModel;
     std::unique_ptr<lrc::api::NewCodecModel> codecModel;
     std::unique_ptr<lrc::api::PeerDiscoveryModel> peerDiscoveryModel;
