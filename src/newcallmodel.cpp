@@ -38,7 +38,6 @@
 // Ring daemon
 #include <media_const.h>
 #include <account_const.h>
-
 // Qt
 #include <QObject>
 #include <QString>
@@ -292,9 +291,11 @@ NewCallModel::updateCallMediaList(const QString& callId, bool acceptVideo)
             for (auto it = callInfos->second->mediaList.begin();
                  it != callInfos->second->mediaList.end();
                  it++) {
-                if ((*it)["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO" && !acceptVideo) {
-                    (*it)["ENABLED"] = "false";
-                    (*it)["MUTED"] = "true";
+                if ((*it)[DRing::Media::MediaAttributeKey::MEDIA_TYPE]
+                        == DRing::Media::MediaAttributeValue::VIDEO
+                    && !acceptVideo) {
+                    (*it)[DRing::Media::MediaAttributeKey::ENABLED] = "false";
+                    (*it)[DRing::Media::MediaAttributeKey::MUTED] = "true";
                     callInfos->second->videoMuted = !acceptVideo;
                 }
             }
@@ -307,15 +308,17 @@ QString
 NewCallModel::createCall(const QString& uri, bool isAudioOnly)
 {
     VectorMapStringString mediaList {};
-    MapStringString mediaAttribute = {{"MEDIA_TYPE", "MEDIA_TYPE_AUDIO"},
-                                      {"ENABLED", "true"},
-                                      {"MUTED", "false"},
-                                      {"SOURCE", ""},
-                                      {"LABEL", "audio_0"}};
+    MapStringString mediaAttribute = {{DRing::Media::MediaAttributeKey::MEDIA_TYPE,
+                                       DRing::Media::MediaAttributeValue::AUDIO},
+                                      {DRing::Media::MediaAttributeKey::ENABLED, "true"},
+                                      {DRing::Media::MediaAttributeKey::MUTED, "false"},
+                                      {DRing::Media::MediaAttributeKey::SOURCE, ""},
+                                      {DRing::Media::MediaAttributeKey::LABEL, "audio_0"}};
     mediaList.push_back(mediaAttribute);
     if (!isAudioOnly) {
-        mediaAttribute["MEDIA_TYPE"] = "MEDIA_TYPE_VIDEO";
-        mediaAttribute["LABEL"] = "video_0";
+        mediaAttribute[DRing::Media::MediaAttributeKey::MEDIA_TYPE]
+            = DRing::Media::MediaAttributeValue::VIDEO;
+        mediaAttribute[DRing::Media::MediaAttributeKey::LABEL] = "video_0";
         mediaList.push_back(mediaAttribute);
     }
 #ifdef ENABLE_LIBWRAP
@@ -358,19 +361,21 @@ NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabe
 
     int found = 0;
     for (auto& item : proposedList) {
-        if (item["LABEL"] == mediaLabel) {
-            item["ENABLED"] = "true";
-            item["MUTED"] = item["MUTED"] == "true" ? "false" : "true";
+        if (item[DRing::Media::MediaAttributeKey::LABEL] == mediaLabel) {
+            item[DRing::Media::MediaAttributeKey::ENABLED] = "true";
+            item[DRing::Media::MediaAttributeKey::MUTED]
+                = item[DRing::Media::MediaAttributeKey::MUTED] == "true" ? "false" : "true";
             break;
         }
         found++;
     }
     if (found == proposedList.size() && mediaLabel == "video_0") {
-        MapStringString mediaAttribute = {{"MEDIA_TYPE", "MEDIA_TYPE_VIDEO"},
-                                          {"ENABLED", "true"},
-                                          {"MUTED", "false"},
-                                          {"SOURCE", ""},
-                                          {"LABEL", "video_0"}};
+        MapStringString mediaAttribute = {{DRing::Media::MediaAttributeKey::MEDIA_TYPE,
+                                           DRing::Media::MediaAttributeValue::VIDEO},
+                                          {DRing::Media::MediaAttributeKey::ENABLED, "true"},
+                                          {DRing::Media::MediaAttributeKey::MUTED, "false"},
+                                          {DRing::Media::MediaAttributeKey::SOURCE, ""},
+                                          {DRing::Media::MediaAttributeKey::LABEL, "video_0"}};
         proposedList.push_back(mediaAttribute);
         // We should prepare it here for adding file and screen sharing
         // for now it supports only adding main video to an audio only call
@@ -380,9 +385,9 @@ NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabe
     // update the mediaList because we will not receive signal
     // mediaNegotiationStatus
     if (found < callInfo->mediaList.size()) {
-        callInfo->mediaList[found]["MUTED"] = callInfo->mediaList[found]["MUTED"] == "true"
-                                                  ? "false"
-                                                  : "true";
+        callInfo->mediaList[found][DRing::Media::MediaAttributeKey::MUTED]
+            = callInfo->mediaList[found][DRing::Media::MediaAttributeKey::MUTED] == "true" ? "false"
+                                                                                           : "true";
         if (callInfo->status == call::Status::IN_PROGRESS)
             emit callInfosChanged(owner.id, callId);
     }
@@ -967,7 +972,8 @@ NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = true;
     for (const auto& item : mediaList) {
-        if (item["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO") {
+        if (item[DRing::Media::MediaAttributeKey::MEDIA_TYPE]
+            == DRing::Media::MediaAttributeValue::VIDEO) {
             callInfo->isAudioOnly = false;
             break;
         }
@@ -1003,9 +1009,10 @@ NewCallModelPimpl::slotMediaChangeRequested(const QString& accountId,
     auto answerMedia = QList<MapStringString>::fromVector(mediaList);
 
     for (auto& item : answerMedia) {
-        if (item["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO") {
-            item["MUTED"] = callInfo->videoMuted ? "true" : "false";
-            item["ENABLED"] = "true";
+        if (item[DRing::Media::MediaAttributeKey::MEDIA_TYPE]
+            == DRing::Media::MediaAttributeValue::VIDEO) {
+            item[DRing::Media::MediaAttributeKey::MUTED] = callInfo->videoMuted ? "true" : "false";
+            item[DRing::Media::MediaAttributeKey::ENABLED] = "true";
         }
     }
     CallManager::instance().answerMediaChangeRequest(callId,
@@ -1102,14 +1109,16 @@ NewCallModelPimpl::slotMediaNegotiationStatus(const QString& callId,
 
     callInfo->isAudioOnly = true;
     for (const auto& item : mediaList) {
-        if (item["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO") {
-        	if (item["ENABLED"] == "true") {
+        if (item[DRing::Media::MediaAttributeKey::MEDIA_TYPE]
+            == DRing::Media::MediaAttributeValue::VIDEO) {
+        	if (item[DRing::Media::MediaAttributeKey::ENABLED] == "true") {
             	callInfo->isAudioOnly = false;
-            	callInfo->videoMuted = item["MUTED"] == "true";
+            	callInfo->videoMuted = DRing::Media::MediaAttributeKey::MUTED == "true";
             }
         }
-        if (item["MEDIA_TYPE"] == "MEDIA_TYPE_AUDIO") {
-            callInfo->audioMuted = item["MUTED"] == "true";
+        if (item[DRing::Media::MediaAttributeKey::MEDIA_TYPE]
+            == DRing::Media::MediaAttributeValue::AUDIO) {
+            callInfo->audioMuted = item[DRing::Media::MediaAttributeKey::MUTED] == "true";
         }
     }
 
