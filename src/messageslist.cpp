@@ -19,6 +19,7 @@
  */
 
 #include <QCoreApplication>
+#include <stdexcept>
 
 #include "messageslist.h"
 #include "api/interaction.h"
