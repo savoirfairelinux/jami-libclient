@@ -329,11 +329,13 @@ public Q_SLOTS: // METHODS
 
     void downloadFile(const QString& accountId,
                       const QString& convId,
+                      const QString& interactionId,
                       const QString& fileId,
                       const QString& path)
     {
         DRing::downloadFile(accountId.toStdString(),
                             convId.toStdString(),
+                            interactionId.toStdString(),
                             fileId.toStdString(),
                             path.toStdString());
     }
