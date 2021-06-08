@@ -49,6 +49,29 @@
     },
     {
       "key": {
+        "uuid": "5efb684f_50c2ffdd",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-06-08T13:47:07Z",
+      "side": 1,
+      "message": "I think we need to stroe the keys and values stored in some places.\n\nCause, from my understanding, these values are in dring somewhere?",
+      "range": {
+        "startLine": 292,
+        "startChar": 38,
+        "endLine": 296,
+        "endChar": 61
+      },
+      "revId": "5baea8bb37d7e4685978aac82a026971e4d464f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4e4fce5e_383cade2",
         "filename": "src/newcallmodel.cpp",
         "patchSetId": 17
