@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f7c0a3c8_9f4695ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 915
+      },
+      "writtenOn": "2021-06-08T18:39:26Z",
+      "side": 1,
+      "message": "The Change-ID entry must appear last, otherwise Gerrit won\u0027t use it.",
+      "revId": "4d24a10e05ad87c7aa68d2cfe2a2b04d80bc25a3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
