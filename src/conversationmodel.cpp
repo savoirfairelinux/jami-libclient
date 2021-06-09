@@ -188,7 +188,7 @@ public:
                         int conversationIdx,
                         int interactionId);
 
-    bool usefulDataFromDataTransfer(long long dringId,
+    bool usefulDataFromDataTransfer(long long jamidId,
                                     const datatransfer::Info& info,
                                     int& interactionId,
                                     QString& convId);
@@ -301,16 +301,16 @@ public Q_SLOTS:
                                     const QString& contactUri,
                                     bool isComposing);
 
-    void slotTransferStatusCreated(long long dringId, api::datatransfer::Info info);
-    void slotTransferStatusCanceled(long long dringId, api::datatransfer::Info info);
-    void slotTransferStatusAwaitingPeer(long long dringId, api::datatransfer::Info info);
-    void slotTransferStatusAwaitingHost(long long dringId, api::datatransfer::Info info);
-    void slotTransferStatusOngoing(long long dringId, api::datatransfer::Info info);
-    void slotTransferStatusFinished(long long dringId, api::datatransfer::Info info);
-    void slotTransferStatusError(long long dringId, api::datatransfer::Info info);
-    void slotTransferStatusTimeoutExpired(long long dringId, api::datatransfer::Info info);
-    void slotTransferStatusUnjoinable(long long dringId, api::datatransfer::Info info);
-    void updateTransferStatus(long long dringId,
+    void slotTransferStatusCreated(long long jamidId, api::datatransfer::Info info);
+    void slotTransferStatusCanceled(long long jamidId, api::datatransfer::Info info);
+    void slotTransferStatusAwaitingPeer(long long jamidId, api::datatransfer::Info info);
+    void slotTransferStatusAwaitingHost(long long jamidId, api::datatransfer::Info info);
+    void slotTransferStatusOngoing(long long jamidId, api::datatransfer::Info info);
+    void slotTransferStatusFinished(long long jamidId, api::datatransfer::Info info);
+    void slotTransferStatusError(long long jamidId, api::datatransfer::Info info);
+    void slotTransferStatusTimeoutExpired(long long jamidId, api::datatransfer::Info info);
+    void slotTransferStatusUnjoinable(long long jamidId, api::datatransfer::Info info);
+    void updateTransferStatus(long long jamidId,
                               api::datatransfer::Info info,
                               interaction::Status newStatus);
 };
@@ -2390,8 +2390,8 @@ void
 ConversationModel::getTransferInfo(uint64_t interactionId, datatransfer::Info& info)
 {
     try {
-        auto dringId = pimpl_->lrc.getDataTransferModel().getDringIdFromInteractionId(interactionId);
-        pimpl_->lrc.getDataTransferModel().transferInfo(dringId, info);
+        auto jamidId = pimpl_->lrc.getDataTransferModel().getDringIdFromInteractionId(interactionId);
+        pimpl_->lrc.getDataTransferModel().transferInfo(jamidId, info);
     } catch (...) {
         info.status = datatransfer::Status::INVALID;
     }
@@ -2404,7 +2404,7 @@ ConversationModel::getNumberOfUnreadMessagesFor(const QString& convUid)
 }
 
 bool
-ConversationModelPimpl::usefulDataFromDataTransfer(long long dringId,
+ConversationModelPimpl::usefulDataFromDataTransfer(long long jamidId,
                                                    const datatransfer::Info& info,
                                                    int& interactionId,
                                                    QString& convId)
@@ -2412,9 +2412,9 @@ ConversationModelPimpl::usefulDataFromDataTransfer(long long dringId,
     if (info.accountId != linked.owner.id)
         return false;
     try {
-        interactionId = lrc.getDataTransferModel().getInteractionIdFromDringId(dringId);
+        interactionId = lrc.getDataTransferModel().getInteractionIdFromDringId(jamidId);
     } catch (const std::out_of_range& e) {
-        qWarning() << "Couldn't get interaction from daemon Id: " << dringId;
+        qWarning() << "Couldn't get interaction from daemon Id: " << jamidId;
         return false;
     }
 
@@ -2423,7 +2423,7 @@ ConversationModelPimpl::usefulDataFromDataTransfer(long long dringId,
 }
 
 void
-ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusCreated(long long jamidId, datatransfer::Info info)
 {
     // check if transfer is for the current account
     if (info.accountId != linked.owner.id)
@@ -2443,8 +2443,8 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
     const auto& convId = convIds[0];
     auto interactionId = storage::addDataTransferToConversation(db, convId, info);
 
-    // map dringId and interactionId for latter retrivial from client (that only known the interactionId)
-    lrc.getDataTransferModel().registerTransferId(dringId, interactionId);
+    // map jamidId and interactionId for latter retrivial from client (that only known the interactionId)
+    lrc.getDataTransferModel().registerTransferId(jamidId, interactionId);
 
     auto interaction = interaction::Info {info.isOutgoing ? "" : info.peerUri,
                                           info.isOutgoing ? info.path : info.displayName,
@@ -2479,17 +2479,17 @@ ConversationModelPimpl::slotTransferStatusCreated(long long dringId, datatransfe
 }
 
 void
-ConversationModelPimpl::slotTransferStatusAwaitingPeer(long long dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusAwaitingPeer(long long jamidId, datatransfer::Info info)
 {
-    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_AWAITING_PEER);
+    updateTransferStatus(jamidId, info, interaction::Status::TRANSFER_AWAITING_PEER);
 }
 
 void
-ConversationModelPimpl::slotTransferStatusAwaitingHost(long long dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusAwaitingHost(long long jamidId, datatransfer::Info info)
 {
     int interactionId;
     QString convId;
-    if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
+    if (not usefulDataFromDataTransfer(jamidId, info, interactionId, convId))
         return;
 
     auto newStatus = interaction::Status::TRANSFER_AWAITING_HOST;
@@ -2587,11 +2587,11 @@ ConversationModelPimpl::invalidateModel()
 }
 
 void
-ConversationModelPimpl::slotTransferStatusOngoing(long long dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusOngoing(long long jamidId, datatransfer::Info info)
 {
     int interactionId;
     QString convId;
-    if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
+    if (not usefulDataFromDataTransfer(jamidId, info, interactionId, convId))
         return;
 
     auto newStatus = interaction::Status::TRANSFER_ONGOING;
@@ -2624,11 +2624,11 @@ ConversationModelPimpl::slotTransferStatusOngoing(long long dringId, datatransfe
 }
 
 void
-ConversationModelPimpl::slotTransferStatusFinished(long long dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusFinished(long long jamidId, datatransfer::Info info)
 {
     int interactionId;
     QString convId;
-    if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
+    if (not usefulDataFromDataTransfer(jamidId, info, interactionId, convId))
         return;
 
     // prepare interaction Info and emit signal for the client
@@ -2660,37 +2660,37 @@ ConversationModelPimpl::slotTransferStatusFinished(long long dringId, datatransf
 }
 
 void
-ConversationModelPimpl::slotTransferStatusCanceled(long long dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusCanceled(long long jamidId, datatransfer::Info info)
 {
-    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_CANCELED);
+    updateTransferStatus(jamidId, info, interaction::Status::TRANSFER_CANCELED);
 }
 
 void
-ConversationModelPimpl::slotTransferStatusError(long long dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusError(long long jamidId, datatransfer::Info info)
 {
-    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_ERROR);
+    updateTransferStatus(jamidId, info, interaction::Status::TRANSFER_ERROR);
 }
 
 void
-ConversationModelPimpl::slotTransferStatusUnjoinable(long long dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusUnjoinable(long long jamidId, datatransfer::Info info)
 {
-    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_UNJOINABLE_PEER);
+    updateTransferStatus(jamidId, info, interaction::Status::TRANSFER_UNJOINABLE_PEER);
 }
 
 void
-ConversationModelPimpl::slotTransferStatusTimeoutExpired(long long dringId, datatransfer::Info info)
+ConversationModelPimpl::slotTransferStatusTimeoutExpired(long long jamidId, datatransfer::Info info)
 {
-    updateTransferStatus(dringId, info, interaction::Status::TRANSFER_TIMEOUT_EXPIRED);
+    updateTransferStatus(jamidId, info, interaction::Status::TRANSFER_TIMEOUT_EXPIRED);
 }
 
 void
-ConversationModelPimpl::updateTransferStatus(long long dringId,
+ConversationModelPimpl::updateTransferStatus(long long jamidId,
                                              datatransfer::Info info,
                                              interaction::Status newStatus)
 {
     int interactionId;
     QString convId;
-    if (not usefulDataFromDataTransfer(dringId, info, interactionId, convId))
+    if (not usefulDataFromDataTransfer(jamidId, info, interactionId, convId))
         return;
 
     // update information in the db

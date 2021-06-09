@@ -160,10 +160,10 @@ Q_SIGNALS:
                            const MapStringString& payloads) const;
     /**
      * Connect this signal to know when a file transfer interaction is incoming
-     * @param dringId Daemon's ID for incoming transfer
+     * @param jamidId Daemon's ID for incoming transfer
      * @param transferInfo DataTransferInfo structure from daemon
      */
-    void newAccountTransfer(long long dringId, datatransfer::Info info) const;
+    void newAccountTransfer(long long jamidId, datatransfer::Info info) const;
     /**
      * Connect this signal to know when a contact is banned or unbanned
      * @param contactUri

@@ -188,10 +188,10 @@ public Q_SLOTS:
 
     /**
      * Listen from callbacksHandler to know when a file transfer interaction is incoming
-     * @param dringId Daemon's ID for incoming transfer
+     * @param jamidId Daemon's ID for incoming transfer
      * @param transferInfo DataTransferInfo structure from daemon
      */
-    void slotNewAccountTransfer(long long dringId, datatransfer::Info info);
+    void slotNewAccountTransfer(long long jamidId, datatransfer::Info info);
 
     /**
      * Listen from daemon to know when a VCard is received
@@ -1134,7 +1134,7 @@ ContactModelPimpl::sipUriReceivedFilter(const QString& uri)
 }
 
 void
-ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info info)
+ContactModelPimpl::slotNewAccountTransfer(long long jamidId, datatransfer::Info info)
 {
     if (info.accountId != linked.owner.id)
         return;
@@ -1156,7 +1156,7 @@ ContactModelPimpl::slotNewAccountTransfer(long long dringId, datatransfer::Info 
         emit behaviorController.newTrustRequest(linked.owner.id, info.peerUri);
     }
 
-    emit linked.newAccountTransfer(dringId, info);
+    emit linked.newAccountTransfer(jamidId, info);
 }
 
 void

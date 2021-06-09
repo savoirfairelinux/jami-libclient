@@ -181,15 +181,15 @@ Q_SIGNALS:
                                      const QString& to,
                                      int status);
 
-    void transferStatusCreated(long long dringId, api::datatransfer::Info info);
-    void transferStatusCanceled(long long dringId, api::datatransfer::Info info);
-    void transferStatusAwaitingPeer(long long dringId, api::datatransfer::Info info);
-    void transferStatusAwaitingHost(long long dringId, api::datatransfer::Info info);
-    void transferStatusOngoing(long long dringId, api::datatransfer::Info info);
-    void transferStatusFinished(long long dringId, api::datatransfer::Info info);
-    void transferStatusError(long long dringId, api::datatransfer::Info info);
-    void transferStatusTimeoutExpired(long long dringId, api::datatransfer::Info info);
-    void transferStatusUnjoinable(long long dringId, api::datatransfer::Info info);
+    void transferStatusCreated(long long jamidId, api::datatransfer::Info info);
+    void transferStatusCanceled(long long jamidId, api::datatransfer::Info info);
+    void transferStatusAwaitingPeer(long long jamidId, api::datatransfer::Info info);
+    void transferStatusAwaitingHost(long long jamidId, api::datatransfer::Info info);
+    void transferStatusOngoing(long long jamidId, api::datatransfer::Info info);
+    void transferStatusFinished(long long jamidId, api::datatransfer::Info info);
+    void transferStatusError(long long jamidId, api::datatransfer::Info info);
+    void transferStatusTimeoutExpired(long long jamidId, api::datatransfer::Info info);
+    void transferStatusUnjoinable(long long jamidId, api::datatransfer::Info info);
 
     /**
      * Connect this signal to get when a device name changed or a device is added

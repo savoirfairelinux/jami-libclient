@@ -27,7 +27,7 @@
 #include <QVariant>
 #include <QTimer>
 
-#include "dring.h"
+#include "jamid.h"
 #include "../typedefs.h"
 #include "conversions_wrap.hpp"
 
@@ -41,7 +41,7 @@ public:
     InstanceManagerInterface(bool muteDring = false);
     ~InstanceManagerInterface();
 
-    // TODO: These are not present in dring.h
+    // TODO: These are not present in jamid.h
 
 public Q_SLOTS: // METHODS
     void Register(int pid, const QString& name)

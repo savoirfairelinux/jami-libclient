@@ -65,9 +65,9 @@ public:
 
     void cancel(int interactionId);
 
-    void registerTransferId(long long dringId, int interactionId);
+    void registerTransferId(long long jamidId, int interactionId);
 
-    int getInteractionIdFromDringId(long long dringId);
+    int getInteractionIdFromDringId(long long jamidId);
 
     long long getDringIdFromInteractionId(int interactionId);
 
