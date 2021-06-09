@@ -225,7 +225,6 @@ DataTransferModel::cancel(const QString& accountId,
                           const QString& conversationId,
                           const QString& interactionId)
 {
-    qWarning() << "@@@ " << accountId << " - " << conversationId << " - " << interactionId;
     ConfigurationManager::instance().cancelDataTransfer(accountId,
                                                         conversationId,
                                                         getFileIdFromInteractionId(interactionId));
@@ -247,7 +246,7 @@ QString
 DataTransferModel::createDefaultDirectory()
 {
     auto defaultDirectory = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)
-                            + "/Jami";
+                            + QDir::separator() + "Jami";
     QDir dir(defaultDirectory);
     if (!dir.exists())
         dir.mkpath(".");
