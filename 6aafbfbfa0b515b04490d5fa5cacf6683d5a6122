@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6dfd9eb4_cc6e834d",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1009,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-06-09T16:51:28Z",
+      "side": 1,
+      "message": "Question:\n\nwhy do we need two conditions?\n\nif medialist has MEDIA_TYPE_VIDEO\n\ncallInfo-\u003eisAudioOnly should be false,\n\nor is it because of some delay?",
+      "range": {
+        "startLine": 1009,
+        "startChar": 29,
+        "endLine": 1009,
+        "endChar": 74
+      },
+      "revId": "6aafbfbfa0b515b04490d5fa5cacf6683d5a6122",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62b63999_7e46f795",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-06-09T16:51:28Z",
+      "side": 1,
+      "message": "always true here?",
+      "range": {
+        "startLine": 1010,
+        "startChar": 30,
+        "endLine": 1010,
+        "endChar": 37
+      },
+      "revId": "6aafbfbfa0b515b04490d5fa5cacf6683d5a6122",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
