@@ -3607,8 +3607,8 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid,
         return;
     }
 #ifdef Q_OS_WIN
-    if (destinationDir.right(1) != '/') {
-        destinationDir += "/";
+    if (destinationDir.right(1) != '\\') {
+        destinationDir += "\\";
     }
 #endif
     QDir dir = QFileInfo(destinationDir + path).absoluteDir();
