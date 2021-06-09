@@ -297,14 +297,14 @@ def build_tests_projects(arch, config_str, msbuild, vs_env_vars, toolset,
         msbuild_args = getMSBuildArgs(arch, config_str, toolset)
         build_project(msbuild, msbuild_args, project, vs_env_vars)
 
-def run_tests(mute_dring, output_to_files):
+def run_tests(mute_jamid, output_to_files):
     print('Running client tests')
 
     test_exe_command_list = [qml_test_exe, unit_test_exe]
 
-    if mute_dring:
-        test_exe_command_list[0] += ' -mutedring'
-        test_exe_command_list[1] += ' -mutedring'
+    if mute_jamid:
+        test_exe_command_list[0] += ' -mutejami'
+        test_exe_command_list[1] += ' -mutejami'
     if output_to_files:
         test_exe_command_list[0] += ' -o ' + this_dir + '\\x64\\test\\qml_tests.txt'
         test_exe_command_list[1] += ' > ' + this_dir + '\\x64\\test\\unittests.txt'
@@ -359,8 +359,8 @@ def parse_args():
 
     run_test = subparser.add_parser('runtests')
     run_test.add_argument(
-        '-md', '--mutedring', action='store_true', default=False,
-        help='Avoid dring logs')
+        '-md', '--mutejami', action='store_true', default=False,
+        help='Avoid jamid logs')
     run_test.add_argument(
         '-o', '--outputtofiles', action='store_true', default=False,
         help='Output tests log into files')
@@ -391,7 +391,7 @@ def main():
         enable_test = True
 
     if parsed_args.subparser_name == 'runtests':
-        run_tests(parsed_args.mutedring, parsed_args.outputtofiles)
+        run_tests(parsed_args.mutejamid, parsed_args.outputtofiles)
 
     if parsed_args.deps:
         deps(parsed_args.arch, parsed_args.toolset, parsed_args.qtver)

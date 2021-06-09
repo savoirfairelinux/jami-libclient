@@ -478,8 +478,8 @@ Item {
     property string removeDefaultModerator: qsTr("Remove default moderator")
 
     // Daemon reconnection
-    property string reconnectDaemon: qsTr("Trying to reconnect to the Jami daemon (dring)…")
-    property string reconnectionFailed: qsTr("Could not re-connect to the Jami daemon (dring).\nJami will now quit.")
+    property string reconnectDaemon: qsTr("Trying to reconnect to the Jami daemon (jamid)…")
+    property string reconnectionFailed: qsTr("Could not re-connect to the Jami daemon (jamid).\nJami will now quit.")
 
     // Is Swarm
     property string isSwarm: qsTr("Is swarm:")

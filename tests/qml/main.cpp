@@ -182,10 +182,10 @@ main(int argc, char** argv)
 {
     bool muteDring {false};
 
-    // Remove "-mutedring" from argv, as quick_test_main_with_setup() will
+    // Remove "-mutejami" from argv, as quick_test_main_with_setup() will
     // fail if given an invalid command-line argument.
     auto end = std::remove_if(argv + 1, argv + argc, [](char* argv) {
-        return (strcmp(argv, "-mutedring") == 0);
+        return (strcmp(argv, "-mutejami") == 0);
     });
 
     if (end != argv + argc) {

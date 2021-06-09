@@ -34,7 +34,7 @@ Then, you can build daemon, lrc and client-qt with:
 ./build.py --install --qt
 ```
 
-And you will have the daemon in `daemon/bin/dring` and the client in `client-qt/build-local/jami-qt`. You also can run it with
+And you will have the daemon in `daemon/bin/jamid` and the client in `client-qt/build-local/jami-qt`. You also can run it with
 
 If you use a Qt version that is not wide-system installed you need to specify its path after the `--qt` flag, i. e., `./build.py --install --qt /home/<username>/Qt/5.15.0/gcc_64
 

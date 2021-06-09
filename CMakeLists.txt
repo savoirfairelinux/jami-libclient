@@ -188,7 +188,7 @@ if(MSVC)
 
     # daemon
     set(DRING_SRC_PATH ${DRING}/contrib/msvc/include)
-    set(DRING_LIB ${DRING}/build/x64/ReleaseLib_win32/bin/dring.lib)
+    set(DRING_LIB ${DRING}/build/x64/ReleaseLib_win32/bin/jami.lib)
     set(GNUTLS_LIB ${DRING}/contrib/msvc/lib/x64/libgnutls.lib)
 
     # ReleaseCompile config
