@@ -69,9 +69,9 @@ const joinText = document.getElementById("join_text")
 const noteText = document.getElementById("note_text")
 const invitationNoteText = document.getElementById("invitation_note")
 
-var   messages = document.getElementById("messages")
-var   sendContainer = document.getElementById("data_transfer_send_container")
-var   wrapperOfNavbar = document.getElementById("wrapperOfNavbar")
+var messages = document.getElementById("messages")
+var sendContainer = document.getElementById("data_transfer_send_container")
+var wrapperOfNavbar = document.getElementById("wrapperOfNavbar")
 
 /* States: allows us to avoid re-doing something if it isn't meaningful */
 var displayLinksEnabled = true
@@ -1449,14 +1449,7 @@ function mediaInteraction(message_id, message_direction, link, ytid, errorHandle
 
     const internal_mes_wrapper = document.createElement("div")
     internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
-    //if(use_qt) {
-    //    var tbl = buildMsgTable(message_direction)
-    //    var msg_cell = tbl.querySelector(".msg_cell")
-    //    msg_cell.appendChild(media_wrapper)
-    //    internal_mes_wrapper.appendChild(tbl)
-    //} else {
-        internal_mes_wrapper.appendChild(media_wrapper)
-    //}
+    internal_mes_wrapper.appendChild(media_wrapper)
 
     return internal_mes_wrapper
 }
@@ -1478,14 +1471,8 @@ function textInteraction(message_id, message_direction, htmlText) {
 
     const internal_mes_wrapper = document.createElement("div")
     internal_mes_wrapper.setAttribute("class", "internal_mes_wrapper")
-    //if(use_qt) {
-    //    var tbl = buildMsgTable(message_direction)
-    //    var msg_cell = tbl.querySelector(".msg_cell")
-    //    msg_cell.appendChild(message_wrapper)
-    //    internal_mes_wrapper.appendChild(tbl)
-    //} else {
-        internal_mes_wrapper.appendChild(message_wrapper)
-    //}
+    internal_mes_wrapper.appendChild(message_wrapper)
+
 
     return internal_mes_wrapper
 }
@@ -1545,6 +1532,7 @@ function actionInteraction() {
     var left_buttons = document.createElement("div")
     left_buttons.setAttribute("class", "left_buttons")
     message_wrapper.appendChild(left_buttons)
+
     // Also contains a bold clickable text
     var text_div = document.createElement("div")
     text_div.setAttribute("class", "text")
@@ -1653,16 +1641,12 @@ function buildNewMessage(message_object) {
     message_div.setAttribute("id", `message_${message_id}`)
     message_div.setAttribute("class", classes.join(" "))
 
-    // Build message for each types.
-   // if(!use_qt) {
-        // Add sender images if necessary (like if the interaction doesn't take the whole width)
-        const need_sender = (message_type === "data_transfer" || message_type === "text")
-        if (need_sender) {
-            var message_sender_image = document.createElement("span")
-            message_sender_image.setAttribute("class", `sender_image sender_image_${message_sender_contact_method}`)
-            message_div.appendChild(message_sender_image)
-        }
-   // }
+    const need_sender = (message_type === "data_transfer" || message_type === "text")
+    if (need_sender) {
+        var message_sender_image = document.createElement("span")
+        message_sender_image.setAttribute("class", `sender_image sender_image_${message_sender_contact_method}`)
+        message_div.appendChild(message_sender_image)
+    }
 
     // Build main content
     if (message_type === "data_transfer") {
@@ -2250,7 +2234,11 @@ function setSenderImage(set_sender_image_object)
  */
 /* exported showTypingIndicator */
 function showTypingIndicator(contactUri, isTyping) {
-    var message_div = messages.lastChild.querySelector("#message_typing")
+    var message_div
+    if (messages.lastChild)
+        message_div = messages.lastChild.querySelector("#message_typing")
+    else
+        return
 
     if (isTyping === 0) {
         if (message_div) {
@@ -2312,14 +2300,9 @@ function isTextSelected() {
  */
 function addFile_path(path, name, size) {
     var html = "<div class='file_wrapper' data-path='" + path + "'>" +
-        "<svg class='svg-icon' viewBox='0 0 20 20'>" +
-        "<path fill = 'none' d = 'M17.222,5.041l-4.443-4.414c-0.152-0.151-0.356-0.235-0.571-0.235h-8.86c-0.444,0-0.807,0.361-0.807,0.808v17.602c0,0.448,0.363,0.808,0.807,0.808h13.303c0.448,0,0.808-0.36,0.808-0.808V5.615C17.459,5.399,17.373,5.192,17.222,5.041zM15.843,17.993H4.157V2.007h7.72l3.966,3.942V17.993z' ></path>" +
-        "<path fill='none' d='M5.112,7.3c0,0.446,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808c0-0.447-0.363-0.808-0.808-0.808H5.92C5.475,6.492,5.112,6.853,5.112,7.3z'></path>" +
-        "<path fill='none' d='M5.92,5.331h4.342c0.445,0,0.808-0.361,0.808-0.808c0-0.446-0.363-0.808-0.808-0.808H5.92c-0.444,0-0.808,0.361-0.808,0.808C5.112,4.97,5.475,5.331,5.92,5.331z'></path>" +
-        "<path fill='none' d='M13.997,9.218H5.92c-0.444,0-0.808,0.361-0.808,0.808c0,0.446,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808C14.805,9.58,14.442,9.218,13.997,9.218z'></path>" +
-        "<path fill='none' d='M13.997,11.944H5.92c-0.444,0-0.808,0.361-0.808,0.808c0,0.446,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808C14.805,12.306,14.442,11.944,13.997,11.944z'></path>" +
-        "<path fill='none' d='M13.997,14.67H5.92c-0.444,0-0.808,0.361-0.808,0.808c0,0.447,0.363,0.808,0.808,0.808h8.077c0.445,0,0.808-0.361,0.808-0.808C14.805,15.032,14.442,14.67,13.997,14.67z'></path>" +
-        "</svg >" +
+        "<svg class='svgicon' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 24 24' style='enable-background:new 0 0 24 24;' xml:space='preserve'>" +
+        "<path d='M14.2,2.3C14,2.1,13.7,2,13.4,2H5.5C4.8,2,4.3,2.5,4.3,3.2v6.3v1.6v9.7c0,0.7,0.5,1.2,1.2,1.2h13.1c0.7,0,1.2-0.5,1.2-1.2 V18V8.4c0-0.3-0.1-0.6-0.3-0.8L14.2,2.3z M18,7.7H14c0,0,0,0,0,0V3.7L18,7.7z M18.6,20.9C18.6,20.9,18.6,20.9,18.6,20.9l-13.1,0 c0,0,0,0,0,0v-9.7V9.5V3.2c0,0,0,0,0,0h7.4v4.5c0,0.7,0.5,1.2,1.2,1.2h4.5v9.2V20.9z'/>" +
+        "</svg>" +
         "<div class='fileinfo'>" +
         "<p>" + name + "</p>" +
         "<p>" + size + "</p>" +
