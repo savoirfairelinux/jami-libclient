@@ -360,6 +360,23 @@ NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabe
     if (!callInfo)
         return;
 
+    if (callInfo->type == call::Type::CONFERENCE) {
+        if (mediaLabel.contains("audio_0")) {
+            CallManager::instance().muteLocalMedia(callId,
+                                                   DRing::Media::Details::MEDIA_TYPE_AUDIO,
+                                                   !callInfo->audioMuted);
+            callInfo->audioMuted = !callInfo->audioMuted;
+        } else if (mediaLabel.contains("video_0")) {
+            CallManager::instance().muteLocalMedia(callId,
+                                                   DRing::Media::Details::MEDIA_TYPE_VIDEO,
+                                                   !callInfo->videoMuted);
+            callInfo->videoMuted = !callInfo->videoMuted;
+        }
+        if (callInfo->status == call::Status::IN_PROGRESS)
+            emit callInfosChanged(owner.id, callId);
+        return;
+    }
+
     auto proposedList = callInfo->mediaList;
 
     int found = 0;

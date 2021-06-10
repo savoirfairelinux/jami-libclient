@@ -134,7 +134,7 @@ struct Info
     QString peerUri;
     bool isOutgoing;
     bool audioMuted = false;
-    bool videoMuted = true;
+    bool videoMuted = false;
     bool isAudioOnly = false;
     Layout layout = Layout::GRID;
     VectorMapStringString participantsInfos = {};
