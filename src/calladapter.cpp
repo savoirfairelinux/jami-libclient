@@ -356,96 +356,78 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
 {
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
     if (convInfo.uid.isEmpty()) {
+        qWarning() << Q_FUNC_INFO << "No conversation for id: " << convUid;
         return;
     }
-    auto selectedAccountId = lrcInstance_->getCurrentAccountId();
-    auto* callModel = lrcInstance_->getCurrentCallModel();
 
-    // new call
-    if (!callModel->hasCall(convInfo.callId)) {
-        if (QApplication::focusObject() == nullptr || accountId != selectedAccountId) {
-            showNotification(accountId, convInfo.uid);
-            return;
-        }
+    const auto& accInfo = lrcInstance_->getAccountInfo(accountId);
+    if (!accInfo.callModel->hasCall(convInfo.callId)) {
+        qWarning() << Q_FUNC_INFO << "No call for id: " << convInfo.callId;
+        return;
+    }
+    auto call = accInfo.callModel->getCall(convInfo.callId);
 
-        const auto& currentConvInfo = lrcInstance_->getConversationFromConvUid(
-            lrcInstance_->get_selectedConvUid());
+    // this will update various UI elements that portray the call state
+    Q_EMIT callStatusChanged(static_cast<int>(call.status), accountId, convInfo.uid);
 
-        // Current call
-        auto currentConvHasCall = callModel->hasCall(currentConvInfo.callId);
-        if (currentConvHasCall) {
-            auto currentCall = callModel->getCall(currentConvInfo.callId);
-            if (currentCall.status == lrc::api::call::Status::CONNECTED
-                || currentCall.status == lrc::api::call::Status::IN_PROGRESS) {
-                showNotification(accountId, convInfo.uid);
-                return;
+    auto callBelongsToSelectedAccount = accountId == lrcInstance_->getCurrentAccountId();
+    auto accountProperties = lrcInstance_->accountModel().getAccountConfig(accountId);
+
+    // do nothing but update the status UI for incoming calls on RendezVous accounts
+    if (accountProperties.isRendezVous && !call.isOutgoing) {
+        qInfo() << Q_FUNC_INFO << "The call's associated account is a RendezVous point";
+        return;
+    }
+
+    auto currentConvId = lrcInstance_->get_selectedConvUid();
+    auto isCallSelected = currentConvId == convInfo.uid;
+
+    // pop a notification when:
+    // - the window is not focused OR the call is for another account
+    // - the call is incoming AND the call's target account is
+    //   not a RendezVous point
+    // - the call has just transitioned to the INCOMING_RINGING state
+    if ((QApplication::focusObject() == nullptr || !callBelongsToSelectedAccount)
+        && !call.isOutgoing && !accountProperties.isRendezVous
+        && call.status == call::Status::INCOMING_RINGING) {
+        // if the window is not focused but the call belongs to the selected account
+        // then select the conversation immediately to show the call view
+        if (callBelongsToSelectedAccount) {
+            if (isCallSelected) {
+                Q_EMIT lrcInstance_->conversationUpdated(convInfo.uid, accountId);
+            } else {
+                lrcInstance_->selectConversation(convInfo.uid);
             }
         }
-        // select
-        lrcInstance_->selectConversation(convInfo.uid, accountId);
+        showNotification(accountId, convInfo.uid);
         return;
     }
 
     // this slot has been triggered as a result of either selecting a conversation
     // with an active call, placing a call, or an incoming call for the current
     // or any other conversation
-    auto call = callModel->getCall(convInfo.callId);
-    auto isCallSelected = lrcInstance_->get_selectedConvUid() == convInfo.uid;
+    if (isCallSelected) {
+        // current conversation, only update
+        Q_EMIT lrcInstance_->conversationUpdated(convInfo.uid, accountId);
+        return;
+    }
 
-    if (call.isOutgoing) {
-        if (isCallSelected) {
-            // don't reselect
-            // TODO: this signal can be renamed to conversationReselected,
-            // isCallSelected and any other similar logic can be removed
-            // and calling selectConversation should be sufficient
-            Q_EMIT lrcInstance_->conversationUpdated(convInfo.uid, accountId);
-        }
-    } else {
-        auto accountProperties = lrcInstance_->accountModel().getAccountConfig(selectedAccountId);
-        if (!accountProperties.isRendezVous) {
-            // App not focused or in different account
-            if (QApplication::focusObject() == nullptr || accountId != selectedAccountId) {
-                showNotification(accountId, convInfo.uid);
-                return;
-            }
-
-            const auto& currentConvInfo = lrcInstance_->getConversationFromConvUid(
-                lrcInstance_->get_selectedConvUid());
-
-            // Call in current conversation
-            auto currentConvHasCall = callModel->hasCall(currentConvInfo.callId);
-
-            // Check INCOMING / OUTGOING call in current conversation
-            if (isCallSelected) {
-                if (currentConvHasCall) {
-                    auto currentCall = callModel->getCall(currentConvInfo.callId);
-                    if (currentCall.status == lrc::api::call::Status::OUTGOING_RINGING) {
-                        showNotification(accountId, convInfo.uid);
-                        return;
-                    } else {
-                        // only update
-                        Q_EMIT lrcInstance_->conversationUpdated(convInfo.uid, accountId);
-                    }
-                } else {
-                    // only update
-                    Q_EMIT lrcInstance_->conversationUpdated(convInfo.uid, accountId);
-                }
-            } else { // Not current conversation
-                if (currentConvHasCall) {
-                    auto currentCall = callModel->getCall(currentConvInfo.callId);
-                    if ((currentCall.status == lrc::api::call::Status::CONNECTED
-                         || currentCall.status == lrc::api::call::Status::IN_PROGRESS)
-                        && !accountProperties.autoAnswer) {
-                        showNotification(accountId, convInfo.uid);
-                        return;
-                    }
-                }
-                // reselect
-                lrcInstance_->selectConversation(convInfo.uid, accountId);
-            }
+    // pop a notification if the current conversation has an in-progress call
+    const auto& currentConvInfo = lrcInstance_->getConversationFromConvUid(currentConvId);
+    auto currentConvHasCall = accInfo.callModel->hasCall(currentConvInfo.callId);
+    if (currentConvHasCall) {
+        auto currentCall = accInfo.callModel->getCall(currentConvInfo.callId);
+        if ((currentCall.status == call::Status::CONNECTED
+             || currentCall.status == call::Status::IN_PROGRESS)
+            && !accountProperties.autoAnswer) {
+            showNotification(accountId, convInfo.uid);
+            return;
         }
     }
-    Q_EMIT callStatusChanged(static_cast<int>(call.status), accountId, convInfo.uid);
+
+    // finally, in this case, the conversation isn't selected yet
+    // and there are no other special conditions, so just select the conversation
+    lrcInstance_->selectConversation(convInfo.uid, accountId);
 }
 
 void
