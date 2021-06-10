@@ -41,6 +41,9 @@
   --bg-text-input: white;
   --bg-invitation-rect: white;
 
+  /* hairline properties */
+  --hairline-color: #d9d9d9;
+  --hairline-thickness: 0.2px;
 }
 
 @font-face {
@@ -81,18 +84,9 @@ body {
     -webkit-user-select: text;
 }
 
-::-webkit-scrollbar-track {
-    background-color: var(--bg-color);
-}
-
 ::-webkit-scrollbar {
-    width: 8px;
-    background-color: var(--bg-color);
+    display: none;
 }
-
-::-webkit-scrollbar-thumb {
-    background-color: var(--bg-color);
- }
 
 /** Navbar */
 
@@ -330,10 +324,7 @@ body {
     justify-content: space-between;
 }
 
-
-
 /** Messaging bar */
-
 #sendMessage {
     background-color: var(--bg-color);
     display: flex;
@@ -345,21 +336,24 @@ body {
     right: 0;
     top: 0;
     z-index: 1;
+
+    /* hairline */
+    border-top: var(--hairline-thickness) solid var(--hairline-color);
+    border-bottom: var(--hairline-thickness) solid var(--hairline-color);
 }
 
 #message {
     flex: 1;
     background-color: transparent;
     overflow-y: hidden;
-    vertical-align:middle;
+    vertical-align: middle;
     color: var(--text-color);
     width: 100%;
-    min-height: 50px;
-    max-height: var(--textarea-max-height);
     resize: none;
     border: none;
-    padding: 30px 5px;
+
     padding-left: 20px;
+
     /* enable selection (it is globally disabled in the body) */
     -webkit-user-select: auto;
 }
@@ -368,6 +362,7 @@ body {
     height: "auto";
     width: 100%;
     min-height: 50px;
+    max-height: var(--textarea-max-height);
     background-color: var(--bg-text-input);
     border-radius: 25px 25px 0px 25px;
     display: flex;
@@ -427,7 +422,6 @@ a:hover {
 
 #data_transfer_send_container {
     position: relative;
-    z-index: 1;
     display: none;
     justify-content: flex-start;
     left: 0;
@@ -439,10 +433,11 @@ a:hover {
     border-bottom: none;
     color: var(--message-out-txt);
     background-color: var(--message-out-bg);
-    overflow-x: overlay;
+    overflow-x: scroll;
 }
 
 #data_transfer_send_container::-webkit-scrollbar {
+    display: flex;
     height: 8px;
 }
 
@@ -520,6 +515,14 @@ a:hover {
     align-items: center;
     margin: 5px;
     font-family: sans-serif;
+}
+
+.file_wrapper p {
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 65px;
+    min-width: 65px;
+    text-overflow: ellipsis;
 }
 
 /* Style the button and place it at the top right corner of the image */
