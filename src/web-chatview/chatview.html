@@ -30,50 +30,29 @@
             </div>
             <div id="callButtons">
                 <!-- callButtons block allows more efficient hiding of placeCallButton and placeAudioCallButton -->
-                <div id="placeCallButton" class="nav-button action-button nav-rigth" onclick="placeCall();">
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                        <g id="Icones_Outline" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g id="Camera" fill-rule="nonzero" stroke="#000000" stroke-width="1.3">
-                                <g id="Ico_Camera" transform="translate(2.000000, 6.000000)">
-                                    <path d="M14.838,0.964 L15.0727616,4.95098691 L18.549033,2.8441558 L19.1831325,10.5544613 L15.0431125,8.28294586 L15.0431125,12.1828061 C15.0222904,12.2250926 14.9986583,12.2532258 14.9607672,12.2532258 L14.9607672,12.2532258 L0.881,12.253 L0.654407741,1.14977472 L14.838,0.964 Z" id="Path"></path>
-                                </g>
-                            </g>
-                        </g>
+                <div id="placeCallButton" class="nav-button action-button nav-right" onclick="placeCall()">
+                    <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
                     </svg>
                 </div>
-                <div id="placeAudioCallButton" class="nav-button action-button" onclick="placeAudioCall();">
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                        <g id="Icones_Outline" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g id="Phone" stroke="#000000" stroke-width="1.3">
-                                <g id="Ico_TEL" transform="translate(3.000000, 3.000000)">
-                                    <path d="M2.08318114,0.702801822 C3.47221232,-0.375546383 4.67183016,-0.185249641 5.24007015,1.08339531 C6.37655021,3.36695621 7.19734136,4.50873667 6.37655021,5.39678812 C4.86124348,6.41170409 3.78790122,6.91916206 4.35614125,7.99751029 C5.49262131,10.7250969 7.70244359,13.0720901 10.3542304,14.4675995 C11.3644349,15.101922 11.9326749,14.0235738 13.0691549,12.6280643 C14.0162216,11.8668773 15.0895639,12.6914966 17.2993862,14.0235738 C18.4990041,14.7213285 18.5621418,15.8631089 17.4256618,17.1951861 C10.7961949,24.6801913 -5.80904142,6.85572983 2.08318114,0.702801822" id="Path"></path>
-                                </g>
-                            </g>
-                        </g>
+                <div id="placeAudioCallButton" class="nav-button action-button nav-right" onclick="placeAudioCall()">
+                    <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
                     </svg>
                 </div>
             </div>
             <div id="pluginsButton" style="display:none" class="nav-button action-button nav-right" onclick="openPluginHandlersList()">
-                <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <g id="Icones_Outline" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <g id="Plugin" fill="#000000" fill-rule="nonzero" stroke="#000000" stroke-width="0.25">
-                            <g id="noun_add-on-plugin_2469914" transform="translate(2.000000, 2.000000)">
-                                <path d="M7.95454545,-2.58379177e-14 C6.07714045,-2.58379177e-14 4.54545455,1.53168636 4.54545455,3.40909091 C4.54545455,3.81146364 4.63639864,4.18709545 4.765625,4.54545455 L0.454545455,4.54545455 C0.203517329,4.54547964 -3.28047432e-07,4.74897187 -3.28047432e-07,5 L-3.28047432e-07,9.54545909 C-3.28047432e-07,9.69805849 0.0762260247,9.84056553 0.20341697,9.92488084 C0.330607915,10.0091961 0.49161786,10.0240699 0.632102273,9.96448182 C0.928123182,9.84116364 1.2500475,9.77273182 1.59090909,9.77273182 C2.977005,9.77273182 4.09090909,10.8866409 4.09090909,12.2727318 C4.09090909,13.6588227 2.977005,14.7727318 1.59090909,14.7727318 C1.2500475,14.7727318 0.928123182,14.7043 0.632102273,14.5809591 C0.491614149,14.5213694 0.330599681,14.5362456 0.203407479,14.6205663 C0.0762152768,14.704887 -3.28047432e-07,14.8474011 -3.28047432e-07,15 L-3.28047432e-07,19.5454591 C-3.28047432e-07,19.7964872 0.203517329,20 0.454545455,20 L15.4545455,20 C15.7055736,20 15.9090658,19.7964872 15.9090909,19.5454591 L15.9090909,15.6108 C16.1285164,15.6553682 16.3589991,15.6818227 16.5909091,15.6818227 C18.4683141,15.6818227 19.9999997,14.1501409 19.9999997,12.2727318 C19.9999997,10.3953227 18.4683141,8.86363636 16.5909091,8.86363636 C16.3589991,8.86363636 16.1285164,8.89009545 15.9090909,8.93465909 L15.9090909,5 C15.9090658,4.74897187 15.7055736,4.54547964 15.4545455,4.54545455 L11.1434659,4.54545455 C11.2726923,4.18709545 11.3636364,3.81146364 11.3636364,3.40909091 C11.3636364,1.53168636 9.83195045,-2.58379177e-14 7.95454545,-2.58379177e-14 L7.95454545,-2.58379177e-14 Z M7.95454545,0.909090909 C9.34064136,0.909090909 10.4545455,2.02299545 10.4545455,3.40909091 C10.4545455,3.90517045 10.3070727,4.36090227 10.0568182,4.75142045 C9.96529803,4.89157836 9.95820859,5.07069263 10.0383647,5.21764558 C10.1185209,5.36459852 10.272952,5.45561067 10.4403409,5.45454545 L15,5.45454545 L15,9.54545909 C14.9998246,9.69805849 15.076226,9.84056553 15.203417,9.92488084 C15.3306079,10.0091961 15.4916179,10.0240699 15.6321023,9.96448182 C15.928123,9.84116364 16.2500475,9.77273182 16.5909091,9.77273182 C17.977005,9.77273182 19.0909091,10.8866409 19.0909091,12.2727318 C19.0909091,13.6588227 17.977005,14.7727318 16.5909091,14.7727318 C16.2500475,14.7727318 15.928123,14.7043 15.6321023,14.5809591 C15.4916141,14.5213694 15.3305997,14.5362456 15.2034075,14.6205663 C15.0762153,14.704887 14.999817,14.8474011 15,15.0000045 L15,19.0909136 L0.909090909,19.0909136 L0.909090909,15.6108 C1.12851636,15.6553682 1.35899909,15.6818227 1.59090909,15.6818227 C3.46831409,15.6818227 5,14.1501409 5,12.2727318 C5,10.3953227 3.46831409,8.86363636 1.59090909,8.86363636 C1.35899909,8.86363636 1.12851636,8.89009545 0.909090909,8.93465909 L0.909090909,5.45454545 L5.46875,5.45454545 C5.6361389,5.45561067 5.79057002,5.36459852 5.87072617,5.21764558 C5.95088232,5.07069263 5.94379288,4.89157836 5.85227273,4.75142045 C5.60201818,4.36090227 5.45454545,3.90517045 5.45454545,3.40909091 C5.45454545,2.02299545 6.56844955,0.909090909 7.95454545,0.909090909 L7.95454545,0.909090909 Z" id="Shape"></path>
-                            </g>
-                        </g>
-                    </g>
+                <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M0 0h24v24H0V0z" fill="none" />
+                    <path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7s2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/>
                 </svg>
             </div>
-            <div id="addToConversationsButton" class="nav-button action-button nav-right" onclick="addToConversations();">
-                <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <g id="Icones_Outline" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <g id="Profil" stroke="#000000" stroke-width="1.3">
-                            <g id="Ico_PROFIL" transform="translate(3.000000, 2.000000)">
-                                <path d="M14,4.5 C14,6.98522308 11.9852231,9 9.5,9 C7.01477692,9 5,6.98522308 5,4.5 C5,2.0147769 7.01477692,0 9.5,0 C11.9852231,0 14,2.0147769 14,4.5 Z" id="Stroke-1"></path>
-                                <path d="M0,20 C0,14.4771733 4.02947764,10 9.00005436,10 C13.9705224,10 18,14.4771733 18,20" id="Stroke-3"></path>
-                            </g>
-                        </g>
-                    </g>
+            <div id="addToConversationsButton" class="nav-button action-button nav-right" onclick="addToConversations()">
+                <svg class="svgicon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                 </svg>
             </div>
             <div id="unbanButton" class="nav-button action-critical-button nav-right" onclick="addBannedContact()">
@@ -85,45 +64,43 @@
             </div>
         </div>
     </div>
-
     <div id="container">
         <div id="invitation" class="column">
-                <div id="invitation_text_container" class="note_container">
-                    <div id="invitation_text"></div>
-                </div>
+            <div id="invitation_text_container" class="note_container">
+                <div id="invitation_text"></div>
+            </div>
 
-                <div id="invitation_rect">
-                    <div id="invite_image"></div>
-                    <div id="quote_img_wrapper">
-                        <img id="quote_img" src="qrc:/images/icons/quote.svg"></img>
-                    </div>
-                    <div id="invite_text">
-                        <div id="join_text"></div>
-                        <div id="note_text"></div>
-                    </div>
-                    <div id="actions">
-                        <button id="blockButton" class="text-button" onclick="blockConversation()">
-                        </button>
-                        <button id="refuseButton" class="text-button" onclick="refuseInvitation()">
-                        </button>
-                        <button id="acceptButton" class="text-button text-button-green" onclick="acceptInvitation()">
-                        </button>
-                    </div>
+            <div id="invitation_rect">
+                <div id="invite_image"></div>
+                <div id="quote_img_wrapper">
+                    <img id="quote_img" src="qrc:/images/icons/quote.svg"></img>
                 </div>
+                <div id="invite_text">
+                    <div id="join_text"></div>
+                    <div id="note_text"></div>
+                </div>
+                <div id="actions">
+                    <button id="blockButton" class="text-button" onclick="blockConversation()">
+                    </button>
+                    <button id="refuseButton" class="text-button" onclick="refuseInvitation()">
+                    </button>
+                    <button id="acceptButton" class="text-button text-button-green" onclick="acceptInvitation()">
+                    </button>
+                </div>
+            </div>
 
             <div id="invitation_note_container" class="note_container">
                 <div id="invitation_note"></div>
             </div>
         </div>
-
         <div id="messages" onscroll="onScrolled()"></div>
 
         <div id="typing_indicator_container"></div>
 
         <div id="back_to_bottom_button_container">
-            <div id="back_to_bottom_button" onclick="back_to_bottom()">Jump to latest &#9660;
-</div>
+            <div id="back_to_bottom_button" onclick="back_to_bottom()">Jump to latest &#9660;</div>
         </div>
+
         <div id="send_inteface_container" onresize="updateBackToBottomContainer()">
             <div id="sendMessage">
                 <div id="sendFileButton" class="nav-button action-button" onclick="selectFileToSend()">
@@ -152,6 +129,8 @@
                         </g>
                     </svg>
                 </div>
+                <textarea id="message" autofocus onkeyup="grow_text_area()" onkeydown="process_messagebar_keydown()"
+                          dir="auto" rows="1"></textarea>
                 <div id="emojiButton" class="action-button nav-button">
                     <svg class="svgicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
                         <path d="M12,2.1c-5.4,0-9.9,4.4-9.9,9.9s4.4,9.9,9.9,9.9s9.9-4.4,9.9-9.9S17.4,2.1,12,2.1z M12,20.7c-4.8,0-8.7-3.9-8.7-8.7 S7.2,3.3,12,3.3s8.7,3.9,8.7,8.7S16.8,20.7,12,20.7z"/>
@@ -160,8 +139,6 @@
                         <path d="M16,8.9c-0.4,0-0.8,0.4-0.8,0.8c0,0.5,0.3,0.8,0.8,0.8c0.4,0,0.8-0.3,0.8-0.8C16.8,9.2,16.4,8.9,16,8.9z"/>
                     </svg>
                 </div>
-                <textarea id="message" autofocus onkeyup="grow_text_area()" onkeydown="process_messagebar_keydown()"
-                          dir="auto" rows="1"></textarea>
                 <div id="sendButton" class="nav-button action-button" onclick="sendMessage();">
                     <svg class="svgicon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
                         <g transform="translate(2.000000, 3.000000)">
