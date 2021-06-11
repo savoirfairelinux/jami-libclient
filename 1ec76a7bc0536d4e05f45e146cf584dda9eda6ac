@@ -93,6 +93,30 @@
       "revId": "1ec76a7bc0536d4e05f45e146cf584dda9eda6ac",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "85be6d5c_cf791a6c",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-06-11T16:19:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25e5c51e_96ceb110",
+      "range": {
+        "startLine": 1120,
+        "startChar": 10,
+        "endLine": 1126,
+        "endChar": 31
+      },
+      "revId": "1ec76a7bc0536d4e05f45e146cf584dda9eda6ac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }

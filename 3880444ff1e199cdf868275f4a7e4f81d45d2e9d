@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "06a568e2_76ea540f",
+        "filename": "src/api/call.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-06-11T16:19:47Z",
+      "side": 1,
+      "message": "videoMuted state is feeded with mediaList. for compatibility and less mediaList verifications for the same information, it is kept.",
+      "parentUuid": "c731dae1_69234cb3",
+      "revId": "3880444ff1e199cdf868275f4a7e4f81d45d2e9d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d6002428_7cb58300",
         "filename": "src/api/newcallmodel.h",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "3880444ff1e199cdf868275f4a7e4f81d45d2e9d",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c81a446_a44f7d54",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-06-11T16:19:47Z",
+      "side": 1,
+      "message": "As discussed, it depends on video split changes. What we can do is use media label here.",
+      "parentUuid": "d6002428_7cb58300",
+      "revId": "3880444ff1e199cdf868275f4a7e4f81d45d2e9d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "ebe43abf_554d80b4",
+        "filename": "src/callbackshandler.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-06-11T16:19:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ec12f96_38fa7d2e",
+      "revId": "3880444ff1e199cdf868275f4a7e4f81d45d2e9d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c626f4a8_70122f18",
         "filename": "src/newcallmodel.cpp",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "3880444ff1e199cdf868275f4a7e4f81d45d2e9d",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed202459_e3ba2334",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-06-11T16:19:47Z",
+      "side": 1,
+      "message": "I do agree but specifically here isAudioOnly is used to create the mediaList for a new call.",
+      "parentUuid": "c626f4a8_70122f18",
+      "revId": "3880444ff1e199cdf868275f4a7e4f81d45d2e9d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
