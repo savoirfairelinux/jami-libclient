@@ -687,12 +687,7 @@ MessagesAdapter::setMessagesFileContent(const QString& path)
 {
     qint64 fileSize = QFileInfo(path).size();
     QString fileName = QFileInfo(path).fileName();
-    /*
-     * If file name is too large, trim it.
-     */
-    if (fileName.length() > 15) {
-        fileName = fileName.remove(12, fileName.length() - 12) + "...";
-    }
+
     QString param = QString("addFile_path('%1','%2','%3')")
                         .arg(path, fileName, Utils::humanFileSize(fileSize));
 
