@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5336da76_0357b39f",
+        "filename": "src/api/call.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-06-11T15:01:49Z",
+      "side": 1,
+      "message": "seems like a strange way to invert a value?",
+      "range": {
+        "startLine": 137,
+        "startChar": 22,
+        "endLine": 137,
+        "endChar": 26
+      },
+      "revId": "c1adb8459d3fd9ac59555cdca5f46da8a08521b6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
