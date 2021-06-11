@@ -361,9 +361,14 @@ MessagesAdapter::setNewMessagesContent(const QString& path)
 {
     if (path.length() == 0)
         return;
-    QByteArray imageFormat = QImageReader::imageFormat(path);
 
-    if (!imageFormat.isEmpty()) {
+    // QImageReader will treat .gz file (Jami archive) as svgz image format
+    // so decideFormatFromContent is needed
+    QImageReader reader;
+    reader.setDecideFormatFromContent(true);
+    reader.setFileName(path);
+
+    if (!reader.read().isNull()) {
         setMessagesImageContent(path);
     } else {
         setMessagesFileContent(path);
