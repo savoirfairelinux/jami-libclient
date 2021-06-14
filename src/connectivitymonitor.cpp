@@ -18,7 +18,9 @@
 
 #ifndef _WIN32
 #include <glib.h>
+#ifdef USE_LIBNM
 #include <NetworkManager.h>
+#endif
 #endif
 
 #include "connectivitymonitor.h"
