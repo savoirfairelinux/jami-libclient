@@ -988,11 +988,16 @@ NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
     callInfo->status = call::Status::INCOMING_RINGING;
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = true;
+    callInfo->videoMuted = true;
     for (const auto& item : mediaList) {
-        if (item[MediaAttributeKey::MEDIA_TYPE]
-            == MediaAttributeValue::VIDEO) {
+        if (item[MediaAttributeKey::MEDIA_TYPE] == MediaAttributeValue::VIDEO) {
             callInfo->isAudioOnly = false;
-            break;
+            if (item[MediaAttributeKey::SOURCE_TYPE] == MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE
+                && item[MediaAttributeKey::ENABLED] == "true"
+                && item[MediaAttributeKey::MUTED] == "false") {
+                callInfo->videoMuted = false;
+                break;
+            }
         }
     }
     callInfo->mediaList = mediaList;
@@ -1129,21 +1134,23 @@ NewCallModelPimpl::slotMediaNegotiationStatus(const QString& callId,
     }
 
     callInfo->isAudioOnly = true;
+    callInfo->videoMuted = true;
     for (const auto& item : mediaList) {
         if (item[MediaAttributeKey::MEDIA_TYPE]
             == MediaAttributeValue::VIDEO) {
         	if (item[MediaAttributeKey::ENABLED] == "true") {
                 callInfo->isAudioOnly = false;
             }
-            callInfo->videoMuted = item[MediaAttributeKey::MUTED] == "true"
-                                    || item[MediaAttributeKey::ENABLED] == "false";
+            callInfo->videoMuted = item[MediaAttributeKey::SOURCE_TYPE] == MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE
+                                   && (item[MediaAttributeKey::MUTED] == "true"
+                                    || item[MediaAttributeKey::ENABLED] == "false");
         }
         if (item[MediaAttributeKey::MEDIA_TYPE]
             == MediaAttributeValue::AUDIO) {
-            callInfo->audioMuted = item[MediaAttributeKey::MUTED] == "true";
+            callInfo->audioMuted = item[MediaAttributeKey::SOURCE_TYPE] == MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE
+                                   && item[MediaAttributeKey::MUTED] == "true";
         }
     }
-
     callInfo->mediaList = mediaList;
     if (callInfo->status == call::Status::IN_PROGRESS)
         emit linked.callInfosChanged(linked.owner.id, callId);
