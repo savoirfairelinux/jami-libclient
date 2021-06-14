@@ -379,6 +379,7 @@ SET(libringclient_WEB_chatview
    src/web-chatview/chatview-gnome.css
    src/web-chatview/chatview-qt.css
    src/web-chatview/chatview.css
+   src/web-chatview/fa.css
    src/web-chatview/chatview.html
    src/web-chatview/chatview.js
    src/web-chatview/jed.js
