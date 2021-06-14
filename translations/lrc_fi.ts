@@ -1,8 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fi" sourcelanguage="en" version="2.0">
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="328"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="393"/>
         <source>Me</source>
         <translation>Minä</translation>
     </message>
@@ -33,7 +33,7 @@
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
-        <location filename="../src/chatview.cpp" line="63"/>
+        <location filename="../src/chatview.cpp" line="71"/>
         <source>Connecting</source>
         <translation>Yhdistää</translation>
     </message>
@@ -50,7 +50,7 @@
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
-        <location filename="../src/chatview.cpp" line="70"/>
+        <location filename="../src/chatview.cpp" line="78"/>
         <source>Finished</source>
         <translation>Valmis</translation>
     </message>
@@ -70,21 +70,28 @@
         <translation>Yhteys muodostettu</translation>
     </message>
     <message>
+        <location filename="../src/api/interaction.h" line="218"/>
         <location filename="../src/authority/storagehelper.cpp" line="130"/>
-        <location filename="../src/authority/storagehelper.cpp" line="898"/>
+        <location filename="../src/authority/storagehelper.cpp" line="918"/>
         <source>Invitation received</source>
         <translation>Kutsu vastaanotettu</translation>
     </message>
     <message>
+        <location filename="../src/api/interaction.h" line="222"/>
+        <source>Contact left conversation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="216"/>
         <location filename="../src/authority/storagehelper.cpp" line="127"/>
-        <location filename="../src/authority/storagehelper.cpp" line="896"/>
+        <location filename="../src/authority/storagehelper.cpp" line="916"/>
         <source>Contact added</source>
         <translation>Yhteystieto lisätty</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="104"/>
         <location filename="../src/authority/storagehelper.cpp" line="110"/>
-        <location filename="../src/authority/storagehelper.cpp" line="894"/>
+        <location filename="../src/authority/storagehelper.cpp" line="914"/>
         <source>Outgoing call</source>
         <translation>Lähtevä puhelu</translation>
     </message>
@@ -96,7 +103,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="892"/>
+        <location filename="../src/authority/storagehelper.cpp" line="912"/>
         <source>Missed outgoing call</source>
         <translation>Vastaamaton lähtevä puhelu</translation>
     </message>
@@ -106,8 +113,9 @@
         <translation>Vastaamaton puhelu</translation>
     </message>
     <message>
+        <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="132"/>
-        <location filename="../src/authority/storagehelper.cpp" line="900"/>
+        <location filename="../src/authority/storagehelper.cpp" line="920"/>
         <source>Invitation accepted</source>
         <translation>Kutsu hyväksytty</translation>
     </message>
@@ -118,279 +126,279 @@
         <translation>oletus</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="53"/>
+        <location filename="../src/newcallmodel.cpp" line="55"/>
         <source>Null</source>
         <translation>Tyhjä</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="54"/>
+        <location filename="../src/newcallmodel.cpp" line="56"/>
         <source>Trying</source>
         <translation>Yritetään</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="55"/>
+        <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>Ringing</source>
         <translation>Soi</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="56"/>
+        <location filename="../src/newcallmodel.cpp" line="58"/>
         <source>Being Forwarded</source>
         <translation>Välitetään eteenpäin</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="57"/>
+        <location filename="../src/newcallmodel.cpp" line="59"/>
         <source>Queued</source>
         <translation>Jonossa</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="58"/>
+        <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Progress</source>
         <translation>Edistyminen</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="59"/>
+        <location filename="../src/newcallmodel.cpp" line="61"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="64"/>
-        <location filename="../src/newcallmodel.cpp" line="60"/>
+        <location filename="../src/chatview.cpp" line="72"/>
+        <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Accepted</source>
         <translation>Hyväksytty</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="61"/>
+        <location filename="../src/newcallmodel.cpp" line="63"/>
         <source>Multiple Choices</source>
         <translation>Useita vaihtoehtoja</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="62"/>
+        <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>Moved Permanently</source>
         <translation>Siirretty pysyvästi</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="63"/>
+        <location filename="../src/newcallmodel.cpp" line="65"/>
         <source>Moved Temporarily</source>
         <translation>Siirretty tilapäisesti</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="64"/>
+        <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>Use Proxy</source>
         <translation>Käytä välityspalvelinta</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="65"/>
+        <location filename="../src/newcallmodel.cpp" line="67"/>
         <source>Alternative Service</source>
         <translation>Vaihtoehtoinen palvelu</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="66"/>
+        <location filename="../src/newcallmodel.cpp" line="68"/>
         <source>Bad Request</source>
         <translation>Virheellinen pyyntö</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="67"/>
+        <location filename="../src/newcallmodel.cpp" line="69"/>
         <source>Unauthorized</source>
         <translation>Luvaton</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="68"/>
+        <location filename="../src/newcallmodel.cpp" line="70"/>
         <source>Payment Required</source>
         <translation>Maksu vaaditaan</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="69"/>
+        <location filename="../src/newcallmodel.cpp" line="71"/>
         <source>Forbidden</source>
         <translation>Kielletty</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="70"/>
+        <location filename="../src/newcallmodel.cpp" line="72"/>
         <source>Not Found</source>
         <translation>Ei löydy</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="71"/>
+        <location filename="../src/newcallmodel.cpp" line="73"/>
         <source>Method Not Allowed</source>
         <translation>Menetelmää ei sallita</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="72"/>
-        <location filename="../src/newcallmodel.cpp" line="92"/>
+        <location filename="../src/newcallmodel.cpp" line="74"/>
+        <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Not Acceptable</source>
         <translation>Ei hyväksyttävä</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="73"/>
+        <location filename="../src/newcallmodel.cpp" line="75"/>
         <source>Proxy Authentication Required</source>
         <translation>Välityspalvelimen todennus vaaditaan</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="74"/>
+        <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Request Timeout</source>
         <translation>Pyyntö aikakatkaistu</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="75"/>
+        <location filename="../src/newcallmodel.cpp" line="77"/>
         <source>Gone</source>
         <translation>Mennyt</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="76"/>
+        <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Request Entity Too Large</source>
         <translation>Pyyntö on liian suuri</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="77"/>
+        <location filename="../src/newcallmodel.cpp" line="79"/>
         <source>Request URI Too Long</source>
         <translation>Pyynnön verkko-osoite liian pitkä</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="78"/>
+        <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Unsupported Media Type</source>
         <translation>Ei tuettu mediatyyppi</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="79"/>
+        <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Unsupported URI Scheme</source>
         <translation>Verkko-osoitteen mallia ei tueta</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="80"/>
+        <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Bad Extension</source>
         <translation>Virheellinen laajennus</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="81"/>
+        <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Extension Required</source>
         <translation>Laajennus vaaditaan</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="82"/>
+        <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Session Timer Too Small</source>
         <translation>Istunnon ajastin on liian pieni</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="83"/>
+        <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Interval Too Brief</source>
         <translation>Väli liian lyhyt</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="84"/>
+        <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Temporarily Unavailable</source>
         <translation>Tilapäisesti poissa käytöstä</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="85"/>
+        <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Call TSX Does Not Exist</source>
         <translation>TSX-puhelua ei ole</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="86"/>
+        <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Loop Detected</source>
         <translation>Silmukka havaittu</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="87"/>
+        <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Too Many Hops</source>
         <translation>Liian monta hyppyä</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="88"/>
+        <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Address Incomplete</source>
         <translation>Osoite epätäydellinen</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="89"/>
+        <location filename="../src/newcallmodel.cpp" line="91"/>
         <source>Ambiguous</source>
         <translation>Epäselvä</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="90"/>
+        <location filename="../src/newcallmodel.cpp" line="92"/>
         <source>Busy</source>
         <translation>Varattu</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="91"/>
+        <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Request Terminated</source>
         <translation>Pyyntö lopetettu</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="93"/>
+        <location filename="../src/newcallmodel.cpp" line="95"/>
         <source>Bad Event</source>
         <translation>Huono tapahtuma</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="94"/>
+        <location filename="../src/newcallmodel.cpp" line="96"/>
         <source>Request Updated</source>
         <translation>Pyyntö päivitetty</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="95"/>
+        <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Request Pending</source>
         <translation>Pyyntö odottaa</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="96"/>
+        <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Undecipherable</source>
         <translation>Ei purettavissa</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="97"/>
+        <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Internal Server Error</source>
         <translation>Sisäinen palvelinvirhe</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="98"/>
+        <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Not Implemented</source>
         <translation>Ei toteutettu</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="99"/>
+        <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Bad Gateway</source>
         <translation>Huono yhdyskäytävä</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="100"/>
+        <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Service Unavailable</source>
         <translation>Palvelua ei käytettävissä</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="101"/>
+        <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Server Timeout</source>
         <translation>Palvelimen aikakatkaisu</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="102"/>
+        <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Version Not Supported</source>
         <translation>Versiota ei tueta</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="103"/>
+        <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Message Too Large</source>
         <translation>Viesti on liian suuri</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="104"/>
+        <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Precondition Failure</source>
         <translation>Ennakkoehdon virhe</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="105"/>
+        <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Busy Everywhere</source>
         <translation>Varattu kaikkialla</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="106"/>
+        <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Call Refused</source>
         <translation>Puhelu evätty</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="107"/>
+        <location filename="../src/newcallmodel.cpp" line="109"/>
         <source>Does Not Exist Anywhere</source>
         <translation>Ei ole missään</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="108"/>
+        <location filename="../src/newcallmodel.cpp" line="110"/>
         <source>Not Acceptable Anywhere</source>
         <translation>Ei hyväksytä missään</translation>
     </message>
@@ -465,22 +473,52 @@
         <translation>Kirjoittaa {0}</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="62"/>
+        <location filename="../src/chatview.cpp" line="49"/>
+        <source>has sent you a conversation request.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="51"/>
+        <source>Hello, do you want to join the conversation?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="53"/>
+        <source>You have accepted the conversation request.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="55"/>
+        <source>We are waiting for another device to synchronize the conversation.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="66"/>
+        <source>Accept</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="67"/>
+        <source>Refuse</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="70"/>
         <source>Unable to make contact</source>
         <translation>Yhteyden muodostaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="67"/>
+        <location filename="../src/chatview.cpp" line="75"/>
         <source>Waiting for contact</source>
         <translation>Odotetaan yhteyttä</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="68"/>
+        <location filename="../src/chatview.cpp" line="76"/>
         <source>Incoming transfer</source>
         <translation>Saapuva siirto</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="69"/>
+        <location filename="../src/chatview.cpp" line="77"/>
         <source>Timed out waiting for contact</source>
         <translation>Aikakatkaisu odottavalle yhteydelle</translation>
     </message>
@@ -500,87 +538,77 @@
         <translation>ei ole yhteystiedoissasi</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="49"/>
+        <location filename="../src/chatview.cpp" line="57"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>Huomaa: voit automaattisesti hyväksyä tämän kutsun lähettämällä viestin.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="50"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>{0} days ago</source>
         <translation>{0} päivää sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>{0} hours ago</source>
         <translation>{0} tuntia sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="61"/>
         <source>{0} minutes ago</source>
         <translation>{0} minuuttia sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="65"/>
+        <location filename="../src/chatview.cpp" line="73"/>
         <source>Canceled</source>
         <translation>Peruttu</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="66"/>
+        <location filename="../src/chatview.cpp" line="74"/>
         <source>Ongoing</source>
         <translation>Käynnissä</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="50"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>%d days ago</source>
         <translation>%d päivää sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>%d hours ago</source>
         <translation>%d tuntia sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="61"/>
         <source>%d minutes ago</source>
         <translation>%d minuuttia sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="54"/>
+        <location filename="../src/chatview.cpp" line="62"/>
         <source>one day ago</source>
         <translation>yksi päivä sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="55"/>
+        <location filename="../src/chatview.cpp" line="63"/>
         <source>one hour ago</source>
         <translation>yksi tunti sitten</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="56"/>
+        <location filename="../src/chatview.cpp" line="64"/>
         <source>just now</source>
         <translation>juuri nyt</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="57"/>
+        <location filename="../src/chatview.cpp" line="65"/>
         <source>Failure</source>
         <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
-        <source>Confirm</source>
-        <translation>Vahvista</translation>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="59"/>
-        <source>Deny</source>
-        <translation>Estä</translation>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="60"/>
+        <location filename="../src/chatview.cpp" line="68"/>
         <source>Delete</source>
         <translation>Poista</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="61"/>
+        <location filename="../src/chatview.cpp" line="69"/>
         <source>Retry</source>
         <translation>Yritä uudelleen</translation>
     </message>
@@ -588,22 +616,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="459"/>
+        <location filename="../src/contactmodel.cpp" line="438"/>
         <source>Searching…</source>
         <translation>Etsitään...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="960"/>
+        <location filename="../src/contactmodel.cpp" line="952"/>
         <source>Invalid ID</source>
         <translation>Virheellinen tunnus</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="963"/>
+        <location filename="../src/contactmodel.cpp" line="955"/>
         <source>Username not found</source>
         <translation>Käyttäjää ei löydy</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="966"/>
+        <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Ei voitu etsiä...</translation>
     </message>
@@ -611,7 +639,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="420"/>
+        <location filename="../src/contactmodel.cpp" line="399"/>
         <source>Bad URI scheme</source>
         <translation>Virheellinen verkko-osoitteen malli</translation>
     </message>

@@ -1,8 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ru" sourcelanguage="en" version="2.0">
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="328"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="393"/>
         <source>Me</source>
         <translation>Я</translation>
     </message>
@@ -33,7 +33,7 @@
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
-        <location filename="../src/chatview.cpp" line="63"/>
+        <location filename="../src/chatview.cpp" line="71"/>
         <source>Connecting</source>
         <translation>Подключение</translation>
     </message>
@@ -50,7 +50,7 @@
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
-        <location filename="../src/chatview.cpp" line="70"/>
+        <location filename="../src/chatview.cpp" line="78"/>
         <source>Finished</source>
         <translation>Завершён</translation>
     </message>
@@ -70,21 +70,28 @@
         <translation>Соединение установлено</translation>
     </message>
     <message>
+        <location filename="../src/api/interaction.h" line="218"/>
         <location filename="../src/authority/storagehelper.cpp" line="130"/>
-        <location filename="../src/authority/storagehelper.cpp" line="898"/>
+        <location filename="../src/authority/storagehelper.cpp" line="918"/>
         <source>Invitation received</source>
         <translation>Получено приглашение</translation>
     </message>
     <message>
+        <location filename="../src/api/interaction.h" line="222"/>
+        <source>Contact left conversation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="216"/>
         <location filename="../src/authority/storagehelper.cpp" line="127"/>
-        <location filename="../src/authority/storagehelper.cpp" line="896"/>
+        <location filename="../src/authority/storagehelper.cpp" line="916"/>
         <source>Contact added</source>
         <translation>Контакт добавлен</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="104"/>
         <location filename="../src/authority/storagehelper.cpp" line="110"/>
-        <location filename="../src/authority/storagehelper.cpp" line="894"/>
+        <location filename="../src/authority/storagehelper.cpp" line="914"/>
         <source>Outgoing call</source>
         <translation>Исходящий вызов</translation>
     </message>
@@ -96,7 +103,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="892"/>
+        <location filename="../src/authority/storagehelper.cpp" line="912"/>
         <source>Missed outgoing call</source>
         <translation>Непринятый исходящий вызов</translation>
     </message>
@@ -106,8 +113,9 @@
         <translation>Пропущенный входящий вызов</translation>
     </message>
     <message>
+        <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="132"/>
-        <location filename="../src/authority/storagehelper.cpp" line="900"/>
+        <location filename="../src/authority/storagehelper.cpp" line="920"/>
         <source>Invitation accepted</source>
         <translation>Приглашение принято</translation>
     </message>
@@ -118,279 +126,279 @@
         <translation>По умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="53"/>
+        <location filename="../src/newcallmodel.cpp" line="55"/>
         <source>Null</source>
         <translation>Пустой</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="54"/>
+        <location filename="../src/newcallmodel.cpp" line="56"/>
         <source>Trying</source>
         <translation>Попытка</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="55"/>
+        <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>Ringing</source>
         <translation>Звонок</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="56"/>
+        <location filename="../src/newcallmodel.cpp" line="58"/>
         <source>Being Forwarded</source>
         <translation>Было отправлено</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="57"/>
+        <location filename="../src/newcallmodel.cpp" line="59"/>
         <source>Queued</source>
         <translation>Поставлено в очередь</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="58"/>
+        <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Progress</source>
         <translation>Прогресс</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="59"/>
+        <location filename="../src/newcallmodel.cpp" line="61"/>
         <source>OK</source>
         <translation>ОК</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="64"/>
-        <location filename="../src/newcallmodel.cpp" line="60"/>
+        <location filename="../src/chatview.cpp" line="72"/>
+        <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Accepted</source>
         <translation>Принято</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="61"/>
+        <location filename="../src/newcallmodel.cpp" line="63"/>
         <source>Multiple Choices</source>
         <translation>Множество вариантов</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="62"/>
+        <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>Moved Permanently</source>
         <translation>Переехал навсегда</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="63"/>
+        <location filename="../src/newcallmodel.cpp" line="65"/>
         <source>Moved Temporarily</source>
         <translation>Временно перехал</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="64"/>
+        <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>Use Proxy</source>
         <translation>Использовать прокси</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="65"/>
+        <location filename="../src/newcallmodel.cpp" line="67"/>
         <source>Alternative Service</source>
         <translation>Альтернативная служба</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="66"/>
+        <location filename="../src/newcallmodel.cpp" line="68"/>
         <source>Bad Request</source>
         <translation>Неверный запрос</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="67"/>
+        <location filename="../src/newcallmodel.cpp" line="69"/>
         <source>Unauthorized</source>
         <translation>Неавторизовано</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="68"/>
+        <location filename="../src/newcallmodel.cpp" line="70"/>
         <source>Payment Required</source>
         <translation>Требуется оплата</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="69"/>
+        <location filename="../src/newcallmodel.cpp" line="71"/>
         <source>Forbidden</source>
         <translation>Запрещено</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="70"/>
+        <location filename="../src/newcallmodel.cpp" line="72"/>
         <source>Not Found</source>
         <translation>Не найдено</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="71"/>
+        <location filename="../src/newcallmodel.cpp" line="73"/>
         <source>Method Not Allowed</source>
         <translation>Метод не разрешен</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="72"/>
-        <location filename="../src/newcallmodel.cpp" line="92"/>
+        <location filename="../src/newcallmodel.cpp" line="74"/>
+        <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Not Acceptable</source>
         <translation>Недопустимо</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="73"/>
+        <location filename="../src/newcallmodel.cpp" line="75"/>
         <source>Proxy Authentication Required</source>
         <translation>Требуется проверка подлинности прокси</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="74"/>
+        <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Request Timeout</source>
         <translation>Время ожидания запроса</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="75"/>
+        <location filename="../src/newcallmodel.cpp" line="77"/>
         <source>Gone</source>
         <translation>Прошло</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="76"/>
+        <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Request Entity Too Large</source>
         <translation>Запрошенный объект слишком большой</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="77"/>
+        <location filename="../src/newcallmodel.cpp" line="79"/>
         <source>Request URI Too Long</source>
         <translation>Запрошенный URL слишком длинный</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="78"/>
+        <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Unsupported Media Type</source>
         <translation>Неподдерживаемый тип медиа</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="79"/>
+        <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Unsupported URI Scheme</source>
         <translation>Неподдерживаемый схема URI</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="80"/>
+        <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Bad Extension</source>
         <translation>Неверное расширение</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="81"/>
+        <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Extension Required</source>
         <translation>Требуется расширение</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="82"/>
+        <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Session Timer Too Small</source>
         <translation>Таймер сессии слишком мал</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="83"/>
+        <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Interval Too Brief</source>
         <translation>Интервал слишком короткий</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="84"/>
+        <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Temporarily Unavailable</source>
         <translation>Временно недоступен</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="85"/>
+        <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Call TSX Does Not Exist</source>
         <translation>Вызываемый TSX не существует</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="86"/>
+        <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Loop Detected</source>
         <translation>Обнаружена петля</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="87"/>
+        <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Too Many Hops</source>
         <translation>Слишком много переходов</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="88"/>
+        <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Address Incomplete</source>
         <translation>Неполный адрес</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="89"/>
+        <location filename="../src/newcallmodel.cpp" line="91"/>
         <source>Ambiguous</source>
         <translation>Двусмысленный</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="90"/>
+        <location filename="../src/newcallmodel.cpp" line="92"/>
         <source>Busy</source>
         <translation>Занято</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="91"/>
+        <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Request Terminated</source>
         <translation>Запрос прекращен</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="93"/>
+        <location filename="../src/newcallmodel.cpp" line="95"/>
         <source>Bad Event</source>
         <translation>Некорректное событие</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="94"/>
+        <location filename="../src/newcallmodel.cpp" line="96"/>
         <source>Request Updated</source>
         <translation>Запрос обновлен</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="95"/>
+        <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Request Pending</source>
         <translation>Запрос ожидает выполнения</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="96"/>
+        <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Undecipherable</source>
         <translation>Неразборчивый</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="97"/>
+        <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Internal Server Error</source>
         <translation>Внутренняя ошибка сервера</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="98"/>
+        <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Not Implemented</source>
         <translation>Не реализовано</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="99"/>
+        <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Bad Gateway</source>
         <translation>Некорректный шлюз</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="100"/>
+        <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Service Unavailable</source>
         <translation>Сервис недоступен</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="101"/>
+        <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Server Timeout</source>
         <translation>Тайм-аут сервера</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="102"/>
+        <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Version Not Supported</source>
         <translation>Версия не поддерживается</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="103"/>
+        <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Message Too Large</source>
         <translation>Слишком большое сообщение</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="104"/>
+        <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Precondition Failure</source>
         <translation>Сбой предусловия</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="105"/>
+        <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Busy Everywhere</source>
         <translation>Занят везде</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="106"/>
+        <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Call Refused</source>
         <translation>Вызов отклонен</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="107"/>
+        <location filename="../src/newcallmodel.cpp" line="109"/>
         <source>Does Not Exist Anywhere</source>
         <translation>Не существует нигде</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="108"/>
+        <location filename="../src/newcallmodel.cpp" line="110"/>
         <source>Not Acceptable Anywhere</source>
         <translation>Не приемлемо нигде</translation>
     </message>
@@ -465,22 +473,52 @@
         <translation>Запись в {0}</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="62"/>
+        <location filename="../src/chatview.cpp" line="49"/>
+        <source>has sent you a conversation request.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="51"/>
+        <source>Hello, do you want to join the conversation?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="53"/>
+        <source>You have accepted the conversation request.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="55"/>
+        <source>We are waiting for another device to synchronize the conversation.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="66"/>
+        <source>Accept</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="67"/>
+        <source>Refuse</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="70"/>
         <source>Unable to make contact</source>
         <translation>Не удалось установить контакт</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="67"/>
+        <location filename="../src/chatview.cpp" line="75"/>
         <source>Waiting for contact</source>
         <translation>Ожидание контакта</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="68"/>
+        <location filename="../src/chatview.cpp" line="76"/>
         <source>Incoming transfer</source>
         <translation>Входящий перевод</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="69"/>
+        <location filename="../src/chatview.cpp" line="77"/>
         <source>Timed out waiting for contact</source>
         <translation>Тайм-аут ожидания контакта</translation>
     </message>
@@ -500,87 +538,77 @@
         <translation>отсутствует в ваших контактах</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="49"/>
+        <location filename="../src/chatview.cpp" line="57"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>Примечание: Вы можете автоматически принять это приглашение, отправив сообщение.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="50"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>{0} days ago</source>
         <translation>{0} дней назад</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>{0} hours ago</source>
         <translation>{0} часов назад</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="61"/>
         <source>{0} minutes ago</source>
         <translation>{0} минут назад</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="65"/>
+        <location filename="../src/chatview.cpp" line="73"/>
         <source>Canceled</source>
         <translation>Отменено</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="66"/>
+        <location filename="../src/chatview.cpp" line="74"/>
         <source>Ongoing</source>
         <translation>Текущий</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="50"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>%d days ago</source>
         <translation>%d дней назад</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>%d hours ago</source>
         <translation>%d часов назад</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="61"/>
         <source>%d minutes ago</source>
         <translation>%d минут назад</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="54"/>
+        <location filename="../src/chatview.cpp" line="62"/>
         <source>one day ago</source>
         <translation>один день назад</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="55"/>
+        <location filename="../src/chatview.cpp" line="63"/>
         <source>one hour ago</source>
         <translation>один час назад</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="56"/>
+        <location filename="../src/chatview.cpp" line="64"/>
         <source>just now</source>
         <translation>прямо сейчас</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="57"/>
+        <location filename="../src/chatview.cpp" line="65"/>
         <source>Failure</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
-        <source>Confirm</source>
-        <translation>Подтвердить</translation>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="59"/>
-        <source>Deny</source>
-        <translation>Отказать</translation>
-    </message>
-    <message>
-        <location filename="../src/chatview.cpp" line="60"/>
+        <location filename="../src/chatview.cpp" line="68"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="61"/>
+        <location filename="../src/chatview.cpp" line="69"/>
         <source>Retry</source>
         <translation>Повторить</translation>
     </message>
@@ -588,22 +616,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="459"/>
+        <location filename="../src/contactmodel.cpp" line="438"/>
         <source>Searching…</source>
         <translation>Поиск…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="960"/>
+        <location filename="../src/contactmodel.cpp" line="952"/>
         <source>Invalid ID</source>
         <translation>Неверный ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="963"/>
+        <location filename="../src/contactmodel.cpp" line="955"/>
         <source>Username not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="966"/>
+        <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Не могу найти ...</translation>
     </message>
@@ -611,7 +639,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="420"/>
+        <location filename="../src/contactmodel.cpp" line="399"/>
         <source>Bad URI scheme</source>
         <translation>Некорректная схема URI</translation>
     </message>
