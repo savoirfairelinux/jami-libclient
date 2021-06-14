@@ -990,10 +990,12 @@ NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
     callInfo->status = call::Status::INCOMING_RINGING;
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = true;
+    callInfo->videoMuted = true;
     for (const auto& item : mediaList) {
         if (item[MediaAttributeKey::MEDIA_TYPE]
             == MediaAttributeValue::VIDEO) {
             callInfo->isAudioOnly = false;
+            callInfo->videoMuted = false;
             break;
         }
     }
