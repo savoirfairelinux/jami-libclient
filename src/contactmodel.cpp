@@ -305,6 +305,8 @@ ContactModel::addContact(contact::Info contactInfo)
         }
     }
     emit profileUpdated(profile.uri);
+    if (profile.type == profile::Type::SIP)
+        emit contactAdded(profile.uri);
 }
 
 void
