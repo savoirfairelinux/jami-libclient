@@ -3582,7 +3582,7 @@ ConversationModelPimpl::awaitingHost(const QString& fileId, datatransfer::Info i
     auto conversationIdx = indexOf(conversationId);
     auto& peers = peersForConversation(conversations[conversationIdx]);
     // Only accept if contact is added or it is a group conversation
-    if (linked.owner.dataTransferModel->acceptFromUnstrusted && peers.size() == 1) {
+    if (linked.owner.accountModel->acceptFromUnstrusted && peers.size() == 1) {
         try {
             auto contactUri = peers.front();
             auto contactInfo = linked.owner.contactModel->getContact(contactUri);
@@ -3602,11 +3602,11 @@ ConversationModelPimpl::handleIncomingFile(const QString& convId,
                                            int totalSize)
 {
     // If it's an accepted file type and less than 20 MB, accept transfer.
-    if (linked.owner.dataTransferModel->automaticAcceptTransfer) {
-        if (linked.owner.dataTransferModel->acceptBehindMb == 0
+    if (linked.owner.accountModel->automaticAcceptTransfer) {
+        if (linked.owner.accountModel->acceptBehindMb == 0
             || (totalSize > 0
                 && static_cast<unsigned>(totalSize)
-                       < linked.owner.dataTransferModel->acceptBehindMb * 1024 * 1024)) {
+                       < linked.owner.accountModel->acceptBehindMb * 1024 * 1024)) {
             acceptTransfer(convId, interactionId, displayName);
         }
     }
