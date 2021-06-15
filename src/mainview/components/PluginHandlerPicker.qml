@@ -170,7 +170,7 @@ Popup {
                         }
                     }
 
-                    ScrollIndicator.vertical: ScrollIndicator {}
+                    ScrollBar.vertical: ScrollBar { }
                 }
             }
         }

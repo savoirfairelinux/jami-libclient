@@ -38,7 +38,7 @@ ListView {
 
     clip: true
     maximumFlickVelocity: 1024
-    ScrollIndicator.vertical: ScrollIndicator {}
+    ScrollBar.vertical: ScrollBar { }
 
     // highlight selection
     // down and hover states are done within the delegate

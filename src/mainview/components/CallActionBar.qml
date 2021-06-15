@@ -461,7 +461,7 @@ Control {
                                    null
 
                         delegate: buttonDelegate
-                        ScrollIndicator.vertical: ScrollIndicator {}
+                        ScrollBar.vertical: ScrollBar { }
 
                         add: Transition {
                             NumberAnimation {
@@ -491,7 +491,7 @@ Control {
                                    overflowButton.delegateModel :
                                    null
 
-                        ScrollIndicator.vertical: ScrollIndicator {}
+                        ScrollBar.vertical: ScrollBar { }
                     }
 
                     background: Rectangle {

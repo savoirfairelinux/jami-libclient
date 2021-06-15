@@ -56,5 +56,5 @@ ListView {
 
     clip: true
     maximumFlickVelocity: 1024
-    ScrollIndicator.vertical: ScrollIndicator {}
+    ScrollBar.vertical: ScrollBar { }
 }

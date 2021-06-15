@@ -172,7 +172,7 @@ Rectangle {
             width: settingsViewRect.width
 
             maximumFlickVelocity: 1024
-            ScrollIndicator.vertical: ScrollIndicator {}
+            ScrollBar.vertical: ScrollBar { }
 
             clip: true
             contentHeight: rightSettingsStackLayout.height

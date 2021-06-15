@@ -67,7 +67,7 @@ Popup {
                 }
             }
 
-            ScrollIndicator.vertical: ScrollIndicator {}
+            ScrollBar.vertical: ScrollBar { }
         }
 
         // fake footer item as workaround for Qt 5.15 bug

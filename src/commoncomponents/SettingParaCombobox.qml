@@ -122,7 +122,7 @@ ComboBox {
             model: root.delegateModel
             currentIndex: root.highlightedIndex
 
-            ScrollIndicator.vertical: ScrollIndicator { }
+            ScrollBar.vertical: ScrollBar { }
         }
 
         background: Rectangle {

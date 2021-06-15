@@ -254,7 +254,7 @@ ItemDelegate {
                 implicitWidth: menuItemWidth
                 implicitHeight: Math.min(contentHeight, menuItemHeight * 6) + 24
 
-                ScrollIndicator.vertical: ScrollIndicator {}
+                ScrollBar.vertical: ScrollBar { }
 
                 clip: true
 
