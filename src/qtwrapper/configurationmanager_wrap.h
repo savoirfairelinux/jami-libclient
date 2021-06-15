@@ -811,18 +811,18 @@ public Q_SLOTS: // METHODS
 
     uint32_t sendFileLegacy(const DataTransferInfo& lrc_info, DRing::DataTransferId& id)
     {
-        DRing::DataTransferInfo dring_info;
-        dring_info.accountId = lrc_info.accountId.toStdString();
-        dring_info.lastEvent = decltype(dring_info.lastEvent)(lrc_info.lastEvent);
-        dring_info.flags = lrc_info.flags;
-        dring_info.totalSize = lrc_info.totalSize;
-        dring_info.bytesProgress = lrc_info.bytesProgress;
-        dring_info.peer = lrc_info.peer.toStdString();
-        dring_info.conversationId = lrc_info.conversationId.toStdString();
-        dring_info.displayName = lrc_info.displayName.toStdString();
-        dring_info.path = lrc_info.path.toStdString();
-        dring_info.mimetype = lrc_info.mimetype.toStdString();
-        return uint32_t(DRing::sendFileLegacy(dring_info, id));
+        DRing::DataTransferInfo jami_info;
+        jami_info.accountId = lrc_info.accountId.toStdString();
+        jami_info.lastEvent = decltype(jami_info.lastEvent)(lrc_info.lastEvent);
+        jami_info.flags = lrc_info.flags;
+        jami_info.totalSize = lrc_info.totalSize;
+        jami_info.bytesProgress = lrc_info.bytesProgress;
+        jami_info.peer = lrc_info.peer.toStdString();
+        jami_info.conversationId = lrc_info.conversationId.toStdString();
+        jami_info.displayName = lrc_info.displayName.toStdString();
+        jami_info.path = lrc_info.path.toStdString();
+        jami_info.mimetype = lrc_info.mimetype.toStdString();
+        return uint32_t(DRing::sendFileLegacy(jami_info, id));
     }
 
     void sendFile(const QString& accountId,
@@ -840,19 +840,19 @@ public Q_SLOTS: // METHODS
 
     uint32_t dataTransferInfo(QString accountId, QString transfer_id, DataTransferInfo& lrc_info)
     {
-        DRing::DataTransferInfo dring_info;
+        DRing::DataTransferInfo jami_info;
         auto error = uint32_t(
-            DRing::dataTransferInfo(accountId.toStdString(), transfer_id.toStdString(), dring_info));
-        lrc_info.accountId = QString::fromStdString(dring_info.accountId);
-        lrc_info.lastEvent = quint32(dring_info.lastEvent);
-        lrc_info.flags = dring_info.flags;
-        lrc_info.totalSize = dring_info.totalSize;
-        lrc_info.bytesProgress = dring_info.bytesProgress;
-        lrc_info.peer = QString::fromStdString(dring_info.peer);
-        lrc_info.conversationId = QString::fromStdString(dring_info.conversationId);
-        lrc_info.displayName = QString::fromStdString(dring_info.displayName);
-        lrc_info.path = QString::fromStdString(dring_info.path);
-        lrc_info.mimetype = QString::fromStdString(dring_info.mimetype);
+            DRing::dataTransferInfo(accountId.toStdString(), transfer_id.toStdString(), jami_info));
+        lrc_info.accountId = QString::fromStdString(jami_info.accountId);
+        lrc_info.lastEvent = quint32(jami_info.lastEvent);
+        lrc_info.flags = jami_info.flags;
+        lrc_info.totalSize = jami_info.totalSize;
+        lrc_info.bytesProgress = jami_info.bytesProgress;
+        lrc_info.peer = QString::fromStdString(jami_info.peer);
+        lrc_info.conversationId = QString::fromStdString(jami_info.conversationId);
+        lrc_info.displayName = QString::fromStdString(jami_info.displayName);
+        lrc_info.path = QString::fromStdString(jami_info.path);
+        lrc_info.mimetype = QString::fromStdString(jami_info.mimetype);
         return error;
     }
 

@@ -586,7 +586,7 @@ CallbacksHandler::slotDataTransferEvent(const QString& accountId,
     }
 
     // WARNING: info.status could be INVALID in case of async signaling
-    // So listeners must only take account of dringId in such case.
+    // So listeners must only take account of jamiId in such case.
     // Is useful for "termination" status like unjoinable_peer.
 
     switch (event) {
