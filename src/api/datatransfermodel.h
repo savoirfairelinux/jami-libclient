@@ -90,21 +90,6 @@ public:
      */
     static QString createDefaultDirectory();
 
-    /**
-     * Accept transfer from untrusted contacts
-     */
-    bool acceptFromUnstrusted {false};
-
-    /**
-     * Accept transfer from trusted contacts
-     */
-    bool automaticAcceptTransfer {true};
-
-    /**
-     * Automatically accept transfer under
-     */
-    unsigned acceptBehindMb {20} /* Mb */;
-
 Q_SIGNALS:
     /**
      * Connect this signal to know when a data transfer is incoming.

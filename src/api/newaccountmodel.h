@@ -78,6 +78,18 @@ public:
      */
     QString downloadDirectory;
     /**
+     * Accept transfer from untrusted contacts
+     */
+    bool acceptFromUnstrusted {false};
+    /**
+     * Accept transfer from trusted contacts
+     */
+    bool automaticAcceptTransfer {true};
+    /**
+     * Automatically accept transfer under
+     */
+    unsigned acceptBehindMb {20} /* Mb */;
+    /**
      * set account enable/disable, save config and do unregister for account
      * @param accountId.
      * @param enabled.
