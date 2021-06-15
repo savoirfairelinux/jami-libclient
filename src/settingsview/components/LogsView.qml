@@ -33,66 +33,58 @@ Dialog {
     id: root
 
     property bool cancelPressed: false
-    property bool startedLogs: false
+    property bool logging: false
     property bool isStopped: false
+    property bool hasOpened: false
+
     property int itemWidth: Math.min(root.width / 2 - 50, 350) * 1.5
     property int widthDivisor: 4
     property int selectBeginning
     property int selectEnd
 
+    property var lineSize: []
+    property var lineCounter: 0
 
-    function findNthIndexInText(substring, n){
-        var i;
-        var t = logsText.text
-        var index = t.indexOf(substring)
-        for (i = 0; i < n - 1; i++){
-            index = t.indexOf(substring, index + 1)
-        }
-        return index
-    }
 
-    function monitor(continuous){
+    function monitor(continuous) {
         SettingsAdapter.monitor(continuous)
     }
 
     Connections{
         target: SettingsAdapter
-        function onDebugMessageReceived(message){
-            var initialPosition = scroll.position
-            var oldContent = flickable.contentY
-            if (!root.cancelPressed){
+        function onDebugMessageReceived(message) {
+            if (!root.visible) {
+                return;
+            }
+            var initialPosition = scrollView.ScrollBar.vertical.position
+            lineCounter += 1
+            lineSize.push(message.length)
+            if (!root.cancelPressed) {
                 logsText.append(message);
             }
-            if (logsText.lineCount >= 10000){
-                var index = findNthIndexInText("\n", 10)
-                logsText.remove(0, index)
+            if (lineCounter >= 10000){
+                lineCounter -= 1
+                logsText.remove(0, lineSize[0])
+                lineSize.shift()
             }
-            var approximateBottom = (1.0 - flickable.visibleArea.heightRatio);
-            if (!isStopped){
-
-                if (initialPosition < 0){
-                    flickable.flick(0, -(100))
-                }
-                else if (initialPosition >= approximateBottom * .8){
-                    flickable.contentY = flickable.contentHeight - flickable.height
-                    flickable.flick(0, -(flickable.maximumFlickVelocity))
-                }
-                else{
-                    flickable.contentY = oldContent
-                }
-            }
+            scrollView.ScrollBar.vertical.position = initialPosition > (.8*(1.0 - scrollView.ScrollBar.vertical.size)) ? 1.0 - scrollView.ScrollBar.vertical.size : initialPosition
         }
     }
 
     onVisibleChanged: {
-        logsText.clear()
-        copiedToolTip.close()
-        if (startStopToggle.checked){
-            startStopToggle.checked = false
-            startedLogs = false
+        if (visible && startStopToggle.checked) {
+            if (hasOpened && lineCounter == 0) {
+                logsText.append(SettingsAdapter.getLogs())
+                lineCounter = SettingsAdapter.getSizeOfLogs()
+                lineSize.push(SettingsAdapter.getFirstLogLength())
+            }
+        } else {
+            logsText.clear()
+            copiedToolTip.close()
+            lineCounter = 0
+            lineSize = []
         }
-        root.cancelPressed = true
-        monitor(false)
+        hasOpened = true
     }
 
     title: JamiStrings.logsViewTitle
@@ -101,7 +93,7 @@ Dialog {
     height: 700
     standardButtons: StandardButton.NoButton
 
-    ColumnLayout{
+    ColumnLayout {
 
         Layout.alignment: Qt.AlignHCenter
         Layout.fillWidth: true
@@ -110,8 +102,9 @@ Dialog {
         height: root.height
         width: root.width
 
-        Rectangle{
+        Rectangle {
             id: buttonRectangleBackground
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignHCenter
@@ -122,7 +115,7 @@ Dialog {
             border.width: 0
             height: JamiTheme.preferredFieldHeight*2
 
-            RowLayout{
+            RowLayout {
                 id: buttons
 
                 Layout.alignment: Qt.AlignTop| Qt.AlignHCenter
@@ -140,13 +133,12 @@ Dialog {
                     fontPointSize: JamiTheme.settingsFontSize
 
                     onSwitchToggled: {
-                        startedLogs = !startedLogs
-                        if (startedLogs){
+                        logging = !logging
+                        if (logging){
                             isStopped = false
                             root.cancelPressed = false
                             monitor(true)
-                        }
-                        else{
+                        } else {
                             isStopped = true
                             root.cancelPressed = true
                             monitor(false)
@@ -154,30 +146,7 @@ Dialog {
                     }
                 }
 
-                MaterialButton{
-                    id: showStatsButton
-
-                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.preferredWidth: itemWidth/widthDivisor
-                    Layout.topMargin: JamiTheme.preferredMarginSize
-                    Layout.bottomMargin: JamiTheme.preferredMarginSize
-                    Layout.alignment: Qt.AlignHCenter
-
-                    text: JamiStrings.logsViewShowStats
-                    color: startedLogs ? JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedBlack
-                    hoveredColor: startedLogs ? JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedBlackHovered
-                    pressedColor: startedLogs ? JamiTheme.buttonTintedGreyInactive : JamiTheme.buttonTintedBlackPressed
-                    outlined: true
-
-                    onClicked:{
-                        if (!startedLogs){
-                            root.cancelPressed = false
-                            monitor(false)
-                        }
-                    }
-                }
-
-                MaterialButton{
+                MaterialButton {
                     id: clearButton
 
                     Layout.alignment: Qt.AlignHCenter
@@ -194,14 +163,15 @@ Dialog {
 
                     onClicked: {
                         logsText.clear()
-                        startedLogs = false
+                        logging = false
                         startStopToggle.checked = false
                         root.cancelPressed = true
+                        SettingsAdapter.clearLogs()
                         monitor(false)
                     }
                 }
 
-                MaterialButton{
+                MaterialButton {
                     id: copyButton
 
                     Layout.alignment: Qt.AlignHCenter
@@ -227,18 +197,16 @@ Dialog {
 
                         height: JamiTheme.preferredFieldHeight
                         TextArea{
-                        text: JamiStrings.logsViewCopied
+                            text: JamiStrings.logsViewCopied
                             color: JamiTheme.textColor
                         }
-
-
                         background: Rectangle{
                             color: JamiTheme.primaryBackgroundColor
                         }
-                   }
+                    }
                 }
 
-                MaterialButton{
+                MaterialButton {
                     id: reportButton
 
                     Layout.alignment: Qt.AlignHCenter
@@ -259,7 +227,7 @@ Dialog {
             }
         }
 
-        Rectangle{
+        Rectangle {
             id: flickableRectangleBackground
             property alias text: logsText.text
 
@@ -273,16 +241,14 @@ Dialog {
             height: root.height - buttonRectangleBackground.height
 
 
-            Flickable {
-                id: flickable
+            ScrollView{
+                id: scrollView
 
-                Layout.fillWidth: true
                 Layout.fillHeight: true
+                Layout.fillWidth: true
                 anchors.fill: flickableRectangleBackground
 
-                boundsBehavior: Flickable.StopAtBounds
-
-                TextArea.flickable: TextArea {
+                TextArea{
                     id: logsText
 
                     readOnly: true
@@ -291,36 +257,35 @@ Dialog {
                     wrapMode: TextArea.Wrap
                     selectByMouse: true
 
-                    MouseArea{
+                    MouseArea {
                         anchors.fill: logsText
                         acceptedButtons: Qt.RightButton
                         hoverEnabled: true
 
-                        onClicked:{
+                        onClicked: {
                             selectBeginning = logsText.selectionStart
                             selectEnd = logsText.selectionEnd
                             rightClickMenu.open()
                             logsText.select(selectBeginning, selectEnd)
                         }
 
-                        Menu{
+                        Menu {
                             id: rightClickMenu
 
-                            MenuItem{
+                            MenuItem {
                                 text: JamiStrings.logsViewCopy
-                                onTriggered:{
+                                onTriggered: {
                                     logsText.copy()
                                 }
                             }
                         }
                     }
                 }
-                ScrollBar.vertical: ScrollBar {
-                    id: scroll
-                }
             }
         }
     }
-
-
 }
+
+
+
+
