@@ -16,4 +16,70 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-extern bool muteDring;
+#include "mainapplication.h"
+#include "qmlregister.h"
+#include "appsettingsmanager.h"
+#include "connectivitymonitor.h"
+#include "systemtray.h"
+
+#include "accountadapter.h"
+
+#include <QTest>
+#include <QSignalSpy>
+
+#include <gtest/gtest.h>
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
+
+#if defined _MSC_VER && !COMPILE_ONLY
+#include <gnutls/gnutls.h>
+#endif
+
+class TestEnvironment
+{
+public:
+    TestEnvironment() = default;
+    ~TestEnvironment() = default;
+
+    void SetUp()
+    {
+        connectivityMonitor.reset(new ConnectivityMonitor(nullptr));
+        settingsManager.reset(new AppSettingsManager(nullptr));
+        systemTray.reset(new SystemTray(settingsManager.get(), nullptr));
+
+#if defined _MSC_VER && !COMPILE_ONLY
+        gnutls_global_init();
+#endif
+
+        std::atomic_bool isMigrating(false);
+        lrcInstance.reset(
+            new LRCInstance(nullptr, nullptr, "", connectivityMonitor.get(), muteDring));
+        lrcInstance->subscribeToDebugReceived();
+
+        // setup the adapters (their lifetimes are that of MainApplication)
+        accountAdapter.reset(new AccountAdapter(settingsManager.get(), lrcInstance.data(), nullptr));
+    }
+
+    void TearDown()
+    {
+        accountAdapter.reset();
+
+        systemTray.reset();
+        settingsManager.reset();
+        lrcInstance.reset();
+        connectivityMonitor.reset();
+    }
+
+    bool muteDring {false};
+
+    QScopedPointer<AccountAdapter> accountAdapter;
+
+    QScopedPointer<LRCInstance> lrcInstance;
+    QScopedPointer<ConnectivityMonitor> connectivityMonitor;
+    QScopedPointer<AppSettingsManager> settingsManager;
+    QScopedPointer<SystemTray> systemTray;
+};
+
+extern TestEnvironment globalEnv;

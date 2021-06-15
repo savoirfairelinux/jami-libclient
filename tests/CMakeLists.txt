@@ -63,7 +63,8 @@ set(UNIT_TESTS_HEADER_FILES ${CMAKE_SOURCE_DIR}/tests/unittests/globaltestenviro
 
 set(UNIT_TESTS_SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/tests/unittests/main_unittest.cpp
-    ${CMAKE_SOURCE_DIR}/tests/unittests/accountadapter_unittest.cpp)
+    ${CMAKE_SOURCE_DIR}/tests/unittests/account_unittest.cpp
+    ${CMAKE_SOURCE_DIR}/tests/unittests/contact_unittest.cpp)
 
 add_executable(unittests
                ${UNIT_TESTS_HEADER_FILES}
