@@ -2663,9 +2663,6 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
         if (member["uri"] != accountURI)
             participants.append(member["uri"]);
     }
-    if (participants.isEmpty()) {
-        return;
-    }
     conversation::Info conversation;
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
