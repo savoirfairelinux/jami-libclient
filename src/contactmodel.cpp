@@ -1025,9 +1025,10 @@ ContactModelPimpl::slotIncomingCall(const QString& fromId,
         }
     }
     if (emitContactAdded) {
-        if (linked.owner.profileInfo.type == profile::Type::JAMI) {
+        if (linked.owner.profileInfo.type == profile::Type::SIP)
+            emit linked.contactAdded(fromId);
+        else if (linked.owner.profileInfo.type == profile::Type::JAMI)
             emit behaviorController.newTrustRequest(linked.owner.id, fromId);
-        }
     } else
         emit linked.profileUpdated(fromId);
 
