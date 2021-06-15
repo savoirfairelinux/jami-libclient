@@ -191,7 +191,7 @@ public Q_SLOTS:
 
     /**
      * Listen from callbacksHandler to know when a file transfer interaction is incoming
-     * @param dringId Daemon's ID for incoming transfer
+     * @param fileId Daemon's ID for incoming transfer
      * @param transferInfo DataTransferInfo structure from daemon
      */
     void slotNewAccountTransfer(const QString& fileId, datatransfer::Info info);

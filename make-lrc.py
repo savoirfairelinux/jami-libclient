@@ -154,7 +154,7 @@ def generate(force, qtver, sdk, toolset, arch):
         '-DQt5Concurrent_DIR=' + qt_cmake_dir + 'Qt5Concurrent',
         '-DQt5Gui_DIR=' + qt_cmake_dir + 'Qt5Gui',
         '-Dring_BIN=' + daemon_bin,
-        '-DRING_INCLUDE_DIR=' + daemon_dir + '\\src\\dring',
+        '-DRING_INCLUDE_DIR=' + daemon_dir + '\\src\\jami',
         '-DCMAKE_SYSTEM_VERSION=' + sdk
     ]
     if not os.path.exists(build_dir):

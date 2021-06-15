@@ -36,12 +36,12 @@ CallManager::instance()
 
     if (!interface->connection().isConnected()) {
         GlobalInstances::dBusErrorHandler().connectionError(
-            "Error : dring not connected. Service " + interface->service()
+            "Error : jamid not connected. Service " + interface->service()
             + " not connected. From call manager interface.");
     }
     if (!interface->isValid()) {
         GlobalInstances::dBusErrorHandler().invalidInterfaceError(
-            "Error : dring is not available, make sure it is running");
+            "Error : jamid is not available, make sure it is running");
     }
 #endif
     return *interface;
