@@ -205,8 +205,8 @@ DataTransferModel::accept(const QString& accountId,
                           std::size_t offset)
 {
     auto unique_file_path = pimpl_->getUniqueFilePath(file_path);
-    auto dring_id = pimpl_->interactionToFileId[fileId];
-    ConfigurationManager::instance().acceptFileTransfer(accountId, dring_id, unique_file_path);
+    auto jami_id = pimpl_->interactionToFileId[fileId];
+    ConfigurationManager::instance().acceptFileTransfer(accountId, jami_id, unique_file_path);
     return unique_file_path;
 }
 
