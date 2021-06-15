@@ -320,7 +320,6 @@ NewAccountModel::exportOnRing(const QString& accountId, const QString& password)
 void
 NewAccountModel::removeAccount(const QString& accountId) const
 {
-    pimpl_->accounts.erase(accountId);
     ConfigurationManager::instance().removeAccount(accountId);
 }
 
