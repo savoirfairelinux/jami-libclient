@@ -154,7 +154,7 @@ Q_SIGNALS:
                            const MapStringString& payloads) const;
     /**
      * Connect this signal to know when a file transfer interaction is incoming
-     * @param dringId Daemon's ID for incoming transfer
+     * @param jamiId Daemon's ID for incoming transfer
      * @param transferInfo DataTransferInfo structure from daemon
      */
     void newAccountTransfer(const QString& fileId, datatransfer::Info info) const;

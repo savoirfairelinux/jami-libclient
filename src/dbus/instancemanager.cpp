@@ -43,7 +43,7 @@ InstanceManager::instance(bool muteDring)
 
     if (!interface->connection().isConnected()) {
         GlobalInstances::dBusErrorHandler().connectionError(
-            "Error : dring not connected. Service " + interface->service()
+            "Error : jamid not connected. Service " + interface->service()
             + " not connected. From instance interface.");
     }
     static bool registered = false;
