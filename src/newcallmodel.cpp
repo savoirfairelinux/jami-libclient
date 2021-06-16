@@ -294,8 +294,7 @@ NewCallModel::updateCallMediaList(const QString& callId, bool acceptVideo)
             for (auto it = callInfos->second->mediaList.begin();
                  it != callInfos->second->mediaList.end();
                  it++) {
-                if ((*it)[MediaAttributeKey::MEDIA_TYPE]
-                        == MediaAttributeValue::VIDEO
+                if ((*it)[MediaAttributeKey::MEDIA_TYPE] == MediaAttributeValue::VIDEO
                     && !acceptVideo) {
                     (*it)[MediaAttributeKey::ENABLED] = "false";
                     (*it)[MediaAttributeKey::MUTED] = "true";
@@ -310,23 +309,26 @@ NewCallModel::updateCallMediaList(const QString& callId, bool acceptVideo)
 QString
 NewCallModel::createCall(const QString& uri, bool isAudioOnly)
 {
+    auto accConfig = owner.accountModel->getAccountConfig(owner.id);
+    QString secure = accConfig.SRTP.enable ? "true" : "false";
+
     VectorMapStringString mediaList {};
-    MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE,
-                                       MediaAttributeValue::AUDIO},
+    MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE, MediaAttributeValue::AUDIO},
                                       {MediaAttributeKey::ENABLED, "true"},
+                                      {MediaAttributeKey::SECURE, secure},
                                       {MediaAttributeKey::MUTED, "false"},
                                       {MediaAttributeKey::SOURCE, ""},
                                       {MediaAttributeKey::LABEL, "audio_0"}};
+
     mediaList.push_back(mediaAttribute);
     if (!isAudioOnly) {
-        mediaAttribute[MediaAttributeKey::MEDIA_TYPE]
-            = MediaAttributeValue::VIDEO;
+        mediaAttribute[MediaAttributeKey::MEDIA_TYPE] = MediaAttributeValue::VIDEO;
         mediaAttribute[MediaAttributeKey::LABEL] = "video_0";
         mediaList.push_back(mediaAttribute);
     }
 #ifdef ENABLE_LIBWRAP
     auto callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
-#else  // dbus
+#else // dbus
     // do not use auto here (QDBusPendingReply<QString>)
     QString callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
 #endif // ENABLE_LIBWRAP
@@ -383,8 +385,8 @@ NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabe
     for (auto& item : proposedList) {
         if (item[MediaAttributeKey::LABEL] == mediaLabel) {
             item[MediaAttributeKey::ENABLED] = "true";
-            item[MediaAttributeKey::MUTED]
-                = item[MediaAttributeKey::MUTED] == "true" ? "false" : "true";
+            item[MediaAttributeKey::MUTED] = item[MediaAttributeKey::MUTED] == "true" ? "false"
+                                                                                      : "true";
             break;
         }
         found++;
@@ -406,8 +408,7 @@ NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabe
     // mediaNegotiationStatus
     if (found < callInfo->mediaList.size()) {
         callInfo->mediaList[found][MediaAttributeKey::MUTED]
-            = callInfo->mediaList[found][MediaAttributeKey::MUTED] == "true" ? "false"
-                                                                                           : "true";
+            = callInfo->mediaList[found][MediaAttributeKey::MUTED] == "true" ? "false" : "true";
         if (callInfo->status == call::Status::IN_PROGRESS)
             emit callInfosChanged(owner.id, callId);
     }
@@ -991,8 +992,7 @@ NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
     callInfo->type = call::Type::DIALOG;
     callInfo->isAudioOnly = true;
     for (const auto& item : mediaList) {
-        if (item[MediaAttributeKey::MEDIA_TYPE]
-            == MediaAttributeValue::VIDEO) {
+        if (item[MediaAttributeKey::MEDIA_TYPE] == MediaAttributeValue::VIDEO) {
             callInfo->isAudioOnly = false;
             break;
         }
@@ -1032,8 +1032,7 @@ NewCallModelPimpl::slotMediaChangeRequested(const QString& accountId,
     auto answerMedia = QList<MapStringString>::fromVector(mediaList);
 
     for (auto& item : answerMedia) {
-        if (item[MediaAttributeKey::MEDIA_TYPE]
-            == MediaAttributeValue::VIDEO) {
+        if (item[MediaAttributeKey::MEDIA_TYPE] == MediaAttributeValue::VIDEO) {
             item[MediaAttributeKey::MUTED] = callInfo->videoMuted ? "true" : "false";
             item[MediaAttributeKey::ENABLED] = "true";
         }
@@ -1132,16 +1131,14 @@ NewCallModelPimpl::slotMediaNegotiationStatus(const QString& callId,
 
     callInfo->isAudioOnly = true;
     for (const auto& item : mediaList) {
-        if (item[MediaAttributeKey::MEDIA_TYPE]
-            == MediaAttributeValue::VIDEO) {
-        	if (item[MediaAttributeKey::ENABLED] == "true") {
+        if (item[MediaAttributeKey::MEDIA_TYPE] == MediaAttributeValue::VIDEO) {
+            if (item[MediaAttributeKey::ENABLED] == "true") {
                 callInfo->isAudioOnly = false;
             }
             callInfo->videoMuted = item[MediaAttributeKey::MUTED] == "true"
-                                    || item[MediaAttributeKey::ENABLED] == "false";
+                                   || item[MediaAttributeKey::ENABLED] == "false";
         }
-        if (item[MediaAttributeKey::MEDIA_TYPE]
-            == MediaAttributeValue::AUDIO) {
+        if (item[MediaAttributeKey::MEDIA_TYPE] == MediaAttributeValue::AUDIO) {
             callInfo->audioMuted = item[MediaAttributeKey::MUTED] == "true";
         }
     }
