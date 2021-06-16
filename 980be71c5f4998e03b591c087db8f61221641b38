@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5436dcbc_f2ab07d2",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 6
+      },
+      "writtenOn": "2021-06-16T15:44:10Z",
+      "side": 1,
+      "message": "security is daemon logic, this should not be client-side",
+      "range": {
+        "startLine": 312,
+        "startChar": 2,
+        "endLine": 321,
+        "endChar": 77
+      },
+      "revId": "980be71c5f4998e03b591c087db8f61221641b38",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
