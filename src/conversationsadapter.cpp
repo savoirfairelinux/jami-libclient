@@ -135,12 +135,6 @@ ConversationsAdapter::safeInit()
 {
     // TODO: remove these safeInits, they are possibly called
     // multiple times during qml component inits
-    conversationSmartListModel_ = new SmartListModel(this,
-                                                     SmartListModel::Type::CONVERSATION,
-                                                     lrcInstance_);
-
-    Q_EMIT modelChanged(QVariant::fromValue(conversationSmartListModel_));
-
     connect(&lrcInstance_->behaviorController(),
             &BehaviorController::newUnreadInteraction,
             this,
@@ -276,16 +270,20 @@ ConversationsAdapter::onTrustRequestTreated(const QString& accountId, const QStr
 void
 ConversationsAdapter::onModelChanged()
 {
-    conversationSmartListModel_->fillConversationsList();
     updateConversationFilterData();
 }
 
 void
 ConversationsAdapter::onProfileUpdated(const QString& contactUri)
 {
-    // TODO: this will need a dataChanged call to keep the avatar
-    // updated. previously, 'reload-smartlist' was invoked here
-    conversationSmartListModel_->updateContactAvatarUid(contactUri);
+    auto& convInfo = lrcInstance_->getConversationFromPeerUri(contactUri);
+    if (convInfo.uid.isEmpty())
+        return;
+    auto row = lrcInstance_->indexOf(convInfo.uid);
+    const auto index = convSrcModel_->index(row, 0);
+
+    convSrcModel_->updateContactAvatarUid(contactUri);
+    Q_EMIT convSrcModel_->dataChanged(index, index);
 }
 
 void
@@ -297,7 +295,6 @@ ConversationsAdapter::onConversationUpdated(const QString&)
 void
 ConversationsAdapter::onFilterChanged()
 {
-    conversationSmartListModel_->fillConversationsList();
     updateConversationFilterData();
     if (!lrcInstance_->get_selectedConvUid().isEmpty())
         Q_EMIT indexRepositionRequested();
@@ -306,7 +303,6 @@ ConversationsAdapter::onFilterChanged()
 void
 ConversationsAdapter::onNewConversation(const QString& convUid)
 {
-    conversationSmartListModel_->fillConversationsList();
     updateConversationForNewContact(convUid);
 }
 
@@ -329,9 +325,6 @@ ConversationsAdapter::onSearchStatusChanged(const QString& status)
 void
 ConversationsAdapter::onSearchResultUpdated()
 {
-    // currently for contact pickers
-    conversationSmartListModel_->fillConversationsList();
-
     // smartlist search results
     searchSrcModel_->onSearchResultsUpdated();
 }

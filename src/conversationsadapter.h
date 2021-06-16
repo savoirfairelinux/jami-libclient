@@ -56,7 +56,6 @@ Q_SIGNALS:
     void showConversation(const QString& accountId, const QString& convUid);
     void showSearchStatus(const QString& status);
 
-    void modelChanged(const QVariant& model);
     void navigateToWelcomePageRequested();
     void indexRepositionRequested();
 
@@ -88,8 +87,6 @@ private Q_SLOTS:
 
 private:
     void updateConversationForNewContact(const QString& convUid);
-
-    SmartListModel* conversationSmartListModel_;
 
     SystemTray* systemTray_;
 
