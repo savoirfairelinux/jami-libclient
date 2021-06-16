@@ -3682,7 +3682,11 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid,
             qWarning() << "Too much duplicates for " << destinationDir << path;
             return;
         }
-        linked.owner.dataTransferModel->download(linked.owner.id, convUid, interactionId, fileId, path);
+        linked.owner.dataTransferModel->download(linked.owner.id,
+                                                 convUid,
+                                                 interactionId,
+                                                 fileId,
+                                                 path);
     } else {
         qWarning() << "Cannot download file without valid interaction";
     }
@@ -3704,6 +3708,9 @@ ConversationModelPimpl::slotTransferStatusOngoing(const QString& fileId, datatra
     QString conversationId;
     if (not usefulDataFromDataTransfer(fileId, info, interactionId, conversationId))
         return;
+    if (info.status == datatransfer::Status::success) {
+        return;
+    }
     bool intUpdated;
 
     if (!updateTransferStatus(fileId, info, interaction::Status::TRANSFER_ONGOING, intUpdated)) {
@@ -3740,9 +3747,13 @@ ConversationModelPimpl::slotTransferStatusFinished(const QString& fileId, datatr
             auto& interactions = conversations[conversationIdx].interactions;
             auto it = interactions.find(interactionId);
             if (it != interactions.end()) {
-                // We need to check if current status is ONGOING as CANCELED must not be
-                // transformed into FINISHED
-                if (it->second.status == interaction::Status::TRANSFER_ONGOING) {
+                // We need to check if current status is not CANCELED or ERROR since CANCELED or
+                // ERROR must not be transformed into FINISHED
+                if (it->second.status == interaction::Status::TRANSFER_CREATED
+                    || it->second.status == interaction::Status::TRANSFER_AWAITING_HOST
+                    || it->second.status == interaction::Status::TRANSFER_AWAITING_PEER
+                    || it->second.status == interaction::Status::TRANSFER_ONGOING
+                    || it->second.status == interaction::Status::TRANSFER_ACCEPTED) {
                     emitUpdated = true;
                     it->second.status = newStatus;
                     itCopy = it->second;
