@@ -121,6 +121,8 @@ Popup {
 
                 delegate: ContactPickerItemDelegate {
                     id: contactPickerItemDelegate
+
+                    showPresenceIndicator: type !== ContactList.TRANSFER
                 }
             }
         }

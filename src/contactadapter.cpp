@@ -37,11 +37,9 @@ ContactAdapter::getContactSelectableModel(int type)
     if (listModeltype_ == SmartListModel::Type::CONVERSATION) {
         defaultModerators_ = lrcInstance_->accountModel().getDefaultModerators(
             lrcInstance_->getCurrentAccountId());
-        smartListModel_.reset(new SmartListModel(this, listModeltype_, lrcInstance_));
-        smartListModel_->fillConversationsList();
-    } else {
-        smartListModel_.reset(new SmartListModel(this, listModeltype_, lrcInstance_));
     }
+
+    smartListModel_.reset(new SmartListModel(this, listModeltype_, lrcInstance_));
     selectableProxyModel_->setSourceModel(smartListModel_.get());
 
     // Adjust filter.

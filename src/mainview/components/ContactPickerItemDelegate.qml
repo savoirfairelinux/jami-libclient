@@ -29,6 +29,8 @@ import "../../commoncomponents"
 ItemDelegate {
     id: contactPickerItemDelegate
 
+    property alias showPresenceIndicator: contactPickerContactImage.showPresenceIndicator
+
     AvatarImage {
         id: contactPickerContactImage
 
