@@ -602,6 +602,24 @@ ConversationModel::getFilteredConversations(const FilterType& filter,
         .validate();
 }
 
+const ConversationModel::ConversationQueueProxy&
+ConversationModel::getFilteredConversations(const profile::Type& profileType = profile::Type::INVALID,
+                                            bool forceUpdate = false,
+                                            const bool includeBanned = false) const
+{
+    FilterType filterType = FilterType::INVALID;
+    switch (profileType) {
+    case lrc::api::profile::Type::JAMI:
+        filterType = lrc::api::FilterType::JAMI;
+        break;
+    case lrc::api::profile::Type::SIP:
+        filterType = lrc::api::FilterType::SIP;
+        break;
+    }
+
+    return getFilteredConversations(filterType, forceUpdate, includeBanned);
+}
+
 OptRef<conversation::Info>
 ConversationModel::getConversationForUid(const QString& uid)
 {
@@ -3682,7 +3700,11 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid,
             qWarning() << "Too much duplicates for " << destinationDir << path;
             return;
         }
-        linked.owner.dataTransferModel->download(linked.owner.id, convUid, interactionId, fileId, path);
+        linked.owner.dataTransferModel->download(linked.owner.id,
+                                                 convUid,
+                                                 interactionId,
+                                                 fileId,
+                                                 path);
     } else {
         qWarning() << "Cannot download file without valid interaction";
     }
