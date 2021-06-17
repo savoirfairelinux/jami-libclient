@@ -69,6 +69,30 @@
       "revId": "63182b96abb6b67e7fa693e1f2247cb7d61e1764",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a75eb79_9c01974e",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 2016,
+      "author": {
+        "id": 920
+      },
+      "writtenOn": "2021-06-17T19:33:33Z",
+      "side": 1,
+      "message": "Ya I should not have left it like that but I am not sure how we want to display youtube videos, with the old way or with the link previews. I can ask Charlotte if needed.",
+      "parentUuid": "8440b09b_5c69516b",
+      "range": {
+        "startLine": 2016,
+        "startChar": 20,
+        "endLine": 2016,
+        "endChar": 109
+      },
+      "revId": "63182b96abb6b67e7fa693e1f2247cb7d61e1764",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
