@@ -35,7 +35,7 @@ ColumnLayout {
     property int itemWidth
 
     function updatePublicAddressAccountInfos() {
-        checkBoxCustomAddressPort.checked = SettingsAdapter.getAccountConfig_PublishedSameAsLocal()
+        checkBoxCustomAddressPort.checked = !SettingsAdapter.getAccountConfig_PublishedSameAsLocal()
         lineEditSIPCustomAddress.setText(SettingsAdapter.getAccountConfig_PublishedAddress())
         customPortSIPSpinBox.setValue(SettingsAdapter.getAccountConfig_PublishedPort())
     }
@@ -65,7 +65,7 @@ ColumnLayout {
             fontPointSize: JamiTheme.settingsFontSize
 
             onSwitchToggled: {
-                SettingsAdapter.setUseCustomAddressAndPort(checked)
+                SettingsAdapter.setUseCustomAddressAndPort(!checked)
                 lineEditSIPCustomAddress.setEnabled(checked)
                 customPortSIPSpinBox.setEnabled(checked)
             }
