@@ -22,6 +22,30 @@
       "revId": "83efdb275a27b355c13cbfe6262d303d1883c8ab",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "518d31bb_2a190a48",
+        "filename": "src/api/newaccountmodel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 892
+      },
+      "writtenOn": "2021-06-18T18:19:24Z",
+      "side": 1,
+      "message": "since we\u0027re proposing names, i\u0027d like to add my own suggestions:\n\nacceptFromUnstrusted --\u003e autoTransferFromUnstrusted\nautomaticAcceptTransfer --\u003e autoTransferFromTrusted\nacceptBehindMb --\u003e autoTransferSizeThreshold (then clarify the unit (MB) in comment/doc)\n\ni would like the names to:\n1. reflect the duality of the first two variables (untrusted vs. trusted), and\n2. all have the same word format (e.g. all start with \"autoTransfer\").\n\nmy three suggested names meet these criteria, but i don\u0027t feel too strongly about them in case you come with other more suitable names. :)",
+      "parentUuid": "77856df6_37b6a55e",
+      "range": {
+        "startLine": 87,
+        "startChar": 9,
+        "endLine": 87,
+        "endChar": 33
+      },
+      "revId": "83efdb275a27b355c13cbfe6262d303d1883c8ab",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
