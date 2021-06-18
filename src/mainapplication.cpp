@@ -149,8 +149,8 @@ MainApplication::fileDebug(QFile* debugFile)
                      &lrc::api::BehaviorController::debugMessageReceived,
                      [debugFile](const QString& message) {
                          if (debugFile->open(QIODevice::WriteOnly | QIODevice::Append)) {
-                             auto msg = (message + "\n").toStdString().c_str();
-                             debugFile->write(msg, qstrlen(msg));
+                             auto msg = (message + "\n").toStdString();
+                             debugFile->write(msg.c_str(), qstrlen(msg.c_str()));
                              debugFile->close();
                          }
                      });
