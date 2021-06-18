@@ -55,7 +55,6 @@ Rectangle {
     Keys.onPressed: {
         if (LRCInstance.currentAccountType !== Profile.Type.SIP)
             return
-        print(event.text)
         var key = event.text.toUpperCase()
         if(sipKeys.find(function (item) {
             return item === key
