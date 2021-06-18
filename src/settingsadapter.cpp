@@ -552,6 +552,12 @@ SettingsAdapter::getAccountConfig_PublishedPort()
     return getAccountConfig().publishedPort;
 }
 
+bool
+SettingsAdapter::getAccountConfig_AllowIPAutoRewrite()
+{
+    return getAccountConfig().allowIPAutoRewrite;
+}
+
 QString
 SettingsAdapter::getAccountConfig_Mailbox()
 {
@@ -759,6 +765,15 @@ SettingsAdapter::setUseCustomAddressAndPort(bool state)
     auto confProps = lrcInstance_->accountModel().getAccountConfig(
         lrcInstance_->get_currentAccountId());
     confProps.publishedSameAsLocal = state;
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->get_currentAccountId(), confProps);
+}
+
+void
+SettingsAdapter::setAllowIPAutoRewrite(bool state)
+{
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(
+        lrcInstance_->get_currentAccountId());
+    confProps.allowIPAutoRewrite = state;
     lrcInstance_->accountModel().setAccountConfig(lrcInstance_->get_currentAccountId(), confProps);
 }
 

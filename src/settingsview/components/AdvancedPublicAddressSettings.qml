@@ -35,9 +35,16 @@ ColumnLayout {
     property int itemWidth
 
     function updatePublicAddressAccountInfos() {
+        checkBoxAllowIPAutoRewrite.checked = SettingsAdapter.getAccountConfig_AllowIPAutoRewrite()
         checkBoxCustomAddressPort.checked = !SettingsAdapter.getAccountConfig_PublishedSameAsLocal()
         lineEditSIPCustomAddress.setText(SettingsAdapter.getAccountConfig_PublishedAddress())
         customPortSIPSpinBox.setValue(SettingsAdapter.getAccountConfig_PublishedPort())
+
+        if (checkBoxAllowIPAutoRewrite.checked) {
+            checkBoxCustomAddressPort.visible = false
+            lineEditSIPCustomAddress.visible = false
+            customPortSIPSpinBox.visible = false
+        }
     }
 
     Text {
@@ -57,6 +64,20 @@ ColumnLayout {
     ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
+
+        ToggleSwitch {
+            id: checkBoxAllowIPAutoRewrite
+
+            labelText: JamiStrings.allowIPAutoRewrite
+            fontPointSize: JamiTheme.settingsFontSize
+
+            onSwitchToggled: {
+                SettingsAdapter.setAllowIPAutoRewrite(checked)
+                checkBoxCustomAddressPort.visible = !checked
+                lineEditSIPCustomAddress.visible = !checked
+                customPortSIPSpinBox.visible = !checked
+            }
+        }
 
         ToggleSwitch {
             id: checkBoxCustomAddressPort
