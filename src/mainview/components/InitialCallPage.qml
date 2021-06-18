@@ -46,8 +46,8 @@ Rectangle {
     ListModel {
         id: incomingControlsModel
         ListElement { type: "refuse"; image: "qrc:/images/icons/round-close-24px.svg"}
-        ListElement { type: "cam"; image: "qrc:/images/icons/videocam-24px.svg"}
         ListElement { type: "mic"; image: "qrc:/images/icons/place_audiocall-24px.svg"}
+        ListElement { type: "cam"; image: "qrc:/images/icons/videocam-24px.svg"}
     }
     ListModel {
         id: outgoingControlsModel
