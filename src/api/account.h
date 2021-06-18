@@ -102,6 +102,7 @@ struct ConfProperties_t
     bool upnpEnabled;
     bool hasCustomUserAgent;
     bool allowIncoming;
+    bool allowIPAutoRewrite;
     QString archivePassword;
     bool archiveHasPassword;
     QString archivePath;
