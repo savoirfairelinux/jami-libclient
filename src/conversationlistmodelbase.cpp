@@ -165,6 +165,9 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
         }
         return QVariant("");
     }
+    case Role::IsRequest: {
+        return QVariant(item.isRequest);
+    }
     }
     return QVariant();
 }

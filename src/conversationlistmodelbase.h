@@ -44,7 +44,8 @@
     X(SectionName) \
     X(AccountId) \
     X(PictureUid) \
-    X(Draft)
+    X(Draft) \
+    X(IsRequest)
 
 namespace ConversationList {
 Q_NAMESPACE

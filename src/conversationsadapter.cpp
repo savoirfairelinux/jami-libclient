@@ -33,7 +33,6 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
                                            LRCInstance* instance,
                                            QObject* parent)
     : QmlAdapterBase(instance, parent)
-    , currentTypeFilter_(profile::Type::JAMI)
     , systemTray_(systemTray)
     , convSrcModel_(new ConversationListModel(lrcInstance_))
     , convModel_(new ConversationListProxyModel(convSrcModel_.get()))
@@ -45,9 +44,16 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
 
     new SelectableListProxyGroupModel({convModel_.data(), searchModel_.data()}, this);
 
-    setTypeFilter(currentTypeFilter_);
-    connect(this, &ConversationsAdapter::currentTypeFilterChanged, [this]() {
-        setTypeFilter(currentTypeFilter_);
+    // this will trigger when the conversations filter tab is selected
+    connect(this, &ConversationsAdapter::profileTypeFilterChanged, [this]() {
+        convModel_->setProfileTypeFilter(profileTypeFilter_);
+    });
+    set_profileTypeFilter(profile::Type::JAMI);
+
+    // this will trigger when the invite filter tab is selected
+    connect(this, &ConversationsAdapter::filterRequestsChanged, [this]() {
+        // it is assumed that profileTypeFilter is profile::Type::JAMI here
+        convModel_->setFilterRequests(filterRequests_);
     });
 
     connect(lrcInstance_, &LRCInstance::selectedConvUidChanged, [this]() {
@@ -73,7 +79,7 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
                 auto& contact = accInfo.contactModel->getContact(convInfo.participants.front());
                 if (contact.profileInfo.type != profile::Type::INVALID
                     && contact.profileInfo.type != profile::Type::TEMPORARY)
-                    set_currentTypeFilter(contact.profileInfo.type);
+                    set_profileTypeFilter(contact.profileInfo.type);
             } catch (const std::out_of_range& e) {
                 qWarning() << e.what();
             }
@@ -167,7 +173,7 @@ ConversationsAdapter::safeInit()
 
     connectConversationModel();
 
-    set_currentTypeFilter(lrcInstance_->getCurrentAccountInfo().profileInfo.type);
+    set_profileTypeFilter(lrcInstance_->getCurrentAccountInfo().profileInfo.type);
 }
 
 void
@@ -177,7 +183,7 @@ ConversationsAdapter::onCurrentAccountIdChanged()
 
     connectConversationModel();
 
-    set_currentTypeFilter(lrcInstance_->getCurrentAccountInfo().profileInfo.type);
+    set_profileTypeFilter(lrcInstance_->getCurrentAccountInfo().profileInfo.type);
 }
 
 void
@@ -346,8 +352,8 @@ ConversationsAdapter::updateConversationFilterData()
     }
     set_totalUnreadMessageCount(totalUnreadMessages);
     set_pendingRequestCount(accountInfo.conversationModel->pendingRequestCount());
-    if (pendingRequestCount_ == 0 && currentTypeFilter_ == profile::Type::PENDING) {
-        set_currentTypeFilter(profile::Type::JAMI);
+    if (pendingRequestCount_ == 0 && profileTypeFilter_ == profile::Type::PENDING) {
+        set_profileTypeFilter(profile::Type::JAMI);
     }
 }
 
@@ -356,12 +362,6 @@ ConversationsAdapter::setFilter(const QString& filterString)
 {
     convModel_->setFilter(filterString);
     searchSrcModel_->setFilter(filterString);
-}
-
-void
-ConversationsAdapter::setTypeFilter(const profile::Type& typeFilter)
-{
-    convModel_->setTypeFilter(typeFilter);
 }
 
 QVariantMap
@@ -414,7 +414,7 @@ ConversationsAdapter::getConvInfoMap(const QString& convId)
 }
 
 bool
-ConversationsAdapter::connectConversationModel(bool updateFilter)
+ConversationsAdapter::connectConversationModel()
 {
     // Signal connections
     auto currentConversationModel = lrcInstance_->getCurrentConversationModel();
@@ -466,10 +466,6 @@ ConversationsAdapter::connectConversationModel(bool updateFilter)
                      this,
                      &ConversationsAdapter::onSearchResultUpdated,
                      Qt::UniqueConnection);
-
-    if (updateFilter) {
-        currentTypeFilter_ = profile::Type::INVALID;
-    }
 
     convSrcModel_.reset(new ConversationListModel(lrcInstance_));
     convModel_->bindSourceModel(convSrcModel_.get());
