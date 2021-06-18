@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "77856df6_37b6a55e",
+        "filename": "src/api/newaccountmodel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-06-18T17:55:09Z",
+      "side": 1,
+      "message": "maybe a good time to correct this to automaticallyAcceptTransfer or better yet autoAcceptTransfer",
+      "range": {
+        "startLine": 87,
+        "startChar": 9,
+        "endLine": 87,
+        "endChar": 33
+      },
+      "revId": "83efdb275a27b355c13cbfe6262d303d1883c8ab",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
