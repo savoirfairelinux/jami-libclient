@@ -81,7 +81,7 @@ private:
     void fileDebug(QFile* debugFile);
 
     void loadTranslations();
-    void initLrc(const QString& downloadUrl, ConnectivityMonitor* cm);
+    void initLrc(const QString& downloadUrl, ConnectivityMonitor* cm, bool muteDaemon);
     const QVariantMap parseArguments();
     void setApplicationFont();
     void initQmlLayer();

@@ -73,6 +73,7 @@ constexpr static const char DEBUG[] = "DEBUG";
 constexpr static const char DEBUGCONSOLE[] = "DEBUGCONSOLE";
 constexpr static const char DEBUGFILE[] = "DEBUGFILE";
 constexpr static const char UPDATEURL[] = "UPDATEURL";
+constexpr static const char MUTEDAEMON[] = "MUTEDAEMON";
 } // namespace opts
 
 static void
@@ -203,7 +204,9 @@ MainApplication::init()
     gnutls_global_init();
 #endif
 
-    initLrc(results[opts::UPDATEURL].toString(), connectivityMonitor_.get());
+    initLrc(results[opts::UPDATEURL].toString(),
+            connectivityMonitor_.get(),
+            results[opts::MUTEDAEMON].toBool());
 
 #ifdef Q_OS_UNIX
     GlobalInstances::setDBusErrorHandler(std::make_unique<Interfaces::DBusErrorHandler>());
@@ -326,7 +329,7 @@ MainApplication::loadTranslations()
 }
 
 void
-MainApplication::initLrc(const QString& downloadUrl, ConnectivityMonitor* cm)
+MainApplication::initLrc(const QString& downloadUrl, ConnectivityMonitor* cm, bool muteDaemon)
 {
     /*
      * Init mainwindow and finish splash when mainwindow shows up.
@@ -349,7 +352,8 @@ MainApplication::initLrc(const QString& downloadUrl, ConnectivityMonitor* cm)
             isMigrating = false;
         },
         downloadUrl,
-        cm));
+        cm,
+        muteDaemon));
     lrcInstance_->subscribeToDebugReceived();
 }
 
@@ -370,33 +374,25 @@ MainApplication::parseArguments()
                                       "port");
     parser.addOption(webDebugOption);
 
-    QCommandLineOption minimizedOption(QStringList() << "m"
-                                                     << "minimized",
-                                       "Start minimized.");
+    QCommandLineOption minimizedOption({"m", "minimized"}, "Start minimized.");
     parser.addOption(minimizedOption);
 
-    QCommandLineOption debugOption(QStringList() << "d"
-                                                 << "debug",
-                                   "Debug out.");
+    QCommandLineOption debugOption({"d", "debug"}, "Debug out.");
     parser.addOption(debugOption);
 
 #ifdef Q_OS_WINDOWS
-    QCommandLineOption debugConsoleOption(QStringList() << "c"
-                                                        << "console",
-                                          "Debug out to IDE console.");
+    QCommandLineOption debugConsoleOption({"c", "console"}, "Debug out to IDE console.");
     parser.addOption(debugConsoleOption);
 
-    QCommandLineOption debugFileOption(QStringList() << "f"
-                                                     << "file",
-                                       "Debug to file.");
+    QCommandLineOption debugFileOption({"f", "file"}, "Debug to file.");
     parser.addOption(debugFileOption);
 
-    QCommandLineOption updateUrlOption(QStringList() << "u"
-                                                     << "url",
-                                       "Reference <url> for client versioning.",
-                                       "url");
+    QCommandLineOption updateUrlOption({"u", "url"}, "<url> for debugging version queries.", "url");
     parser.addOption(updateUrlOption);
 #endif
+
+    QCommandLineOption muteDaemonOption({"q", "quiet"}, "Mute daemon logging.");
+    parser.addOption(muteDaemonOption);
 
     parser.process(*this);
 
@@ -407,6 +403,8 @@ MainApplication::parseArguments()
     results[opts::DEBUGFILE] = parser.isSet(debugFileOption);
     results[opts::UPDATEURL] = parser.value(updateUrlOption);
 #endif
+    results[opts::MUTEDAEMON] = parser.isSet(muteDaemonOption);
+
     return results;
 }
 
