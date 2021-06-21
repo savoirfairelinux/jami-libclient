@@ -719,7 +719,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="253"/>
         <source>Encrypt account with password</source>
-        <translation>Cifrează contul cu parolă</translation>
+        <translation>Cifrează contul cu o parolă</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="254"/>
@@ -744,7 +744,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="312"/>
         <source>Launch at startup</source>
-        <translation>Pornește odată cu aparatul</translation>
+        <translation>Pornește odată cu sistemul</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
@@ -870,12 +870,12 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="31"/>
         <source>Accept in audio</source>
-        <translation type="unfinished"/>
+        <translation>Acceptă audio</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="32"/>
         <source>Accept in video</source>
-        <translation type="unfinished"/>
+        <translation>Acceptă video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="99"/>
@@ -975,27 +975,27 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="128"/>
         <source>Audio RTP minimum Port</source>
-        <translation>Port Minim audio RTP</translation>
+        <translation>Port audio RTP minim</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="129"/>
         <source>Audio RTP maximum Port</source>
-        <translation>Port Maxim audio RTP</translation>
+        <translation>Port audio RTP maxim</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="130"/>
         <source>Video RTP minimum Port</source>
-        <translation>Port Minim video RTP</translation>
+        <translation>Port video RTP minim</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="131"/>
         <source>Video RTP maximum port</source>
-        <translation>Port Maxim video RTP</translation>
+        <translation>Port video RTP maxim</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="135"/>
         <source>Connect to other DHT nodes advertising on your local network.</source>
-        <translation>Conectează-te la alte noduri DHT afișate în rețeaua ta locală</translation>
+        <translation>Conectează-te la alte noduri DHT din rețeaua ta locală.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="136"/>
@@ -1110,7 +1110,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="175"/>
         <source>Backup account</source>
-        <translation>Copie de rezervă a contului</translation>
+        <translation>Fă o copie de rezervă</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="176"/>
@@ -1538,7 +1538,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="310"/>
         <source>Keep minimized on close</source>
-        <translation>Ține-l deschis în ascuns la închidere</translation>
+        <translation>Ține-l pornit în ascuns la închidere</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="311"/>
@@ -1675,17 +1675,17 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="485"/>
         <source>Is swarm:</source>
-        <translation type="unfinished"/>
+        <translation>Este grupul:</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="486"/>
         <source>True</source>
-        <translation type="unfinished"/>
+        <translation>Adevărat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="487"/>
         <source>False</source>
-        <translation type="unfinished"/>
+        <translation>Fals</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="205"/>
@@ -2122,8 +2122,7 @@ Please try again later.</source>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="91"/>
         <source>Something went wrong.
 </source>
-        <translation>Ceva n-a mers bine.
-</translation>
+        <translation>Ceva n-a mers bine.</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="182"/>
@@ -2451,7 +2450,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="50"/>
         <source>Username</source>
-        <translation>Nume de Utilizator</translation>
+        <translation>Nume de utilizator</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="61"/>
@@ -2535,22 +2534,22 @@ Please try again later.</source>
 <context>
     <name>SmartListModel</name>
     <message>
-        <location filename="../src/smartlistmodel.cpp" line="61"/>
-        <location filename="../src/smartlistmodel.cpp" line="99"/>
-        <location filename="../src/smartlistmodel.cpp" line="107"/>
-        <location filename="../src/smartlistmodel.cpp" line="152"/>
+        <location filename="../src/smartlistmodel.cpp" line="60"/>
+        <location filename="../src/smartlistmodel.cpp" line="98"/>
+        <location filename="../src/smartlistmodel.cpp" line="106"/>
+        <location filename="../src/smartlistmodel.cpp" line="151"/>
+        <location filename="../src/smartlistmodel.cpp" line="173"/>
         <location filename="../src/smartlistmodel.cpp" line="174"/>
-        <location filename="../src/smartlistmodel.cpp" line="175"/>
         <source>Calls</source>
         <translation>Apeluri</translation>
     </message>
     <message>
-        <location filename="../src/smartlistmodel.cpp" line="62"/>
-        <location filename="../src/smartlistmodel.cpp" line="100"/>
-        <location filename="../src/smartlistmodel.cpp" line="117"/>
-        <location filename="../src/smartlistmodel.cpp" line="153"/>
+        <location filename="../src/smartlistmodel.cpp" line="61"/>
+        <location filename="../src/smartlistmodel.cpp" line="99"/>
+        <location filename="../src/smartlistmodel.cpp" line="116"/>
+        <location filename="../src/smartlistmodel.cpp" line="152"/>
+        <location filename="../src/smartlistmodel.cpp" line="175"/>
         <location filename="../src/smartlistmodel.cpp" line="176"/>
-        <location filename="../src/smartlistmodel.cpp" line="177"/>
         <source>Contacts</source>
         <translation>Contacte</translation>
     </message>

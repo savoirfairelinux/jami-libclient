@@ -870,12 +870,12 @@ A Jami most kilép.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="31"/>
         <source>Accept in audio</source>
-        <translation type="unfinished"/>
+        <translation>Hanggal elfogadása</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="32"/>
         <source>Accept in video</source>
-        <translation type="unfinished"/>
+        <translation>Videóval elfogadása</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="99"/>
@@ -1674,17 +1674,17 @@ A Jami most kilép.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="485"/>
         <source>Is swarm:</source>
-        <translation type="unfinished"/>
+        <translation>Rajcsoport:</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="486"/>
         <source>True</source>
-        <translation type="unfinished"/>
+        <translation>Igaz</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="487"/>
         <source>False</source>
-        <translation type="unfinished"/>
+        <translation>Hamis</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="205"/>
@@ -1845,7 +1845,7 @@ A Jami most kilép.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Information</source>
-        <translation type="unfinished"/>
+        <translation>Kapcsolattartó adatai</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
@@ -2454,7 +2454,7 @@ Kérjük, hogy próbálja újra később.</translation>
     <message>
         <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="61"/>
         <source>Hostname</source>
-        <translation>Kiszolgálónév</translation>
+        <translation>Állomásnév</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="72"/>
@@ -2533,22 +2533,22 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>SmartListModel</name>
     <message>
-        <location filename="../src/smartlistmodel.cpp" line="61"/>
-        <location filename="../src/smartlistmodel.cpp" line="99"/>
-        <location filename="../src/smartlistmodel.cpp" line="107"/>
-        <location filename="../src/smartlistmodel.cpp" line="152"/>
+        <location filename="../src/smartlistmodel.cpp" line="60"/>
+        <location filename="../src/smartlistmodel.cpp" line="98"/>
+        <location filename="../src/smartlistmodel.cpp" line="106"/>
+        <location filename="../src/smartlistmodel.cpp" line="151"/>
+        <location filename="../src/smartlistmodel.cpp" line="173"/>
         <location filename="../src/smartlistmodel.cpp" line="174"/>
-        <location filename="../src/smartlistmodel.cpp" line="175"/>
         <source>Calls</source>
         <translation>Hívások</translation>
     </message>
     <message>
-        <location filename="../src/smartlistmodel.cpp" line="62"/>
-        <location filename="../src/smartlistmodel.cpp" line="100"/>
-        <location filename="../src/smartlistmodel.cpp" line="117"/>
-        <location filename="../src/smartlistmodel.cpp" line="153"/>
+        <location filename="../src/smartlistmodel.cpp" line="61"/>
+        <location filename="../src/smartlistmodel.cpp" line="99"/>
+        <location filename="../src/smartlistmodel.cpp" line="116"/>
+        <location filename="../src/smartlistmodel.cpp" line="152"/>
+        <location filename="../src/smartlistmodel.cpp" line="175"/>
         <location filename="../src/smartlistmodel.cpp" line="176"/>
-        <location filename="../src/smartlistmodel.cpp" line="177"/>
         <source>Contacts</source>
         <translation>Kapcsolatok</translation>
     </message>

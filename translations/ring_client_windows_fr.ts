@@ -514,12 +514,12 @@ Veuillez entrer votre mot de passe.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="35"/>
         <source>Incoming audio call from {}</source>
-        <translation type="unfinished"/>
+        <translation>Appel audio entrant de  {}</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="36"/>
         <source>Incoming video call from {}</source>
-        <translation type="unfinished"/>
+        <translation>Appel vidéo entrant de {}</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="69"/>
@@ -654,7 +654,7 @@ Veuillez entrer votre mot de passe.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="104"/>
         <source>Registration expiration time (seconds)</source>
-        <translation type="unfinished"/>
+        <translation>Temps d&apos;expiration de l&apos;enregistrement (en secondes)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="117"/>
@@ -872,12 +872,12 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="31"/>
         <source>Accept in audio</source>
-        <translation type="unfinished"/>
+        <translation>Accepter en audio</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="32"/>
         <source>Accept in video</source>
-        <translation type="unfinished"/>
+        <translation>Accepter en vidéo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="99"/>
@@ -1194,7 +1194,7 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="202"/>
         <source>Mosaic</source>
-        <translation type="unfinished"/>
+        <translation>Mosaïque</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="206"/>
@@ -1289,7 +1289,7 @@ Notez que le mot de passe ne peut être récupéré.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="229"/>
         <source>Select sharing method</source>
-        <translation type="unfinished"/>
+        <translation>Choisissez une méthode pour partager</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="230"/>
@@ -1637,17 +1637,17 @@ Souhaitez-vous mettre à jour Jami maintenant ?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="341"/>
         <source>Troubleshoot</source>
-        <translation type="unfinished"/>
+        <translation>Dépannage</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="342"/>
         <source>Open logs</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir les journaux</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="343"/>
         <source>Get logs</source>
-        <translation type="unfinished"/>
+        <translation>Obtenir les journaux</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="346"/>
@@ -1657,17 +1657,17 @@ Souhaitez-vous mettre à jour Jami maintenant ?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="349"/>
         <source>Debug</source>
-        <translation type="unfinished"/>
+        <translation>Déverminage</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="350"/>
         <source>Show Stats</source>
-        <translation type="unfinished"/>
+        <translation>Montrer les statistiques</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="351"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Démarrer</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="352"/>
@@ -1677,17 +1677,17 @@ Souhaitez-vous mettre à jour Jami maintenant ?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="485"/>
         <source>Is swarm:</source>
-        <translation type="unfinished"/>
+        <translation>est un swarm</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="486"/>
         <source>True</source>
-        <translation type="unfinished"/>
+        <translation>Vrai</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="487"/>
         <source>False</source>
-        <translation type="unfinished"/>
+        <translation>Faux</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="205"/>
@@ -1698,12 +1698,12 @@ Souhaitez-vous mettre à jour Jami maintenant ?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="226"/>
         <source>Stop sharing screen or file</source>
-        <translation type="unfinished"/>
+        <translation>Arrêter le partage d&apos;écran</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="354"/>
         <source>Report Bug</source>
-        <translation type="unfinished"/>
+        <translation>Reporter un bug</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="355"/>
@@ -1713,12 +1713,12 @@ Souhaitez-vous mettre à jour Jami maintenant ?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Copied to clipboard!</source>
-        <translation type="unfinished"/>
+        <translation>Copié dans le presse-papier !</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Receive Logs</source>
-        <translation type="unfinished"/>
+        <translation>Journaux reçus</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="361"/>
@@ -1848,7 +1848,7 @@ Souhaitez-vous mettre à jour Jami maintenant ?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Information</source>
-        <translation type="unfinished"/>
+        <translation>Informations</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
@@ -2184,17 +2184,17 @@ Veuillez réessayer plus tard</translation>
     <message>
         <location filename="../src/mainapplication.cpp" line="484"/>
         <source>E&amp;xit</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Sortir</translation>
     </message>
     <message>
         <location filename="../src/mainapplication.cpp" line="486"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Quitter</translation>
     </message>
     <message>
         <location filename="../src/mainapplication.cpp" line="492"/>
         <source>&amp;Show Jami</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Montrer Jami</translation>
     </message>
 </context>
 <context>
@@ -2535,22 +2535,22 @@ Veuillez réessayer plus tard</translation>
 <context>
     <name>SmartListModel</name>
     <message>
-        <location filename="../src/smartlistmodel.cpp" line="61"/>
-        <location filename="../src/smartlistmodel.cpp" line="99"/>
-        <location filename="../src/smartlistmodel.cpp" line="107"/>
-        <location filename="../src/smartlistmodel.cpp" line="152"/>
+        <location filename="../src/smartlistmodel.cpp" line="60"/>
+        <location filename="../src/smartlistmodel.cpp" line="98"/>
+        <location filename="../src/smartlistmodel.cpp" line="106"/>
+        <location filename="../src/smartlistmodel.cpp" line="151"/>
+        <location filename="../src/smartlistmodel.cpp" line="173"/>
         <location filename="../src/smartlistmodel.cpp" line="174"/>
-        <location filename="../src/smartlistmodel.cpp" line="175"/>
         <source>Calls</source>
         <translation>Appels</translation>
     </message>
     <message>
-        <location filename="../src/smartlistmodel.cpp" line="62"/>
-        <location filename="../src/smartlistmodel.cpp" line="100"/>
-        <location filename="../src/smartlistmodel.cpp" line="117"/>
-        <location filename="../src/smartlistmodel.cpp" line="153"/>
+        <location filename="../src/smartlistmodel.cpp" line="61"/>
+        <location filename="../src/smartlistmodel.cpp" line="99"/>
+        <location filename="../src/smartlistmodel.cpp" line="116"/>
+        <location filename="../src/smartlistmodel.cpp" line="152"/>
+        <location filename="../src/smartlistmodel.cpp" line="175"/>
         <location filename="../src/smartlistmodel.cpp" line="176"/>
-        <location filename="../src/smartlistmodel.cpp" line="177"/>
         <source>Contacts</source>
         <translation>Contacts</translation>
     </message>

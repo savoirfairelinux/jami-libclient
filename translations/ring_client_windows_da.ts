@@ -2530,22 +2530,22 @@ Please try again later.</source>
 <context>
     <name>SmartListModel</name>
     <message>
-        <location filename="../src/smartlistmodel.cpp" line="61"/>
-        <location filename="../src/smartlistmodel.cpp" line="99"/>
-        <location filename="../src/smartlistmodel.cpp" line="107"/>
-        <location filename="../src/smartlistmodel.cpp" line="152"/>
+        <location filename="../src/smartlistmodel.cpp" line="60"/>
+        <location filename="../src/smartlistmodel.cpp" line="98"/>
+        <location filename="../src/smartlistmodel.cpp" line="106"/>
+        <location filename="../src/smartlistmodel.cpp" line="151"/>
+        <location filename="../src/smartlistmodel.cpp" line="173"/>
         <location filename="../src/smartlistmodel.cpp" line="174"/>
-        <location filename="../src/smartlistmodel.cpp" line="175"/>
         <source>Calls</source>
         <translation>Opkald</translation>
     </message>
     <message>
-        <location filename="../src/smartlistmodel.cpp" line="62"/>
-        <location filename="../src/smartlistmodel.cpp" line="100"/>
-        <location filename="../src/smartlistmodel.cpp" line="117"/>
-        <location filename="../src/smartlistmodel.cpp" line="153"/>
+        <location filename="../src/smartlistmodel.cpp" line="61"/>
+        <location filename="../src/smartlistmodel.cpp" line="99"/>
+        <location filename="../src/smartlistmodel.cpp" line="116"/>
+        <location filename="../src/smartlistmodel.cpp" line="152"/>
+        <location filename="../src/smartlistmodel.cpp" line="175"/>
         <location filename="../src/smartlistmodel.cpp" line="176"/>
-        <location filename="../src/smartlistmodel.cpp" line="177"/>
         <source>Contacts</source>
         <translation>Kontakter</translation>
     </message>

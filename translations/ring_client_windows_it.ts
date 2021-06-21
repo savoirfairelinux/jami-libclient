@@ -28,12 +28,12 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="87"/>
         <source>Audio Files</source>
-        <translation type="unfinished"/>
+        <translation>File audio</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="87"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file</translation>
     </message>
 </context>
 <context>
@@ -49,12 +49,12 @@
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="94"/>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>Key File</source>
-        <translation type="unfinished"/>
+        <translation>File della Chiave</translation>
     </message>
 </context>
 <context>
@@ -83,12 +83,12 @@
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="113"/>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>Key File</source>
-        <translation type="unfinished"/>
+        <translation>File della Chiave</translation>
     </message>
 </context>
 <context>
@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedSettings.qml" line="69"/>
         <source>Advanced Account Settings</source>
-        <translation type="unfinished"/>
+        <translation>Impostazioni avanzate account </translation>
     </message>
 </context>
 <context>
@@ -104,12 +104,12 @@
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="48"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>File dell&apos;archivio Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="48"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file</translation>
     </message>
 </context>
 <context>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/calladapter.cpp" line="130"/>
         <source>Missed call from %1</source>
-        <translation type="unfinished"/>
+        <translation>Chiamata persa da %1</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="504"/>
@@ -145,12 +145,12 @@
     <message>
         <location filename="../src/calladapter.cpp" line="566"/>
         <source>%1 is calling you</source>
-        <translation type="unfinished"/>
+        <translation>%1 ti sta chiamando</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="577"/>
         <source>is calling you</source>
-        <translation type="unfinished"/>
+        <translation>ti sta chiamando</translation>
     </message>
 </context>
 <context>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="98"/>
         <source>Confirm Password</source>
-        <translation type="unfinished"/>
+        <translation>Conferma password</translation>
     </message>
 </context>
 <context>
@@ -171,17 +171,17 @@
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
         <source>Add to conference</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi alla conferenza</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
         <source>Transfer this call</source>
-        <translation type="unfinished"/>
+        <translation>Trasferisci questa chiamata</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="89"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi moderatore predefinito</translation>
     </message>
 </context>
 <context>
@@ -202,27 +202,27 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="76"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>File dell&apos;archivio Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="76"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="121"/>
         <source>Choose a username for your account</source>
-        <translation type="unfinished"/>
+        <translation>Scegli un nome utente per il tuo account</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="149"/>
         <source>Choose your username</source>
-        <translation type="unfinished"/>
+        <translation>Scegli il tuo nome utente</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="149"/>
         <source>Choose a name</source>
-        <translation type="unfinished"/>
+        <translation>Scegli un nome</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="164"/>
@@ -232,7 +232,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="164"/>
         <source>Invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Nome non valido</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="166"/>
@@ -242,7 +242,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="166"/>
         <source>Name already taken</source>
-        <translation type="unfinished"/>
+        <translation>Nome già utilizzato</translation>
     </message>
 </context>
 <context>
@@ -267,12 +267,12 @@
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="156"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>File dell&apos;archivio Jami</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="156"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file</translation>
     </message>
 </context>
 <context>
@@ -298,12 +298,12 @@
         <source>Could not re-connect to the Jami daemon (dring).
 Jami will now quit.</source>
         <translation>Impossibile riconnettersi al demone Jami (dring).
-Jami ora si chiudera&apos;.</translation>
+Jami ora si chiuderà.</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="99"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation>Cercando di riconnettersi al demone Jami (dring) ...</translation>
+        <translation>Tentativo di riconnessione al demone Jami (dring)…</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="154"/>
@@ -316,12 +316,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="155"/>
         <source>Delete</source>
-        <translation>Cancella</translation>
+        <translation>Elimina</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="176"/>
         <source>Cancel</source>
-        <translation>Cancella</translation>
+        <translation>Annulla</translation>
     </message>
 </context>
 <context>
@@ -329,7 +329,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="120"/>
         <source>Device Id</source>
-        <translation type="unfinished"/>
+        <translation>ID del dispositivo</translation>
     </message>
 </context>
 <context>
@@ -337,12 +337,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="64"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>File dell&apos;archivio Jami</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="64"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="88"/>
@@ -352,12 +352,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="159"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>Generazione account…</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="204"/>
         <source>Back to welcome page</source>
-        <translation type="unfinished"/>
+        <translation>Torna alla pagina di benvenuto</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="141"/>
@@ -375,12 +375,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="140"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>Generazione account…</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="180"/>
         <source>Back to welcome page</source>
-        <translation type="unfinished"/>
+        <translation>Torna alla pagina di benvenuto</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="123"/>
@@ -398,7 +398,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="38"/>
         <source>Search your invitations</source>
-        <translation type="unfinished"/>
+        <translation>Cerca i tuoi inviti</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="39"/>
@@ -408,7 +408,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="40"/>
         <source>Jami is free software for universal communication which respects the freedoms and the privacy of its users.</source>
-        <translation type="unfinished"/>
+        <translation>Jami è un software libero per la comunicazione universale che rispetta le libertà e la privacy dei suoi utenti.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="43"/>
@@ -418,7 +418,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="46"/>
         <source>Jami is a free software for universal communication which respects the freedom and privacy of its users.</source>
-        <translation type="unfinished"/>
+        <translation>Jami è un software libero per la comunicazione universale che rispetta le libertà e la privacy dei suoi utenti.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="47"/>
@@ -428,47 +428,47 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="50"/>
         <source>Display QR code</source>
-        <translation type="unfinished"/>
+        <translation>Visualizza il codice QR</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="51"/>
         <source>Open settings</source>
-        <translation type="unfinished"/>
+        <translation>Apri le impostazioni</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="52"/>
         <source>Close settings</source>
-        <translation type="unfinished"/>
+        <translation>Chiudi le impostazioni</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="55"/>
         <source>Authentication required</source>
-        <translation type="unfinished"/>
+        <translation>Autenticazione richiesta</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="56"/>
         <source>Your session has expired or been revoked on this device. Please enter your password.</source>
-        <translation type="unfinished"/>
+        <translation>La tua sessione è scaduta o è stata chiusa per questo dispositivo. Per favore inserisci la tua password.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="57"/>
         <source>JAMS server</source>
-        <translation type="unfinished"/>
+        <translation>Server JAMS</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="58"/>
         <source>Authenticate</source>
-        <translation type="unfinished"/>
+        <translation>Autenticazione</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="59"/>
         <source>Delete account</source>
-        <translation>Eliminare l&apos;account</translation>
+        <translation>Elimina l&apos;account</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="61"/>
         <source>Authentication failed</source>
-        <translation type="unfinished"/>
+        <translation>Autenticazione fallita</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="62"/>
@@ -488,7 +488,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="67"/>
         <source>Call Settings</source>
-        <translation type="unfinished"/>
+        <translation>Impostazioni di chiamata</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="68"/>
@@ -498,7 +498,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="60"/>
         <source>In progress…</source>
-        <translation type="unfinished"/>
+        <translation>In corso…</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="30"/>
@@ -528,7 +528,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="70"/>
         <source>Automatically answer calls</source>
-        <translation type="unfinished"/>
+        <translation>Risposta automatica alle chiamate</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="71"/>
@@ -538,17 +538,17 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="72"/>
         <source>Select custom ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona suoneria personalizzata</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="73"/>
         <source>Add a custom ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi una suoneria personalizzata</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="74"/>
         <source>Select a new ringtone</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona una nuova suoneria</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="77"/>
@@ -558,7 +558,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="78"/>
         <source>Voicemail dial code</source>
-        <translation type="unfinished"/>
+        <translation>Codice della segreteria</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="81"/>
@@ -568,7 +568,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="82"/>
         <source>Encrypt media streams (SRTP)</source>
-        <translation>Cifrare i flussi media (SRTP)</translation>
+        <translation>Cifrare i flussi multimediali (SRTP)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="83"/>
@@ -578,17 +578,17 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="84"/>
         <source>Allow fallback on RTP</source>
-        <translation type="unfinished"/>
+        <translation>Consentire il ritorno su RTP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="85"/>
         <source>Encrypt negotiation (TLS)</source>
-        <translation>Negoziazione della cifratura (TLS)</translation>
+        <translation>Cifrare la negoziazione (TLS)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="86"/>
         <source>CA certificate</source>
-        <translation>Certificato dell&apos;autorita</translation>
+        <translation>Certificato CA</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="87"/>
@@ -683,7 +683,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="169"/>
         <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation type="unfinished"/>
+        <translation>Il tuo account esiste solo su questo dispositivo. Se perdi il tuo dispositivo o disinstalli l&apos;applicazione, il tuo account verrà eliminato e non potrà essere recuperato. Puoi eseguire il backup del tuo account ora o più tardi.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="34"/>
@@ -719,7 +719,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="253"/>
         <source>Encrypt account with password</source>
-        <translation>Cifra l&apos;account con password</translation>
+        <translation>Cifrare l&apos;account con una password</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="254"/>
@@ -729,7 +729,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="257"/>
         <source>Choose a password to encrypt your account on this device. Note that the password cannot be recovered.</source>
-        <translation type="unfinished"/>
+        <translation>Scegli una password per cifrare il tuo account su questo dispositivo. Nota che la password non può essere recuperata.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="259"/>
@@ -739,12 +739,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="299"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation type="unfinished"/>
+        <translation>Se non hai fatto il backup del tuo account o non l&apos;hai collegato a un altro dispositivo, il tuo account e il tuo nome registrato saranno persi per sempre.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="312"/>
         <source>Launch at startup</source>
-        <translation type="unfinished"/>
+        <translation>Lancia all&apos;avvio del sistema</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
@@ -769,7 +769,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="371"/>
         <source>Enter the PIN from another configured Jami account. Use the &quot;Link Another Device&quot; feature to obtain a PIN.</source>
-        <translation>Immettere il PIN da un altro account Jami configurato. Utilizza la funzione &quot;Collega un altro dispositivo&quot; per ottenere un PIN.</translation>
+        <translation>Inserire il PIN da un altro account Jami configurato. Utilizza la funzione &quot;Collega un altro dispositivo&quot; per ottenere un PIN.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="373"/>
@@ -870,12 +870,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="31"/>
         <source>Accept in audio</source>
-        <translation type="unfinished"/>
+        <translation>Accetta audio</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="32"/>
         <source>Accept in video</source>
-        <translation type="unfinished"/>
+        <translation>Accetta video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="99"/>
@@ -900,12 +900,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="106"/>
         <source>Use UPnP</source>
-        <translation type="unfinished"/>
+        <translation>Utilizza UPnP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="107"/>
         <source>Use TURN</source>
-        <translation>Usa TURN</translation>
+        <translation>Utilizza TURN</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="108"/>
@@ -925,12 +925,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="111"/>
         <source>TURN Realm</source>
-        <translation type="unfinished"/>
+        <translation>Dominio TURN</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="112"/>
         <source>Use STUN</source>
-        <translation>Usare STUN</translation>
+        <translation>Utilizza STUN</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="113"/>
@@ -975,32 +975,32 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="128"/>
         <source>Audio RTP minimum Port</source>
-        <translation type="unfinished"/>
+        <translation>Porta audio RTP minima</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="129"/>
         <source>Audio RTP maximum Port</source>
-        <translation type="unfinished"/>
+        <translation>Porta audio RTP massima</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="130"/>
         <source>Video RTP minimum Port</source>
-        <translation type="unfinished"/>
+        <translation>Porta video RTP minima</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="131"/>
         <source>Video RTP maximum port</source>
-        <translation type="unfinished"/>
+        <translation>Porta video RTP massima</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="135"/>
         <source>Connect to other DHT nodes advertising on your local network.</source>
-        <translation type="unfinished"/>
+        <translation>Connettiti ad altri nodi DHT nella tua rete locale.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="136"/>
         <source>OpenDHT Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configurazione OpenDHT</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="137"/>
@@ -1010,7 +1010,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="138"/>
         <source>Proxy address</source>
-        <translation type="unfinished"/>
+        <translation>Indirizzo proxy</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="139"/>
@@ -1100,17 +1100,17 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="173"/>
         <source>Backup account here</source>
-        <translation type="unfinished"/>
+        <translation>Fai qui il backup dell&apos;account</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="174"/>
         <source>Backup your account!</source>
-        <translation>Crea un backup del tuo account!</translation>
+        <translation>Fai il backup del tuo account!</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="175"/>
         <source>Backup account</source>
-        <translation>Backup account</translation>
+        <translation>Fai il backup dell&apos;account</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="176"/>
@@ -1160,7 +1160,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="189"/>
         <source>is calling you</source>
-        <translation type="unfinished"/>
+        <translation>ti sta chiamando</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="192"/>
@@ -1217,7 +1217,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="212"/>
         <source>Clear conversation</source>
-        <translation type="unfinished"/>
+        <translation>Cancella conversazione</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
@@ -1242,7 +1242,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="219"/>
         <source>Sip input panel</source>
-        <translation type="unfinished"/>
+        <translation>Tastiera SIP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="220"/>
@@ -1262,12 +1262,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="223"/>
         <source>Exit full screen</source>
-        <translation type="unfinished"/>
+        <translation>Esci da schermo intero</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="224"/>
         <source>Full screen</source>
-        <translation type="unfinished"/>
+        <translation>Schermo intero</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="225"/>
@@ -1332,7 +1332,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="242"/>
         <source>Enter Jami Account Management Server (JAMS) URL</source>
-        <translation>Inserisci l&apos;URL di Jami Account Management Server (JAMS)</translation>
+        <translation>Inserire l&apos;URL di Jami Account Management Server (JAMS)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="243"/>
@@ -1347,7 +1347,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="245"/>
         <source>Enter your JAMS credentials</source>
-        <translation>Inserisci le tue credenziali JAMS</translation>
+        <translation>Inserire le tue credenziali JAMS</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="246"/>
@@ -1357,7 +1357,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="248"/>
         <source>Back to welcome page</source>
-        <translation type="unfinished"/>
+        <translation>Torna alla pagina di benvenuto</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="251"/>
@@ -1407,12 +1407,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="268"/>
         <source>Backup successful</source>
-        <translation type="unfinished"/>
+        <translation>Backup riuscito</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="269"/>
         <source>Backup failed</source>
-        <translation type="unfinished"/>
+        <translation>Backup non riuscito</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="270"/>
@@ -1453,7 +1453,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
         <source>Backup account to a .gz file</source>
-        <translation type="unfinished"/>
+        <translation>Fai il backup dell&apos;account su un file .gz</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="279"/>
@@ -1543,7 +1543,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="311"/>
         <source>Run application on system startup</source>
-        <translation type="unfinished"/>
+        <translation>Avvia il programma insieme al sistema</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="313"/>
@@ -1573,38 +1573,39 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="324"/>
         <source>Check for updates now</source>
-        <translation type="unfinished"/>
+        <translation>Controlla ora gli aggiornamenti</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="325"/>
         <source>Enable/Disable automatic updates</source>
-        <translation>Abilita/Disabilita gli aggiornamenti automatici</translation>
+        <translation>Attiva/Disattiva gli aggiornamenti automatici</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="326"/>
         <source>toggle automatic updates</source>
-        <translation type="unfinished"/>
+        <translation>attiva/disattiva gli aggiornamenti automatici</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="327"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Aggiornamenti</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="328"/>
         <source>Update</source>
-        <translation>Aggiorna</translation>
+        <translation>Aggiornamento</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>A new version of Jami was found
  Would you like to update now?</source>
-        <translation type="unfinished"/>
+        <translation>È stata trovata una nuova versione di Jami
+Vuoi aggiornare ora?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="330"/>
         <source>No new version of Jami was found</source>
-        <translation type="unfinished"/>
+        <translation>Non è stata trovata una nuova versione di Jami</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="331"/>
@@ -1629,7 +1630,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="338"/>
         <source>Something went wrong</source>
-        <translation type="unfinished"/>
+        <translation>Qualcosa è andato storto</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="341"/>
@@ -1649,7 +1650,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="346"/>
         <source>Select a record directory</source>
-        <translation type="unfinished"/>
+        <translation>Scegli la cartella di registrazione</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="349"/>
@@ -1674,17 +1675,17 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="485"/>
         <source>Is swarm:</source>
-        <translation type="unfinished"/>
+        <translation>È il gruppo:</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="486"/>
         <source>True</source>
-        <translation type="unfinished"/>
+        <translation>Vero</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="487"/>
         <source>False</source>
-        <translation type="unfinished"/>
+        <translation>Falso</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="205"/>
@@ -1730,12 +1731,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="363"/>
         <source>Create your account from a backup</source>
-        <translation type="unfinished"/>
+        <translation>Crea il tuo account da un backup</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="364"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
-        <translation>Puoi ottenere un archivio cliccando su &quot;Account di backup&quot; nelle impostazioni dell&apos;account. Questo creerà un file .gz sul tuo dispositivo.</translation>
+        <translation>È possibile ottenere un archivio facendo clic su &quot;Fai il backup dell&apos;account&quot; nelle impostazioni dell&apos;account. Questo creerà un file .gz sul tuo dispositivo.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="367"/>
@@ -1745,12 +1746,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="370"/>
         <source>Enter Jami account password</source>
-        <translation>Inserisci la password dell&apos;account Jami</translation>
+        <translation>Inserire la password dell&apos;account Jami</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="376"/>
         <source>The PIN and the account password should be entered in your device within 10 minutes.</source>
-        <translation type="unfinished"/>
+        <translation>Il PIN e la password dell&apos;account devono essere inseriti nel dispositivo entro 10 minuti.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="377"/>
@@ -1760,7 +1761,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="378"/>
         <source>Enter your account password</source>
-        <translation type="unfinished"/>
+        <translation>Inserire la password del tuo account</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="379"/>
@@ -1770,17 +1771,17 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="382"/>
         <source>Enter the password</source>
-        <translation type="unfinished"/>
+        <translation>Inserire la password</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="383"/>
         <source>Enter current password</source>
-        <translation type="unfinished"/>
+        <translation>Inserire la password attuale</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="384"/>
         <source>Enter new password</source>
-        <translation type="unfinished"/>
+        <translation>Inserire la nuova password</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="385"/>
@@ -1805,17 +1806,17 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="391"/>
         <source>Choose a picture as avatar</source>
-        <translation type="unfinished"/>
+        <translation>Scegli una foto profilo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="392"/>
         <source>Import avatar from image file</source>
-        <translation type="unfinished"/>
+        <translation>Importa la foto profilo da un file</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="393"/>
         <source>Take photo</source>
-        <translation>Scattare una foto</translation>
+        <translation>Scatta una foto</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="394"/>
@@ -1850,7 +1851,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Enter the account password to confirm the removal of this device</source>
-        <translation type="unfinished"/>
+        <translation>Inserire la password dell&apos;account per confermare la rimozione di questo dispositivo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="425"/>
@@ -1967,7 +1968,7 @@ Copia e condividi con i tuoi amici!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="477"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi moderatore predefinito</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="478"/>
@@ -1992,7 +1993,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/settingsview/components/JamiUserIdentity.qml" line="182"/>
         <source>Register</source>
-        <translation>Registra</translation>
+        <translation>Registrati</translation>
     </message>
 </context>
 <context>
@@ -2075,7 +2076,7 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="129"/>
         <source>Account settings</source>
-        <translation type="unfinished"/>
+        <translation>Impostazioni account</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="134"/>
@@ -2095,12 +2096,12 @@ Jami ora si chiudera&apos;.</translation>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="152"/>
         <source>End call</source>
-        <translation>Riattaccare</translation>
+        <translation>Termina la chiamata</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="157"/>
         <source>Decline the call request</source>
-        <translation type="unfinished"/>
+        <translation>Rifiuta la chiamata</translation>
     </message>
 </context>
 <context>
@@ -2120,12 +2121,12 @@ Please try again later.</source>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="91"/>
         <source>Something went wrong.
 </source>
-        <translation type="unfinished"/>
+        <translation>Qualcosa è andato storto.</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="182"/>
         <source>Register</source>
-        <translation>Registra</translation>
+        <translation>Registrati</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="276"/>
@@ -2140,12 +2141,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="308"/>
         <source>This pin and the account password should be entered in your device within 10 minutes.</source>
-        <translation type="unfinished"/>
+        <translation>Questo pin e la password dell&apos;account devono essere inseriti nel dispositivo entro 10 minuti.</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="83"/>
         <source>Incorrect password</source>
-        <translation type="unfinished"/>
+        <translation>Password errata</translation>
     </message>
 </context>
 <context>
@@ -2204,7 +2205,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="166"/>
         <source>Register</source>
-        <translation>Register</translation>
+        <translation>Registrati</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="185"/>
@@ -2215,12 +2216,12 @@ Please try again later.</source>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="39"/>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="249"/>
         <source>Something went wrong</source>
-        <translation type="unfinished"/>
+        <translation>Qualcosa è andato storto</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="87"/>
         <source>Incorrect password</source>
-        <translation type="unfinished"/>
+        <translation>Password errata</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="90"/>
@@ -2246,7 +2247,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="105"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="252"/>
@@ -2304,7 +2305,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="104"/>
         <source>Reset preferences</source>
-        <translation type="unfinished"/>
+        <translation>Ripristina le preferenze</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="151"/>
@@ -2332,7 +2333,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="68"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="88"/>
@@ -2363,12 +2364,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="118"/>
         <source>Enter your name</source>
-        <translation type="unfinished"/>
+        <translation>Inserire il tuo nome</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="152"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>Generazione account…</translation>
     </message>
 </context>
 <context>
@@ -2430,7 +2431,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="61"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
-        <translation type="unfinished"/>
+        <translation>Inserire la password di questo account per confermare la rimozione di questo dispositivo</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="105"/>
@@ -2453,7 +2454,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="61"/>
         <source>Hostname</source>
-        <translation>Nome Host</translation>
+        <translation>Nome host</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SIPUserIdentity.qml" line="72"/>
@@ -2532,22 +2533,22 @@ Please try again later.</source>
 <context>
     <name>SmartListModel</name>
     <message>
-        <location filename="../src/smartlistmodel.cpp" line="61"/>
-        <location filename="../src/smartlistmodel.cpp" line="99"/>
-        <location filename="../src/smartlistmodel.cpp" line="107"/>
-        <location filename="../src/smartlistmodel.cpp" line="152"/>
+        <location filename="../src/smartlistmodel.cpp" line="60"/>
+        <location filename="../src/smartlistmodel.cpp" line="98"/>
+        <location filename="../src/smartlistmodel.cpp" line="106"/>
+        <location filename="../src/smartlistmodel.cpp" line="151"/>
+        <location filename="../src/smartlistmodel.cpp" line="173"/>
         <location filename="../src/smartlistmodel.cpp" line="174"/>
-        <location filename="../src/smartlistmodel.cpp" line="175"/>
         <source>Calls</source>
         <translation>Chiamate</translation>
     </message>
     <message>
-        <location filename="../src/smartlistmodel.cpp" line="62"/>
-        <location filename="../src/smartlistmodel.cpp" line="100"/>
-        <location filename="../src/smartlistmodel.cpp" line="117"/>
-        <location filename="../src/smartlistmodel.cpp" line="153"/>
+        <location filename="../src/smartlistmodel.cpp" line="61"/>
+        <location filename="../src/smartlistmodel.cpp" line="99"/>
+        <location filename="../src/smartlistmodel.cpp" line="116"/>
+        <location filename="../src/smartlistmodel.cpp" line="152"/>
+        <location filename="../src/smartlistmodel.cpp" line="175"/>
         <location filename="../src/smartlistmodel.cpp" line="176"/>
-        <location filename="../src/smartlistmodel.cpp" line="177"/>
         <source>Contacts</source>
         <translation>Contatti</translation>
     </message>
@@ -2634,7 +2635,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="146"/>
         <source>Import account from backup file</source>
-        <translation type="unfinished"/>
+        <translation>Importa account dal file di backup</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/WelcomePage.qml" line="219"/>
