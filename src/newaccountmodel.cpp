@@ -320,6 +320,8 @@ NewAccountModel::exportOnRing(const QString& accountId, const QString& password)
 void
 NewAccountModel::removeAccount(const QString& accountId) const
 {
+    // Close db here for its removal
+    pimpl_->accounts[accountId].second->close();
     ConfigurationManager::instance().removeAccount(accountId);
 }
 
