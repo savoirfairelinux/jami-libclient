@@ -46,6 +46,30 @@
       "revId": "83efdb275a27b355c13cbfe6262d303d1883c8ab",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4e18a83_2d37e5b5",
+        "filename": "src/api/newaccountmodel.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-06-21T21:36:55Z",
+      "side": 1,
+      "message": "I very much agree, as the word transfer should definitely be used now the these are a part of the account model.",
+      "parentUuid": "518d31bb_2a190a48",
+      "range": {
+        "startLine": 87,
+        "startChar": 9,
+        "endLine": 87,
+        "endChar": 33
+      },
+      "revId": "83efdb275a27b355c13cbfe6262d303d1883c8ab",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
