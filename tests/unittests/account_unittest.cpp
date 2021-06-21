@@ -60,8 +60,8 @@ TEST_F(AccountFixture, CreateSIPAccountTest)
     // Create SIP Acc
     globalEnv.accountAdapter->createSIPAccount(QVariantMap());
 
-    if (accountAddedSpy.count() < 1)
-        QVERIFY(accountAddedSpy.wait());
+    QVERIFY(accountAddedSpy.wait());
+    QCOMPARE(accountAddedSpy.count(), 1);
 
     QList<QVariant> accountAddedArguments = accountAddedSpy.takeFirst();
     QVERIFY(accountAddedArguments.at(0).type() == QVariant::String);
@@ -76,8 +76,8 @@ TEST_F(AccountFixture, CreateSIPAccountTest)
     QSignalSpy accountStatusChangedSpy(&globalEnv.lrcInstance->accountModel(),
                                        &lrc::api::NewAccountModel::accountStatusChanged);
 
-    if (accountStatusChangedSpy.count() < 1)
-        QVERIFY(accountStatusChangedSpy.wait());
+    QVERIFY(accountStatusChangedSpy.wait());
+    QCOMPARE(accountStatusChangedSpy.count(), 1);
 
     // Remove the account
     globalEnv.lrcInstance->accountModel().removeAccount(
@@ -86,8 +86,8 @@ TEST_F(AccountFixture, CreateSIPAccountTest)
     QSignalSpy accountRemovedSpy(&globalEnv.lrcInstance->accountModel(),
                                  &lrc::api::NewAccountModel::accountRemoved);
 
-    if (accountRemovedSpy.count() < 1)
-        QVERIFY(accountRemovedSpy.wait());
+    QVERIFY(accountRemovedSpy.wait());
+    QCOMPARE(accountRemovedSpy.count(), 1);
 
     accountListSize = globalEnv.lrcInstance->accountModel().getAccountList().size();
     ASSERT_EQ(accountListSize, 0);

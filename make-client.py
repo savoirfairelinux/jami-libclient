@@ -37,6 +37,11 @@ test_data_dir = temp_path + '\\jami_test\\jami'
 test_config_dir = temp_path + '\\jami_test\\.config'
 test_cache_dir = temp_path + '\\jami_test\\.cache'
 
+class TestBuilding(Enum):
+    NoTests = 0
+    WithTests = 1
+    OnlyTests = 2
+
 class QtVerison(Enum):
     Major = 0
     Minor = 1
@@ -201,7 +206,7 @@ def deps(arch, toolset, qtver):
 
 
 def build(arch, toolset, sdk_version, config_str, project_path_under_current_path, qtver,
-          enable_test, force_option=True):
+          test_building_type, force_option=True):
     print("Building with Qt " + qtver)
 
     configuration_type = 'StaticLibrary'
@@ -227,7 +232,7 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
         '-DQt5Gui_DIR=' + qt_cmake_dir + 'Qt5Gui',
         '-DQt5Test_DIR=' + qt_cmake_dir + 'Qt5Test',
         '-DQt5QuickTest_DIR=' + qt_cmake_dir + 'Qt5QuickTest',
-        '-DENABLE_TESTS=' + str(enable_test),
+        '-DENABLE_TESTS=' + (str("ENABLE_TESTS") if test_building_type != TestBuilding.NoTests else ''),
         '-DCMAKE_SYSTEM_VERSION=' + sdk_version
     ]
     if not os.path.exists(build_dir):
@@ -275,11 +280,11 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
     if (force_option):
         replace_necessary_vs_prop(project_path_under_current_path, toolset, sdk_version)
 
-    build_project(msbuild, msbuild_args, project_path_under_current_path, vs_env_vars)
+    if (test_building_type != TestBuilding.OnlyTests):
+        build_project(msbuild, msbuild_args, project_path_under_current_path, vs_env_vars)
 
     # build test projects
-
-    if (enable_test):
+    if (test_building_type != TestBuilding.NoTests):
         build_tests_projects(arch, config_str, msbuild, vs_env_vars,
                              toolset, sdk_version, force_option)
 
@@ -339,6 +344,9 @@ def parse_args():
         '-wt', '--withtest', action='store_true',
         help='Build Qt Client Test')
     ap.add_argument(
+        '-ot', '--onlytest', action='store_true',
+        help='Build Only Qt Client Test')
+    ap.add_argument(
         '-d', '--deps', action='store_true',
         help='Build Deps for Qt Client')
     ap.add_argument(
@@ -385,10 +393,13 @@ def main():
 
     parsed_args = parse_args()
 
-    enable_test = False
+    test_building_type = TestBuilding.NoTests
 
     if parsed_args.withtest:
-        enable_test = True
+        test_building_type = TestBuilding.WithTests
+
+    if parsed_args.onlytest:
+        test_building_type = TestBuilding.OnlyTests
 
     if parsed_args.subparser_name == 'runtests':
         run_tests(parsed_args.mutejamid, parsed_args.outputtofiles)
@@ -398,15 +409,15 @@ def main():
 
     if parsed_args.build:
         build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk,
-              'Release', jami_qt_project, parsed_args.qtver, enable_test)
+              'Release', jami_qt_project, parsed_args.qtver, test_building_type)
 
     if parsed_args.beta:
         build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk,
-              'Beta', jami_qt_project, parsed_args.qtver, enable_test)
+              'Beta', jami_qt_project, parsed_args.qtver, test_building_type)
 
     if parsed_args.releasecompile:
         build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk,
-              'ReleaseCompile', jami_qt_project, parsed_args.qtver, enable_test)
+              'ReleaseCompile', jami_qt_project, parsed_args.qtver, test_building_type)
 
 
 if __name__ == '__main__':

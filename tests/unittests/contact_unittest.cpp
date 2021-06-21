@@ -48,8 +48,8 @@ TEST_F(ContactFixture, AddSIPContactTest)
     // Create SIP Acc
     globalEnv.accountAdapter->createSIPAccount(QVariantMap());
 
-    if (accountAddedSpy.count() < 1)
-        QVERIFY(accountAddedSpy.wait());
+    QVERIFY(accountAddedSpy.wait());
+    QCOMPARE(accountAddedSpy.count(), 1);
 
     QList<QVariant> accountAddedArguments = accountAddedSpy.takeFirst();
     QVERIFY(accountAddedArguments.at(0).type() == QVariant::String);
@@ -61,8 +61,8 @@ TEST_F(ContactFixture, AddSIPContactTest)
     QSignalSpy accountStatusChangedSpy(&globalEnv.lrcInstance->accountModel(),
                                        &lrc::api::NewAccountModel::accountStatusChanged);
 
-    if (accountStatusChangedSpy.count() < 1)
-        QVERIFY(accountStatusChangedSpy.wait());
+    QVERIFY(accountStatusChangedSpy.wait());
+    QCOMPARE(accountStatusChangedSpy.count(), 1);
 
     // ModelUpdated signal spy
     QSignalSpy modelUpdatedSpy(globalEnv.lrcInstance->getCurrentContactModel(),
@@ -71,8 +71,8 @@ TEST_F(ContactFixture, AddSIPContactTest)
     // Add temp contact test
     globalEnv.lrcInstance->getCurrentConversationModel()->setFilter("test");
 
-    if (modelUpdatedSpy.count() < 1)
-        QVERIFY(modelUpdatedSpy.wait());
+    QVERIFY(modelUpdatedSpy.wait());
+    QCOMPARE(modelUpdatedSpy.count(), 1);
 
     QList<QVariant> modelUpdatedArguments = modelUpdatedSpy.takeFirst();
     QVERIFY(modelUpdatedArguments.at(0).type() == QVariant::String);
@@ -89,8 +89,8 @@ TEST_F(ContactFixture, AddSIPContactTest)
 
     globalEnv.lrcInstance->getCurrentConversationModel()->makePermanent(convId);
 
-    if (contactAddedSpy.count() < 1)
-        QVERIFY(contactAddedSpy.wait());
+    QVERIFY(contactAddedSpy.wait());
+    QCOMPARE(contactAddedSpy.count(), 1);
 
     // Remove the account
     globalEnv.lrcInstance->accountModel().removeAccount(
@@ -99,6 +99,6 @@ TEST_F(ContactFixture, AddSIPContactTest)
     QSignalSpy accountRemovedSpy(&globalEnv.lrcInstance->accountModel(),
                                  &lrc::api::NewAccountModel::accountRemoved);
 
-    if (accountRemovedSpy.count() < 1)
-        QVERIFY(accountRemovedSpy.wait());
+    QVERIFY(accountRemovedSpy.wait());
+    QCOMPARE(accountRemovedSpy.count(), 1);
 }
