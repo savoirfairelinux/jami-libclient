@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -495,12 +495,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Kabul et</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Geri Çevir</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="70"/>
@@ -616,22 +616,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="438"/>
+        <location filename="../src/contactmodel.cpp" line="440"/>
         <source>Searching…</source>
         <translation>Arıyor...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="952"/>
+        <location filename="../src/contactmodel.cpp" line="954"/>
         <source>Invalid ID</source>
         <translation>Geçersiz kimlik</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="955"/>
+        <location filename="../src/contactmodel.cpp" line="957"/>
         <source>Username not found</source>
         <translation>Kullanıcı adı bulunamadı</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="958"/>
+        <location filename="../src/contactmodel.cpp" line="960"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Arama yapılamadı…</translation>
     </message>
@@ -639,7 +639,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="399"/>
+        <location filename="../src/contactmodel.cpp" line="401"/>
         <source>Bad URI scheme</source>
         <translation>Hatalı URI şeması</translation>
     </message>

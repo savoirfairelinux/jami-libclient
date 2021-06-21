@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="gl" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="gl" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>O contacto deixou a conversa</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
@@ -475,32 +475,32 @@
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>enviouche unha solicitude para conversar.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="51"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Ola, queres unirte á conversa?</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Aceptaches a solicitude para conversar.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="55"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Estamos agardando a que o outro dispositivo sincronice a conversa.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Rexeitar</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="70"/>
@@ -616,22 +616,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="438"/>
+        <location filename="../src/contactmodel.cpp" line="440"/>
         <source>Searching…</source>
         <translation>Buscando...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="952"/>
+        <location filename="../src/contactmodel.cpp" line="954"/>
         <source>Invalid ID</source>
         <translation>ID non válido</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="955"/>
+        <location filename="../src/contactmodel.cpp" line="957"/>
         <source>Username not found</source>
         <translation>Non se atopou a usuaria</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="958"/>
+        <location filename="../src/contactmodel.cpp" line="960"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Non se puido establecer..</translation>
     </message>
@@ -639,7 +639,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="399"/>
+        <location filename="../src/contactmodel.cpp" line="401"/>
         <source>Bad URI scheme</source>
         <translation>Esquema URI incorrecto</translation>
     </message>

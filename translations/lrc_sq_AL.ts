@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="sq_AL" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="sq_AL" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>Kontakti e braktisi bisedën</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
@@ -475,32 +475,32 @@
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>ju ka dërguar një kërkesë bisede.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="51"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Tungjatjeta, doni të merrni pjesë te biseda?</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Keni pranuar kërkesën për bisedë.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="55"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Po prisni që biseda të njëkohësohet në një tjetër pajisje.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Pranoje</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Hidhe tej</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="70"/>
@@ -616,22 +616,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="438"/>
+        <location filename="../src/contactmodel.cpp" line="440"/>
         <source>Searching…</source>
         <translation>Po kërkohet…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="952"/>
+        <location filename="../src/contactmodel.cpp" line="954"/>
         <source>Invalid ID</source>
         <translation>ID e pavlefshme</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="955"/>
+        <location filename="../src/contactmodel.cpp" line="957"/>
         <source>Username not found</source>
         <translation>S’u gjet emër përdoruesi</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="958"/>
+        <location filename="../src/contactmodel.cpp" line="960"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>S’u kërkua dot…</translation>
     </message>
@@ -639,7 +639,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="399"/>
+        <location filename="../src/contactmodel.cpp" line="401"/>
         <source>Bad URI scheme</source>
         <translation>Skemë URI i gabuar</translation>
     </message>

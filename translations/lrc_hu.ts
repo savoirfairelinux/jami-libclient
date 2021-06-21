@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="hu" sourcelanguage="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="hu" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>Kapcsolat kilépett a beszélgetésből</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
@@ -475,32 +475,32 @@
     <message>
         <location filename="../src/chatview.cpp" line="49"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>beszélgetési kérelmet küldött Önnek.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="51"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Helló, csatlakozni szeretne a beszélgetéshez?</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="53"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Elfogadta a beszélgetési kérelmet.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="55"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Várunk egy másik eszközre, hogy összehangolja a beszélgetést. </translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Elfogadás</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Elutasítás</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="70"/>
@@ -616,22 +616,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="438"/>
+        <location filename="../src/contactmodel.cpp" line="440"/>
         <source>Searching…</source>
         <translation>Keresés…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="952"/>
+        <location filename="../src/contactmodel.cpp" line="954"/>
         <source>Invalid ID</source>
         <translation>Érvénytelen azonosító</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="955"/>
+        <location filename="../src/contactmodel.cpp" line="957"/>
         <source>Username not found</source>
         <translation>Felhasználónév nem található</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="958"/>
+        <location filename="../src/contactmodel.cpp" line="960"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Betekintés sikertelen…</translation>
     </message>
@@ -639,7 +639,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="399"/>
+        <location filename="../src/contactmodel.cpp" line="401"/>
         <source>Bad URI scheme</source>
         <translation>Rossz URI rendszer</translation>
     </message>
