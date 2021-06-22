@@ -2506,7 +2506,9 @@ function requestSendMessageContent() {
 /* exported setSendMessageContent */
 function setSendMessageContent(contentStr) {
     messageBarInput.value = contentStr
-    grow_text_area();
+    // Do not grow if there are no messages loaded
+    if (historyBuffer.length !== 0)
+        grow_text_area();
     reduce_send_container();
 }
 
