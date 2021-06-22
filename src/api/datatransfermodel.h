@@ -66,16 +66,13 @@ public:
                           qlonglong& total,
                           qlonglong& progress);
 
-    QString accept(const QString& accountId,
-                   const QString& fileId,
-                   const QString& file_path,
-                   std::size_t offset);
+    QString accept(const QString& accountId, const QString& fileId, const QString& filePath = {});
 
     void download(const QString& accountId,
                   const QString& convId,
                   const QString& interactionId,
                   const QString& fileId,
-                  const QString& path);
+                  const QString& filePath = {});
 
     void cancel(const QString& accountId, const QString& conversationId, const QString& fileId);
 
