@@ -230,6 +230,8 @@ public:
                                 conversation::Info& conversation,
                                 bool insertAtBegin);
     void invalidateModel();
+    void emplaceBackConversation(conversation::Info&& conversation);
+    void eraseConversation(const QString& convId);
 
     const ConversationModel& linked;
     Lrc& lrc;
@@ -791,7 +793,7 @@ ConversationModel::removeConversation(const QString& uid, bool banned)
     }
     if (!pimpl_->isCoreDialog(conversation)) {
         ConfigurationManager::instance().removeConversation(owner.id, uid);
-        pimpl_->conversations.erase(pimpl_->conversations.begin() + conversationIdx);
+        pimpl_->eraseConversation(uid);
         pimpl_->invalidateModel();
         emit conversationRemoved(uid);
         return;
@@ -2319,10 +2321,8 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
                 auto& conversation = getConversationForPeerUri(member["uri"]).get();
                 // remove non swarm conversation
                 if (conversation.mode == conversation::Mode::NON_SWARM) {
-                    Q_EMIT linked.beginRemoveRows(indexOf(conversation.uid));
-                    conversations.erase(conversations.begin() + indexOf(conversation.uid));
+                    eraseConversation(conversation.uid);
                     storage::removeContact(db, member["uri"]);
-                    Q_EMIT linked.endRemoveRows();
                     invalidateModel();
                     emit linked.conversationRemoved(conversation.uid);
                     emit linked.modelChanged();
@@ -2385,27 +2385,22 @@ ConversationModelPimpl::slotConversationRemoved(const QString& accountId,
         // we should create non swarm conversation only for removed one-to-one conversation.
         if (conversation.mode != conversation::Mode::ONE_TO_ONE) {
             // remove swarm conversation
-            Q_EMIT linked.beginRemoveRows(conversationIndex);
-            conversations.erase(conversations.begin() + conversationIndex);
-            emit linked.conversationRemoved(conversationId);
-            Q_EMIT linked.endRemoveRows();
+            eraseConversation(conversationId);
+            Q_EMIT linked.conversationRemoved(conversationId);
             return;
         }
         auto& peers = peersForConversation(conversation);
         if (peers.isEmpty()) {
             // remove swarm conversation
-            Q_EMIT linked.beginRemoveRows(conversationIndex);
-            conversations.erase(conversations.begin() + conversationIndex);
-            emit linked.conversationRemoved(conversationId);
-            Q_EMIT linked.endRemoveRows();
+            eraseConversation(conversationId);
+            Q_EMIT linked.conversationRemoved(conversationId);
             return;
         }
         auto contactId = peers.first();
         // remove swarm conversation
-        Q_EMIT linked.beginRemoveRows(conversationIndex);
-        conversations.erase(conversations.begin() + conversationIndex);
-        emit linked.conversationRemoved(conversationId);
-        Q_EMIT linked.endRemoveRows();
+        eraseConversation(conversationId);
+        Q_EMIT linked.conversationRemoved(conversationId);
+
         auto conv = storage::getConversationsWithPeer(db, contactId);
         if (conv.empty()) {
             conv.push_back(storage::beginConversationWithPeer(db, contactId));
@@ -2491,10 +2486,7 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
         // remove temporary conversation that was added when receiving an incoming request
         auto contactIdx = indexOf(contactUri);
         if (contactIdx >= 0) {
-            Q_EMIT linked.beginRemoveRows(contactIdx);
-            conversations.erase(conversations.begin() + contactIdx);
-            Q_EMIT linked.endRemoveRows();
-
+            eraseConversation(contactUri);
             invalidateModel();
             emit linked.modelChanged();
         }
@@ -2533,11 +2525,9 @@ ConversationModelPimpl::addContactRequest(const QString& contactUri)
         conversation.participants = {contactUri};
         conversation.mode = conversation::Mode::NON_SWARM;
         conversation.isRequest = true;
-        Q_EMIT linked.beginInsertRows(conversations.size());
-        conversations.emplace_back(std::move(conversation));
+        emplaceBackConversation(std::move(conversation));
         invalidateModel();
         emit linked.newConversation(contactUri);
-        Q_EMIT linked.endInsertRows();
         emit linked.modelChanged();
     }
 }
@@ -2572,11 +2562,9 @@ ConversationModelPimpl::addConversationRequest(const MapStringString& convReques
     conversation.participants = {peer};
     conversation.mode = mode;
     conversation.isRequest = true;
-    Q_EMIT linked.beginInsertRows(conversations.size());
-    conversations.emplace_back(std::move(conversation));
+    emplaceBackConversation(std::move(conversation));
     invalidateModel();
     emit linked.newConversation(peer);
-    Q_EMIT linked.endInsertRows();
     emit linked.modelChanged();
 }
 
@@ -2626,14 +2614,11 @@ ConversationModelPimpl::slotContactRemoved(const QString& uri)
         qDebug() << "ConversationModelPimpl::slotContactRemoved, but conversation not found";
         return; // Not a contact
     }
-    auto& conversationUid = conversations[conversationIdx].uid;
+    auto& conversationId = conversations[conversationIdx].uid;
 
-    Q_EMIT linked.beginRemoveRows(conversationIdx);
-    conversations.erase(conversations.begin() + conversationIdx);
-    Q_EMIT linked.endRemoveRows();
-
+    eraseConversation(conversationId);
     invalidateModel();
-    emit linked.conversationRemoved(conversationUid);
+    emit linked.conversationRemoved(conversationId);
     emit linked.modelChanged();
 }
 
@@ -2696,14 +2681,16 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
             auto& participantId = peers.front();
             auto& conv = getConversationForPeerUri(participantId).get();
             if (conv.mode == conversation::Mode::NON_SWARM) {
-                conversations.erase(conversations.begin() + indexOf(conv.uid));
+                eraseConversation(conv.uid);
+                invalidateModel();
+                Q_EMIT linked.conversationRemoved(conv.uid);
                 storage::removeContact(db, participantId);
             }
         } catch (...) {
         }
     }
     conversation.needsSyncing = false;
-    conversations.emplace_back(std::move(conversation));
+    emplaceBackConversation(std::move(conversation));
     auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                         convId,
                                                                         "",
@@ -2761,10 +2748,7 @@ ConversationModelPimpl::addConversationWith(const QString& convId, const QString
 
     conversation.unreadMessages = getNumberOfUnreadMessagesFor(convId);
 
-    Q_EMIT linked.beginInsertRows(conversations.size());
-    conversations.emplace_back(std::move(conversation));
-    Q_EMIT linked.endInsertRows();
-
+    emplaceBackConversation(std::move(conversation));
     invalidateModel();
 }
 
@@ -3678,6 +3662,23 @@ ConversationModelPimpl::invalidateModel()
 {
     filteredConversations.invalidate();
     customFilteredConversations.invalidate();
+}
+
+void
+ConversationModelPimpl::emplaceBackConversation(conversation::Info&& conversation)
+{
+    Q_EMIT linked.beginInsertRows(conversations.size());
+    conversations.emplace_back(std::move(conversation));
+    Q_EMIT linked.endInsertRows();
+}
+
+void
+ConversationModelPimpl::eraseConversation(const QString& convId)
+{
+    auto idx = indexOf(convId);
+    Q_EMIT linked.beginRemoveRows(idx);
+    conversations.erase(conversations.begin() + idx);
+    Q_EMIT linked.endRemoveRows();
 }
 
 void
