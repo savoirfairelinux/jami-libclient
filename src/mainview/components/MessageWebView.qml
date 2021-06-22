@@ -96,7 +96,13 @@ Rectangle {
             --placeholder-text-color:' + JamiTheme.placeholderTextColor + ';\
             --invite-hover-color:' + JamiTheme.inviteHoverColor + ';\
             --bg-text-input:' + JamiTheme.bgTextInput + ';\
-            --bg-invitation-rect:' + JamiTheme.bgInvitationRectColor + ';")'
+            --bg-invitation-rect:' + JamiTheme.bgInvitationRectColor + ';\
+            --preview-text-container-color:' + JamiTheme.previewTextContainerColor + ';\
+            --preview-title-color:' + JamiTheme.previewTitleColor + ';\
+            --preview-subtitle-color:' + JamiTheme.previewSubtitleColor + ';\
+            --preview-image-background-color:' + JamiTheme.previewImageBackgroundColor + ';\
+            --preview-card-container-color:' + JamiTheme.previewCardContainerColor + ';\
+            --preview-url-color:' + JamiTheme.previewUrlColor + ';")'
         messageWebView.runJavaScript("init_picker(" + JamiTheme.darkTheme + ");")
         messageWebView.runJavaScript(theme);
     }
