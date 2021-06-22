@@ -73,16 +73,11 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
             accInfo.conversationModel->selectConversation(convInfo.uid);
             accInfo.conversationModel->clearUnreadInteractions(convInfo.uid);
 
-            try {
-                // Set contact filter (for conversation tab selection)
-                // WARNING: not swarm ready
-                auto& contact = accInfo.contactModel->getContact(convInfo.participants.front());
-                if (contact.profileInfo.type != profile::Type::INVALID
-                    && contact.profileInfo.type != profile::Type::TEMPORARY)
-                    set_profileTypeFilter(contact.profileInfo.type);
-            } catch (const std::out_of_range& e) {
-                qWarning() << e.what();
-            }
+            // set the account type filter corresponding to the conversation's account type
+            set_profileTypeFilter(accInfo.profileInfo.type);
+
+            // this may be a request, so adjust that filter also
+            set_filterRequests(convInfo.isRequest);
 
             // reposition index in case of programmatic selection
             // currently, this may only occur for the conversation list
