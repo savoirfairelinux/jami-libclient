@@ -39,6 +39,29 @@
       "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dabfb278_e05e0298",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 16
+      },
+      "lineNbr": 1491,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-06-22T15:13:14Z",
+      "side": 1,
+      "message": "pass the file to eslint, the style is heterogeneous and it shouldn\u0027t also there is !\u003d and some !\u003d\u003d",
+      "range": {
+        "startLine": 1480,
+        "startChar": 41,
+        "endLine": 1491,
+        "endChar": 1
+      },
+      "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
