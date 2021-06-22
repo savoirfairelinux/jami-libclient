@@ -3627,24 +3627,10 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid,
                                        const QString& interactionId,
                                        const QString& path)
 {
-    auto destinationDir = linked.owner.accountModel->downloadDirectory;
-    if (destinationDir.isEmpty()) {
-        return;
-    }
-#ifdef Q_OS_WIN
-    if (destinationDir.right(1) != '/') {
-        destinationDir += "/";
-    }
-#endif
-    QDir dir = QFileInfo(destinationDir + path).absoluteDir();
-    if (!dir.exists())
-        dir.mkpath(".");
     auto& conversation = getConversationForUid(convUid).get();
     if (conversation.mode == conversation::Mode::NON_SWARM) {
         auto acceptedFilePath = linked.owner.dataTransferModel->accept(linked.owner.id,
-                                                                       interactionId,
-                                                                       destinationDir + path,
-                                                                       0);
+                                                                       interactionId);
         auto fileId = linked.owner.dataTransferModel->getFileIdFromInteractionId(interactionId);
         if (transfIdToDbIntId.find(fileId) != transfIdToDbIntId.end()) {
             auto dbInteractionId = transfIdToDbIntId[fileId];
@@ -3686,35 +3672,12 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid,
 
     auto interaction = conversation.interactions.find(interactionId);
     if (interaction != conversation.interactions.end()) {
-        auto displayName = interaction->second.commit["displayName"];
         auto fileId = interaction->second.commit["fileId"];
         if (fileId.isEmpty()) {
             qWarning() << "Cannot download file without fileId";
-        }
-        if (displayName.isEmpty()) {
-            displayName = interactionId;
-        }
-        int i = 0;
-        auto path = destinationDir + displayName;
-        do {
-            if (i > 0) {
-                path = destinationDir + QString::number(i) + displayName;
-            }
-            QFileInfo fi(path);
-            if (!fi.isFile())
-                break;
-            ++i;
-
-        } while (i < 1000);
-        if (i == 1000) {
-            qWarning() << "Too much duplicates for " << destinationDir << path;
             return;
         }
-        linked.owner.dataTransferModel->download(linked.owner.id,
-                                                 convUid,
-                                                 interactionId,
-                                                 fileId,
-                                                 path);
+        linked.owner.dataTransferModel->download(linked.owner.id, convUid, interactionId, fileId);
     } else {
         qWarning() << "Cannot download file without valid interaction";
     }

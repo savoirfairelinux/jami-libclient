@@ -94,7 +94,7 @@ DataTransferModel::Impl::Impl(DataTransferModel& up_link)
 QString
 DataTransferModel::Impl::getUniqueFilePath(const QString& filename)
 {
-    if (!QFile::exists(filename)) {
+    if (!QFile::exists(filename) || filename.isEmpty()) {
         return filename;
     }
     QString base(filename);
@@ -199,15 +199,12 @@ DataTransferModel::fileTransferInfo(const QString& accountId,
 }
 
 QString
-DataTransferModel::accept(const QString& accountId,
-                          const QString& fileId,
-                          const QString& file_path,
-                          std::size_t offset)
+DataTransferModel::accept(const QString& accountId, const QString& fileId, const QString& filePath)
 {
-    auto unique_file_path = pimpl_->getUniqueFilePath(file_path);
-    auto dring_id = pimpl_->interactionToFileId[fileId];
-    ConfigurationManager::instance().acceptFileTransfer(accountId, dring_id, unique_file_path);
-    return unique_file_path;
+    auto uniqueFilePath = pimpl_->getUniqueFilePath(filePath);
+    auto daemonFileId = pimpl_->interactionToFileId[fileId];
+    ConfigurationManager::instance().acceptFileTransfer(accountId, daemonFileId, uniqueFilePath);
+    return uniqueFilePath;
 }
 
 void
