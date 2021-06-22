@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "05548e9b_5a3bb7ec",
+        "filename": "src/web-chatview/chatview.css",
+        "patchSetId": 16
+      },
+      "lineNbr": 1329,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-06-22T15:09:02Z",
+      "side": 1,
+      "message": "tab",
+      "range": {
+        "startLine": 1329,
+        "startChar": 0,
+        "endLine": 1329,
+        "endChar": 1
+      },
+      "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ffc6d3c3_72effc74",
         "filename": "src/web-chatview/chatview.js",
         "patchSetId": 16
