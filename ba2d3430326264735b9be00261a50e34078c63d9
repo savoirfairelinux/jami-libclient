@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d91601aa_6fc80384",
+        "filename": "src/web-chatview/chatview-qt.css",
+        "patchSetId": 16
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-06-22T15:08:08Z",
+      "side": 0,
+      "message": "does this fix something for regular messages? are you certain that it should be removed?",
+      "range": {
+        "startLine": 119,
+        "startChar": 38,
+        "endLine": 119,
+        "endChar": 50
+      },
+      "revId": "ba2d3430326264735b9be00261a50e34078c63d9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}

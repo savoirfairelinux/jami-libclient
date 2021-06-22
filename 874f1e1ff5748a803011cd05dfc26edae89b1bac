@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ffc6d3c3_72effc74",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-06-22T15:08:08Z",
+      "side": 1,
+      "message": "looks pretty good. some minor code style inconsistency. i\u0027m not going to highlight the discrepancies, just use the existing style as a reference if your linter/formatter isn\u0027t working well.",
+      "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
