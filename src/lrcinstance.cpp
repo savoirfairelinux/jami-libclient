@@ -434,6 +434,19 @@ LRCInstance::deselectConversation()
 }
 
 void
+LRCInstance::makeConversationPermanent(const QString& convId, const QString& accountId)
+{
+    auto aId = accountId.isEmpty() ? currentAccountId_ : accountId;
+    const auto& accInfo = accountModel().getAccountInfo(aId);
+    auto cId = convId.isEmpty() ? selectedConvUid_ : convId;
+    if (cId.isEmpty()) {
+        qWarning() << Q_FUNC_INFO << "no Id provided";
+        return;
+    }
+    accInfo.conversationModel.get()->makePermanent(cId);
+}
+
+void
 LRCInstance::finish()
 {
     renderer_.reset();

@@ -54,7 +54,6 @@ public:
     Q_INVOKABLE QString getBestId(const QString& accountId);
     Q_INVOKABLE const QString getBestId(const QString& accountId, const QString& uid);
     Q_INVOKABLE const QString getCurrConvId();
-    Q_INVOKABLE void makePermanentCurrentConv();
     Q_INVOKABLE const QStringList getCurrAccList();
     Q_INVOKABLE int getAccountListSize();
     Q_INVOKABLE bool hasCall(const QString& accountId);

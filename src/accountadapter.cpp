@@ -350,7 +350,6 @@ AccountAdapter::connectAccount(const QString& accountId)
 
         QObject::disconnect(accountStatusChangedConnection_);
         QObject::disconnect(accountProfileUpdatedConnection_);
-        QObject::disconnect(contactAddedConnection_);
         QObject::disconnect(addedToConferenceConnection_);
         QObject::disconnect(bannedStatusChangedConnection_);
 
@@ -367,23 +366,6 @@ AccountAdapter::connectAccount(const QString& accountId)
                                [this](const QString& accountId) {
                                    Q_EMIT accountStatusChanged(accountId);
                                });
-
-        contactAddedConnection_ = QObject::connect(
-            accInfo.contactModel.get(),
-            &lrc::api::ContactModel::contactAdded,
-            [this, accountId](const QString& contactUri) {
-                const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-                    lrcInstance_->get_selectedConvUid());
-                if (convInfo.uid.isEmpty()) {
-                    return;
-                }
-                auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
-                auto selectedContactUri
-                    = accInfo.contactModel->getContact(convInfo.participants.at(0)).profileInfo.uri;
-                if (contactUri == selectedContactUri) {
-                    Q_EMIT selectedContactAdded(convInfo.uid);
-                }
-            });
 
         addedToConferenceConnection_
             = QObject::connect(accInfo.callModel.get(),

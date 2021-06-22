@@ -416,14 +416,6 @@ Rectangle {
 
         visible: false
 
-        Connections {
-            target: MessagesAdapter
-
-            function onInvitationAccepted() {
-                mainViewSidePanel.selectTab(SidePanelTabBar.Conversations)
-            }
-        }
-
         Component.onCompleted: {
             recordBox.x = Qt.binding(function() {
                 var i = ((mainViewStack.visible && mainViewStack.width > 1000) ?
@@ -586,7 +578,7 @@ Rectangle {
         sequence: "Ctrl+Shift+A"
         context: Qt.ApplicationShortcut
         onActivated: {
-            UtilsAdapter.makePermanentCurrentConv()
+            LRCInstance.makeConversationPermanent()
             communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
         }
     }

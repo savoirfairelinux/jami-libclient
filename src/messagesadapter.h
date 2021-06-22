@@ -43,8 +43,7 @@ protected:
 
     Q_INVOKABLE void setupChatView(const QString& convUid);
     Q_INVOKABLE void connectConversationModel();
-    Q_INVOKABLE void sendContactRequest();
-    Q_INVOKABLE void updateConversationForAddedContact();
+    Q_INVOKABLE void sendConversationRequest();
     Q_INVOKABLE void removeConversation(const QString& accountId,
                                         const QString& convUid,
                                         bool banContact = false);
@@ -81,7 +80,7 @@ protected:
                        bool isSwarm = false,
                        bool needsSyncing = false);
     void setIsSwarm(bool isSwarm);
-    void clear();
+    void clearChatView();
     void printHistory(ConversationModel& conversationModel, MessagesList interactions);
     void updateHistory(ConversationModel& conversationModel,
                        MessagesList interactions,
@@ -101,7 +100,6 @@ protected:
 
 Q_SIGNALS:
     void contactBanned();
-    void invitationAccepted();
     void newInteraction(int type);
 
 public Q_SLOTS:

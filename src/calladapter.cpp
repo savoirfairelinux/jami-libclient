@@ -332,22 +332,14 @@ void
 CallAdapter::acceptACall(const QString& accountId, const QString& convUid)
 {
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
-    if (!convInfo.uid.isEmpty()) {
-        lrcInstance_->getAccountInfo(accountId).callModel->accept(convInfo.callId);
-        auto& accInfo = lrcInstance_->getAccountInfo(convInfo.accountId);
-        accInfo.callModel->setCurrentCall(convInfo.callId);
+    if (convInfo.uid.isEmpty())
+        return;
 
-        auto contactUri = convInfo.participants.front();
-        if (contactUri.isEmpty()) {
-            return;
-        }
-        try {
-            auto& contact = accInfo.contactModel->getContact(contactUri);
-            if (contact.profileInfo.type == lrc::api::profile::Type::PENDING) {
-                lrcInstance_->getCurrentConversationModel()->makePermanent(convInfo.uid);
-            }
-        } catch (...) {
-        }
+    lrcInstance_->getAccountInfo(accountId).callModel->accept(convInfo.callId);
+    auto& accInfo = lrcInstance_->getAccountInfo(convInfo.accountId);
+    accInfo.callModel->setCurrentCall(convInfo.callId);
+    if (convInfo.isRequest) {
+        lrcInstance_->makeConversationPermanent(convInfo.uid, accountId);
     }
 }
 

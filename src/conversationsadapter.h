@@ -58,6 +58,7 @@ Q_SIGNALS:
 
     void navigateToWelcomePageRequested();
     void indexRepositionRequested();
+    void conversationReady(const QString& convId);
 
 private Q_SLOTS:
     void onCurrentAccountIdChanged();
@@ -78,10 +79,10 @@ private Q_SLOTS:
     void onProfileUpdated(const QString&);
     void onConversationUpdated(const QString&);
     void onFilterChanged();
-    void onNewConversation(const QString&);
     void onConversationCleared(const QString&);
     void onSearchStatusChanged(const QString&);
     void onSearchResultUpdated();
+    void onConversationReady(const QString&);
 
     void updateConversationFilterData();
 

@@ -102,6 +102,8 @@ public:
 
     Q_INVOKABLE void selectConversation(const QString& convId, const QString& accountId = {});
     Q_INVOKABLE void deselectConversation();
+    Q_INVOKABLE void makeConversationPermanent(const QString& convId = {},
+                                               const QString& accountId = {});
 
     const QString& getCurrentAccountId();
     void setCurrentAccountId(const QString& accountId = {});

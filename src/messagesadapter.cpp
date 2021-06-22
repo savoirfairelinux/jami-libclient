@@ -200,24 +200,9 @@ MessagesAdapter::connectConversationModel()
 }
 
 void
-MessagesAdapter::sendContactRequest()
+MessagesAdapter::sendConversationRequest()
 {
-    const auto convUid = lrcInstance_->get_selectedConvUid();
-    if (!convUid.isEmpty()) {
-        lrcInstance_->getCurrentConversationModel()->makePermanent(convUid);
-    }
-}
-
-void
-MessagesAdapter::updateConversationForAddedContact()
-{
-    auto convModel = lrcInstance_->getCurrentConversationModel();
-    const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-        lrcInstance_->get_selectedConvUid());
-
-    clear();
-    setConversationProfileData(convInfo);
-    //    printHistory(*convModel, convInfo.interactions);
+    lrcInstance_->makeConversationPermanent();
 }
 
 void
@@ -231,7 +216,7 @@ MessagesAdapter::slotSendMessageContentSaved(const QString& content)
     Utils::oneShotConnect(qmlObj_, SIGNAL(messagesCleared()), this, SLOT(slotMessagesCleared()));
 
     setInvitation(false);
-    clear();
+    clearChatView();
     auto restoredContent = lrcInstance_->getContentDraft(lrcInstance_->get_selectedConvUid(),
                                                          lrcInstance_->getCurrentAccountId());
     setSendMessageContent(restoredContent);
@@ -586,7 +571,7 @@ MessagesAdapter::setIsSwarm(bool isSwarm)
 }
 
 void
-MessagesAdapter::clear()
+MessagesAdapter::clearChatView()
 {
     QString s = QString::fromLatin1("clearMessages();");
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
@@ -733,11 +718,9 @@ MessagesAdapter::contactIsComposing(const QString& uid, const QString& contactUr
 void
 MessagesAdapter::acceptInvitation(const QString& convUid)
 {
-    const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
-    lrcInstance_->getCurrentConversationModel()->makePermanent(currentConvUid);
+    lrcInstance_->makeConversationPermanent(convUid);
     if (convUid == currentConvUid_)
         currentConvUid_.clear();
-    Q_EMIT invitationAccepted();
 }
 
 void

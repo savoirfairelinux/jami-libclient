@@ -154,7 +154,7 @@ Rectangle {
                 imageColor: JamiTheme.chatviewButtonColor
 
                 onClicked: {
-                    MessagesAdapter.sendContactRequest()
+                    MessagesAdapter.sendConversationRequest()
                     CallAdapter.placeAudioOnlyCall()
                     communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
                 }
@@ -177,7 +177,7 @@ Rectangle {
                 imageColor: JamiTheme.chatviewButtonColor
 
                 onClicked: {
-                    MessagesAdapter.sendContactRequest()
+                    MessagesAdapter.sendConversationRequest()
                     CallAdapter.placeCall()
                     communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
                 }
@@ -217,7 +217,7 @@ Rectangle {
                 imageColor: JamiTheme.chatviewButtonColor
 
                 onClicked: {
-                    MessagesAdapter.sendContactRequest()
+                    MessagesAdapter.sendConversationRequest()
                     visible = false
                 }
             }

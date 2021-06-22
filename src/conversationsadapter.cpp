@@ -116,8 +116,7 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
                 auto& convInfo = lrcInstance_->getConversationFromPeerUri(peerUri, accountId);
                 if (convInfo.uid.isEmpty())
                     return;
-                lrcInstance_->getAccountInfo(accountId).conversationModel->makePermanent(
-                    convInfo.uid);
+                lrcInstance_->makeConversationPermanent(convInfo.uid, accountId);
             });
     connect(systemTray_,
             &SystemTray::refusePendingActivated,
@@ -302,12 +301,6 @@ ConversationsAdapter::onFilterChanged()
 }
 
 void
-ConversationsAdapter::onNewConversation(const QString& convUid)
-{
-    updateConversationForNewContact(convUid);
-}
-
-void
 ConversationsAdapter::onConversationCleared(const QString& convUid)
 {
     // If currently selected, switch to welcome screen (deselecting
@@ -328,6 +321,17 @@ ConversationsAdapter::onSearchResultUpdated()
 {
     // smartlist search results
     searchSrcModel_->onSearchResultsUpdated();
+}
+
+void
+ConversationsAdapter::onConversationReady(const QString& convId)
+{
+    // a conversation request has been accepted or a contact has
+    // been added, so select the conversation and notify the UI to:
+    // - switch tabs to the conversation filter tab
+    // - clear search bar
+    lrcInstance_->selectConversation(convId);
+    Q_EMIT conversationReady(convId);
 }
 
 void
@@ -439,12 +443,6 @@ ConversationsAdapter::connectConversationModel()
                      Qt::UniqueConnection);
 
     QObject::connect(currentConversationModel,
-                     &lrc::api::ConversationModel::newConversation,
-                     this,
-                     &ConversationsAdapter::onNewConversation,
-                     Qt::UniqueConnection);
-
-    QObject::connect(currentConversationModel,
                      &lrc::api::ConversationModel::conversationCleared,
                      this,
                      &ConversationsAdapter::onConversationCleared,
@@ -462,6 +460,12 @@ ConversationsAdapter::connectConversationModel()
                      &ConversationsAdapter::onSearchResultUpdated,
                      Qt::UniqueConnection);
 
+    QObject::connect(currentConversationModel,
+                     &lrc::api::ConversationModel::conversationReady,
+                     this,
+                     &ConversationsAdapter::onConversationReady,
+                     Qt::UniqueConnection);
+
     convSrcModel_.reset(new ConversationListModel(lrcInstance_));
     convModel_->bindSourceModel(convSrcModel_.get());
     searchSrcModel_.reset(new SearchResultsListModel(lrcInstance_));
@@ -470,27 +474,4 @@ ConversationsAdapter::connectConversationModel()
     updateConversationFilterData();
 
     return true;
-}
-
-void
-ConversationsAdapter::updateConversationForNewContact(const QString& convUid)
-{
-    auto* convModel = lrcInstance_->getCurrentConversationModel();
-    if (convModel == nullptr) {
-        return;
-    }
-    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid);
-
-    if (!convInfo.uid.isEmpty() && !convInfo.participants.isEmpty()) {
-        try {
-            const auto contact = convModel->owner.contactModel->getContact(convInfo.participants[0]);
-            if (!contact.profileInfo.uri.isEmpty()
-                && contact.profileInfo.uri == lrcInstance_->get_selectedConvUid()) {
-                lrcInstance_->selectConversation(convUid, convInfo.accountId);
-                convModel_->selectSourceRow(lrcInstance_->indexOf(convUid));
-            }
-        } catch (...) {
-            return;
-        }
-    }
 }
