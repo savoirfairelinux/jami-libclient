@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a940bde_a24224f3",
+        "filename": "src/datatransfermodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-06-23T15:00:44Z",
+      "side": 1,
+      "message": "Note:\n\nif we decide to save in conversation_data, we know that conversation_data/fileId is unique. as the commitId_randomNumb.ext will be unique and linked to the file.",
+      "range": {
+        "startLine": 204,
+        "startChar": 9,
+        "endLine": 204,
+        "endChar": 23
+      },
+      "revId": "9ad6108f2f11cc9b36a313998425a543f00a8a40",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
