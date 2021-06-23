@@ -325,6 +325,8 @@ Rectangle {
                                                  ":/qwebchannel.js"))
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/emoji.js"))
+                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                 ":/previewInfo.js"))
                 messageWebView.runJavaScript(
                             UtilsAdapter.qStringFromFile(":/chatview.js"),
                             function() {
