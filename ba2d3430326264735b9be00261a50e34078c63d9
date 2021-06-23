@@ -22,6 +22,30 @@
       "revId": "ba2d3430326264735b9be00261a50e34078c63d9",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09cfd082_93c5c323",
+        "filename": "src/web-chatview/chatview-qt.css",
+        "patchSetId": 16
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 920
+      },
+      "writtenOn": "2021-06-23T17:36:51Z",
+      "side": 0,
+      "message": "The !important does not seem to affect anything for regular messages.",
+      "parentUuid": "d91601aa_6fc80384",
+      "range": {
+        "startLine": 119,
+        "startChar": 38,
+        "endLine": 119,
+        "endChar": 50
+      },
+      "revId": "ba2d3430326264735b9be00261a50e34078c63d9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }

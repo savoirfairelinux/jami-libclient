@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d31e95a5_c9cad631",
+        "filename": "src/web-chatview/chatview.css",
+        "patchSetId": 16
+      },
+      "lineNbr": 1329,
+      "author": {
+        "id": 920
+      },
+      "writtenOn": "2021-06-23T17:36:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05548e9b_5a3bb7ec",
+      "range": {
+        "startLine": 1329,
+        "startChar": 0,
+        "endLine": 1329,
+        "endChar": 1
+      },
+      "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ffc6d3c3_72effc74",
         "filename": "src/web-chatview/chatview.js",
         "patchSetId": 16
@@ -36,6 +60,24 @@
       "writtenOn": "2021-06-22T15:08:08Z",
       "side": 1,
       "message": "looks pretty good. some minor code style inconsistency. i\u0027m not going to highlight the discrepancies, just use the existing style as a reference if your linter/formatter isn\u0027t working well.",
+      "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b0568365_94a2448e",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 920
+      },
+      "writtenOn": "2021-06-23T17:36:51Z",
+      "side": 1,
+      "message": "I changed some code around, but I think now it seems fairly similar to other build functions in the file",
+      "parentUuid": "ffc6d3c3_72effc74",
       "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "ef8cabbc_291063c0",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 16
+      },
+      "lineNbr": 900,
+      "author": {
+        "id": 920
+      },
+      "writtenOn": "2021-06-23T17:36:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bee3a557_69ba2999",
+      "range": {
+        "startLine": 897,
+        "startChar": 8,
+        "endLine": 900,
+        "endChar": 9
+      },
+      "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dabfb278_e05e0298",
         "filename": "src/web-chatview/chatview.js",
         "patchSetId": 16
@@ -76,6 +142,30 @@
       "writtenOn": "2021-06-22T15:13:14Z",
       "side": 1,
       "message": "pass the file to eslint, the style is heterogeneous and it shouldn\u0027t also there is !\u003d and some !\u003d\u003d",
+      "range": {
+        "startLine": 1480,
+        "startChar": 41,
+        "endLine": 1491,
+        "endChar": 1
+      },
+      "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aefab054_e18dcab8",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 16
+      },
+      "lineNbr": 1491,
+      "author": {
+        "id": 920
+      },
+      "writtenOn": "2021-06-23T17:36:51Z",
+      "side": 1,
+      "message": "Eslint is not saying there\u0027s anything wrong with the code. This was taken from a section of an online library (under MIT license) , I have now fixed it (I think) to conform to the rest of the file.",
+      "parentUuid": "dabfb278_e05e0298",
       "range": {
         "startLine": 1480,
         "startChar": 41,
@@ -108,6 +198,30 @@
       "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ef4dd7d_568a11b3",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 16
+      },
+      "lineNbr": 1570,
+      "author": {
+        "id": 920
+      },
+      "writtenOn": "2021-06-23T17:36:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee63f09c_7bc7af59",
+      "range": {
+        "startLine": 1570,
+        "startChar": 9,
+        "endLine": 1570,
+        "endChar": 20
+      },
+      "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
