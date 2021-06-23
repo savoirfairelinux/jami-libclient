@@ -10,5 +10,6 @@
         <file alias="previewInfo.js">web-chatview/previewInfo.js</file>
         <file alias="qwebchannel.js">web-chatview/qwebchannel.js</file>
         <file alias="chatview-qt.css">web-chatview/chatview-qt.css</file>
+        <file alias="jed.js">web-chatview/jed.js</file>
     </qresource>
 </RCC>
