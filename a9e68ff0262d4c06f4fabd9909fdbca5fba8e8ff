@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f173ac13_d5cb28aa",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 3779,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-06-23T18:57:12Z",
+      "side": 1,
+      "message": "not sure what this part is for.\n\nFor outgoing files, there is two cases:\n\n+ If it\u0027s the current device, the file is sent instantaneously.\n+ For multi device, an outgoing file can be downloaded.\n\nThis condition seems complex for nothing. The first condition should be enoguh",
+      "range": {
+        "startLine": 3770,
+        "startChar": 39,
+        "endLine": 3779,
+        "endChar": 28
+      },
+      "revId": "a9e68ff0262d4c06f4fabd9909fdbca5fba8e8ff",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
