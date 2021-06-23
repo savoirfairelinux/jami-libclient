@@ -365,9 +365,15 @@ MainApplication::parseArguments()
     parser.addHelpOption();
     parser.addVersionOption();
 
-    // This option is forced into the arg list.
+    // These options are potentially forced into the arg list.
     QCommandLineOption webSecurityDisableOption(QStringList() << "disable-web-security");
     parser.addOption(webSecurityDisableOption);
+
+    QCommandLineOption noSandboxOption(QStringList() << "no-sandbox");
+    parser.addOption(noSandboxOption);
+
+    QCommandLineOption singleProcessOption(QStringList() << "single-process");
+    parser.addOption(singleProcessOption);
 
     QCommandLineOption webDebugOption(QStringList() << "remote-debugging-port",
                                       "Web debugging port.",

@@ -31,26 +31,36 @@
 #ifndef ENABLE_TESTS
 
 static char**
-parseInputArgument(int& argc, char* argv[], char* argToParse)
+parseInputArgument(int& argc, char* argv[], QList<char*> argsToParse)
 {
     /*
-     * Forcefully append argToParse.
+     * Forcefully append argsToParse.
      */
     int oldArgc = argc;
-    argc = argc + 1 + 1;
+    argc += argsToParse.size();
     char** newArgv = new char*[argc];
     for (int i = 0; i < oldArgc; i++) {
         newArgv[i] = argv[i];
     }
-    newArgv[oldArgc] = argToParse;
-    newArgv[oldArgc + 1] = nullptr;
+
+    for (int i = oldArgc; i < argc; i++) {
+        newArgv[i] = argsToParse.at(i - oldArgc);
+    }
     return newArgv;
 }
+
+// Qt WebEngine Chromium Flags
+static char noSandbox[] {"--no-sandbox"};
+static char disableWebSecurity[] {"--disable-web-security"};
+static char singleProcess[] {"--single-process"};
 
 int
 main(int argc, char* argv[])
 {
     setlocale(LC_ALL, "en_US.utf8");
+
+    QList<char*> qtWebEngineChromiumFlags;
+
 #ifdef Q_OS_LINUX
     setenv("QT_QPA_PLATFORMTHEME", "gtk3", true);
 #ifdef __GLIBC__
@@ -59,9 +69,12 @@ main(int argc, char* argv[])
     // As I prefer to not use custom patched Qt, just wait for a
     // new version with this bug fixed
     if (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 33))
-        setenv("QTWEBENGINE_CHROMIUM_FLAGS", "--no-sandbox", true);
+        qtWebEngineChromiumFlags << noSandbox;
 #endif
 #endif
+    qtWebEngineChromiumFlags << disableWebSecurity;
+    qtWebEngineChromiumFlags << singleProcess;
+
     QApplication::setApplicationName("Jami");
     QApplication::setOrganizationDomain("jami.net");
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
@@ -75,8 +88,8 @@ main(int argc, char* argv[])
 #endif
     QtWebEngine::initialize();
 
-    char ARG_DISABLE_WEB_SECURITY[] = "--disable-web-security";
-    auto newArgv = parseInputArgument(argc, argv, ARG_DISABLE_WEB_SECURITY);
+    auto newArgv = parseInputArgument(argc, argv, qtWebEngineChromiumFlags);
+
     MainApplication app(argc, newArgv);
 
     /*

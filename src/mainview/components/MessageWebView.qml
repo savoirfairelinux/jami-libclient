@@ -287,7 +287,6 @@ Rectangle {
         settings.localStorageEnabled: true
 
         webChannel: messageWebViewChannel
-        profile: messageWebViewProfile
 
         DropArea{
             anchors.fill: parent
@@ -320,6 +319,8 @@ Rectangle {
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/qwebchannel.js"))
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                 ":/jed.js"))
+                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/emoji.js"))
                 messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
                                                  ":/previewInfo.js"))
@@ -342,23 +343,17 @@ Rectangle {
         }
 
         Component.onCompleted: {
+            profile.cachePath = UtilsAdapter.getCachePath()
+            profile.persistentStoragePath = UtilsAdapter.getCachePath()
+            profile.persistentCookiesPolicy = WebEngineProfile.NoPersistentCookies
+            profile.httpCacheType = WebEngineProfile.NoCache
+            profile.httpUserAgent = JamiStrings.httpUserAgentName
+
             messageWebView.loadHtml(UtilsAdapter.qStringFromFile(
                                         ":/chatview.html"), ":/chatview.html")
             messageWebView.url = "qrc:/chatview.html"
         }
     }
-
-    // Provide WebEngineProfile.
-    WebEngineProfile {
-        id: messageWebViewProfile
-
-        cachePath: UtilsAdapter.getCachePath()
-        persistentStoragePath: UtilsAdapter.getCachePath()
-        persistentCookiesPolicy: WebEngineProfile.NoPersistentCookies
-        httpCacheType: WebEngineProfile.NoCache
-        httpUserAgent: "jami-windows"
-    }
-
 
     // Provide WebChannel by registering jsBridgeObject.
     WebChannel {
