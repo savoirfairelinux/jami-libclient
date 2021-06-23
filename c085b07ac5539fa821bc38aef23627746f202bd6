@@ -22,6 +22,30 @@
       "revId": "c085b07ac5539fa821bc38aef23627746f202bd6",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d21ba183_d679e046",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2386,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-06-23T21:20:26Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "96dca36c_2a4d408a",
+      "range": {
+        "startLine": 2386,
+        "startChar": 35,
+        "endLine": 2386,
+        "endChar": 75
+      },
+      "revId": "c085b07ac5539fa821bc38aef23627746f202bd6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": false
     }
   ]
 }
