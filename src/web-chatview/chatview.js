@@ -63,7 +63,7 @@ invitation.style.display = "none"
 const inviteImage = document.getElementById("invite_image")
 
 const navbar = document.getElementById("navbar")
-const emojiBtn = document.getElementById('emojiButton');
+const emojiBtn = document.getElementById("emojiButton")
 const invitationText = document.getElementById("invitation_text")
 const joinText = document.getElementById("join_text")
 const noteText = document.getElementById("note_text")
@@ -102,7 +102,7 @@ document.body.onauxclick = function(e) {
 String.prototype.format = function() {
     var a = this
     for (var k in arguments) {
-      a = a.replace("{" + k + "}", arguments[k])
+        a = a.replace("{" + k + "}", arguments[k])
     }
     return a
 }
@@ -136,7 +136,7 @@ if (use_qt) {
         // connect to a signal
         window.jsbridge.setSendMessageContentRequest.connect(function(content) {
             setSendMessageContent(content)
-        });
+        })
     })
 }
 
@@ -177,14 +177,14 @@ function init_i18n(data) {
 /* exported init_picker */
 function init_picker(dark) {
     const picker = new EmojiButton({
-        theme: dark? 'dark' : 'light'
-    });
-    picker.on('emoji', emoji => {
-        messageBarInput.value += emoji.emoji;
-    });
-    emojiBtn.addEventListener('click', () => {
-        picker.togglePicker(emojiBtn);
-    });
+        theme: dark? "dark" : "light"
+    })
+    picker.on("emoji", emoji => {
+        messageBarInput.value += emoji.emoji
+    })
+    emojiBtn.addEventListener("click", () => {
+        picker.togglePicker(emojiBtn)
+    })
 }
 
 /* exported set_is_swarm */
@@ -1724,7 +1724,7 @@ function textInteraction(message_id, message_direction, htmlText) {
     message_wrapper.setAttribute("class", "message_wrapper")
     var message_text = document.createElement("div")
     message_text.setAttribute("class", "message_text")
-    message_text.setAttribute("dir", "auto");
+    message_text.setAttribute("dir", "auto")
     message_text.innerHTML = htmlText
     message_wrapper.appendChild(message_text)
     // TODO STATUS
@@ -2697,7 +2697,7 @@ function replaceText() {
             grow_text_area()
         })
         .catch(err => {
-            console.error('Failed to read clipboard contents: ', err)
+            console.error("Failed to read clipboard contents: ", err)
         })
 }
 
@@ -2770,12 +2770,12 @@ function setSendMessageContent(contentStr) {
     messageBarInput.value = contentStr
     // Do not grow if there are no messages loaded
     if (historyBuffer.length !== 0)
-        grow_text_area();
-    reduce_send_container();
+        grow_text_area()
+    reduce_send_container()
 }
 
 function checkSendButton() {
     sendButton.style.display = (messageBarInput.value.length > 0
                                    || sendContainer.innerHTML.length > 0)
-            ? "block" : "none"
+        ? "block" : "none"
 }
