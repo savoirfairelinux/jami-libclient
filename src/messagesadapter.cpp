@@ -596,7 +596,7 @@ void
 MessagesAdapter::setDisplayLinks()
 {
     QString s = QString::fromLatin1("setDisplayLinks(%1);")
-                    .arg(settingsManager_->getValue(Settings::Key::DisplayImagesChatview).toBool());
+                    .arg(settingsManager_->getValue(Settings::Key::DisplayHyperlinkPreviews).toBool());
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
 }
 

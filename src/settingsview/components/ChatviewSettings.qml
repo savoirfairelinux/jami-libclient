@@ -67,15 +67,15 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        checked: SettingsAdapter.getAppValue(Settings.DisplayImagesChatview)
+        checked: SettingsAdapter.getAppValue(Settings.DisplayHyperlinkPreviews)
 
-        labelText: JamiStrings.displayImages
+        labelText: JamiStrings.displayHyperlinkPreviews
         fontPointSize: JamiTheme.settingsFontSize
 
-        tooltipText: JamiStrings.displayImages
+        tooltipText: JamiStrings.displayHyperlinkPreviews
 
         onSwitchToggled: {
-            SettingsAdapter.setAppValue(Settings.Key.DisplayImagesChatview, checked)
+            SettingsAdapter.setAppValue(Settings.Key.DisplayHyperlinkPreviews, checked)
             MessagesAdapter.setDisplayLinks()
         }
     }

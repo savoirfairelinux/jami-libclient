@@ -317,7 +317,7 @@ Item {
     // ChatviewSettings
     property string chatview: qsTr("Chatview")
     property string enableTypingIndicator: qsTr("Enable typing indicators")
-    property string displayImages: qsTr("Display images and videos in the chatview")
+    property string displayHyperlinkPreviews: qsTr("Display hyperlink previews in the chatview")
 
     // Updates
     property string betaInstall: qsTr("Install beta version")
