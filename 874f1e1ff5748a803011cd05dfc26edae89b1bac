@@ -178,6 +178,30 @@
     },
     {
       "key": {
+        "uuid": "d56842ae_a08dd7d9",
+        "filename": "src/web-chatview/chatview.js",
+        "patchSetId": 16
+      },
+      "lineNbr": 1491,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-06-23T19:06:31Z",
+      "side": 1,
+      "message": "Ok, just note, this is bad if the license is missing. Ideally we must move the functions in a separate part and keep the license as it is",
+      "parentUuid": "aefab054_e18dcab8",
+      "range": {
+        "startLine": 1480,
+        "startChar": 41,
+        "endLine": 1491,
+        "endChar": 1
+      },
+      "revId": "874f1e1ff5748a803011cd05dfc26edae89b1bac",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ee63f09c_7bc7af59",
         "filename": "src/web-chatview/chatview.js",
         "patchSetId": 16
