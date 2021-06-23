@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "96dca36c_2a4d408a",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2386,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-06-23T18:49:52Z",
+      "side": 1,
+      "message": "\u0026 is enough, conversationIndex is not modified and it\u0027s call in the function",
+      "range": {
+        "startLine": 2386,
+        "startChar": 35,
+        "endLine": 2386,
+        "endChar": 75
+      },
+      "revId": "c085b07ac5539fa821bc38aef23627746f202bd6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
