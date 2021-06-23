@@ -26,7 +26,7 @@ var use_qt = false
 
 var is_swarm = false
 
-if (navigator.userAgent == "jami-windows") {
+if (navigator.userAgent == "jami-qt") {
     use_qt = true
 }
 
