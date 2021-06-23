@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f952d13c_2a5898d8",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 796,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-06-23T17:02:12Z",
+      "side": 1,
+      "message": "there were no signal emitted here, it was an error?\n\nmaybe we should add an overload with an iterator to avoid to do a double get",
+      "range": {
+        "startLine": 796,
+        "startChar": 27,
+        "endLine": 796,
+        "endChar": 30
+      },
+      "revId": "d843f1e41da2a0f0e2e8fafc0ef58109c9a9a2f3",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
