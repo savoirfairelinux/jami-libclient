@@ -1520,6 +1520,7 @@ ConversationModel::acceptConversationRequest(const QString& conversationId)
         break;
     }
     conversation.needsSyncing = true;
+    Q_EMIT needsSyncingSet(conversation.uid);
     pimpl_->invalidateModel();
     emit modelChanged();
     ConfigurationManager::instance().acceptConversationRequest(owner.id, conversationId);
@@ -1886,6 +1887,7 @@ ConversationModelPimpl::initConversations()
                 auto& conversation = getConversationForUid(conv[0]).get();
                 conversation.mode = conversation::Mode::ONE_TO_ONE;
                 conversation.needsSyncing = true;
+                Q_EMIT linked.needsSyncingSet(conversation.uid);
             } catch (...) {
                 continue;
             }
@@ -2335,7 +2337,8 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
         }
     }
 
-    bool conversationExists = indexOf(conversationId) >= 0;
+    int conversationIdx = indexOf(conversationId);
+    bool conversationExists = conversationIdx >= 0;
 
     if (!conversationExists) {
         Q_EMIT linked.beginInsertRows(conversations.size());
@@ -2350,8 +2353,9 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
                                              .conversationInfos(accountId, conversationId);
         conversation.mode = conversation::to_mode(details["mode"].toInt());
         conversation.isRequest = false;
+        Q_EMIT linked.dataChanged(conversationIdx);
         conversation.needsSyncing = false;
-        emit linked.conversationUpdated(conversationId);
+        Q_EMIT linked.conversationUpdated(conversationId);
         Q_EMIT linked.dataChanged(indexOf(conversationId));
         auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                             conversationId,
@@ -2480,7 +2484,10 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
             bool needsSyncing = swarms.indexOf(conversation.uid) == -1;
             if (conversation.needsSyncing != needsSyncing) {
                 conversation.isRequest = false;
+                Q_EMIT linked.dataChanged(indexOf(conversation.uid));
                 conversation.needsSyncing = needsSyncing;
+                if (needsSyncing)
+                    Q_EMIT linked.needsSyncingSet(conversation.uid);
                 invalidateModel();
                 emit linked.modelChanged();
             }
