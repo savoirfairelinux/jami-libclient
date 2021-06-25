@@ -225,7 +225,8 @@ public:
     // for each contact we must have one non-swarm conversation or one active one-to-one
     // conversation. Where active means peer did not leave the conversation.
     bool isCoreDialog(const conversation::Info& conversation) const;
-    void insertSwarmInteraction(const QString& interactionId,
+    // insert swarm interactions. Return false if interaction already exists.
+    bool insertSwarmInteraction(const QString& interactionId,
                                 const interaction::Info& interaction,
                                 conversation::Info& conversation,
                                 bool insertAtBegin);
@@ -2230,7 +2231,10 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
                    && msg.authorUri != linked.owner.profileInfo.uri) {
             conversation.unreadMessages++;
         }
-        insertSwarmInteraction(msgId, msg, conversation, false);
+        if (!insertSwarmInteraction(msgId, msg, conversation, false)) {
+            // message alreade exists
+            return;
+        }
         if (msg.type == interaction::Type::MERGE) {
             invalidateModel();
             return;
@@ -2257,7 +2261,7 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
     }
 }
 
-void
+bool
 ConversationModelPimpl::insertSwarmInteraction(const QString& interactionId,
                                                const interaction::Info& interaction,
                                                conversation::Info& conversation,
@@ -2266,19 +2270,28 @@ ConversationModelPimpl::insertSwarmInteraction(const QString& interactionId,
     std::lock_guard<std::mutex> lk(interactionsLocks[conversation.uid]);
     int index = conversation.interactions.indexOfMessage(interaction.parentId);
     if (index >= 0) {
-        conversation.interactions.insert(index + 1, qMakePair(interactionId, interaction));
+        auto result = conversation.interactions.insert(index + 1,
+                                                       qMakePair(interactionId, interaction));
+        if (!result.second) {
+            return false;
+        }
     } else {
-        conversation.interactions.insert(std::make_pair(interactionId, interaction), insertAtBegin);
+        auto result = conversation.interactions.insert(std::make_pair(interactionId, interaction),
+                                                       insertAtBegin);
+        if (!result.second) {
+            return false;
+        }
         conversation.parentsId[interactionId] = interaction.parentId;
     }
     if (!conversation.parentsId.values().contains(interactionId)) {
-        return;
+        return true;
     }
     auto msgIds = conversation.parentsId.keys(interactionId);
     conversation.interactions.moveMessages(msgIds, interactionId);
     for (auto& msg : msgIds) {
         conversation.parentsId.remove(msg);
     }
+    return true;
 }
 
 void
