@@ -1271,11 +1271,11 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
     // Update flat buttons
     var left_buttons = message_div.querySelector(".left_buttons")
     left_buttons.innerHTML = ""
-    if (message_delivery_status === "awaiting peer" ||
-        message_delivery_status === "awaiting host" ||
+
+    if (message_delivery_status === "awaiting host" ||
         message_delivery_status.indexOf("ongoing") === 0) {
 
-        if (message_direction === "in" && message_delivery_status.indexOf("ongoing") !== 0) {
+        if (message_delivery_status.indexOf("ongoing") !== 0) {
             // add buttons to accept or refuse a call.
             var accept_button = document.createElement("div")
             accept_button.innerHTML = acceptSvg
@@ -1308,7 +1308,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
             left_buttons.appendChild(refuse_button)
         }
 
-    } else {
+    } else if (message_delivery_status !== "awaiting peer") {
         var status_button = document.createElement("div")
         var statusFile = fileSvg
         if (isErrorStatus(message_delivery_status))
