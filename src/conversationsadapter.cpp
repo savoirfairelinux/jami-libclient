@@ -116,8 +116,8 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
                 auto& convInfo = lrcInstance_->getConversationFromPeerUri(peerUri, accountId);
                 if (convInfo.uid.isEmpty())
                     return;
-                auto* convModel = lrcInstance_->getAccountInfo(accountId).conversationModel;
-                convModel->acceptConversationRequest(convInfo.uid);
+                auto& accInfo = lrcInstance_->getAccountInfo(accountId);
+                accInfo.conversationModel->acceptConversationRequest(convInfo.uid);
             });
     connect(systemTray_,
             &SystemTray::refusePendingActivated,
@@ -125,8 +125,8 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
                 auto& convInfo = lrcInstance_->getConversationFromPeerUri(peerUri, accountId);
                 if (convInfo.uid.isEmpty())
                     return;
-                auto* convModel = lrcInstance_->getAccountInfo(accountId).conversationModel;
-                convModel->removeConversation(convInfo.uid);
+                auto& accInfo = lrcInstance_->getAccountInfo(accountId);
+                accInfo.conversationModel->removeConversation(convInfo.uid);
             });
 #endif
 }
