@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b7dd261_90de95f1",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2242,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-06-25T19:47:13Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 2242,
+        "startChar": 23,
+        "endLine": 2242,
+        "endChar": 30
+      },
+      "revId": "8adbce06755dcc77373644501a7c821d09f485a4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
+    }
+  ]
+}
