@@ -511,6 +511,12 @@ Q_SIGNALS:
      */
     void dataChanged(int position) const;
 
+    /**
+     * Emitted when a conversation's needsSyncing flag is set
+     * @param conversationId The conversation Id
+     */
+    void needsSyncingSet(const QString& conversationId) const;
+
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
 };
