@@ -178,6 +178,12 @@ ConversationsAdapter::onCurrentAccountIdChanged()
     connectConversationModel();
 
     set_profileTypeFilter(lrcInstance_->getCurrentAccountInfo().profileInfo.type);
+
+    // Always turn the requests filter off when switching account.
+    // Conversation selection will manage the filter state in the
+    // case of programmatic selection(incoming call, notification
+    // activation, etc.).
+    set_filterRequests(false);
 }
 
 void
