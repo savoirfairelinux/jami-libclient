@@ -119,85 +119,111 @@ MessagesAdapter::setupChatView(const QString& convUid)
 }
 
 void
+MessagesAdapter::onNewInteraction(const QString& convUid,
+                                  const QString& interactionId,
+                                  const lrc::api::interaction::Info& interaction)
+{
+    auto accountId = lrcInstance_->getCurrentAccountId();
+    newInteraction(accountId, convUid, interactionId, interaction);
+}
+
+void
+MessagesAdapter::onInteractionStatusUpdated(const QString& convUid,
+                                            const QString& interactionId,
+                                            const lrc::api::interaction::Info& interaction)
+{
+    auto currentConversationModel = lrcInstance_->getCurrentConversationModel();
+    currentConversationModel->clearUnreadInteractions(convUid);
+    updateInteraction(*currentConversationModel, interactionId, interaction);
+}
+
+void
+MessagesAdapter::onInteractionRemoved(const QString& convUid, const QString& interactionId)
+{
+    Q_UNUSED(convUid);
+    removeInteraction(interactionId);
+}
+
+void
+MessagesAdapter::onNewMessagesAvailable(const QString& accountId, const QString& conversationId)
+{
+    auto* convModel = lrcInstance_->accountModel().getAccountInfo(accountId).conversationModel.get();
+    auto optConv = convModel->getConversationForUid(conversationId);
+    if (!optConv)
+        return;
+    updateHistory(*convModel, optConv->get().interactions, optConv->get().allMessagesLoaded);
+    Utils::oneShotConnect(qmlObj_, SIGNAL(messagesLoaded()), this, SLOT(slotMessagesLoaded()));
+}
+
+void
+MessagesAdapter::updateConversation(const QString& conversationId)
+{
+    if (conversationId != lrcInstance_->get_selectedConvUid())
+        return;
+    auto* convModel = lrcInstance_->getCurrentConversationModel();
+    if (auto optConv = convModel->getConversationForUid(conversationId))
+        setConversationProfileData(optConv->get());
+}
+
+void
+MessagesAdapter::onComposingStatusChanged(const QString& convId,
+                                          const QString& contactUri,
+                                          bool isComposing)
+{
+    if (convId != lrcInstance_->get_selectedConvUid())
+        return;
+    if (!settingsManager_->getValue(Settings::Key::EnableTypingIndicator).toBool()) {
+        return;
+    }
+    contactIsComposing(contactUri, isComposing);
+}
+
+void
 MessagesAdapter::connectConversationModel()
 {
     auto currentConversationModel = lrcInstance_->getCurrentConversationModel();
 
-    QObject::disconnect(newInteractionConnection_);
-    QObject::disconnect(interactionRemovedConnection_);
-    QObject::disconnect(interactionStatusUpdatedConnection_);
-    QObject::disconnect(conversationUpdatedConnection_);
-    QObject::disconnect(composingConnection_);
+    QObject::connect(currentConversationModel,
+                     &ConversationModel::newInteraction,
+                     this,
+                     &MessagesAdapter::onNewInteraction,
+                     Qt::UniqueConnection);
 
-    newInteractionConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::newInteraction,
-                           [this](const QString& convUid,
-                                  const QString& interactionId,
-                                  const lrc::api::interaction::Info& interaction) {
-                               auto accountId = lrcInstance_->getCurrentAccountId();
-                               newInteraction(accountId, convUid, interactionId, interaction);
-                           });
+    QObject::connect(currentConversationModel,
+                     &ConversationModel::interactionStatusUpdated,
+                     this,
+                     &MessagesAdapter::onInteractionStatusUpdated,
+                     Qt::UniqueConnection);
 
-    interactionStatusUpdatedConnection_ = QObject::connect(
-        currentConversationModel,
-        &lrc::api::ConversationModel::interactionStatusUpdated,
-        [this](const QString& convUid,
-               const QString& interactionId,
-               const lrc::api::interaction::Info& interaction) {
-            auto currentConversationModel = lrcInstance_->getCurrentConversationModel();
-            currentConversationModel->clearUnreadInteractions(convUid);
-            updateInteraction(*currentConversationModel, interactionId, interaction);
-        });
+    QObject::connect(currentConversationModel,
+                     &ConversationModel::interactionRemoved,
+                     this,
+                     &MessagesAdapter::onInteractionRemoved,
+                     Qt::UniqueConnection);
 
-    interactionRemovedConnection_
-        = QObject::connect(currentConversationModel,
-                           &lrc::api::ConversationModel::interactionRemoved,
-                           [this](const QString& convUid, const QString& interactionId) {
-                               Q_UNUSED(convUid);
-                               removeInteraction(interactionId);
-                           });
+    QObject::connect(currentConversationModel,
+                     &ConversationModel::newMessagesAvailable,
+                     this,
+                     &MessagesAdapter::onNewMessagesAvailable,
+                     Qt::UniqueConnection);
 
-    newMessagesAvailableConnection_
-        = QObject::connect(currentConversationModel,
-                           &ConversationModel::newMessagesAvailable,
-                           [this](const QString& accountId, const QString& conversationId) {
-                               auto* convModel = lrcInstance_->accountModel()
-                                                     .getAccountInfo(accountId)
-                                                     .conversationModel.get();
-                               auto optConv = convModel->getConversationForUid(conversationId);
-                               if (!optConv)
-                                   return;
-                               updateHistory(*convModel,
-                                             optConv->get().interactions,
-                                             optConv->get().allMessagesLoaded);
-                               Utils::oneShotConnect(qmlObj_,
-                                                     SIGNAL(messagesLoaded()),
-                                                     this,
-                                                     SLOT(slotMessagesLoaded()));
-                           });
+    QObject::connect(currentConversationModel,
+                     &ConversationModel::conversationReady,
+                     this,
+                     &MessagesAdapter::updateConversation,
+                     Qt::UniqueConnection);
 
-    conversationUpdatedConnection_
-        = QObject::connect(currentConversationModel,
-                           &ConversationModel::conversationReady,
-                           [this](const QString& conversationId) {
-                               if (conversationId != lrcInstance_->get_selectedConvUid())
-                                   return;
-                               auto* convModel = lrcInstance_->getCurrentConversationModel();
-                               if (auto optConv = convModel->getConversationForUid(conversationId))
-                                   setConversationProfileData(optConv->get());
-                           });
-    composingConnection_
-        = connect(currentConversationModel,
-            &ConversationModel::composingStatusChanged,
-            [this](const QString& convUid, const QString& contactUri, bool isComposing) {
-                if (convUid != lrcInstance_->get_selectedConvUid())
-                    return;
-                if (!settingsManager_->getValue(Settings::Key::EnableTypingIndicator).toBool()) {
-                    return;
-                }
-                contactIsComposing(contactUri, isComposing);
-            });
+    QObject::connect(currentConversationModel,
+                     &ConversationModel::needsSyncingSet,
+                     this,
+                     &MessagesAdapter::updateConversation,
+                     Qt::UniqueConnection);
+
+    QObject::connect(currentConversationModel,
+                     &ConversationModel::composingStatusChanged,
+                     this,
+                     &MessagesAdapter::onComposingStatusChanged,
+                     Qt::UniqueConnection);
 }
 
 void
@@ -581,8 +607,9 @@ MessagesAdapter::clearChatView()
 void
 MessagesAdapter::setDisplayLinks()
 {
-    QString s = QString::fromLatin1("setDisplayLinks(%1);")
-                    .arg(settingsManager_->getValue(Settings::Key::DisplayHyperlinkPreviews).toBool());
+    QString s
+        = QString::fromLatin1("setDisplayLinks(%1);")
+              .arg(settingsManager_->getValue(Settings::Key::DisplayHyperlinkPreviews).toBool());
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
 }
 

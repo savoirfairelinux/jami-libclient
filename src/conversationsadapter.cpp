@@ -331,14 +331,14 @@ ConversationsAdapter::onSearchResultUpdated()
 }
 
 void
-ConversationsAdapter::onConversationReady(const QString& convId)
+ConversationsAdapter::updateConversation(const QString& convId)
 {
     // a conversation request has been accepted or a contact has
     // been added, so select the conversation and notify the UI to:
     // - switch tabs to the conversation filter tab
     // - clear search bar
-    lrcInstance_->selectConversation(convId);
     Q_EMIT conversationReady(convId);
+    lrcInstance_->selectConversation(convId);
 }
 
 void
@@ -426,51 +426,57 @@ ConversationsAdapter::connectConversationModel()
     auto currentConversationModel = lrcInstance_->getCurrentConversationModel();
 
     QObject::connect(currentConversationModel,
-                     &lrc::api::ConversationModel::modelChanged,
+                     &ConversationModel::modelChanged,
                      this,
                      &ConversationsAdapter::onModelChanged,
                      Qt::UniqueConnection);
 
     QObject::connect(lrcInstance_->getCurrentAccountInfo().contactModel.get(),
-                     &lrc::api::ContactModel::profileUpdated,
+                     &ContactModel::profileUpdated,
                      this,
                      &ConversationsAdapter::onProfileUpdated,
                      Qt::UniqueConnection);
 
     QObject::connect(currentConversationModel,
-                     &lrc::api::ConversationModel::conversationUpdated,
+                     &ConversationModel::conversationUpdated,
                      this,
                      &ConversationsAdapter::onConversationUpdated,
                      Qt::UniqueConnection);
 
     QObject::connect(currentConversationModel,
-                     &lrc::api::ConversationModel::filterChanged,
+                     &ConversationModel::filterChanged,
                      this,
                      &ConversationsAdapter::onFilterChanged,
                      Qt::UniqueConnection);
 
     QObject::connect(currentConversationModel,
-                     &lrc::api::ConversationModel::conversationCleared,
+                     &ConversationModel::conversationCleared,
                      this,
                      &ConversationsAdapter::onConversationCleared,
                      Qt::UniqueConnection);
 
     QObject::connect(currentConversationModel,
-                     &lrc::api::ConversationModel::searchStatusChanged,
+                     &ConversationModel::searchStatusChanged,
                      this,
                      &ConversationsAdapter::onSearchStatusChanged,
                      Qt::UniqueConnection);
 
     QObject::connect(currentConversationModel,
-                     &lrc::api::ConversationModel::searchResultUpdated,
+                     &ConversationModel::searchResultUpdated,
                      this,
                      &ConversationsAdapter::onSearchResultUpdated,
                      Qt::UniqueConnection);
 
     QObject::connect(currentConversationModel,
-                     &lrc::api::ConversationModel::conversationReady,
+                     &ConversationModel::conversationReady,
                      this,
-                     &ConversationsAdapter::onConversationReady,
+                     &ConversationsAdapter::updateConversation,
+                     Qt::UniqueConnection);
+
+    QObject::connect(currentConversationModel,
+                     &ConversationModel::needsSyncingSet,
+                     this,
+                     &ConversationsAdapter::updateConversation,
                      Qt::UniqueConnection);
 
     convSrcModel_.reset(new ConversationListModel(lrcInstance_));
