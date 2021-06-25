@@ -715,10 +715,12 @@ MessagesAdapter::contactIsComposing(const QString& contactUri, bool isComposing)
 }
 
 void
-MessagesAdapter::acceptInvitation(const QString& convUid)
+MessagesAdapter::acceptInvitation(const QString& convId)
 {
-    lrcInstance_->makeConversationPermanent(convUid);
-    if (convUid == currentConvUid_)
+    auto conversationId = convId.isEmpty() ? lrcInstance_->get_selectedConvUid() : convId;
+    auto* convModel = lrcInstance_->getCurrentConversationModel();
+    convModel->acceptConversationRequest(conversationId);
+    if (conversationId == currentConvUid_)
         currentConvUid_.clear();
 }
 
