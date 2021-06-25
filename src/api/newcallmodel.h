@@ -53,6 +53,7 @@ struct PendingConferenceeInfo
 };
 } // namespace call
 class NewAccountModel;
+class CallParticipants;
 
 /**
  *  @brief Class that manages call informations.
@@ -63,6 +64,7 @@ class LIB_EXPORT NewCallModel : public QObject
 
 public:
     using CallInfoMap = std::map<QString, std::shared_ptr<call::Info>>;
+    using CallParticipantsModelMap = std::map<QString, std::shared_ptr<CallParticipants>>;
 
     const account::Info& owner;
 
@@ -95,6 +97,14 @@ public:
      * @throw out_of_range exception if not found
      */
     const call::Info& getCall(const QString& uid) const;
+
+    /**
+     * Get the call participantsInfos from its call id
+     * @param  callId
+     * @return the call participantsInfos
+     * @throw out_of_range exception if not found
+     */
+    const CallParticipants& getParticipantsInfos(const QString& callId);
 
     /**
      * Get the call from the peer uri
@@ -307,6 +317,11 @@ public:
     const QList<call::PendingConferenceeInfo>& getPendingConferencees();
 
 Q_SIGNALS:
+
+    void participantAdded(const QString& callId, int index) const;
+    void participantRemoved(const QString& callId, int index) const;
+    void participantUpdated(const QString& callId, int index) const;
+
     /**
      * Emitted when a call state changes
      * @param callId
