@@ -103,17 +103,6 @@ MessagesAdapter::setupChatView(const QString& convUid)
                   !convInfo.isNotASwarm(),
                   convInfo.needsSyncing);
 
-    // Type Indicator (contact). TODO: Not shown when invitation request?
-    contactIsComposing(convInfo.uid, "", false);
-    connect(lrcInstance_->getCurrentConversationModel(),
-            &ConversationModel::composingStatusChanged,
-            [this](const QString& convUid, const QString& contactUri, bool isComposing) {
-                if (!settingsManager_->getValue(Settings::Key::EnableTypingIndicator).toBool()) {
-                    return;
-                }
-                contactIsComposing(convUid, contactUri, isComposing);
-            });
-
     // Draft and message content set up.
     Utils::oneShotConnect(qmlObj_,
                           SIGNAL(sendMessageContentSaved(const QString&)),
@@ -138,6 +127,7 @@ MessagesAdapter::connectConversationModel()
     QObject::disconnect(interactionRemovedConnection_);
     QObject::disconnect(interactionStatusUpdatedConnection_);
     QObject::disconnect(conversationUpdatedConnection_);
+    QObject::disconnect(composingConnection_);
 
     newInteractionConnection_
         = QObject::connect(currentConversationModel,
@@ -197,6 +187,17 @@ MessagesAdapter::connectConversationModel()
                                if (auto optConv = convModel->getConversationForUid(conversationId))
                                    setConversationProfileData(optConv->get());
                            });
+    composingConnection_
+        = connect(currentConversationModel,
+            &ConversationModel::composingStatusChanged,
+            [this](const QString& convUid, const QString& contactUri, bool isComposing) {
+                if (convUid != lrcInstance_->get_selectedConvUid())
+                    return;
+                if (!settingsManager_->getValue(Settings::Key::EnableTypingIndicator).toBool()) {
+                    return;
+                }
+                contactIsComposing(contactUri, isComposing);
+            });
 }
 
 void
@@ -698,16 +699,14 @@ MessagesAdapter::setSendMessageContent(const QString& content)
 }
 
 void
-MessagesAdapter::contactIsComposing(const QString& uid, const QString& contactUri, bool isComposing)
+MessagesAdapter::contactIsComposing(const QString& contactUri, bool isComposing)
 {
     auto* convModel = lrcInstance_->getCurrentConversationModel();
     auto convInfo = convModel->getConversationForUid(lrcInstance_->get_selectedConvUid());
     if (!convInfo)
         return;
     auto& conv = convInfo->get();
-    bool showIsComposing = conv.isNotASwarm()
-                               ? uid.isEmpty() && conv.participants.first() == contactUri
-                               : uid == conv.uid;
+    bool showIsComposing = conv.participants.first() == contactUri;
     if (showIsComposing) {
         QString s
             = QString::fromLatin1("showTypingIndicator(`%1`, %2);").arg(contactUri).arg(isComposing);
