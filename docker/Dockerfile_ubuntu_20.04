@@ -1,11 +1,21 @@
-FROM debian:bullseye
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV QT_QUICK_BACKEND software
 ENV QT_QPA_PLATFORM offscreen
 
 RUN apt-get clean
-RUN apt-get update
+RUN apt-get update && \
+    apt-get install -y devscripts equivs
+
+RUN apt install gnupg dirmngr ca-certificates curl --no-install-recommends
+RUN curl -s https://dl.jami.net/public-key.gpg | tee /usr/share/keyrings/jami-archive-keyring.gpg > /dev/null
+RUN sh -c "echo 'deb [signed-by=/usr/share/keyrings/jami-archive-keyring.gpg] https://dl.jami.net/nightly/ubuntu_20.04/ jami main' > /etc/apt/sources.list.d/jami.list"
+RUN apt-get update && apt-get install libqt-jami -y
+
+ENV QT5_PATH=/usr/lib/libqt-jami/
+ENV QT5_VER=5.15.2
+
 RUN apt-get install -y -o Acquire::Retries=10 \
         python3 \
         git \
@@ -23,9 +33,6 @@ RUN apt-get install -y -o Acquire::Retries=10 \
         libglib2.0-dev \
         libgtk-3-dev \
         libnotify-dev \
-        qtbase5-dev \
-        qttools5-dev \
-        qttools5-dev-tools \
         yasm \
         nasm \
         autotools-dev \
@@ -60,25 +67,6 @@ RUN apt-get install -y -o Acquire::Retries=10 \
         libva-dev \
         libvdpau-dev \
         libssl-dev
-RUN apt-get install -y qtmultimedia5-dev \
-        libqt5svg5-dev \
-        qtwebengine5-dev \
-        qtdeclarative5-dev \
-        qtquickcontrols2-5-dev \
-        libqt5svg5-dev \
-        qml-module-qtquick2 \
-        qml-module-qtquick-controls \
-        qml-module-qtquick-controls2 \
-        qml-module-qtquick-dialogs \
-        qml-module-qtquick-layouts \
-        qml-module-qtquick-privatewidgets \
-        qml-module-qtquick-shapes \
-        qml-module-qtquick-window2 \
-        qml-module-qtquick-templates2 \
-        qml-module-qt-labs-platform \
-        qml-module-qtwebengine \
-        qml-module-qtwebchannel \
-        qml-module-qttest \
-        pandoc \
+RUN apt-get install -y pandoc \
         googletest \
         libgtest-dev
