@@ -22,6 +22,30 @@
       "revId": "a9e68ff0262d4c06f4fabd9909fdbca5fba8e8ff",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "411b368e_c3e93386",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 3779,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-06-25T13:29:50Z",
+      "side": 1,
+      "message": "It is for update transfer in correspondence with the daemon. There are a few reasons why I created those changes:\n1) if the peer is currently offline and a file not send yet client could display this status.\n2) to keep interaction up to date(update interaction status, update db, remove the entry from the dictionary that keeps interaction id, notifies client)\n3) if we do not check it on lrc then we need to change every client to display outgoing file right away after sending(and there still could be the wrong status in case of 1)).",
+      "parentUuid": "f173ac13_d5cb28aa",
+      "range": {
+        "startLine": 3770,
+        "startChar": 39,
+        "endLine": 3779,
+        "endChar": 28
+      },
+      "revId": "a9e68ff0262d4c06f4fabd9909fdbca5fba8e8ff",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
