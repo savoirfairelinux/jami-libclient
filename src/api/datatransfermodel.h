@@ -77,6 +77,8 @@ public:
                   const QString& fileId,
                   const QString& path);
 
+    void copyTo(const QString& accountId, const QString& convId, const QString& interactionId, const QString& destPath);
+
     void cancel(const QString& accountId, const QString& conversationId, const QString& fileId);
 
     void registerTransferId(const QString& fileId, const QString& interactionId);

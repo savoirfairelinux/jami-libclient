@@ -79,7 +79,7 @@ class DataTransferModel::Impl : public QObject
 public:
     Impl(DataTransferModel& up_link);
 
-    QString getUniqueFilePath(const QString& filename);
+    QString getUniqueFilePath(const QString& filename, const QString& path = "");
 
     DataTransferModel& upLink;
     MapStringString file2InteractionId;
@@ -92,15 +92,20 @@ DataTransferModel::Impl::Impl(DataTransferModel& up_link)
 {}
 
 QString
-DataTransferModel::Impl::getUniqueFilePath(const QString& filename)
+DataTransferModel::Impl::getUniqueFilePath(const QString& filename, const QString& path)
 {
-    if (!QFile::exists(filename)) {
-        return filename;
-    }
-    QString base(filename);
-    QString ext = QFileInfo(filename).completeSuffix();
+    auto wantedDest = filename;
+    QString base(wantedDest);
+    QString ext = QFileInfo(wantedDest).completeSuffix();
     if (!ext.isEmpty()) {
         ext = ext.prepend(".");
+    }
+    if (!path.isEmpty()) {
+        QFileInfo fi(filename);
+        wantedDest = QDir(path).filePath(fi.baseName() + ext);
+    }
+    if (!QFile::exists(wantedDest)) {
+        return wantedDest;
     }
     base.chop(ext.size());
     QString ret;
@@ -202,7 +207,7 @@ QString
 DataTransferModel::accept(const QString& accountId,
                           const QString& fileId,
                           const QString& file_path,
-                          std::size_t offset)
+                          std::size_t)
 {
     auto unique_file_path = pimpl_->getUniqueFilePath(file_path);
     auto dring_id = pimpl_->interactionToFileId[fileId];
@@ -221,11 +226,34 @@ DataTransferModel::download(const QString& accountId,
 }
 
 void
+DataTransferModel::copyTo(const QString& accountId, const QString& convId, const QString& interactionId, const QString& destPath)
+{
+    auto fileId = getFileIdFromInteractionId(interactionId);
+    if (fileId.isEmpty()) {
+        qWarning() << "Cannot find any file for " << interactionId;
+        return;
+    }
+    QString path;
+    qlonglong total, progress;
+
+    fileTransferInfo(accountId, convId, fileId, path, total, progress);
+
+    auto src = QFile(path);
+    auto srcfi = QFileInfo(path);
+    if (!src.exists())
+        return;
+
+    auto realPath = srcfi.isSymLink() ? srcfi.symLinkTarget() : path;
+    auto dest = pimpl_->getUniqueFilePath(realPath, destPath);
+    src.copy(dest);
+}
+
+
+void
 DataTransferModel::cancel(const QString& accountId,
                           const QString& conversationId,
                           const QString& interactionId)
 {
-    qWarning() << "@@@ " << accountId << " - " << conversationId << " - " << interactionId;
     ConfigurationManager::instance().cancelDataTransfer(accountId,
                                                         conversationId,
                                                         getFileIdFromInteractionId(interactionId));

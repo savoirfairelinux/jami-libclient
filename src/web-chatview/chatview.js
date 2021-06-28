@@ -446,7 +446,7 @@ function showInvitation(contactAlias, contactId, isSwarm, isSyncing) {
             invitationNoteText.style.visibility = "visible"
             messageBar.style.visibility = "visible"
         }
-        
+
         invitation.style.display = "flex"
         invitation.style.visibility = "visible"
 
@@ -1324,6 +1324,12 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
     message_div.querySelector(".full").innerText = message_text
     message_div.querySelector(".filename").innerText = message_text.split("/").pop()
     updateProgressBar(message_div.querySelector(".message_progress_bar"), message_object)
+
+
+    if (delivery_status === "finished") {
+        var message_dropdown = buildMessageDropdown(message_id)
+        message_div.appendChild(message_dropdown)
+    }
 }
 
 /**
@@ -1635,6 +1641,57 @@ function textInteraction(message_id, message_direction, htmlText) {
 }
 
 /**
+ * Build message dropdown
+ * @return a message dropdown for passed message id
+ */
+function buildMessageDropdown(message_id) {
+    const menu_element = document.createElement("div")
+    menu_element.setAttribute("class", "menu_interaction")
+    menu_element.innerHTML =
+        `<input type="checkbox" id="showmenu${message_id}" class="showmenu">
+     <label for="showmenu${message_id}">
+       <svg fill="#888888" height="12" viewBox="0 0 24 24" width="12" xmlns="http://www.w3.org/2000/svg">
+         <path d="M0 0h24v24H0z" fill="none"/>
+         <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+       </svg>
+     </label>`
+    menu_element.onclick = function () {
+        const button = this.querySelector(".showmenu")
+        button.checked = !button.checked
+    }
+    menu_element.onmouseleave = function () {
+        const button = this.querySelector(".showmenu")
+        button.checked = false
+    }
+    const dropdown = document.createElement("div")
+    const dropdown_classes = [
+        "dropdown",
+        `dropdown_${message_id}`
+    ]
+    dropdown.setAttribute("class", dropdown_classes.join(" "))
+
+    const save = document.createElement("div")
+    save.setAttribute("class", "menuoption")
+    if (use_qt) {
+        save.innerHTML = "Copy to downloads"
+    } else {
+        save.innerHTML = i18n.gettext("Copy to downloads")
+    }
+    save.msg_id = message_id
+    save.onclick = function () {
+        if (use_qt) {
+            window.jsbridge.copyToDownloads(`${this.msg_id}`)
+        } else {
+            window.prompt(`COPY:${this.msg_id}`)
+        }
+    }
+    dropdown.appendChild(save)
+    menu_element.appendChild(dropdown)
+
+    return menu_element
+}
+
+/**
  * Update a text interaction (text)
  * @param message_div the message to update
  * @param delivery_status the status of the message
@@ -1831,6 +1888,10 @@ function buildNewMessage(message_object) {
         } else {
             message_div.append(fileInteraction(message_id))
             updateProgressBar(message_div.querySelector(".message_progress_bar"), message_object)
+        }
+        if (delivery_status === "finished") {
+            var message_dropdown = buildMessageDropdown(message_id)
+            message_div.appendChild(message_dropdown)
         }
     } else if (message_type === "text") {
         // TODO add the possibility to update messages (remove and rebuild)
