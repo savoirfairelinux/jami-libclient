@@ -2106,8 +2106,8 @@ ConversationModelPimpl::sort(const conversation::Info& convA, const conversation
     std::lock_guard<std::mutex> lockConvA(mtxA, std::adopt_lock);
     std::lock_guard<std::mutex> lockConvB(mtxB, std::adopt_lock);
 
-    auto historyA = convA.interactions;
-    auto historyB = convB.interactions;
+    auto& historyA = convA.interactions;
+    auto& historyB = convB.interactions;
 
     // A or B is a new conversation (without CONTACT interaction)
     if (convA.uid.isEmpty() || convB.uid.isEmpty())
