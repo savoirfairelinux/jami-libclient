@@ -415,7 +415,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Mostra i plugin disponibili</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
