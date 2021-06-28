@@ -76,7 +76,7 @@
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="95"/>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="113"/>
         <source>Certificate File</source>
-        <translation>Certificat</translation>
+        <translation>Fișierul certificatului</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="95"/>
@@ -88,7 +88,7 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>Key File</source>
-        <translation>Cheie Privată</translation>
+        <translation>Fișierul cheii</translation>
     </message>
 </context>
 <context>
@@ -133,22 +133,22 @@
         <translation>Apel pierdut de la %1</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="504"/>
+        <location filename="../src/calladapter.cpp" line="496"/>
         <source>me</source>
         <translation>eu</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="565"/>
+        <location filename="../src/calladapter.cpp" line="557"/>
         <source>Incoming call</source>
         <translation>Apel primit</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="566"/>
+        <location filename="../src/calladapter.cpp" line="558"/>
         <source>%1 is calling you</source>
         <translation>te sună %1</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="577"/>
+        <location filename="../src/calladapter.cpp" line="569"/>
         <source>is calling you</source>
         <translation>te sună</translation>
     </message>
@@ -187,12 +187,12 @@
 <context>
     <name>ConversationsAdapter</name>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="207"/>
+        <location filename="../src/conversationsadapter.cpp" line="208"/>
         <source>New message</source>
         <translation>Mesaj nou</translation>
     </message>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="252"/>
+        <location filename="../src/conversationsadapter.cpp" line="253"/>
         <source>Trust request</source>
         <translation>Cerere de încredere</translation>
     </message>
@@ -750,11 +750,6 @@ Jami se va închide acum.</translation>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>Enable typing indicators</source>
         <translation>Arată indicatorul de scriere</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="320"/>
-        <source>Display images and videos in the chatview</source>
-        <translation>Arată imagini și video în discuție</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="332"/>
@@ -1538,7 +1533,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="310"/>
         <source>Keep minimized on close</source>
-        <translation>Ține-l pornit în ascuns la închidere</translation>
+        <translation>Menține activ după închidere</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="311"/>
@@ -1564,6 +1559,11 @@ Jami se va închide acum.</translation>
         <location filename="../src/constant/JamiStrings.qml" line="318"/>
         <source>Chatview</source>
         <translation>Discuție</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="320"/>
+        <source>Display hyperlink previews in the chatview</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="323"/>
@@ -2031,7 +2031,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="72"/>
         <source>Search bar</source>
-        <translation>Bandă de căutare</translation>
+        <translation>Banda de căutare</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="77"/>
@@ -2181,17 +2181,17 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="484"/>
+        <location filename="../src/mainapplication.cpp" line="482"/>
         <source>E&amp;xit</source>
         <translation>I&amp;eșire</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="486"/>
+        <location filename="../src/mainapplication.cpp" line="484"/>
         <source>&amp;Quit</source>
         <translation>Î&amp;nchide</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="492"/>
+        <location filename="../src/mainapplication.cpp" line="490"/>
         <source>&amp;Show Jami</source>
         <translation>&amp;Arată Jami</translation>
     </message>
@@ -2347,7 +2347,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="133"/>
         <source>Edit preference</source>
-        <translation>Modifică preferința</translation>
+        <translation>Modifică preferințele</translation>
     </message>
 </context>
 <context>

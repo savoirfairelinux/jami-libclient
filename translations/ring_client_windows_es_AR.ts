@@ -133,22 +133,22 @@
         <translation>Llamada perdida de %1</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="504"/>
+        <location filename="../src/calladapter.cpp" line="496"/>
         <source>me</source>
         <translation>yo</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="565"/>
+        <location filename="../src/calladapter.cpp" line="557"/>
         <source>Incoming call</source>
         <translation>Llamada entrante</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="566"/>
+        <location filename="../src/calladapter.cpp" line="558"/>
         <source>%1 is calling you</source>
         <translation>%1 te está llamando</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="577"/>
+        <location filename="../src/calladapter.cpp" line="569"/>
         <source>is calling you</source>
         <translation>te está llamando</translation>
     </message>
@@ -187,12 +187,12 @@
 <context>
     <name>ConversationsAdapter</name>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="207"/>
+        <location filename="../src/conversationsadapter.cpp" line="208"/>
         <source>New message</source>
         <translation>Nuevo mensaje</translation>
     </message>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="252"/>
+        <location filename="../src/conversationsadapter.cpp" line="253"/>
         <source>Trust request</source>
         <translation>Solicitud de confianza</translation>
     </message>
@@ -750,11 +750,6 @@ Ahora Jami se cerrará.</translation>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>Enable typing indicators</source>
         <translation>Habilitar indicadores de tipeo</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="320"/>
-        <source>Display images and videos in the chatview</source>
-        <translation>Mostrar imágenes y videos en la vista de chat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="332"/>
@@ -1566,6 +1561,11 @@ Ahora Jami se cerrará.</translation>
         <translation>Vista de conversación</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="320"/>
+        <source>Display hyperlink previews in the chatview</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="323"/>
         <source>Install beta version</source>
         <translation>Instalar la versión beta</translation>
@@ -2182,17 +2182,17 @@ Por favor intentalo más tarde.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="484"/>
+        <location filename="../src/mainapplication.cpp" line="482"/>
         <source>E&amp;xit</source>
         <translation>&amp;Cerrar</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="486"/>
+        <location filename="../src/mainapplication.cpp" line="484"/>
         <source>&amp;Quit</source>
         <translation>&amp;Salir</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="492"/>
+        <location filename="../src/mainapplication.cpp" line="490"/>
         <source>&amp;Show Jami</source>
         <translation>&amp;Mostrar Jami</translation>
     </message>

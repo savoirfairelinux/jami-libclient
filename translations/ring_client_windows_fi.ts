@@ -133,22 +133,22 @@
         <translation>Vastaamaton puhelu %1</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="504"/>
+        <location filename="../src/calladapter.cpp" line="496"/>
         <source>me</source>
         <translation>minä</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="565"/>
+        <location filename="../src/calladapter.cpp" line="557"/>
         <source>Incoming call</source>
         <translation>Saapuva puhelu</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="566"/>
+        <location filename="../src/calladapter.cpp" line="558"/>
         <source>%1 is calling you</source>
         <translation>%1 soittaa sinulle</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="577"/>
+        <location filename="../src/calladapter.cpp" line="569"/>
         <source>is calling you</source>
         <translation>soittaa sinulle</translation>
     </message>
@@ -187,12 +187,12 @@
 <context>
     <name>ConversationsAdapter</name>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="207"/>
+        <location filename="../src/conversationsadapter.cpp" line="208"/>
         <source>New message</source>
         <translation>Uusi viesti</translation>
     </message>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="252"/>
+        <location filename="../src/conversationsadapter.cpp" line="253"/>
         <source>Trust request</source>
         <translation>Luottamuspyyntö</translation>
     </message>
@@ -750,11 +750,6 @@ Jami sulkeutuu nyt.</translation>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>Enable typing indicators</source>
         <translation>Kirjoittamisen merkki käyttöön</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="320"/>
-        <source>Display images and videos in the chatview</source>
-        <translation>Näytä kuvat ja videot chatti näkymään</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="332"/>
@@ -1566,6 +1561,11 @@ Jami sulkeutuu nyt.</translation>
         <translation>Chat-näkymä</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="320"/>
+        <source>Display hyperlink previews in the chatview</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="323"/>
         <source>Install beta version</source>
         <translation>Asenna beetaversio</translation>
@@ -2182,17 +2182,17 @@ Yritä myöhemmin uudelleen.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="484"/>
+        <location filename="../src/mainapplication.cpp" line="482"/>
         <source>E&amp;xit</source>
         <translation>P&amp;oistu</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="486"/>
+        <location filename="../src/mainapplication.cpp" line="484"/>
         <source>&amp;Quit</source>
         <translation>&amp;Lopeta</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="492"/>
+        <location filename="../src/mainapplication.cpp" line="490"/>
         <source>&amp;Show Jami</source>
         <translation>&amp;Näytä Jami</translation>
     </message>

@@ -54,7 +54,7 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>Key File</source>
-        <translation>File della Chiave</translation>
+        <translation>File della chiave</translation>
     </message>
 </context>
 <context>
@@ -88,7 +88,7 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>Key File</source>
-        <translation>File della Chiave</translation>
+        <translation>File della chiave</translation>
     </message>
 </context>
 <context>
@@ -133,22 +133,22 @@
         <translation>Chiamata persa da %1</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="504"/>
+        <location filename="../src/calladapter.cpp" line="496"/>
         <source>me</source>
         <translation>io</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="565"/>
+        <location filename="../src/calladapter.cpp" line="557"/>
         <source>Incoming call</source>
         <translation>Chiamata in arrivo</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="566"/>
+        <location filename="../src/calladapter.cpp" line="558"/>
         <source>%1 is calling you</source>
         <translation>%1 ti sta chiamando</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="577"/>
+        <location filename="../src/calladapter.cpp" line="569"/>
         <source>is calling you</source>
         <translation>ti sta chiamando</translation>
     </message>
@@ -187,12 +187,12 @@
 <context>
     <name>ConversationsAdapter</name>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="207"/>
+        <location filename="../src/conversationsadapter.cpp" line="208"/>
         <source>New message</source>
         <translation>Nuovo messaggio</translation>
     </message>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="252"/>
+        <location filename="../src/conversationsadapter.cpp" line="253"/>
         <source>Trust request</source>
         <translation>Richiesta fidata</translation>
     </message>
@@ -752,11 +752,6 @@ Jami ora si chiuderà.</translation>
         <translation>Abilita gli indicatori di digitazione</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="320"/>
-        <source>Display images and videos in the chatview</source>
-        <translation>Visualizza immagini e video nella vista chat</translation>
-    </message>
-    <message>
         <location filename="../src/constant/JamiStrings.qml" line="332"/>
         <source>Network error</source>
         <translation>Errore di rete</translation>
@@ -910,7 +905,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="108"/>
         <source>TURN address</source>
-        <translation>Indirizzo del server TURN </translation>
+        <translation>Indirizzo TURN </translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="109"/>
@@ -965,7 +960,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="126"/>
         <source>SDP Session Negotiation (ICE Fallback)</source>
-        <translation>Negoziazione sessione SDP (usa ICE in caso contrario)</translation>
+        <translation>Negoziazione sessione SDP (usa ICE in caso di fallimento)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="127"/>
@@ -1055,7 +1050,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="154"/>
         <source>Select ringtone output device</source>
-        <translation>Seleziona il dispositivo di uscita della suoneria</translation>
+        <translation>Scegli il dispositivo di uscita per la suoneria</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="155"/>
@@ -1120,7 +1115,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="177"/>
         <source>Never show me this again</source>
-        <translation>Non mostrarmelo mai più</translation>
+        <translation>Non mostrare mai più</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="178"/>
@@ -1252,7 +1247,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="221"/>
         <source>Stop recording</source>
-        <translation>Interrompi la registrazione</translation>
+        <translation>Ferma la registrazione</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="222"/>
@@ -1277,7 +1272,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="227"/>
         <source>Share screen area</source>
-        <translation>Condividi l&apos;area dello schermo</translation>
+        <translation>Condividi area dello schermo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="228"/>
@@ -1307,7 +1302,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="235"/>
         <source>Hide chat view</source>
-        <translation>Nascondi la vista della chat</translation>
+        <translation>Nascondi vista chat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="236"/>
@@ -1362,7 +1357,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="251"/>
         <source>Choose name</source>
-        <translation>Scegli nome</translation>
+        <translation>Scegli un nome</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="252"/>
@@ -1382,7 +1377,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="258"/>
         <source>Optional</source>
-        <translation>Opzionale</translation>
+        <translation>Facoltativo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="262"/>
@@ -1432,7 +1427,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="273"/>
         <source>Password set failed</source>
-        <translation>Impostatazione password non riuscita</translation>
+        <translation>Impostazione password non riuscita</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="274"/>
@@ -1538,7 +1533,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="310"/>
         <source>Keep minimized on close</source>
-        <translation>Minimizza alla chiusura</translation>
+        <translation>Mantieni attivo dopo la chiusura</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="311"/>
@@ -1564,6 +1559,11 @@ Jami ora si chiuderà.</translation>
         <location filename="../src/constant/JamiStrings.qml" line="318"/>
         <source>Chatview</source>
         <translation>Vista chat</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="320"/>
+        <source>Display hyperlink previews in the chatview</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="323"/>
@@ -1761,7 +1761,7 @@ Vuoi aggiornare ora?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="378"/>
         <source>Enter your account password</source>
-        <translation>Inserire la password del tuo account</translation>
+        <translation>Inserisci la password del tuo account</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="379"/>
@@ -1866,7 +1866,7 @@ Vuoi aggiornare ora?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="431"/>
         <source>Account QR</source>
-        <translation>Account QR</translation>
+        <translation>Codice QR dell&apos;account</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="434"/>
@@ -1978,7 +1978,7 @@ Copia e condividi con i tuoi amici!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="481"/>
         <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation>Sto cercando di riconnettersi al demone Jami (dring)...</translation>
+        <translation>Tentativo di riconnessione al demone Jami (dring)…</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="482"/>
@@ -2011,7 +2011,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="52"/>
         <source>Focus conversations list</source>
-        <translation>Focalizza l&apos;elenco delle conversazioni</translation>
+        <translation>Mostra l&apos;elenco delle conversazioni</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="57"/>
@@ -2181,17 +2181,17 @@ Per favore riprova più tardi.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="484"/>
+        <location filename="../src/mainapplication.cpp" line="482"/>
         <source>E&amp;xit</source>
         <translation>E&amp;sci</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="486"/>
+        <location filename="../src/mainapplication.cpp" line="484"/>
         <source>&amp;Quit</source>
         <translation>&amp;Esci</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="492"/>
+        <location filename="../src/mainapplication.cpp" line="490"/>
         <source>&amp;Show Jami</source>
         <translation>&amp;Mostra Jami</translation>
     </message>
@@ -2243,7 +2243,7 @@ Per favore riprova più tardi.</translation>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="105"/>
         <source>Image Files</source>
-        <translation>File Immagine</translation>
+        <translation>File immagine</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="105"/>
@@ -2267,7 +2267,7 @@ Per favore riprova più tardi.</translation>
     <message>
         <location filename="../src/mainview/components/PluginHandlerItemDelegate.qml" line="87"/>
         <source>On/Off</source>
-        <translation>On/Off</translation>
+        <translation>Acceso/Spento</translation>
     </message>
 </context>
 <context>
@@ -2329,7 +2329,7 @@ Per favore riprova più tardi.</translation>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="68"/>
         <source>Plugin Files</source>
-        <translation>File Plugin</translation>
+        <translation>File plugin</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="68"/>
@@ -2347,7 +2347,7 @@ Per favore riprova più tardi.</translation>
     <message>
         <location filename="../src/commoncomponents/PreferenceItemDelegate.qml" line="133"/>
         <source>Edit preference</source>
-        <translation>Modifica preferenza</translation>
+        <translation>Modifica preferenze</translation>
     </message>
 </context>
 <context>
@@ -2360,12 +2360,12 @@ Per favore riprova più tardi.</translation>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="86"/>
         <source>Optional</source>
-        <translation>Opzionale</translation>
+        <translation>Facoltativo</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="118"/>
         <source>Enter your name</source>
-        <translation>Inserire il tuo nome</translation>
+        <translation>Inserisci il tuo nome</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="152"/>
@@ -2383,7 +2383,7 @@ Per favore riprova più tardi.</translation>
     <message>
         <location filename="../src/utils.cpp" line="465"/>
         <source>Artwork by:</source>
-        <translation>Tema di:</translation>
+        <translation>Grafica di:</translation>
     </message>
     <message>
         <location filename="../src/utils.cpp" line="474"/>
@@ -2479,7 +2479,7 @@ Per favore riprova più tardi.</translation>
     <message>
         <location filename="../src/mainview/components/SelectScreen.qml" line="323"/>
         <source>All Screens</source>
-        <translation>Tutti gli Schermi</translation>
+        <translation>Tutti gli schermi</translation>
     </message>
 </context>
 <context>
