@@ -831,6 +831,37 @@ input[type=checkbox] {
     opacity: 1;
 }
 
+
+.message_type_call .menu_interaction .dropdown
+.message_type_contact .menu_interaction .dropdown
+{
+    margin-top: -17px;
+}
+
+.dropdown {
+    display: none;
+    z-index: 1;
+    position: absolute;
+    background-color: #fff;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.dropdown div
+{
+    color: #111;
+    padding: 10px;
+}
+
+.dropdown div:hover
+{
+    background-color: #ddd;
+}
+
+.showmenu:checked ~ .dropdown{
+    display: block;
+}
+
 /* Buttons */
 
 .flat-button {
