@@ -80,7 +80,7 @@ public:
     /**
      * Accept transfer from untrusted contacts
      */
-    bool autoTransferFromUnstrusted {false};
+    bool autoTransferFromUntrusted {false};
     /**
      * Accept transfer from trusted contacts
      */
