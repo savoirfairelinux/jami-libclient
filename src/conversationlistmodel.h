@@ -48,15 +48,9 @@ public:
     bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override;
     bool lessThan(const QModelIndex& left, const QModelIndex& right) const override;
 
-    Q_INVOKABLE void setProfileTypeFilter(const profile::Type& profileTypeFilter);
     Q_INVOKABLE void setFilterRequests(bool filterRequests);
 
 private:
-    // With swarm in place, this filter should only ever be set to profile::Type::JAMI
-    // and profile::Type::SIP as profile::Type::PENDING should no longer be used to
-    // filter for invites, and instead use the isRequest property of a conversation.
-    profile::Type profileTypeFilter_;
-
     // This flag can be toggled when switching tabs to show the current account's
     // conversation invites.
     bool filterRequests_ {false};

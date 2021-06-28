@@ -47,70 +47,7 @@ ConversationListModelBase::roleNames() const
 QVariant
 ConversationListModelBase::dataForItem(item_t item, int role) const
 {
-    if (item.participants.isEmpty()) {
-        return QVariant();
-    }
-    // WARNING: not swarm ready
-    auto peerUri = item.participants[0];
-    ContactModel* contactModel {nullptr};
-    contact::Info contact {};
-    try {
-        const auto& accountInfo = lrcInstance_->getAccountInfo(item.accountId);
-        contactModel = accountInfo.contactModel.get();
-        contact = contactModel->getContact(peerUri);
-    } catch (...) {
-    }
-
-    // Since we are using image provider right now, image url representation should be unique to
-    // be able to use the image cache, account avatar will only be updated once PictureUid changed
     switch (role) {
-    case Role::Title:
-        return QVariant(model_->title(item.uid));
-    case Role::BestId:
-        return QVariant(contactModel->bestIdForContact(peerUri));
-    case Role::Presence:
-        return QVariant(contact.isPresent);
-    case Role::PictureUid:
-        return QVariant(contactAvatarUidMap_[peerUri]);
-    case Role::Alias:
-        return QVariant(contact.profileInfo.alias);
-    case Role::RegisteredName:
-        return QVariant(contact.registeredName);
-    case Role::URI:
-        return QVariant(peerUri);
-    case Role::UnreadMessagesCount:
-        return QVariant(item.unreadMessages);
-    case Role::LastInteractionTimeStamp: {
-        if (!item.interactions.empty()) {
-            auto ts = static_cast<qint32>(item.interactions.at(item.lastMessageUid).timestamp);
-            return QVariant(ts);
-        }
-        break;
-    }
-    case Role::LastInteractionDate: {
-        if (!item.interactions.empty()) {
-            return QVariant(
-                Utils::formatTimeString(item.interactions.at(item.lastMessageUid).timestamp));
-        }
-        break;
-    }
-    case Role::LastInteraction: {
-        if (!item.interactions.empty()) {
-            return QVariant(item.interactions.at(item.lastMessageUid).body);
-        }
-        break;
-    }
-    case Role::ContactType: {
-        return QVariant(static_cast<int>(contact.profileInfo.type));
-    }
-    case Role::IsSwarm: {
-        return QVariant(!item.isNotASwarm());
-    }
-    case Role::IsBanned: {
-        return QVariant(contact.isBanned);
-    }
-    case Role::UID:
-        return QVariant(item.uid);
     case Role::InCall: {
         const auto& convInfo = lrcInstance_->getConversationFromConvUid(item.uid);
         if (!convInfo.uid.isEmpty()) {
@@ -127,7 +64,7 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
                 return QVariant(call->isAudioOnly);
             }
         }
-        return QVariant();
+        return QVariant(false);
     }
     case Role::CallStackViewShouldShow: {
         const auto& convInfo = lrcInstance_->getConversationFromConvUid(item.uid);
@@ -150,7 +87,7 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
                 return QVariant(static_cast<int>(call->status));
             }
         }
-        return QVariant();
+        return {};
     }
     case Role::Draft: {
         if (!item.uid.isEmpty()) {
@@ -162,13 +99,94 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
                 return emojiString + draft;
             }
         }
-        return QVariant("");
+        return {};
     }
-    case Role::IsRequest: {
+    case Role::IsRequest:
         return QVariant(item.isRequest);
+    case Role::Title:
+        return QVariant(model_->title(item.uid));
+    case Role::UnreadMessagesCount:
+        return QVariant(item.unreadMessages);
+    case Role::LastInteractionTimeStamp: {
+        if (!item.interactions.empty()) {
+            auto ts = static_cast<qint32>(item.interactions.at(item.lastMessageUid).timestamp);
+            return QVariant(ts);
+        }
+        break;
     }
+    case Role::LastInteractionDate: {
+        if (!item.interactions.empty()) {
+            return QVariant(
+                Utils::formatTimeString(item.interactions.at(item.lastMessageUid).timestamp));
+        }
+        break;
     }
-    return QVariant();
+    case Role::LastInteraction: {
+        if (!item.interactions.empty()) {
+            return QVariant(item.interactions.at(item.lastMessageUid).body);
+        }
+        break;
+    }
+    case Role::IsSwarm:
+        return QVariant(item.isSwarm());
+    case Role::Mode:
+        return QVariant(static_cast<int>(item.mode));
+    case Role::UID:
+        return QVariant(item.uid);
+    case Role::Uris:
+        return QVariant(model_->peersForConversation(item.uid).toList());
+    case Role::Monikers: {
+        // we shouldn't ever need these individually, they are used for filtering only
+        QStringList ret;
+        Q_FOREACH (const auto& peerUri, model_->peersForConversation(item.uid))
+            try {
+                auto& accInfo = lrcInstance_->getCurrentAccountInfo();
+                auto contact = accInfo.contactModel->getContact(peerUri);
+                ret << contact.profileInfo.alias << contact.registeredName;
+            } catch (const std::exception&) {
+            }
+        return ret;
+    }
+    default:
+        break;
+    }
+
+    if (item.isCoreDialog()) {
+        auto peerUriList = model_->peersForConversation(item.uid);
+        if (peerUriList.isEmpty()) {
+            return {};
+        }
+        auto peerUri = peerUriList.at(0);
+        ContactModel* contactModel;
+        contact::Info contact {};
+        try {
+            contactModel = lrcInstance_->getCurrentAccountInfo().contactModel.get();
+            contact = contactModel->getContact(peerUri);
+        } catch (const std::exception&) {
+            return {};
+        }
+
+        switch (role) {
+        case Role::BestId:
+            return QVariant(contactModel->bestIdForContact(peerUri));
+        case Role::Presence:
+            return QVariant(contact.isPresent);
+        case Role::PictureUid:
+            return QVariant(contactAvatarUidMap_[peerUri]);
+        case Role::Alias:
+            return QVariant(contact.profileInfo.alias);
+        case Role::RegisteredName:
+            return QVariant(contact.registeredName);
+        case Role::URI:
+            return QVariant(peerUri);
+        case Role::IsBanned:
+            return QVariant(contact.isBanned);
+        case Role::ContactType:
+            return QVariant(static_cast<int>(contact.profileInfo.type));
+        }
+    }
+
+    return {};
 }
 
 void

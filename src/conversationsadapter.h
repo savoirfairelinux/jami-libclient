@@ -33,7 +33,6 @@ class SystemTray;
 class ConversationsAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
-    QML_PROPERTY(lrc::api::profile::Type, profileTypeFilter)
     QML_PROPERTY(bool, filterRequests)
     QML_PROPERTY(int, totalUnreadMessageCount)
     QML_PROPERTY(int, pendingRequestCount)

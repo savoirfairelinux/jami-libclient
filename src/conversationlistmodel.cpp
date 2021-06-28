@@ -105,19 +105,10 @@ ConversationListProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& s
 
     using namespace ConversationList;
 
-    // name/id
-    auto uri = index.data(Role::URI).toString();
-    auto alias = index.data(Role::Alias).toString();
-    auto registeredName = index.data(Role::RegisteredName).toString();
-
-    // account type
-    auto itemProfileType = static_cast<profile::Type>(index.data(Role::ContactType).toInt());
-    // this is workaround for profile::Type including both account types and extended types
-    // - PENDING is implicitly also JAMI
-    // - TEMPORARY should never be in this list
-    if (itemProfileType == profile::Type::PENDING)
-        itemProfileType = profile::Type::JAMI;
-    auto typeFilter = itemProfileType == profileTypeFilter_;
+    QStringList toFilter;
+    toFilter += index.data(Role::Title).toString();
+    toFilter += index.data(Role::Uris).toStringList();
+    toFilter += index.data(Role::Monikers).toStringList();
 
     // requests
     auto isRequest = index.data(Role::IsRequest).toBool();
@@ -127,14 +118,22 @@ ConversationListProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& s
 
     // banned contacts require exact match
     if (index.data(Role::IsBanned).toBool()) {
-        match = !rx.isEmpty()
-                && (rx.exactMatch(uri) || rx.exactMatch(alias) || rx.exactMatch(registeredName));
+        if (!rx.isEmpty()) {
+            Q_FOREACH (const auto& filter, toFilter)
+                if (rx.exactMatch(filter)) {
+                    match = true;
+                    break;
+                }
+        }
     } else {
-        match = (rx.indexIn(uri) != -1 || rx.indexIn(alias) != -1
-                 || rx.indexIn(registeredName) != -1);
+        Q_FOREACH (const auto& filter, toFilter)
+            if (rx.indexIn(filter) != -1) {
+                match = true;
+                break;
+            }
     }
 
-    return typeFilter && requestFilter && match;
+    return requestFilter && match;
 }
 
 bool
@@ -145,20 +144,6 @@ ConversationListProxyModel::lessThan(const QModelIndex& left, const QModelIndex&
     // we're assuming the sort role data type here is some integral time
     return leftData.toULongLong() < rightData.toULongLong();
 }
-
-void
-ConversationListProxyModel::setProfileTypeFilter(const profile::Type& profileTypeFilter)
-{
-    if (profileTypeFilter != lrc::api::profile::Type::JAMI
-        && profileTypeFilter != lrc::api::profile::Type::SIP) {
-        qWarning() << "Profile filter parameter must be an account type";
-        return;
-    }
-    beginResetModel();
-    profileTypeFilter_ = profileTypeFilter;
-    endResetModel();
-    updateSelection();
-};
 
 void
 ConversationListProxyModel::setFilterRequests(bool filterRequests)

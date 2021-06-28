@@ -80,19 +80,19 @@ MessagesAdapter::setupChatView(const QString& convUid)
 
     QMetaObject::invokeMethod(qmlObj_,
                               "setSendContactRequestButtonVisible",
-                              Q_ARG(QVariant, convInfo.isNotASwarm() && convInfo.isRequest));
+                              Q_ARG(QVariant, convInfo.isLegacy() && convInfo.isRequest));
     QMetaObject::invokeMethod(qmlObj_,
                               "setMessagingHeaderButtonsVisible",
                               Q_ARG(QVariant,
-                                    !(convInfo.isNotASwarm()
+                                    !(convInfo.isLegacy()
                                       && (convInfo.isRequest || convInfo.needsSyncing))));
 
     setMessagesVisibility(false);
-    setIsSwarm(!convInfo.isNotASwarm());
+    setIsSwarm(convInfo.isSwarm());
     setInvitation(convInfo.isRequest or convInfo.needsSyncing,
                   convModel->title(convInfo.uid),
                   contactURI,
-                  !convInfo.isNotASwarm(),
+                  !convInfo.isSwarm(),
                   convInfo.needsSyncing);
 
     // Draft and message content set up.
@@ -257,7 +257,7 @@ MessagesAdapter::slotMessagesCleared()
     auto convOpt = convModel->getConversationForUid(lrcInstance_->get_selectedConvUid());
     if (!convOpt)
         return;
-    if (!convOpt->get().isNotASwarm() && !convOpt->get().allMessagesLoaded) {
+    if (convOpt->get().isSwarm() && !convOpt->get().allMessagesLoaded) {
         convModel->loadConversationMessages(convOpt->get().uid, 20);
     } else {
         printHistory(*convModel, convOpt->get().interactions);
@@ -504,15 +504,15 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
         QMetaObject::invokeMethod(qmlObj_,
                                   "setMessagingHeaderButtonsVisible",
                                   Q_ARG(QVariant,
-                                        !(!convInfo.isNotASwarm()
+                                        !(convInfo.isSwarm()
                                           && (convInfo.isRequest || convInfo.needsSyncing))));
 
         setInvitation(convInfo.isRequest or convInfo.needsSyncing,
                       title,
                       contactUri,
-                      !convInfo.isNotASwarm(),
+                      convInfo.isSwarm(),
                       convInfo.needsSyncing);
-        if (!convInfo.isNotASwarm())
+        if (convInfo.isSwarm())
             return;
         auto& contact = accInfo->contactModel->getContact(contactUri);
         bool isPending = contact.profileInfo.type == profile::Type::TEMPORARY;
@@ -811,6 +811,6 @@ MessagesAdapter::loadMessages(int n)
     auto convOpt = convModel->getConversationForUid(currentConvUid_);
     if (!convOpt)
         return;
-    if (!convOpt->get().isNotASwarm() && !convOpt->get().allMessagesLoaded)
+    if (convOpt->get().isSwarm() && !convOpt->get().allMessagesLoaded)
         convModel->loadConversationMessages(convOpt->get().uid, n);
 }

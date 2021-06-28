@@ -44,15 +44,8 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
 
     new SelectableListProxyGroupModel({convModel_.data(), searchModel_.data()}, this);
 
-    // this will trigger when the conversations filter tab is selected
-    connect(this, &ConversationsAdapter::profileTypeFilterChanged, [this]() {
-        convModel_->setProfileTypeFilter(profileTypeFilter_);
-    });
-    set_profileTypeFilter(profile::Type::JAMI);
-
     // this will trigger when the invite filter tab is selected
     connect(this, &ConversationsAdapter::filterRequestsChanged, [this]() {
-        // it is assumed that profileTypeFilter is profile::Type::JAMI here
         convModel_->setFilterRequests(filterRequests_);
     });
 
@@ -72,9 +65,6 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
             auto& accInfo = lrcInstance_->getAccountInfo(convInfo.accountId);
             accInfo.conversationModel->selectConversation(convInfo.uid);
             accInfo.conversationModel->clearUnreadInteractions(convInfo.uid);
-
-            // set the account type filter corresponding to the conversation's account type
-            set_profileTypeFilter(accInfo.profileInfo.type);
 
             // this may be a request, so adjust that filter also
             set_filterRequests(convInfo.isRequest);
@@ -161,8 +151,6 @@ ConversationsAdapter::safeInit()
             Qt::UniqueConnection);
 
     connectConversationModel();
-
-    set_profileTypeFilter(lrcInstance_->getCurrentAccountInfo().profileInfo.type);
 }
 
 void
@@ -171,8 +159,6 @@ ConversationsAdapter::onCurrentAccountIdChanged()
     lrcInstance_->deselectConversation();
 
     connectConversationModel();
-
-    set_profileTypeFilter(lrcInstance_->getCurrentAccountInfo().profileInfo.type);
 
     // Always turn the requests filter off when switching account.
     // Conversation selection will manage the filter state in the
@@ -355,9 +341,6 @@ ConversationsAdapter::updateConversationFilterData()
     }
     set_totalUnreadMessageCount(totalUnreadMessages);
     set_pendingRequestCount(accountInfo.conversationModel->pendingRequestCount());
-    if (pendingRequestCount_ == 0 && profileTypeFilter_ == profile::Type::PENDING) {
-        set_profileTypeFilter(profile::Type::JAMI);
-    }
 }
 
 void
@@ -408,7 +391,7 @@ ConversationsAdapter::getConvInfoMap(const QString& convId)
             {"bestId", contactModel->bestIdForContact(peerUri)},
             {"title", lrcInstance_->getCurrentConversationModel()->title(convId)},
             {"uri", peerUri},
-            {"isSwarm", !convInfo.isNotASwarm()},
+            {"isSwarm", convInfo.isSwarm()},
             {"contactType", static_cast<int>(contact.profileInfo.type)},
             {"isAudioOnly", isAudioOnly},
             {"callState", static_cast<int>(callState)},

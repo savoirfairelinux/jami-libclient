@@ -45,6 +45,7 @@
 #include "api/newdevicemodel.h"
 #include "api/datatransfermodel.h"
 #include "api/pluginmodel.h"
+#include "api/conversation.h"
 
 #include <QMetaType>
 #include <QQmlEngine>
@@ -134,6 +135,7 @@ registerTypes()
     QML_REGISTERNAMESPACE(NS_MODELS, lrc::api::interaction::staticMetaObject, "Interaction");
     QML_REGISTERNAMESPACE(NS_MODELS, lrc::api::video::staticMetaObject, "Video");
     QML_REGISTERNAMESPACE(NS_MODELS, lrc::api::profile::staticMetaObject, "Profile");
+    QML_REGISTERNAMESPACE(NS_MODELS, lrc::api::conversation::staticMetaObject, "Conversation");
 
     // Same as QML_REGISTERUNCREATABLE but omit the namespace in Qml
     QML_REGISTERUNCREATABLE_IN_NAMESPACE(NewAccountModel, lrc::api);

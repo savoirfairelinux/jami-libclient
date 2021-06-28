@@ -39,7 +39,6 @@ TabBar {
     }
 
     function selectTab(idx) {
-        ConversationsAdapter.profileTypeFilter = LRCInstance.currentAccountType
         ConversationsAdapter.filterRequests = (idx === SidePanelTabBar.Requests)
     }
 
