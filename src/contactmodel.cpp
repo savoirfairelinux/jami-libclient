@@ -497,9 +497,7 @@ ContactModel::bestNameForContact(const QString& contactUri) const
             return bestIdFromContactInfo(contact);
         }
         return alias;
-    } catch (const std::out_of_range& e) {
-        qDebug() << "ContactModel::bestNameForContact" << e.what();
-    }
+    } catch (const std::out_of_range&) {}
 
     return contactUri;
 }
@@ -514,9 +512,7 @@ ContactModel::bestIdForContact(const QString& contactUri) const
             return {};
         }
         return bestIdFromContactInfo(contact);
-    } catch (const std::out_of_range& e) {
-        qDebug() << "ContactModel::bestIdForContact" << e.what();
-    }
+    } catch (const std::out_of_range& e) {}
 
     return contactUri;
 }
