@@ -1977,6 +1977,8 @@ function addOrUpdateMessage(message_object, new_message, insert_after = true, me
 
     var message_div = messages_div.querySelector("#message_" + message_id)
     if (new_message) {
+        if (message_div)
+            return;
         message_div = buildNewMessage(message_object)
 
         /* Show timestamp if either:
