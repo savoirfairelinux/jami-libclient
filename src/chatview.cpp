@@ -41,6 +41,7 @@ getTranslatedStrings(bool qwebview)
         {"Leave video message", QObject::tr("Leave video message")},
         {"Leave audio message", QObject::tr("Leave audio message")},
         {"Block", QObject::tr("Block")},
+        {"Copy to downloads", QObject::tr("Copy to downloads")},
         {"Write to {0}", QObject::tr("Write to {0}")},
         {"Note: an interaction will create a new contact.",
          QObject::tr("Note: an interaction will create a new contact.")},
