@@ -1030,6 +1030,11 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
 {
     try {
         auto& conversation = pimpl_->getConversationForUid(uid, true).get();
+        if (!conversation.isNotASwarm()) {
+            ConfigurationManager::instance().sendMessage(owner.id, uid, body, parentId);
+            return;
+        }
+
         auto& peers = pimpl_->peersForConversation(conversation);
         if (peers.isEmpty()) {
             // Should not
@@ -1037,16 +1042,6 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
                         "with no participant";
             return;
         }
-
-        /* isTemporary, and conversationReady callback used only for non-swarm conversation,
-         because for swarm, conversation already configured at this point.
-         Conversations for new contact from search result are NON_SWARM but after receiving
-         conversationReady callback could be updated to ONE_TO_ONE. We still use conversationReady
-         callback for swarm conversation with one participant to check if contact is blocked*/
-        if (peers.size() != 1) {
-            ConfigurationManager::instance().sendMessage(owner.id, uid, body, parentId);
-        }
-
         auto convId = uid;
         auto& peerId = peers.front();
         bool isTemporary = peerId == convId;
