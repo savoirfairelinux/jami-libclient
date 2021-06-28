@@ -30,8 +30,11 @@ namespace lrc {
 namespace api {
 
 namespace conversation {
+Q_NAMESPACE
+Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
 enum class Mode { ONE_TO_ONE, ADMIN_INVITES_ONLY, INVITES_ONLY, PUBLIC, NON_SWARM };
+Q_ENUM_NS(Mode)
 
 static inline Mode
 to_mode(const int intMode)
