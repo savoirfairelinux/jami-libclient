@@ -28,6 +28,8 @@
 #include "utils.h"
 #include "webchathelpers.h"
 
+#include <api/datatransfermodel.h>
+
 #include <QApplication>
 #include <QClipboard>
 #include <QDesktopServices>
@@ -366,6 +368,18 @@ MessagesAdapter::retryInteraction(const QString& interactionId)
 {
     lrcInstance_->getCurrentConversationModel()
         ->retryInteraction(lrcInstance_->get_selectedConvUid(), interactionId);
+}
+
+void
+MessagesAdapter::copyToDownloads(const QString& interactionId, const QString& displayName)
+{
+    auto downloadDir = lrcInstance_->accountModel().downloadDirectory;
+    if (auto accInfo = &lrcInstance_->getCurrentAccountInfo())
+        accInfo->dataTransferModel->copyTo(lrcInstance_->getCurrentAccountId(),
+                                           lrcInstance_->get_selectedConvUid(),
+                                           interactionId,
+                                           downloadDir,
+                                           displayName);
 }
 
 void

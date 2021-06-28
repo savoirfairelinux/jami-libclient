@@ -67,6 +67,7 @@ protected:
     Q_INVOKABLE void pasteKeyDetected();
     Q_INVOKABLE void onComposing(bool isComposing);
     Q_INVOKABLE void loadMessages(int n);
+    Q_INVOKABLE void copyToDownloads(const QString& interactionId, const QString& displayName);
 
     // Manually update draft when hiding message web view (Back to welcome page).
     Q_INVOKABLE void updateDraft();
