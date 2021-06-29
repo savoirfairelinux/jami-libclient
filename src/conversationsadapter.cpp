@@ -112,21 +112,15 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
             });
     connect(systemTray_,
             &SystemTray::acceptPendingActivated,
-            [this](const QString& accountId, const QString& peerUri) {
-                auto& convInfo = lrcInstance_->getConversationFromPeerUri(peerUri, accountId);
-                if (convInfo.uid.isEmpty())
-                    return;
+            [this](const QString& accountId, const QString& convUid) {
                 auto& accInfo = lrcInstance_->getAccountInfo(accountId);
-                accInfo.conversationModel->acceptConversationRequest(convInfo.uid);
+                accInfo.conversationModel->acceptConversationRequest(convUid);
             });
     connect(systemTray_,
             &SystemTray::refusePendingActivated,
-            [this](const QString& accountId, const QString& peerUri) {
-                auto& convInfo = lrcInstance_->getConversationFromPeerUri(peerUri, accountId);
-                if (convInfo.uid.isEmpty())
-                    return;
+            [this](const QString& accountId, const QString& convUid) {
                 auto& accInfo = lrcInstance_->getAccountInfo(accountId);
-                accInfo.conversationModel->removeConversation(convInfo.uid);
+                accInfo.conversationModel->removeConversation(convUid);
             });
 #endif
 }
@@ -245,10 +239,13 @@ ConversationsAdapter::onNewTrustRequest(const QString& accountId, const QString&
 {
 #ifdef Q_OS_LINUX
     if (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrentAccountId()) {
+        auto& convInfo = lrcInstance_->getConversationFromPeerUri(peerUri);
+        if (convInfo.uid.isEmpty())
+            return;
         auto& accInfo = lrcInstance_->getAccountInfo(accountId);
         auto from = accInfo.contactModel->bestNameForContact(peerUri);
         auto contactPhoto = Utils::contactPhoto(lrcInstance_, peerUri, QSize(50, 50), accountId);
-        auto notifId = QString("%1;%2").arg(accountId).arg(peerUri);
+        auto notifId = QString("%1;%2").arg(accountId).arg(convInfo.uid);
         systemTray_->showNotification(notifId,
                                       tr("Trust request"),
                                       "New request from " + from,
