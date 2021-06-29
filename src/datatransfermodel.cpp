@@ -204,15 +204,12 @@ DataTransferModel::fileTransferInfo(const QString& accountId,
 }
 
 QString
-DataTransferModel::accept(const QString& accountId,
-                          const QString& fileId,
-                          const QString& file_path,
-                          std::size_t)
+DataTransferModel::accept(const QString& accountId, const QString& fileId, const QString& filePath)
 {
-    auto unique_file_path = pimpl_->getUniqueFilePath(file_path);
-    auto dring_id = pimpl_->interactionToFileId[fileId];
-    ConfigurationManager::instance().acceptFileTransfer(accountId, dring_id, unique_file_path);
-    return unique_file_path;
+    auto uniqueFilePath = pimpl_->getUniqueFilePath(filePath);
+    auto daemonFileId = pimpl_->interactionToFileId[fileId];
+    ConfigurationManager::instance().acceptFileTransfer(accountId, daemonFileId, uniqueFilePath);
+    return uniqueFilePath;
 }
 
 void
@@ -226,7 +223,10 @@ DataTransferModel::download(const QString& accountId,
 }
 
 void
-DataTransferModel::copyTo(const QString& accountId, const QString& convId, const QString& interactionId, const QString& destPath)
+DataTransferModel::copyTo(const QString& accountId,
+                          const QString& convId,
+                          const QString& interactionId,
+                          const QString& destPath)
 {
     auto fileId = getFileIdFromInteractionId(interactionId);
     if (fileId.isEmpty()) {
@@ -247,7 +247,6 @@ DataTransferModel::copyTo(const QString& accountId, const QString& convId, const
     auto dest = pimpl_->getUniqueFilePath(realPath, destPath);
     src.copy(dest);
 }
-
 
 void
 DataTransferModel::cancel(const QString& accountId,
