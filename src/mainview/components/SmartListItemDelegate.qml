@@ -54,14 +54,13 @@ ItemDelegate {
 
             Connections {
                 target: root.ListView.view.model
-                function onDataChanged(index) {
-                    var model = root.ListView.view.model
-                    avatar.updateImage(URI === undefined ?
-                                           model.data(index, ConversationList.URI):
-                                           URI,
-                                       PictureUid === undefined ?
-                                           model.data(index, ConversationList.PictureUid):
-                                           PictureUid)
+                function onDataChanged(idx) {
+                    // TODO: currently the avatar dispaly mechanism requires
+                    // that each dataChanged signal is caught by and induces an
+                    // updateImage call per smartlist item. Once this is fixed
+                    // we can filter for the current delegate's index like:
+                    // if (idx.row !== index) return
+                    avatar.updateImage(URI, PictureUid)
                 }
             }
 

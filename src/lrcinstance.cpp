@@ -402,6 +402,12 @@ LRCInstance::setContentDraft(const QString& convUid,
                              const QString& content)
 {
     auto draftKey = accountId + "_" + convUid;
+
+    // prevent a senseless dataChanged signal from the
+    // model if nothing has changed
+    if (contentDrafts_[draftKey] == content)
+        return;
+
     contentDrafts_[draftKey] = content;
     // this signal is only needed to update the current smartlist
     Q_EMIT draftSaved(convUid);

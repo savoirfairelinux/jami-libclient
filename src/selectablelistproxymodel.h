@@ -52,6 +52,10 @@ public Q_SLOTS:
 Q_SIGNALS:
     void validSelectionChanged();
 
+private Q_SLOTS:
+    void onModelUpdated();
+    void onModelTrimmed();
+
 private:
     QPersistentModelIndex selectedSourceIndex_;
 };

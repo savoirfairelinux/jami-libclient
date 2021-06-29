@@ -30,24 +30,21 @@ void
 SelectableListProxyModel::bindSourceModel(QAbstractListModel* model)
 {
     setSourceModel(model);
-    connect(
-        sourceModel(),
-        &QAbstractListModel::dataChanged,
-        this,
-        [this] { updateSelection(); },
-        Qt::UniqueConnection);
-    connect(
-        model,
-        &QAbstractListModel::rowsInserted,
-        this,
-        [this] { updateSelection(); },
-        Qt::UniqueConnection);
-    connect(
-        model,
-        &QAbstractListModel::rowsRemoved,
-        this,
-        [this] { updateSelection(true); },
-        Qt::UniqueConnection);
+    connect(sourceModel(),
+            &QAbstractListModel::dataChanged,
+            this,
+            &SelectableListProxyModel::onModelUpdated,
+            Qt::UniqueConnection);
+    connect(model,
+            &QAbstractListModel::rowsInserted,
+            this,
+            &SelectableListProxyModel::onModelUpdated,
+            Qt::UniqueConnection);
+    connect(model,
+            &QAbstractListModel::rowsRemoved,
+            this,
+            &SelectableListProxyModel::onModelTrimmed,
+            Qt::UniqueConnection);
     connect(sourceModel(),
             &QAbstractListModel::modelReset,
             this,
@@ -150,6 +147,18 @@ SelectableListProxyModel::updateSelection(bool rowsRemoved)
     if (filteredIndex.isValid() && lastFilteredRow != currentFilteredRow_) {
         Q_EMIT validSelectionChanged();
     }
+}
+
+void
+SelectableListProxyModel::onModelUpdated()
+{
+    updateSelection();
+}
+
+void
+SelectableListProxyModel::onModelTrimmed()
+{
+    updateSelection(true);
 }
 
 SelectableListProxyGroupModel::SelectableListProxyGroupModel(QList<SelectableListProxyModel*> models,
