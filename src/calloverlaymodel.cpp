@@ -88,8 +88,6 @@ PendingConferenceesListModel::data(const QModelIndex& index, int role) const
         return QVariant(false);
     }
 
-    // Since we are using image provider right now, image url representation should be unique to
-    // be able to use the image cache, account avatar will only be updated once PictureUid changed
     switch (role) {
     case Role::PrimaryName:
         return QVariant(contactModel->bestNameForContact(pendingConferenceeContactUri));

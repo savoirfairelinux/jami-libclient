@@ -146,7 +146,7 @@ ListView {
             userProfile.aliasText = item.displayName
             userProfile.registeredNameText = item.displayId
             userProfile.idText = item.uri
-            userProfile.contactImageUid = item.convId
+            userProfile.convId = item.convId
             userProfile.isSwarm = item.isSwarm
 
             openMenu()

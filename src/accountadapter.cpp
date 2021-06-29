@@ -272,18 +272,31 @@ AccountAdapter::setCurrAccDisplayName(const QString& text)
 }
 
 void
-AccountAdapter::setCurrAccAvatar(bool fromFile, const QString& source)
+AccountAdapter::setCurrentAccountAvatarFile(const QString& source)
 {
-    QtConcurrent::run([this, fromFile, source]() {
+    QtConcurrent::run([this, source]() {
         QPixmap image;
-        bool success;
-        if (fromFile)
-            success = image.load(source);
-        else
-            success = image.loadFromData(Utils::base64StringToByteArray(source));
+        if (!image.load(source)) {
+            qWarning() << "Not a valid image file";
+            return;
+        }
 
-        if (success)
-            lrcInstance_->setCurrAccAvatar(image);
+        QByteArray ba;
+        QBuffer bu(&ba);
+        bu.open(QIODevice::WriteOnly);
+        image.save(&bu, "PNG");
+        auto str = QString::fromLocal8Bit(ba.toBase64());
+        auto accountId = lrcInstance_->get_currentAccountId();
+        lrcInstance_->accountModel().setAvatar(accountId, str);
+    });
+}
+
+void
+AccountAdapter::setCurrentAccountAvatarBase64(const QString& data)
+{
+    QtConcurrent::run([this, data]() {
+        auto accountId = lrcInstance_->get_currentAccountId();
+        lrcInstance_->accountModel().setAvatar(accountId, data);
     });
 }
 

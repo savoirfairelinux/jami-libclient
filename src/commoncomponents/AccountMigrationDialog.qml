@@ -285,25 +285,12 @@ Window {
                             anchors.fill: parent
                             color: "transparent"
 
-                            AvatarImage {
+                            Avatar {
                                 id: avatarImg
 
                                 anchors.fill: parent
-
                                 showPresenceIndicator: false
-
-                                fillMode: Image.PreserveAspectCrop
-                                layer.enabled: true
-                                layer.effect: OpacityMask {
-                                    maskSource: Rectangle {
-                                        width: avatarImg.width
-                                        height: avatarImg.height
-                                        radius: {
-                                            var size = ((avatarImg.width <= avatarImg.height)? avatarImg.width:avatarImg.height)
-                                            return size / 2
-                                        }
-                                    }
-                                }
+                                mode: Avatar.Mode.Account
                             }
                         }
                     }

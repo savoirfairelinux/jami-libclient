@@ -29,7 +29,7 @@ BaseDialog {
     id: root
 
     property string responsibleConvUid: ""
-    property string contactImageUid: ""
+    property string convId: ""
     property string aliasText: ""
     property string registeredNameText: ""
     property string idText: ""
@@ -57,17 +57,14 @@ BaseDialog {
             rowSpacing: 16
             columnSpacing: 24
 
-            AvatarImage {
+            ConversationAvatar {
                 id: contactImage
 
                 Layout.alignment: Qt.AlignRight
                 Layout.preferredWidth: preferredImgSize
                 Layout.preferredHeight: preferredImgSize
 
-                sourceSize.width: preferredImgSize
-                sourceSize.height: preferredImgSize
-
-                avatarMode: AvatarImage.AvatarMode.FromConvUid
+                imageId: convId
                 showPresenceIndicator: false
             }
 
@@ -246,6 +243,4 @@ BaseDialog {
         if (responsibleConvUid !== "")
             contactQrImage.source = "image://qrImage/contact_" + responsibleConvUid
     }
-
-    onContactImageUidChanged: contactImage.updateImage(contactImageUid)
 }

@@ -28,8 +28,8 @@ class QuickImageProviderBase : public QObject, public QQuickImageProvider
 {
 public:
     QuickImageProviderBase(QQuickImageProvider::ImageType type,
-                            QQmlImageProviderBase::Flag flag,
-                            LRCInstance* instance = nullptr)
+                           QQmlImageProviderBase::Flag flag,
+                           LRCInstance* instance = nullptr)
         : QQuickImageProvider(type, flag)
         , lrcInstance_(instance)
     {}

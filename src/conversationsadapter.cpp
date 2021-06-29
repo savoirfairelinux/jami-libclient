@@ -211,7 +211,9 @@ ConversationsAdapter::onNewReadInteraction(const QString& accountId,
 }
 
 void
-ConversationsAdapter::onNewTrustRequest(const QString& accountId, const QString& convId, const QString& peerUri)
+ConversationsAdapter::onNewTrustRequest(const QString& accountId,
+                                        const QString& convId,
+                                        const QString& peerUri)
 {
 #ifdef Q_OS_LINUX
     if (!QApplication::focusWindow() || accountId != lrcInstance_->get_currentAccountId()) {
@@ -262,10 +264,10 @@ ConversationsAdapter::onProfileUpdated(const QString& contactUri)
     auto& convInfo = lrcInstance_->getConversationFromPeerUri(contactUri);
     if (convInfo.uid.isEmpty())
         return;
+
+    // notify UI elements
     auto row = lrcInstance_->indexOf(convInfo.uid);
     const auto index = convSrcModel_->index(row, 0);
-
-    convSrcModel_->updateContactAvatarUid(contactUri);
     Q_EMIT convSrcModel_->dataChanged(index, index);
 }
 
@@ -416,7 +418,7 @@ ConversationsAdapter::connectConversationModel()
                      &ConversationsAdapter::onModelChanged,
                      Qt::UniqueConnection);
 
-    QObject::connect(lrcInstance_->getCurrentAccountInfo().contactModel.get(),
+    QObject::connect(lrcInstance_->getCurrentContactModel(),
                      &ContactModel::profileUpdated,
                      this,
                      &ConversationsAdapter::onProfileUpdated,

@@ -43,8 +43,6 @@ ItemDelegate {
         color: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
     }
 
-    onContactIDChanged: avatarImg.updateImage(contactID)
-
     RowLayout {
         anchors.fill: parent
 
@@ -57,31 +55,14 @@ ItemDelegate {
             Layout.preferredWidth: JamiTheme.preferredFieldHeight
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            background: Rectangle {
+            background: Avatar {
+                id: avatar
+
                 anchors.fill: parent
-                color: "transparent"
-                AvatarImage {
-                    id: avatarImg
 
-                    anchors.fill: parent
-
-                    avatarMode: AvatarImage.AvatarMode.FromContactUri
-                    showPresenceIndicator: false
-
-                    fillMode: Image.PreserveAspectCrop
-                    layer.enabled: true
-                    layer.effect: OpacityMask {
-                        maskSource: Rectangle {
-                            width: avatarImg.width
-                            height: avatarImg.height
-                            radius: {
-                                var size = ((avatarImg.width <= avatarImg.height) ?
-                                                avatarImg.width:avatarImg.height)
-                                return size / 2
-                            }
-                        }
-                    }
-                }
+                mode: Avatar.Mode.Contact
+                imageId: contactID
+                showPresenceIndicator: false
             }
         }
 

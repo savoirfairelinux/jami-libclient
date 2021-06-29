@@ -279,14 +279,6 @@ Rectangle {
 
                     visible: (mainViewSidePanel.visible || settingsMenu.visible)
 
-                    Connections {
-                        target: AccountAdapter
-
-                        function onAccountStatusChanged(accountId) {
-                            accountComboBox.resetAccountListModel(accountId)
-                        }
-                    }
-
                     onSettingBtnClicked: {
                         toggleSettingsView()
                     }

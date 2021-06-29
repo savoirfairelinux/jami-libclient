@@ -19,21 +19,19 @@
 
 import QtQuick 2.14
 import QtQuick.Controls 2.14
-import QtQuick.Layouts 1.14
-import QtQuick.Controls.Universal 2.14
 import QtGraphicalEffects 1.12
 
 Item {
     id: root
 
-    enum SpinningAnimationMode {
-        DISABLED = 0,
-        NORMAL,
-        SYMMETRY
+    enum Mode {
+        Disabled,
+        Radial,
+        BiRadial
     }
 
-    property int spinningAnimationMode: SpinningAnimation.SpinningAnimationMode.DISABLED
-    property int spinningAnimationWidth: 5
+    property int mode: SpinningAnimation.Mode.Disabled
+    property int spinningAnimationWidth: 4
     property real outerCutRadius: root.height / 2
     property int spinningAnimationDuration: 1000
 
@@ -42,7 +40,7 @@ Item {
 
         anchors.fill: parent
 
-        visible: spinningAnimationMode !== SpinningAnimation.SpinningAnimationMode.DISABLED
+        visible: mode !== SpinningAnimation.Mode.Disabled
         angle: 0.0
         gradient: Gradient {
             GradientStop { position: 0.5; color: "transparent" }
@@ -77,7 +75,7 @@ Item {
 
         anchors.fill: parent
 
-        visible: spinningAnimationMode === SpinningAnimation.SpinningAnimationMode.SYMMETRY
+        visible: mode === SpinningAnimation.Mode.BiRadial
         angle: 180.0
         gradient: Gradient {
             GradientStop {
@@ -113,7 +111,7 @@ Item {
         }
     }
 
-    layer.enabled: spinningAnimationMode !== SpinningAnimation.SpinningAnimationMode.DISABLED
+    layer.enabled: mode !== SpinningAnimation.Mode.Disabled
     layer.effect: OpacityMask {
         maskSource: Rectangle {
             width: root.width

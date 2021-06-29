@@ -34,7 +34,7 @@ class PreviewRenderer : public QQuickPaintedItem
 
 public:
     explicit PreviewRenderer(QQuickItem* parent = nullptr);
-    ~PreviewRenderer();
+    virtual ~PreviewRenderer();
 
 Q_SIGNALS:
     void lrcInstanceChanged();
@@ -57,7 +57,7 @@ class VideoCallPreviewRenderer : public PreviewRenderer
                    previewImageScalingFactorChanged)
 public:
     explicit VideoCallPreviewRenderer(QQuickItem* parent = nullptr);
-    virtual ~VideoCallPreviewRenderer();
+    ~VideoCallPreviewRenderer();
 
 Q_SIGNALS:
     void previewImageScalingFactorChanged();
@@ -73,15 +73,13 @@ class PhotoboothPreviewRender : public PreviewRenderer
     Q_OBJECT
 public:
     explicit PhotoboothPreviewRender(QQuickItem* parent = nullptr);
-    virtual ~PhotoboothPreviewRender();
+    ~PhotoboothPreviewRender() = default;
 
     Q_INVOKABLE QString takePhoto(int size);
 
 Q_SIGNALS:
-    void hideBooth();
+    void renderingStopped();
 
 private:
     void paint(QPainter* painter) override final;
-
-    QMetaObject::Connection rendererStoppedConnection_;
 };

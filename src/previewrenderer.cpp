@@ -122,15 +122,12 @@ PhotoboothPreviewRender::PhotoboothPreviewRender(QQuickItem* parent)
 {
     connect(this, &PreviewRenderer::lrcInstanceChanged, [this] {
         if (lrcInstance_)
-            rendererStoppedConnection_ = connect(lrcInstance_->renderer(),
-                                                 &RenderManager::previewRenderingStopped,
-                                                 [this]() { Q_EMIT hideBooth(); });
+            connect(lrcInstance_->renderer(),
+                    &RenderManager::previewRenderingStopped,
+                    this,
+                    &PhotoboothPreviewRender::renderingStopped,
+                    Qt::UniqueConnection);
     });
-}
-
-PhotoboothPreviewRender::~PhotoboothPreviewRender()
-{
-    disconnect(rendererStoppedConnection_);
 }
 
 QString

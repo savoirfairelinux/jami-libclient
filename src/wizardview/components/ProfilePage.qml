@@ -27,7 +27,8 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    property string createdAccountId: ""
+    // trigger a default avatar prior to account generation
+    property string createdAccountId: "dummy"
     property int preferredHeight: profilePageColumnLayout.implicitHeight
     property var showBottom: false
     property alias displayName: aliasEdit.text
@@ -38,7 +39,7 @@ Rectangle {
     signal saveProfile
 
     function initializeOnShowUp() {
-        setAvatarWidget.initUI()
+        createdAccountId = "dummy"
         clearAllTextFields()
         saveProfileBtn.spinnerTriggered = true
     }
@@ -52,11 +53,6 @@ Rectangle {
     }
 
     color: JamiTheme.backgroundColor
-
-    onCreatedAccountIdChanged: {
-        setAvatarWidget.setAvatarImage(AvatarImage.AvatarMode.FromAccount,
-                                       createdAccountId)
-    }
 
     ColumnLayout {
         id: profilePageColumnLayout
@@ -100,9 +96,11 @@ Rectangle {
 
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: size
-            Layout.preferredHeight: size
+            Layout.fillHeight: true
 
-            boothWidth: 200
+            imageId: createdAccountId
+
+            size: 200
         }
 
         MaterialLineEdit {

@@ -52,6 +52,5 @@ void
 SearchResultsListModel::onSearchResultsUpdated()
 {
     beginResetModel();
-    fillContactAvatarUidMap(lrcInstance_->getCurrentAccountInfo().contactModel->getAllContacts());
     endResetModel();
 }

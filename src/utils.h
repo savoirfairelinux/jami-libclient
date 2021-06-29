@@ -80,16 +80,24 @@ bool isContactValid(const QString& contactUid, const lrc::api::ConversationModel
 bool getReplyMessageBox(QWidget* widget, const QString& title, const QString& text);
 
 // Image manipulation
-static const QSize defaultAvatarSize {128, 128};
-QImage contactPhotoFromBase64(const QByteArray& data, const QString& type);
+constexpr static const QSize defaultAvatarSize {128, 128};
+QImage imageFromBase64String(const QString& str, bool circleCrop = true);
+QImage imageFromBase64Data(const QByteArray& data, bool circleCrop = true);
+QImage accountPhoto(LRCInstance* instance,
+                    const QString& accountId,
+                    const QSize& size = defaultAvatarSize);
 QImage contactPhoto(LRCInstance* instance,
                     const QString& contactUri,
                     const QSize& size = defaultAvatarSize,
                     const QString& accountId = {});
+QImage conversationAvatar(LRCInstance* instance,
+                          const QString& convId,
+                          const QSize& size = defaultAvatarSize,
+                          const QString& accountId = {});
 QImage getCirclePhoto(const QImage original, int sizePhoto);
 QColor getAvatarColor(const QString& canonicalUri);
 QImage fallbackAvatar(const QString& canonicalUriStr,
-                      const QString& letterStr = QString(),
+                      const QString& letterStr = {},
                       const QSize& size = defaultAvatarSize);
 QImage fallbackAvatar(const std::string& alias,
                       const std::string& uri,
@@ -101,9 +109,6 @@ QByteArray QByteArrayFromFile(const QString& filename);
 QPixmap generateTintedPixmap(const QString& filename, QColor color);
 QPixmap generateTintedPixmap(const QPixmap& pix, QColor color);
 QImage scaleAndFrame(const QImage photo, const QSize& size = defaultAvatarSize);
-QImage accountPhoto(LRCInstance* instance,
-                    const lrc::api::account::Info& accountInfo,
-                    const QSize& size = defaultAvatarSize);
 QImage cropImage(const QImage& img);
 QPixmap pixmapFromSvg(const QString& svg_resource, const QSize& size);
 QImage setupQRCode(QString ringID, int margin);

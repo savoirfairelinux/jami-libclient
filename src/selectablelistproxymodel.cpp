@@ -98,14 +98,6 @@ SelectableListProxyModel::selectSourceRow(int row)
 }
 
 void
-SelectableListProxyModel::updateContactAvatarUid(const QString& contactUri)
-{
-    auto base = qobject_cast<ConversationListModelBase*>(sourceModel());
-    if (base)
-        base->updateContactAvatarUid(contactUri);
-}
-
-void
 SelectableListProxyModel::updateSelection(bool rowsRemoved)
 {
     // if there has been no valid selection made, there is

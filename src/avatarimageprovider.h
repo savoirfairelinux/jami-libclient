@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2020-2021 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,48 +34,35 @@ public:
                                  instance)
     {}
 
-    /*
-     * Request function
-     * id could be
-     * 1. account_ + account id
-     * 2. file_ + file path
-     * 3. contact_+ contact uri
-     * 4. conversation_+ conversation uid
-     * 5. base64_ + base64 string
-     */
     QImage requestImage(const QString& id, QSize* size, const QSize& requestedSize) override
     {
         Q_UNUSED(size)
 
+        // the first string is the item uri and the second is a uid
+        // that is used for trigger a reload of the underlying image
+        // data and can be discarded at this point
         auto idInfo = id.split("_");
-        // Id type -> account_
-        auto idType = idInfo[1];
-        // Id content -> every after account_
-        auto idContent = id.mid(id.indexOf(idType) + idType.length() + 1);
 
-        if (idContent.isEmpty() && idType != "default")
-            return QImage();
-
-        if (idType == "account") {
-            return Utils::accountPhoto(lrcInstance_,
-                                       lrcInstance_->accountModel().getAccountInfo(idContent),
-                                       requestedSize);
-        } else if (idType == "conversation") {
-            const auto& convInfo = lrcInstance_->getConversationFromConvUid(idContent);
-            return Utils::contactPhoto(lrcInstance_, convInfo.participants[0], requestedSize);
-        } else if (idType == "contact") {
-            return Utils::contactPhoto(lrcInstance_, idContent, requestedSize);
-        } else if (idType == "fallback") {
-            return Utils::fallbackAvatar(idContent, QString(), requestedSize);
-        } else if (idType == "default") {
-            return Utils::fallbackAvatar(QString(), QString(), requestedSize);
-        } else if (idType == "base64") {
-            return Utils::cropImage(QImage::fromData(Utils::base64StringToByteArray(idContent)))
-                .scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        } else {
-            QImage image = QImage(idContent);
-            return Utils::getCirclePhoto(image, image.size().width())
-                .scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        if (idInfo.size() < 2) {
+            qWarning() << Q_FUNC_INFO << "Missing element(s) in the image url";
+            return {};
         }
+
+        auto imageId = idInfo.at(1);
+        if (!imageId.size()) {
+            qWarning() << Q_FUNC_INFO << "Missing id in the image url";
+            return {};
+        }
+
+        auto type = idInfo.at(0);
+        if (type == "conversation")
+            return Utils::conversationAvatar(lrcInstance_, imageId, requestedSize);
+        else if (type == "account")
+            return Utils::accountPhoto(lrcInstance_, imageId, requestedSize);
+        else if (type == "contact")
+            return Utils::contactPhoto(lrcInstance_, imageId, requestedSize);
+
+        qWarning() << Q_FUNC_INFO << "Missing valid prefix in the image url";
+        return {};
     }
 };

@@ -37,45 +37,27 @@ ItemDelegate {
         return UID
     }
 
-    Component.onCompleted: {
-        if (ContactType === Profile.Type.TEMPORARY)
-            root.ListView.view.model.updateContactAvatarUid(URI)
-        avatar.updateImage(URI, PictureUid)
-    }
-
     RowLayout {
         anchors.fill: parent
         anchors.leftMargin: 15
         anchors.rightMargin: 15
         spacing: 10
 
-        AvatarImage {
+        ConversationAvatar {
             id: avatar
 
-            Connections {
-                target: root.ListView.view.model
-                function onDataChanged(idx) {
-                    // TODO: currently the avatar dispaly mechanism requires
-                    // that each dataChanged signal is caught by and induces an
-                    // updateImage call per smartlist item. Once this is fixed
-                    // we can filter for the current delegate's index like:
-                    // if (idx.row !== index) return
-                    avatar.updateImage(URI, PictureUid)
-                }
-            }
+            imageId: UID
+            showPresenceIndicator: Presence
 
             Layout.preferredWidth: JamiTheme.smartListAvatarSize
             Layout.preferredHeight: JamiTheme.smartListAvatarSize
-
-            avatarMode: AvatarImage.AvatarMode.FromContactUri
-            showPresenceIndicator: Presence === undefined ? false : Presence
-            transitionDuration: 0
         }
 
         ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
             spacing: 0
+
             // best name
             Text {
                 Layout.fillWidth: true
@@ -93,6 +75,7 @@ ItemDelegate {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 20
                 Layout.alignment: Qt.AlignTop
+
                 // last Interaction date
                 Text {
                     Layout.alignment: Qt.AlignVCenter
@@ -101,6 +84,7 @@ ItemDelegate {
                     font.weight: UnreadMessagesCount ? Font.DemiBold : Font.Normal
                     color: JamiTheme.textColor
                 }
+
                 // last Interaction
                 Text {
                     elide: Text.ElideRight
@@ -128,6 +112,7 @@ ItemDelegate {
             Layout.preferredWidth: childrenRect.width
             Layout.fillHeight: true
             spacing: 2
+
             // call status
             Text {
                 Layout.preferredHeight: 20
@@ -137,6 +122,7 @@ ItemDelegate {
                 font.weight: Font.Medium
                 color: JamiTheme.textColor
             }
+
             // unread message count
             Item {
                 Layout.preferredWidth: childrenRect.width

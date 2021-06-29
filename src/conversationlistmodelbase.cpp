@@ -171,8 +171,6 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
             return QVariant(contactModel->bestIdForContact(peerUri));
         case Role::Presence:
             return QVariant(contact.isPresent);
-        case Role::PictureUid:
-            return QVariant(contactAvatarUidMap_[peerUri]);
         case Role::Alias:
             return QVariant(contact.profileInfo.alias);
         case Role::RegisteredName:
@@ -187,38 +185,4 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
     }
 
     return {};
-}
-
-void
-ConversationListModelBase::updateContactAvatarUid(const QString& contactUri)
-{
-    contactAvatarUidMap_[contactUri] = Utils::generateUid();
-}
-
-void
-ConversationListModelBase::fillContactAvatarUidMap(
-    const lrc::api::ContactModel::ContactInfoMap& contacts)
-{
-    if (contacts.size() == 0) {
-        contactAvatarUidMap_.clear();
-        return;
-    }
-
-    if (contactAvatarUidMap_.isEmpty() || contacts.size() != contactAvatarUidMap_.size()) {
-        bool useContacts = contacts.size() > contactAvatarUidMap_.size();
-        auto contactsKeyList = contacts.keys();
-        auto contactAvatarUidMapKeyList = contactAvatarUidMap_.keys();
-
-        for (int i = 0;
-             i < (useContacts ? contactsKeyList.size() : contactAvatarUidMapKeyList.size());
-             ++i) {
-            // Insert or update
-            if (i < contactsKeyList.size() && !contactAvatarUidMap_.contains(contactsKeyList.at(i)))
-                contactAvatarUidMap_.insert(contactsKeyList.at(i), Utils::generateUid());
-            // Remove
-            if (i < contactAvatarUidMapKeyList.size()
-                && !contacts.contains(contactAvatarUidMapKeyList.at(i)))
-                contactAvatarUidMap_.remove(contactAvatarUidMapKeyList.at(i));
-        }
-    }
 }

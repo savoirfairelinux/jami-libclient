@@ -28,8 +28,7 @@
     X(Username) \
     X(Type) \
     X(Status) \
-    X(ID) \
-    X(PictureUid)
+    X(ID)
 
 namespace AccountList {
 Q_NAMESPACE
@@ -82,24 +81,9 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    /*
-     * This function is to reset the model when there's new account added.
-     */
+    // reset the model when there's new account added
     Q_INVOKABLE void reset();
-
-    /*
-     * This function is to update avatar uuid when there's an avatar changed.
-     */
-    Q_INVOKABLE void updateAvatarUid(const QString& accountId);
 
 protected:
     using Role = AccountList::Role;
-
-private:
-    /*
-     * Give a uuid for each account avatar and it will serve PictureUid role
-     */
-    void fillAvatarUidMap(const QStringList& accountList);
-
-    QMap<QString, QString> avatarUidMap_;
 };

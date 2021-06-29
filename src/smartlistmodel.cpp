@@ -157,8 +157,6 @@ void
 SmartListModel::fillConversationsList()
 {
     beginResetModel();
-    fillContactAvatarUidMap(lrcInstance_->getCurrentAccountInfo().contactModel->getAllContacts());
-
     auto* convModel = lrcInstance_->getCurrentConversationModel();
     using ConversationList = ConversationModel::ConversationQueueProxy;
     conversations_ = ConversationList(convModel->getAllSearchResults())

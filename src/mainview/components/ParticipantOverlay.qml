@@ -52,16 +52,12 @@ Item {
 
     z: 1
 
-    function setAvatar(show, avatar, uri, local, isContact) {
+    function setAvatar(show, base64, uri, local, isContact) {
         if (!show)
             contactImage.visible = false
         else {
-            if (avatar) {
-                contactImage.avatarMode = AvatarImage.AvatarMode.FromBase64
-                contactImage.updateImage(avatar)
-            } else if (local) {
-                contactImage.avatarMode = AvatarImage.AvatarMode.FromAccount
-                contactImage.updateImage(LRCInstance.currentAccountId)
+            if (local) {
+                contactImage.imageId = LRCInstance.currentAccountId
             } else if (isContact) {
                 contactImage.avatarMode = AvatarImage.AvatarMode.FromContactUri
                 contactImage.updateImage(uri)
@@ -173,33 +169,15 @@ Item {
         }
     }
 
-    AvatarImage {
+    ConversationAvatar {
         id: contactImage
 
         anchors.centerIn: parent
         height:  Math.min(parent.width / 2, parent.height / 2)
         width:  Math.min(parent.width / 2, parent.height / 2)
 
-        fillMode: Image.PreserveAspectFit
-        imageId: ""
         visible: false
-        avatarMode: AvatarImage.AvatarMode.Default
         showPresenceIndicator: false
-
-        layer.enabled: true
-        layer.effect: OpacityMask {
-            maskSource: Rectangle {
-                width: contactImage.width
-                height: contactImage.height
-                radius: {
-                    var size = ((contactImage.width <= contactImage.height)?
-                                    contactImage.width : contactImage.height)
-                    return size / 2
-                }
-            }
-        }
-        layer.mipmap: false
-        layer.smooth: true
     }
 
     // Participant background and buttons for moderation

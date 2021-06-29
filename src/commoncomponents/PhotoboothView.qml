@@ -27,199 +27,113 @@ import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
 ColumnLayout {
-    property int photoState: PhotoboothView.PhotoState.Default
-    property bool avatarSet: false
-    // saveToConfig is to specify whether the image should be saved to account config
-    property alias saveToConfig: avatarImg.saveToConfig
-    property string fileName: ""
+    id: root
 
-    property int boothWidth: 224
+    enum Mode { Static, Previewing }
+    property int mode: PhotoboothView.Mode.Static
+    property alias imageId: avatar.imageId
 
-    enum PhotoState {
-        Default = 0,
-        CameraRendering,
-        Taken
-    }
-
-    readonly property int size: boothWidth +
-                                buttonsRowLayout.height +
-                                JamiTheme.preferredMarginSize / 2
-
-    function initUI(useDefaultAvatar = true) {
-        photoState = PhotoboothView.PhotoState.Default
-        avatarSet = false
-        if (useDefaultAvatar)
-            setAvatarImage(AvatarImage.AvatarMode.Default, "")
-    }
+    property int size: 224
 
     function startBooth() {
         AccountAdapter.startPreviewing(false)
-        photoState = PhotoboothView.PhotoState.CameraRendering
+        mode = PhotoboothView.Mode.Previewing
     }
 
     function stopBooth(){
-        try{
-            if(!AccountAdapter.hasVideoCall()) {
-                AccountAdapter.stopPreviewing()
-            }
-        } catch(erro){console.log("Exception: " +  erro.message)}
-    }
-
-    function setAvatarImage(mode = AvatarImage.AvatarMode.FromAccount,
-                            imageId = LRCInstance.currentAccountId){
-        if (mode !== AvatarImage.AvatarMode.FromBase64)
-            avatarImg.enableFadeAnimation = true
-        else
-            avatarImg.enableFadeAnimation = false
-
-        avatarImg.avatarMode = mode
-
-        if (mode === AvatarImage.AvatarMode.Default) {
-            avatarImg.updateImage(imageId)
-            return
+        if (!AccountAdapter.hasVideoCall()) {
+            AccountAdapter.stopPreviewing()
         }
-
-        if (imageId)
-            avatarImg.updateImage(imageId)
-    }
-
-    function manualSaveToConfig() {
-        avatarImg.saveAvatarToConfig()
+        mode = PhotoboothView.Mode.Static
     }
 
     onVisibleChanged: {
-        if(!visible){
+        if (visible) {
+            mode = PhotoboothView.Mode.Static
+        } else {
             stopBooth()
         }
     }
 
     spacing: 0
 
-    JamiFileDialog{
-        id: importFromFileToAvatar_Dialog
+    JamiFileDialog {
+        id: importFromFileDialog
 
         mode: JamiFileDialog.OpenFile
         title: JamiStrings.chooseAvatarImage
         folder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
 
-        nameFilters: [ qsTr("Image Files") + " (*.png *.jpg *.jpeg)",qsTr(
-                "All files") + " (*)"]
+        nameFilters: [
+            qsTr("Image Files") + " (*.png *.jpg *.jpeg)",
+            qsTr("All files") + " (*)"
+        ]
 
         onAccepted: {
-            avatarSet = true
-            photoState = PhotoboothView.PhotoState.Default
-
-            fileName = file
-            if (fileName.length === 0) {
-                SettingsAdapter.clearCurrentAvatar()
-                setAvatarImage()
-                return
-            }
-
-            setAvatarImage(AvatarImage.AvatarMode.FromFile,
-                           UtilsAdapter.getAbsPath(fileName))
+            var filePath = UtilsAdapter.getAbsPath(file)
+            AccountAdapter.setCurrentAccountAvatarFile(filePath)
         }
     }
 
-    Label {
-        id: avatarLabel
+    Item {
+        id: imageLayer
 
-        visible: photoState !== PhotoboothView.PhotoState.CameraRendering
-
-        Layout.fillWidth: true
-        Layout.maximumWidth: boothWidth
-        Layout.preferredHeight: boothWidth
+        Layout.preferredWidth: size
+        Layout.preferredHeight: size
         Layout.alignment: Qt.AlignHCenter
 
-        background: Rectangle {
-            id: avatarLabelBackground
+        Avatar {
+            id: avatar
 
             anchors.fill: parent
-            color: "white"
-            radius: height / 2
+            anchors.margins: 1
 
-            AvatarImage {
-                id: avatarImg
+            visible: !preview.visible
 
-                anchors.centerIn: avatarLabelBackground
-                width: avatarLabelBackground.width + avatarImg.spinningAnimationWidth
-                height: avatarLabelBackground.height + avatarImg.spinningAnimationWidth
+            fillMode: Image.PreserveAspectCrop
+            showPresenceIndicator: false
+        }
 
-                showPresenceIndicator: false
+        PhotoboothPreviewRender {
+            id: preview
 
-                fillMode: Image.PreserveAspectCrop
+            anchors.fill: parent
+            anchors.margins: 1
 
-                layer.enabled: true
-                layer.effect: OpacityMask {
-                    maskSource: Rectangle {
-                        width: avatarImg.width
-                        height: avatarImg.height
-                        radius: {
-                            var size = ((avatarImg.width <= avatarImg.height) ?
-                                            avatarImg.width:avatarImg.height)
-                            return size / 2
-                        }
-                    }
-                }
+            visible: mode === PhotoboothView.Mode.Previewing
 
-                onImageIsReady: {
-                    if (avatarMode === AvatarImage.AvatarMode.FromBase64)
-                        photoState = PhotoboothView.PhotoState.Taken
+            onRenderingStopped: stopBooth()
+            lrcInstance: LRCInstance
 
-                    if (photoState === PhotoboothView.PhotoState.Taken) {
-                        avatarImg.state = ""
-                        avatarImg.state = "flashIn"
-                    }
-                }
-
-                onOpacityChanged: {
-                    if (avatarImg.state === "flashIn" && opacity === 0)
-                        avatarImg.state = "flashOut"
-                }
-
-                states: [
-                    State {
-                        name: "flashIn"
-                        PropertyChanges { target: avatarImg; opacity: 0}
-                    }, State {
-                        name: "flashOut"
-                        PropertyChanges { target: avatarImg; opacity: 1}
-                    }]
-
-                transitions: Transition {
-                    NumberAnimation {
-                        properties: "opacity"
-                        easing.type: Easing.Linear
-                        duration: 100
-                    }
+            layer.enabled: true
+            layer.effect: OpacityMask {
+                maskSource: Rectangle {
+                    width: size
+                    height: size
+                    radius: size / 2
                 }
             }
         }
-    }
 
-    PhotoboothPreviewRender {
-        id:previewWidget
+        Rectangle {
+            id: flashRect
 
-        onHideBooth: stopBooth()
+            anchors.fill: parent
+            anchors.margins: 0
+            radius: size / 2
+            color: "white"
+            opacity: 0
 
-        visible: photoState === PhotoboothView.PhotoState.CameraRendering
-        focus: visible
+            SequentialAnimation {
+                id: flashAnimation
 
-        Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: boothWidth
-        Layout.preferredHeight: boothWidth
-
-        lrcInstance: LRCInstance
-
-        layer.enabled: true
-        layer.effect: OpacityMask {
-            maskSource: Rectangle {
-                width: previewWidget.width
-                height: previewWidget.height
-                radius: {
-                    var size = ((previewWidget.width <= previewWidget.height) ?
-                                    previewWidget.width:previewWidget.height)
-                    return size / 2
+                NumberAnimation {
+                    target: flashRect; property: "opacity"
+                    to: 1; duration: 0
+                }
+                NumberAnimation {
+                    target: flashRect; property: "opacity"
+                    to: 0; duration: 500
                 }
             }
         }
@@ -229,50 +143,33 @@ ColumnLayout {
         id: buttonsRowLayout
 
         Layout.fillWidth: true
-        Layout.alignment: Qt.AlignHCenter
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
         Layout.topMargin: JamiTheme.preferredMarginSize / 2
+        Layout.alignment: Qt.AlignHCenter
 
         PushButton {
             id: takePhotoButton
 
-            property string cameraAltIconUrl: "qrc:/images/icons/baseline-camera_alt-24px.svg"
-            property string addPhotoIconUrl: "qrc:/images/icons/round-add_a_photo-24px.svg"
-            property string refreshIconUrl: "qrc:/images/icons/baseline-refresh-24px.svg"
-
             Layout.alignment: Qt.AlignHCenter
+            radius: JamiTheme.primaryRadius
 
             imageColor: JamiTheme.textColor
-
             toolTipText: JamiStrings.takePhoto
 
-            radius: height / 6
-            source: {
-                if(photoState === PhotoboothView.PhotoState.Default) {
-                    toolTipText = qsTr("Take photo")
-                    return cameraAltIconUrl
-                }
-
-                if(photoState === PhotoboothView.PhotoState.Taken){
-                    toolTipText = qsTr("Retake photo")
-                    return refreshIconUrl
-                } else {
-                    toolTipText = qsTr("Take photo")
-                    return addPhotoIconUrl
-                }
-            }
+            source: mode === PhotoboothView.Mode.Static ?
+                        "qrc:/images/icons/baseline-camera_alt-24px.svg" :
+                        "qrc:/images/icons/round-add_a_photo-24px.svg"
 
             onClicked: {
-                if(photoState !== PhotoboothView.PhotoState.CameraRendering){
-                    startBooth()
-                    return
-                } else {
-                    setAvatarImage(AvatarImage.AvatarMode.FromBase64,
-                                   previewWidget.takePhoto(boothWidth))
-
-                    avatarSet = true
+                if (mode === PhotoboothView.Mode.Previewing) {
+                    flashAnimation.start()
+                    AccountAdapter.setCurrentAccountAvatarBase64(
+                                preview.takePhoto(size))
                     stopBooth()
+                    return
                 }
+
+                startBooth()
             }
         }
 
@@ -283,14 +180,15 @@ ColumnLayout {
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
             Layout.alignment: Qt.AlignHCenter
 
-            radius: height / 6
+            radius: JamiTheme.primaryRadius
             source: "qrc:/images/icons/round-folder-24px.svg"
 
             toolTipText: JamiStrings.importFromFile
             imageColor: JamiTheme.textColor
 
             onClicked: {
-                importFromFileToAvatar_Dialog.open()
+                stopBooth()
+                importFromFileDialog.open()
             }
         }
     }

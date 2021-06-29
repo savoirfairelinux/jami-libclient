@@ -32,7 +32,7 @@ SpinningAnimation {
     width: contentRect.width + spinningAnimationWidth
     height: JamiTheme.participantCallInStatusDelegateHeight
 
-    spinningAnimationMode: SpinningAnimation.SpinningAnimationMode.SYMMETRY
+    mode: SpinningAnimation.Mode.BiRadial
     outerCutRadius: JamiTheme.participantCallInStatusDelegateRadius
     spinningAnimationDuration: 5000
 
@@ -49,7 +49,7 @@ SpinningAnimation {
         opacity: JamiTheme.participantCallInStatusOpacity
         radius: JamiTheme.participantCallInStatusDelegateRadius
 
-        AvatarImage {
+        Avatar {
             id: avatar
 
             anchors.left: contentRect.left
@@ -60,7 +60,7 @@ SpinningAnimation {
             height: JamiTheme.participantCallInAvatarSize
 
             showPresenceIndicator: false
-            avatarMode: AvatarImage.AvatarMode.FromContactUri
+            mode: Avatar.Mode.Contact
             imageId: ContactUri
         }
 

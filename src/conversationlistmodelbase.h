@@ -43,7 +43,6 @@
     X(CallState) \
     X(SectionName) \
     X(AccountId) \
-    X(PictureUid) \
     X(Draft) \
     X(IsRequest) \
     X(Mode) \
@@ -76,18 +75,9 @@ public:
 
     QVariant dataForItem(item_t item, int role = Qt::DisplayRole) const;
 
-    // Update the avatar uid map to prevent the image provider from pulling from the cache
-    void updateContactAvatarUid(const QString& contactUri);
-
 protected:
     using Role = ConversationList::Role;
 
-    // Assign a uid for each contact avatar; it will serve as the PictureUid role
-    void fillContactAvatarUidMap(const ContactModel::ContactInfoMap& contacts);
-
     // Convenience pointer to be pulled from lrcinstance
     ConversationModel* model_;
-
-    // AvatarImageProvider helper
-    QMap<QString, QString> contactAvatarUidMap_;
 };

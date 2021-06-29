@@ -42,10 +42,6 @@ public:
     Q_INVOKABLE QVariant dataForRow(int row, int role) const;
     void selectSourceRow(int row);
 
-    // this may not be the best place for this but it prevents a level of
-    // inheritance and prevents code duplication
-    Q_INVOKABLE void updateContactAvatarUid(const QString& contactUri);
-
 public Q_SLOTS:
     void updateSelection(bool rowsRemoved = false);
 

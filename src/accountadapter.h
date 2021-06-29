@@ -86,7 +86,8 @@ public:
     Q_INVOKABLE bool hasVideoCall();
     Q_INVOKABLE bool isPreviewing();
     Q_INVOKABLE void setCurrAccDisplayName(const QString& text);
-    Q_INVOKABLE void setCurrAccAvatar(bool fromFile, const QString& source);
+    Q_INVOKABLE void setCurrentAccountAvatarFile(const QString& source);
+    Q_INVOKABLE void setCurrentAccountAvatarBase64(const QString& source);
 
 Q_SIGNALS:
     // Trigger other components to reconnect account related signals.

@@ -392,7 +392,6 @@ Rectangle {
                 }
 
                 onSaveProfile: {
-                    avatarBooth.manualSaveToConfig()
                     AccountAdapter.setCurrAccDisplayName(profilePage.displayName)
                     leave()
                 }

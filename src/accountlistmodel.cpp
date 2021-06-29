@@ -54,8 +54,6 @@ AccountListModel::data(const QModelIndex& index, int role) const
     auto accountId = accountList.at(index.row());
     auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
 
-    // Since we are using image provider right now, image url representation should be unique to
-    // be able to use the image cache, account avatar will only be updated once PictureUid changed
     switch (role) {
     case Role::Alias:
         return QVariant(lrcInstance_->accountModel().bestNameForAccount(accountId));
@@ -67,8 +65,6 @@ AccountListModel::data(const QModelIndex& index, int role) const
         return QVariant(static_cast<int>(accountInfo.status));
     case Role::ID:
         return QVariant(accountInfo.id);
-    case Role::PictureUid:
-        return avatarUidMap_[accountInfo.id];
     }
     return QVariant();
 }
@@ -88,28 +84,5 @@ void
 AccountListModel::reset()
 {
     beginResetModel();
-    fillAvatarUidMap(lrcInstance_->accountModel().getAccountList());
     endResetModel();
-}
-
-void
-AccountListModel::updateAvatarUid(const QString& accountId)
-{
-    avatarUidMap_[accountId] = Utils::generateUid();
-}
-
-void
-AccountListModel::fillAvatarUidMap(const QStringList& accountList)
-{
-    if (accountList.size() == 0) {
-        avatarUidMap_.clear();
-        return;
-    }
-
-    if (avatarUidMap_.isEmpty() || accountList.size() != avatarUidMap_.size()) {
-        for (int i = 0; i < accountList.size(); ++i) {
-            if (!avatarUidMap_.contains(accountList.at(i)))
-                avatarUidMap_.insert(accountList.at(i), Utils::generateUid());
-        }
-    }
 }

@@ -49,14 +49,15 @@ ItemDelegate {
         anchors.rightMargin: 15
         spacing: 10
 
-        AvatarImage {
+        Avatar {
             Layout.preferredWidth: JamiTheme.accountListAvatarSize
             Layout.preferredHeight: JamiTheme.accountListAvatarSize
             Layout.alignment: Qt.AlignVCenter
 
             presenceStatus: Status
 
-            Component.onCompleted: updateImage(ID, PictureUid)
+            imageId: ID
+            mode: Avatar.Mode.Account
         }
 
         ColumnLayout {

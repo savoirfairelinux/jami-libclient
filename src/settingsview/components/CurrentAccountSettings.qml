@@ -44,8 +44,6 @@ Rectangle {
     signal advancedSettingsToggled(bool settingsVisible)
 
     function updateAccountInfoDisplayed() {
-        accountProfile.initPhotoBooth()
-
         accountEnableCheckBox.checked = SettingsAdapter.get_CurrentAccountInfo_Enabled()
         accountProfile.updateAccountInfo()
         userIdentity.updateAccountInfo()

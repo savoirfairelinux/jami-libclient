@@ -51,7 +51,7 @@ Rectangle {
     onAccountPeerPairChanged: {
         if (accountPeerPair[0] === "" || accountPeerPair[1] === "")
             return
-        contactImage.updateImage(accountPeerPair[1])
+        contactImage.imageId = accountPeerPair[1]
         callOverlay.participantsLayer.update(CallAdapter.getConferencesInfos())
 
         bestName = UtilsAdapter.getBestName(accountPeerPair[0],
@@ -363,14 +363,13 @@ Rectangle {
 
                     visible: root.isAudioOnly
 
-                    AvatarImage {
+                    ConversationAvatar {
                         id: contactImage
 
                         Layout.alignment: Qt.AlignCenter
                         Layout.preferredWidth: JamiTheme.avatarSizeInCall
                         Layout.preferredHeight: JamiTheme.avatarSizeInCall
 
-                        avatarMode: AvatarImage.AvatarMode.FromConvUid
                         showPresenceIndicator: false
                     }
 

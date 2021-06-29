@@ -392,8 +392,7 @@ Item {
     // PhotoBoothView
     property string chooseAvatarImage: qsTr("Choose a picture as avatar")
     property string importFromFile: qsTr("Import avatar from image file")
-    property string takePhone: qsTr("Take photo")
-    property string retakePhone: qsTr("Retake photo")
+    property string takePhoto: qsTr("Take photo")
 
     // PluginSettingsPage
     property string enable: qsTr("Enable")
