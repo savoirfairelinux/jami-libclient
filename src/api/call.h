@@ -133,8 +133,8 @@ struct Info
     Type type = Type::INVALID;
     QString peerUri;
     bool isOutgoing;
-    bool audioMuted = false;
-    bool videoMuted = false;
+    bool audioMuted = false; // this flag is used to check main audio status
+    bool videoMuted = false; // this flag is used to check main video status
     bool isAudioOnly = false;
     Layout layout = Layout::GRID;
     VectorMapStringString participantsInfos = {};
