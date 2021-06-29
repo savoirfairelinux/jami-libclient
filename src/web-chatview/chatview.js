@@ -1326,7 +1326,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
     updateProgressBar(message_div.querySelector(".message_progress_bar"), message_object)
 
 
-    if (delivery_status === "finished") {
+    if (message_delivery_status === "finished") {
         var message_dropdown = buildMessageDropdown(message_id)
         message_div.appendChild(message_dropdown)
     }
