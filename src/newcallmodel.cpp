@@ -1037,7 +1037,7 @@ NewCallModelPimpl::slotMediaChangeRequested(const QString& accountId,
         if (item[MediaAttributeKey::MEDIA_TYPE]
             == MediaAttributeValue::VIDEO) {
             item[MediaAttributeKey::MUTED] = callInfo->videoMuted ? "true" : "false";
-            item[MediaAttributeKey::ENABLED] = "true";
+            item[MediaAttributeKey::ENABLED] = callInfo->videoMuted ? "false" : "true";
         }
     }
     CallManager::instance().answerMediaChangeRequest(callId,
@@ -1133,6 +1133,7 @@ NewCallModelPimpl::slotMediaNegotiationStatus(const QString& callId,
     }
 
     callInfo->isAudioOnly = true;
+    callInfo->videoMuted = true;
     for (const auto& item : mediaList) {
         if (item[MediaAttributeKey::MEDIA_TYPE]
             == MediaAttributeValue::VIDEO) {
@@ -1249,11 +1250,20 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     // Detect if conference is created for this account
     QStringList callList = CallManager::instance().getParticipantList(confId);
     auto hasConference = false;
+    bool confVideoMuted = true;
     foreach (const auto& call, callList) {
         hasConference |= linked.hasCall(call);
+        if (hasConference) {
+            try {
+                auto subcall = linked.getCall(call);
+                confVideoMuted |= subcall.videoMuted;
+            } catch (...) {
+            }
+        } else
+            return;
     }
-    if (!hasConference)
-        return;
+
+
 
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = confId;
@@ -1261,9 +1271,11 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     callInfo->type = call::Type::CONFERENCE;
     callInfo->startTime = std::chrono::steady_clock::now();
     callInfo->participantsInfos = CallManager::instance().getConferenceInfos(confId);
+    callInfo->videoMuted = confVideoMuted;
     for (auto& i : callInfo->participantsInfos)
         i["uri"].replace("@ring.dht", "");
     calls[confId] = callInfo;
+
     foreach (const auto& call, callList) {
         emit linked.callAddedToConference(call, confId);
         // Remove call from pendingConferences_
