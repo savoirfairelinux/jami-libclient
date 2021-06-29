@@ -2158,6 +2158,7 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t,
             }
             auto msgId = message["id"];
             auto msg = interaction::Info(message, linked.owner.profileInfo.uri);
+            auto downloadFile = false;
             if (msg.type == interaction::Type::DATA_TRANSFER) {
                 auto fileId = message["fileId"];
                 QString path;
@@ -2178,10 +2179,18 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t,
                              : bytesProgress == totalSize ? interaction::Status::TRANSFER_FINISHED
                                                           : interaction::Status::TRANSFER_ONGOING;
                 linked.owner.dataTransferModel->registerTransferId(fileId, msgId);
+                downloadFile = (bytesProgress == 0);
             } else if (msg.type == interaction::Type::CALL) {
                 msg.body = storage::getCallInteractionString(msg.authorUri, msg.duration);
             }
             insertSwarmInteraction(msgId, msg, conversation, true);
+            if (downloadFile) {
+                // Note, we must do this after insertSwarmInteraction to find the interaction
+                handleIncomingFile(conversationId,
+                                   msgId,
+                                   message["displayName"],
+                                   message["totalSize"].toInt());
+            }
         }
 
         for (int j = conversation.interactions.size() - 1; j >= 0; j--) {
