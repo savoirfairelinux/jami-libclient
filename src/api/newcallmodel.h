@@ -79,7 +79,7 @@ public:
      * @param  isAudioOnly, set to false by default
      * @return the call uid created. Empty string is returned if call couldn't be created.
      */
-    QString createCall(const QString& uri, bool isAudioOnly = false);
+    QString createCall(const QString& uri, bool isAudioOnly = false, bool videoMuted = false);
 
     /**
      * Request a media change in a ongoing call.

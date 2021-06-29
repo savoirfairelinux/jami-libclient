@@ -308,7 +308,7 @@ NewCallModel::updateCallMediaList(const QString& callId, bool acceptVideo)
 }
 
 QString
-NewCallModel::createCall(const QString& uri, bool isAudioOnly)
+NewCallModel::createCall(const QString& uri, bool isAudioOnly, bool videoMuted)
 {
     VectorMapStringString mediaList {};
     MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE,
@@ -321,6 +321,8 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly)
     if (!isAudioOnly) {
         mediaAttribute[MediaAttributeKey::MEDIA_TYPE]
             = MediaAttributeValue::VIDEO;
+        mediaAttribute[MediaAttributeKey::MUTED] = videoMuted ? "true" : "false";
+        mediaAttribute[MediaAttributeKey::ENABLED] = "true";
         mediaAttribute[MediaAttributeKey::LABEL] = "video_0";
         mediaList.push_back(mediaAttribute);
     }
@@ -619,7 +621,7 @@ NewCallModel::joinCalls(const QString& callIdA, const QString& callIdB) const
 QString
 NewCallModel::callAndAddParticipant(const QString uri, const QString& callId, bool audioOnly)
 {
-    auto newCallId = createCall(uri, audioOnly);
+    auto newCallId = createCall(uri, audioOnly, pimpl_->calls[callId]->videoMuted);
     Q_EMIT beginInsertPendingConferenceesRows(0);
     pimpl_->pendingConferencees_.prepend({uri, newCallId, callId});
     Q_EMIT endInsertPendingConferenceesRows();
@@ -992,11 +994,14 @@ NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
     callInfo->isAudioOnly = true;
     callInfo->videoMuted = true;
     for (const auto& item : mediaList) {
-        if (item[MediaAttributeKey::MEDIA_TYPE]
-            == MediaAttributeValue::VIDEO) {
+        if (item[MediaAttributeKey::MEDIA_TYPE] == MediaAttributeValue::VIDEO) {
             callInfo->isAudioOnly = false;
-            callInfo->videoMuted = false;
-            break;
+            if (item[MediaAttributeKey::LABEL] == "video_0"
+                && item[MediaAttributeKey::ENABLED] == "true"
+                && item[MediaAttributeKey::MUTED] == "false") {
+                callInfo->videoMuted = false;
+                break;
+            }
         }
     }
     callInfo->mediaList = mediaList;
@@ -1031,12 +1036,20 @@ NewCallModelPimpl::slotMediaChangeRequested(const QString& accountId,
     auto& callInfo = calls[callId];
     if (!callInfo)
         return;
+
+    QList<QString> currentMediaLabels {};
+    for (auto& currentItem : callInfo->mediaList)
+        currentMediaLabels.append(currentItem[MediaAttributeKey::LABEL]);
+
     auto answerMedia = QList<MapStringString>::fromVector(mediaList);
 
     for (auto& item : answerMedia) {
-        if (item[MediaAttributeKey::MEDIA_TYPE]
-            == MediaAttributeValue::VIDEO) {
-            item[MediaAttributeKey::MUTED] = callInfo->videoMuted ? "true" : "false";
+        int index = currentMediaLabels.indexOf(item[MediaAttributeKey::LABEL]);
+        if (index >= 0) {
+            item[MediaAttributeKey::MUTED] = callInfo->mediaList[index][MediaAttributeKey::MUTED];
+            item[MediaAttributeKey::ENABLED] = callInfo->mediaList[index][MediaAttributeKey::ENABLED];
+        } else {
+            item[MediaAttributeKey::MUTED] = "true";
             item[MediaAttributeKey::ENABLED] = "true";
         }
     }
@@ -1133,18 +1146,21 @@ NewCallModelPimpl::slotMediaNegotiationStatus(const QString& callId,
     }
 
     callInfo->isAudioOnly = true;
+    callInfo->videoMuted = true;
     for (const auto& item : mediaList) {
         if (item[MediaAttributeKey::MEDIA_TYPE]
             == MediaAttributeValue::VIDEO) {
         	if (item[MediaAttributeKey::ENABLED] == "true") {
                 callInfo->isAudioOnly = false;
             }
-            callInfo->videoMuted = item[MediaAttributeKey::MUTED] == "true"
-                                    || item[MediaAttributeKey::ENABLED] == "false";
+            callInfo->videoMuted = item[MediaAttributeKey::LABEL] == "video_0"
+                                   && (item[MediaAttributeKey::MUTED] == "true"
+                                    || item[MediaAttributeKey::ENABLED] == "false");
         }
         if (item[MediaAttributeKey::MEDIA_TYPE]
             == MediaAttributeValue::AUDIO) {
-            callInfo->audioMuted = item[MediaAttributeKey::MUTED] == "true";
+            callInfo->audioMuted = item[MediaAttributeKey::LABEL] == "audio_0"
+                                   && item[MediaAttributeKey::MUTED] == "true";
         }
     }
 
@@ -1249,11 +1265,29 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     // Detect if conference is created for this account
     QStringList callList = CallManager::instance().getParticipantList(confId);
     auto hasConference = false;
+    bool confVideoMuted = true;
     foreach (const auto& call, callList) {
         hasConference |= linked.hasCall(call);
+        if (hasConference) {
+            try {
+                auto subcall = linked.getCall(call);
+                for (auto& item : subcall.mediaList) {
+                    if (item[MediaAttributeKey::MEDIA_TYPE] == MediaAttributeValue::VIDEO
+                        && item[MediaAttributeKey::LABEL] == "video_0"
+                        && item[MediaAttributeKey::ENABLED] == "true"
+                        && item[MediaAttributeKey::MUTED] == "false"
+                        && item[MediaAttributeKey::SOURCE] != "") {
+                        confVideoMuted = false;
+                        
+                    }
+                }
+            } catch (...) {
+            }
+        } else
+            return;
     }
-    if (!hasConference)
-        return;
+
+
 
     auto callInfo = std::make_shared<call::Info>();
     callInfo->id = confId;
@@ -1261,9 +1295,11 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     callInfo->type = call::Type::CONFERENCE;
     callInfo->startTime = std::chrono::steady_clock::now();
     callInfo->participantsInfos = CallManager::instance().getConferenceInfos(confId);
+    callInfo->videoMuted = confVideoMuted;
     for (auto& i : callInfo->participantsInfos)
         i["uri"].replace("@ring.dht", "");
     calls[confId] = callInfo;
+
     foreach (const auto& call, callList) {
         emit linked.callAddedToConference(call, confId);
         // Remove call from pendingConferences_
