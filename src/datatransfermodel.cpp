@@ -94,19 +94,17 @@ DataTransferModel::Impl::Impl(DataTransferModel& up_link)
 QString
 DataTransferModel::Impl::getUniqueFilePath(const QString& filename, const QString& path)
 {
-    auto wantedDest = filename;
-    QString base(wantedDest);
-    QString ext = QFileInfo(wantedDest).completeSuffix();
-    if (!ext.isEmpty()) {
+    auto base = filename;
+    QString ext = QFileInfo(base).completeSuffix();
+    if (!ext.isEmpty())
         ext = ext.prepend(".");
-    }
-    if (!path.isEmpty()) {
-        QFileInfo fi(filename);
-        wantedDest = QDir(path).filePath(fi.baseName() + ext);
-    }
-    if (!QFile::exists(wantedDest)) {
-        return wantedDest;
-    }
+
+    QFileInfo fi(filename);
+    auto p = !path.isEmpty() ? path : fi.dir().path();
+    base = QDir(p).filePath(fi.baseName() + ext);
+    if (!QFile::exists(base))
+        return base;
+
     base.chop(ext.size());
     QString ret;
     for (int suffix = 1;; suffix++) {
@@ -226,7 +224,8 @@ void
 DataTransferModel::copyTo(const QString& accountId,
                           const QString& convId,
                           const QString& interactionId,
-                          const QString& destPath)
+                          const QString& destPath,
+                          const QString& displayName)
 {
     auto fileId = getFileIdFromInteractionId(interactionId);
     if (fileId.isEmpty()) {
@@ -243,8 +242,11 @@ DataTransferModel::copyTo(const QString& accountId,
     if (!src.exists())
         return;
 
-    auto realPath = srcfi.isSymLink() ? srcfi.symLinkTarget() : path;
-    auto dest = pimpl_->getUniqueFilePath(realPath, destPath);
+    auto filename = displayName;
+    if (displayName.isEmpty())
+        filename = srcfi.isSymLink() ? srcfi.symLinkTarget() : path;
+    auto dest = pimpl_->getUniqueFilePath(filename, destPath);
+    qDebug() << "Copy to " << dest;
     src.copy(dest);
 }
 

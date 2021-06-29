@@ -1331,7 +1331,7 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
 
     if (!message_div.querySelector(`.dropdown_${message_id}`)) {
         if (!is_swarm || message_delivery_status === "finished") {
-            var message_dropdown = buildMessageDropdown(message_id)
+            var message_dropdown = buildMessageDropdown(message_id, message_object["displayName"])
             message_div.appendChild(message_dropdown)
         }
     }
@@ -1649,7 +1649,7 @@ function textInteraction(message_id, message_direction, htmlText) {
  * Build message dropdown
  * @return a message dropdown for passed message id
  */
-function buildMessageDropdown(message_id) {
+function buildMessageDropdown(message_id, display_name) {
     const menu_element = document.createElement("div")
     menu_element.setAttribute("class", "menu_interaction")
     menu_element.innerHTML =
@@ -1684,11 +1684,12 @@ function buildMessageDropdown(message_id) {
             save.innerHTML = i18n.gettext("Copy to downloads")
         }
         save.msg_id = message_id
+        save.display_name = display_name
         save.onclick = function () {
             if (use_qt) {
-                window.jsbridge.copyToDownloads(`${this.msg_id}`)
+                window.jsbridge.copyToDownloads(this.msg_id, this.display_name)
             } else {
-                window.prompt(`COPY:${this.msg_id}`)
+                window.prompt(`COPY:${this.msg_id}:${this.display_name}`)
             }
         }
         dropdown.appendChild(save)
@@ -1915,7 +1916,7 @@ function buildNewMessage(message_object) {
         }
         if (!message_div.querySelector(`.dropdown_${message_id}`)) {
             if (is_swarm && delivery_status === "finished") {
-                var message_dropdown = buildMessageDropdown(message_id)
+                var message_dropdown = buildMessageDropdown(message_id, message_object["displayName"])
                 message_div.appendChild(message_dropdown)
             }
         }
@@ -1948,7 +1949,6 @@ function buildNewMessage(message_object) {
         temp.innerText = message_type
         message_div.appendChild(temp)
     }
-
 
     if (message_type !== "typing" && !is_swarm && !message_div.querySelector(`.dropdown_${message_id}`)) {
         var message_dropdown = buildMessageDropdown(message_id)

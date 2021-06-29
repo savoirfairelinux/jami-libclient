@@ -77,7 +77,8 @@ public:
     void copyTo(const QString& accountId,
                 const QString& convId,
                 const QString& interactionId,
-                const QString& destPath);
+                const QString& destPath,
+                const QString& displayName);
 
     void cancel(const QString& accountId, const QString& conversationId, const QString& fileId);
 
