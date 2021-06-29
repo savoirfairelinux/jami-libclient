@@ -1977,19 +1977,8 @@ ConversationModelPimpl::isCoreDialog(const conversation::Info& conversation) con
 {
     switch (conversation.mode) {
     case conversation::Mode::NON_SWARM:
-        return true;
     case conversation::Mode::ONE_TO_ONE:
-        try {
-            // for active one-to-one conversation conversationId should be set
-            auto& peers = peersForConversation(conversation);
-            if (peers.size() != 1) {
-                return false;
-            }
-            auto contactInfo = linked.owner.contactModel->getContact(peers.front());
-            return !contactInfo.conversationId.isEmpty();
-        } catch (...) {
-            return true;
-        }
+        return true;
     default:
         break;
     }
@@ -2849,7 +2838,10 @@ ConversationModelPimpl::getConversationForPeerUri(const QString& uri,
             if (!isCoreDialog(conv)) {
                 return false;
             }
-            return uri == peersForConversation(conv).front();
+            auto members = peersForConversation(conv);
+            if (members.isEmpty())
+                return false;
+            return members.indexOf(uri) != -1;
         },
         searchResultIncluded);
 }
