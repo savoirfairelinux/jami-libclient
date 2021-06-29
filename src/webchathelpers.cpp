@@ -71,6 +71,7 @@ buildInteractionJson(lrc::api::ConversationModel& conversationModel,
             interactionObject.insert("totalSize", QJsonValue(qint64(info.totalSize)));
             interactionObject.insert("progress", QJsonValue(qint64(info.progress)));
         }
+        interactionObject.insert("displayName", QJsonValue(inter.commit["displayName"]));
         break;
     }
     case lrc::api::interaction::Type::INVALID:
