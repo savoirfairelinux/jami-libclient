@@ -73,7 +73,7 @@ def getVSEnv(arch='x64', platform='', version=''):
                          shell=True,
                          stdout=subprocess.PIPE)
     stdout, _ = p.communicate()
-    out = stdout.decode('utf-8').split("\r\n")[5:-1]
+    out = stdout.decode('utf-8', 'ignore').split("\r\n")[5:-1]
     return dict(s.split('=', 1) for s in out)
 
 
