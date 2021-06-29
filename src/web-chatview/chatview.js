@@ -1329,10 +1329,11 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
     message_div.querySelector(".filename").innerText = displayName
     updateProgressBar(message_div.querySelector(".message_progress_bar"), message_object)
 
-
-    if (message_delivery_status === "finished") {
-        var message_dropdown = buildMessageDropdown(message_id)
-        message_div.appendChild(message_dropdown)
+    if (!message_div.querySelector(`.dropdown_${message_id}`)) {
+        if (!is_swarm || message_delivery_status === "finished") {
+            var message_dropdown = buildMessageDropdown(message_id)
+            message_div.appendChild(message_dropdown)
+        }
     }
 }
 
@@ -1676,20 +1677,39 @@ function buildMessageDropdown(message_id) {
 
     const save = document.createElement("div")
     save.setAttribute("class", "menuoption")
-    if (use_qt) {
-        save.innerHTML = "Copy to downloads"
-    } else {
-        save.innerHTML = i18n.gettext("Copy to downloads")
-    }
-    save.msg_id = message_id
-    save.onclick = function () {
+    if (is_swarm) {
         if (use_qt) {
-            window.jsbridge.copyToDownloads(`${this.msg_id}`)
+            save.innerHTML = "Copy to downloads"
         } else {
-            window.prompt(`COPY:${this.msg_id}`)
+            save.innerHTML = i18n.gettext("Copy to downloads")
         }
+        save.msg_id = message_id
+        save.onclick = function () {
+            if (use_qt) {
+                window.jsbridge.copyToDownloads(`${this.msg_id}`)
+            } else {
+                window.prompt(`COPY:${this.msg_id}`)
+            }
+        }
+        dropdown.appendChild(save)
+    } else {
+        const remove = document.createElement("div")
+        remove.setAttribute("class", "menuoption")
+        if (use_qt) {
+            remove.innerHTML = "Delete"
+        } else {
+            remove.innerHTML = i18n.gettext("Delete")
+        }
+        remove.msg_id = message_id
+        remove.onclick = function () {
+            if (use_qt) {
+                window.jsbridge.deleteInteraction(`${this.msg_id}`)
+            } else {
+                window.prompt(`DELETE_INTERACTION:${this.msg_id}`)
+            }
+        }
+        dropdown.appendChild(remove)
     }
-    dropdown.appendChild(save)
     menu_element.appendChild(dropdown)
 
     return menu_element
@@ -1893,9 +1913,11 @@ function buildNewMessage(message_object) {
             message_div.append(fileInteraction(message_id))
             updateProgressBar(message_div.querySelector(".message_progress_bar"), message_object)
         }
-        if (delivery_status === "finished") {
-            var message_dropdown = buildMessageDropdown(message_id)
-            message_div.appendChild(message_dropdown)
+        if (!message_div.querySelector(`.dropdown_${message_id}`)) {
+            if (is_swarm && delivery_status === "finished") {
+                var message_dropdown = buildMessageDropdown(message_id)
+                message_div.appendChild(message_dropdown)
+            }
         }
     } else if (message_type === "text") {
         // TODO add the possibility to update messages (remove and rebuild)
@@ -1925,6 +1947,12 @@ function buildNewMessage(message_object) {
         const temp = document.createElement("div")
         temp.innerText = message_type
         message_div.appendChild(temp)
+    }
+
+
+    if (message_type !== "typing" && !is_swarm && !message_div.querySelector(`.dropdown_${message_id}`)) {
+        var message_dropdown = buildMessageDropdown(message_id)
+        message_div.appendChild(message_dropdown)
     }
 
     return message_div
@@ -2035,6 +2063,28 @@ function addOrUpdateMessage(message_object, new_message, insert_after = true, me
             var nextMessage = messages_div.firstChild
             messages_div.prepend(message_div)
             computeSequencing(message_div, nextMessage, null, insert_after)
+        }
+    }
+
+    if (!is_swarm && isErrorStatus(delivery_status) && message_direction === "out") {
+        const dropdown = messages_div.querySelector(`.dropdown_${message_id}`)
+        if (!dropdown.querySelector(".retry")) {
+            const retry = document.createElement("div")
+            retry.setAttribute("class", "retry")
+            if (use_qt) {
+                retry.innerHTML = "Retry"
+            } else {
+                retry.innerHTML = i18n.gettext("Retry")
+            }
+            retry.msg_id = message_id
+            retry.onclick = function () {
+                if (use_qt) {
+                    window.jsbridge.retryInteraction(`${this.msg_id}`)
+                } else {
+                    window.prompt(`RETRY_INTERACTION:${this.msg_id}`)
+                }
+            }
+            dropdown.insertBefore(retry, message_div.querySelector(".delete"))
         }
     }
 
