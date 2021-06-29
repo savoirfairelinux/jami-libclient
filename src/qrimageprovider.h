@@ -45,19 +45,25 @@ public:
     {
         auto list = id.split('_', Qt::SkipEmptyParts);
         if (list.size() < 2)
-            return {QrType::Account, ""};
+            return {QrType::Account, {}};
         if (list.contains("account") && list.size() > 1) {
             return {QrType::Account, list[1]};
         } else if (list.contains("contact") && list.size() > 1) {
-            /*
-             * For contact_xxx, xxx is "" initially
-             */
-            const auto& convInfo = lrcInstance_->getConversationFromConvUid(list[1]);
-            auto contact = lrcInstance_->getCurrentAccountInfo().contactModel->getContact(
-                convInfo.participants.at(0));
-            return {QrType::Contact, contact.profileInfo.uri};
+            // For contact_xxx, xxx is "" initially
+            try {
+                const auto& convInfo = lrcInstance_->getConversationFromConvUid(list[1]);
+                if (convInfo.mode == conversation::Mode::ONE_TO_ONE
+                    || convInfo.mode == conversation::Mode::NON_SWARM) {
+                    auto peerUri = lrcInstance_->getCurrentAccountInfo()
+                                       .conversationModel->peersForConversation(convInfo.uid)
+                                       .at(0);
+                    return {QrType::Contact, peerUri};
+                }
+            } catch (...) {
+            }
+            return {QrType::Contact, {}};
         }
-        return {QrType::Account, ""};
+        return {QrType::Account, {}};
     }
 
     QImage requestImage(const QString& id, QSize* size, const QSize& requestedSize) override
