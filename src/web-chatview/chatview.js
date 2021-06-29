@@ -1322,7 +1322,11 @@ function updateFileInteraction(message_div, message_object, forceTypeToFile = fa
     }
 
     message_div.querySelector(".full").innerText = message_text
-    message_div.querySelector(".filename").innerText = message_text.split("/").pop()
+    var displayName = message_object["displayName"]
+    if (!displayName || displayName === "") {
+        displayName = message_text.split("/").pop() // If non swarm displayName will be not set, we can take the path
+    }
+    message_div.querySelector(".filename").innerText = displayName
     updateProgressBar(message_div.querySelector(".message_progress_bar"), message_object)
 
 
