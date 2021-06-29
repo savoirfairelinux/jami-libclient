@@ -308,21 +308,22 @@ NewCallModel::updateCallMediaList(const QString& callId, bool acceptVideo)
 }
 
 QString
-NewCallModel::createCall(const QString& uri, bool isAudioOnly)
+NewCallModel::createCall(const QString& uri, bool isAudioOnly, VectorMapStringString mediaList)
 {
-    VectorMapStringString mediaList {};
-    MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE,
-                                       MediaAttributeValue::AUDIO},
-                                      {MediaAttributeKey::ENABLED, "true"},
-                                      {MediaAttributeKey::MUTED, "false"},
-                                      {MediaAttributeKey::SOURCE, ""},
-                                      {MediaAttributeKey::LABEL, "audio_0"}};
-    mediaList.push_back(mediaAttribute);
-    if (!isAudioOnly) {
-        mediaAttribute[MediaAttributeKey::MEDIA_TYPE]
-            = MediaAttributeValue::VIDEO;
-        mediaAttribute[MediaAttributeKey::LABEL] = "video_0";
+    if (mediaList.isEmpty()) {
+        MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE,
+                                        MediaAttributeValue::AUDIO},
+                                        {MediaAttributeKey::ENABLED, "true"},
+                                        {MediaAttributeKey::MUTED, "false"},
+                                        {MediaAttributeKey::SOURCE, ""},
+                                        {MediaAttributeKey::LABEL, "audio_0"}};
         mediaList.push_back(mediaAttribute);
+        if (!isAudioOnly) {
+            mediaAttribute[MediaAttributeKey::MEDIA_TYPE]
+                = MediaAttributeValue::VIDEO;
+            mediaAttribute[MediaAttributeKey::LABEL] = "video_0";
+            mediaList.push_back(mediaAttribute);
+        }
     }
 #ifdef ENABLE_LIBWRAP
     auto callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
@@ -408,6 +409,11 @@ NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabe
         callInfo->mediaList[found][MediaAttributeKey::MUTED]
             = callInfo->mediaList[found][MediaAttributeKey::MUTED] == "true" ? "false"
                                                                                            : "true";
+        if (mediaLabel.contains("audio_0")) {
+            callInfo->audioMuted = !callInfo->audioMuted;
+        } else if (mediaLabel.contains("video_0")) {
+            callInfo->videoMuted = !callInfo->videoMuted;
+        }
         if (callInfo->status == call::Status::IN_PROGRESS)
             emit callInfosChanged(owner.id, callId);
     }
@@ -617,7 +623,7 @@ NewCallModel::joinCalls(const QString& callIdA, const QString& callIdB) const
 QString
 NewCallModel::callAndAddParticipant(const QString uri, const QString& callId, bool audioOnly)
 {
-    auto newCallId = createCall(uri, audioOnly);
+    auto newCallId = createCall(uri, audioOnly, pimpl_->calls[callId]->mediaList);
     Q_EMIT beginInsertPendingConferenceesRows(0);
     pimpl_->pendingConferencees_.prepend({uri, newCallId, callId});
     Q_EMIT endInsertPendingConferenceesRows();
@@ -1032,12 +1038,20 @@ NewCallModelPimpl::slotMediaChangeRequested(const QString& accountId,
     auto& callInfo = calls[callId];
     if (!callInfo)
         return;
+
+    QList<QString> currentMediaLabels {};
+    for (auto& currentItem : callInfo->mediaList)
+        currentMediaLabels.append(currentItem[MediaAttributeKey::LABEL]);
+
     auto answerMedia = QList<MapStringString>::fromVector(mediaList);
 
     for (auto& item : answerMedia) {
-        if (item[MediaAttributeKey::MEDIA_TYPE]
-            == MediaAttributeValue::VIDEO) {
-            item[MediaAttributeKey::MUTED] = callInfo->videoMuted ? "true" : "false";
+        int index = currentMediaLabels.indexOf(item[MediaAttributeKey::LABEL]);
+        if (index >= 0) {
+            item[MediaAttributeKey::MUTED] = callInfo->mediaList[index][MediaAttributeKey::MUTED];
+            item[MediaAttributeKey::ENABLED] = callInfo->mediaList[index][MediaAttributeKey::ENABLED];
+        } else {
+            item[MediaAttributeKey::MUTED] = "true";
             item[MediaAttributeKey::ENABLED] = "true";
         }
     }
@@ -1141,13 +1155,13 @@ NewCallModelPimpl::slotMediaNegotiationStatus(const QString& callId,
         	if (item[MediaAttributeKey::ENABLED] == "true") {
                 callInfo->isAudioOnly = false;
             }
-            callInfo->videoMuted = item[MediaAttributeKey::LABEL] == "video_0"
+            callInfo->videoMuted = item[MediaAttributeKey::SOURCE_TYPE] == MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE
                                    && (item[MediaAttributeKey::MUTED] == "true"
                                     || item[MediaAttributeKey::ENABLED] == "false");
         }
         if (item[MediaAttributeKey::MEDIA_TYPE]
             == MediaAttributeValue::AUDIO) {
-            callInfo->audioMuted = item[MediaAttributeKey::LABEL] == "audio_0"
+            callInfo->audioMuted = item[MediaAttributeKey::SOURCE_TYPE] == MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE
                                    && item[MediaAttributeKey::MUTED] == "true";
         }
     }
@@ -1231,12 +1245,22 @@ NewCallModelPimpl::slotOnConferenceInfosUpdated(const QString& confId,
 
     emit linked.onParticipantsChanged(confId);
 
+    for (auto& info : infos) {
+        if (info["uri"].isEmpty()) {
+            it->second->videoMuted = info["videoMuted"] == "true";
+            it->second->audioMuted = info["audioLocalMuted"] == "true";
+        }
+    }
+
     // TODO: remove when the rendez-vous UI will be done
     // For now, the rendez-vous account can see ongoing calls
     // And must be notified when a new
     QStringList callList = CallManager::instance().getParticipantList(confId);
     foreach (const auto& call, callList) {
         emit linked.callAddedToConference(call, confId);
+        calls[call]->videoMuted = it->second->videoMuted;
+        calls[call]->audioMuted = it->second->audioMuted;
+        Q_EMIT linked.callInfosChanged(linked.owner.id, call);
     }
 }
 
