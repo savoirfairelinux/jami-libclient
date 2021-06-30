@@ -966,10 +966,8 @@ ConversationModel::createConversation(const VectorString& participants, const QS
         info["title"] = title;
         updateConversationInfo(convUid, info);
     }
-    Q_EMIT beginInsertRows(pimpl_->conversations.size());
     pimpl_->addSwarmConversation(convUid);
     emit newConversation(convUid);
-    Q_EMIT endInsertRows();
     pimpl_->invalidateModel();
     emit modelChanged();
 }
@@ -2377,7 +2375,6 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
     bool conversationExists = conversationIdx >= 0;
 
     if (!conversationExists) {
-        Q_EMIT linked.beginInsertRows(conversations.size());
         addSwarmConversation(conversationId);
     }
     auto& conversation = getConversationForUid(conversationId).get();
@@ -2411,7 +2408,6 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
     }
     emit linked.newConversation(conversationId);
     emit linked.modelChanged();
-    Q_EMIT linked.endInsertRows();
 }
 
 void
