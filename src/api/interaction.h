@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
  *    Copyright (C) 2017-2021 Savoir-faire Linux Inc.                                  *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
@@ -31,6 +31,33 @@ namespace api {
 namespace interaction {
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
+
+enum class LinkifyStatus {NO_URL, PENDING, URL_PRESENT};
+Q_ENUM_NS(LinkifyStatus)
+
+static inline const QString
+to_string(const LinkifyStatus& linkifyStatus)
+{
+    switch(linkifyStatus){
+    case LinkifyStatus::NO_URL:
+        return "NO_URL";
+    case LinkifyStatus::PENDING:
+        return "PENDING";
+    case LinkifyStatus::URL_PRESENT:
+        return "URL_PRESENT";
+    }
+}
+
+static inline LinkifyStatus
+to_linkifyStatus(const QString& linkifyStatus)
+{
+    if (linkifyStatus == "NO_URL")
+        return interaction::LinkifyStatus::NO_URL;
+    else if (linkifyStatus == "PENDING")
+        return interaction::LinkifyStatus::PENDING;
+    else if (linkifyStatus == "URL_PRESENT")
+        return interaction::LinkifyStatus::URL_PRESENT;
+}
 
 enum class Type { INVALID, TEXT, CALL, CONTACT, DATA_TRANSFER, MERGE, COUNT__ };
 Q_ENUM_NS(Type)
@@ -247,6 +274,8 @@ struct Info
     Status status = Status::INVALID;
     bool isRead = false;
     MapStringString commit;
+    QVariantMap linkPreviewInfo;
+    LinkifyStatus linkifyStatus = LinkifyStatus::PENDING;
 
     Info() {}
 
