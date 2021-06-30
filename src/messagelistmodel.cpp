@@ -21,15 +21,26 @@
 #include <QCoreApplication>
 #include <stdexcept>
 
-#include "messageslist.h"
+#include "messagelistmodel.h"
+#include "api/conversationmodel.h"
 #include "api/interaction.h"
+#include <QAbstractListModel>
 
 namespace lrc {
 
 using namespace api;
 
+MessageListModel::MessageListModel(QObject* parent)
+    : QAbstractListModel(parent)
+{}
+
+// MessageListModel& operator=(MessageListModel&& other)
+//{
+//    return;
+//}
+
 QPair<iterator, bool>
-MessagesList::emplace(QString msgId, interaction::Info message, bool beginning)
+MessageListModel::emplace(const QString& msgId, interaction::Info message, bool beginning)
 {
     iterator it;
     for (it = interactions_.begin(); it != interactions_.end(); ++it) {
@@ -38,11 +49,13 @@ MessagesList::emplace(QString msgId, interaction::Info message, bool beginning)
         }
     }
     auto iter = beginning ? interactions_.begin() : interactions_.end();
+    beginInsertRows(QModelIndex(), interactions_.size(), interactions_.size() + 1);
     auto iterator = interactions_.insert(iter, qMakePair(msgId, message));
+    endInsertRows();
     return qMakePair(iterator, true);
 }
 iterator
-MessagesList::find(QString msgId)
+MessageListModel::find(const QString& msgId)
 {
     iterator it;
     for (it = interactions_.begin(); it != interactions_.end(); ++it) {
@@ -54,7 +67,7 @@ MessagesList::find(QString msgId)
 }
 
 constIterator
-MessagesList::find(QString msgId) const
+MessageListModel::find(const QString& msgId) const
 {
     constIterator it;
     for (it = interactions_.cbegin(); it != interactions_.cend(); ++it) {
@@ -65,26 +78,30 @@ MessagesList::find(QString msgId) const
     return interactions_.cend();
 }
 QPair<iterator, bool>
-MessagesList::insert(std::pair<QString, interaction::Info> message, bool beginning)
+MessageListModel::insert(std::pair<QString, interaction::Info> message, bool beginning)
 {
     return emplace(message.first, message.second, beginning);
 }
 
 int
-MessagesList::erase(QString msgId)
+MessageListModel::erase(const QString& msgId)
 {
     iterator it;
+    int indexCounter = 0;
     for (it = interactions_.begin(); it != interactions_.end(); ++it) {
         if (it->first == msgId) {
+            beginRemoveRows(QModelIndex(), indexCounter, indexCounter);
             interactions_.erase(it);
+            endRemoveRows();
             return 1;
         }
+        indexCounter++;
     }
     return 0;
 }
 
 interaction::Info&
-MessagesList::operator[](QString messageId)
+MessageListModel::operator[](const QString& messageId)
 {
     for (auto it = interactions_.cbegin(); it != interactions_.cend(); ++it) {
         if (it->first == messageId) {
@@ -101,61 +118,61 @@ MessagesList::operator[](QString messageId)
 }
 
 iterator
-MessagesList::end()
+MessageListModel::end()
 {
     return interactions_.end();
 }
 
 constIterator
-MessagesList::end() const
+MessageListModel::end() const
 {
     return interactions_.end();
 }
 
 constIterator
-MessagesList::cend() const
+MessageListModel::cend() const
 {
     return interactions_.cend();
 }
 
 iterator
-MessagesList::begin()
+MessageListModel::begin()
 {
     return interactions_.begin();
 }
 
 constIterator
-MessagesList::begin() const
+MessageListModel::begin() const
 {
     return interactions_.begin();
 }
 
 reverseIterator
-MessagesList::rbegin()
+MessageListModel::rbegin()
 {
     return interactions_.rbegin();
 }
 
 int
-MessagesList::size() const
+MessageListModel::size() const
 {
     return interactions_.size();
 }
 
 void
-MessagesList::clear()
+MessageListModel::clear()
 {
     interactions_.clear();
 }
 
 bool
-MessagesList::empty() const
+MessageListModel::empty() const
 {
     return interactions_.empty();
 }
 
 interaction::Info
-MessagesList::at(QString msgId) const
+MessageListModel::at(const QString& msgId) const
 {
     for (auto it = interactions_.cbegin(); it != interactions_.cend(); ++it) {
         if (it->first == msgId) {
@@ -166,25 +183,25 @@ MessagesList::at(QString msgId) const
 }
 
 QPair<QString, interaction::Info>
-MessagesList::front() const
+MessageListModel::front() const
 {
     return interactions_.front();
 }
 
 QPair<QString, interaction::Info>
-MessagesList::last() const
+MessageListModel::last() const
 {
     return interactions_.last();
 }
 
 QPair<QString, interaction::Info>
-MessagesList::atIndex(int index)
+MessageListModel::atIndex(int index)
 {
     return interactions_.at(index);
 }
 
 QPair<iterator, bool>
-MessagesList::insert(int it, QPair<QString, interaction::Info> message)
+MessageListModel::insert(int it, QPair<QString, interaction::Info> message)
 {
     iterator itr;
     for (itr = interactions_.begin(); itr != interactions_.end(); ++itr) {
@@ -193,15 +210,19 @@ MessagesList::insert(int it, QPair<QString, interaction::Info> message)
         }
     }
     if (it >= size()) {
+        beginInsertRows(QModelIndex(), interactions_.size(), interactions_.size() + 1);
         auto iterator = interactions_.insert(interactions_.end(), message);
+        endInsertRows();
         return qMakePair(iterator, true);
     }
+    beginInsertRows(QModelIndex(), interactions_.size(), interactions_.size() + 1);
     interactions_.insert(it, message);
+    endInsertRows();
     return qMakePair(interactions_.end(), true);
 }
 
 int
-MessagesList::indexOfMessage(QString msgId, bool reverse) const
+MessageListModel::indexOfMessage(const QString& msgId, bool reverse) const
 {
     auto getIndex = [reverse, &msgId](const auto& start, const auto& end) -> int {
         auto it = std::find_if(start, end, [&msgId](const auto& it) { return it.first == msgId; });
@@ -215,7 +236,7 @@ MessagesList::indexOfMessage(QString msgId, bool reverse) const
 }
 
 void
-MessagesList::moveMessages(QList<QString> msgIds, QString parentId)
+MessageListModel::moveMessages(QList<QString> msgIds, const QString& parentId)
 {
     for (auto msgId : msgIds) {
         moveMessage(msgId, parentId);
@@ -223,7 +244,7 @@ MessagesList::moveMessages(QList<QString> msgIds, QString parentId)
 }
 
 void
-MessagesList::moveMessage(QString msgId, QString parentId)
+MessageListModel::moveMessage(const QString& msgId, const QString& parentId)
 {
     int currentIndex = indexOfMessage(msgId);
 
@@ -241,6 +262,7 @@ MessagesList::moveMessage(QString msgId, QString parentId)
     if (newIndex >= interactions_.size()) {
         newIndex = interactions_.size() - 1;
     }
+
     interactions_.move(currentIndex, newIndex);
 
     // move a child message
@@ -248,4 +270,58 @@ MessagesList::moveMessage(QString msgId, QString parentId)
         moveMessage(childMessageIdToMove, msgId);
     }
 }
+
+bool
+MessageListModel::contains(const QString& msgId)
+{
+    return find(msgId) != interactions_.end();
+}
+
+int
+MessageListModel::rowCount(const QModelIndex& parent) const
+{
+    return 0; /* data_.size();*/
+}
+
+QHash<int, QByteArray>
+MessageListModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[Role::Content] = "Content";
+    return roles;
+}
+
+void
+MessageListModel::removeLine()
+{
+    beginRemoveRows(QModelIndex(), 0, 0);
+    // data_.removeFirst();
+    endRemoveRows();
+}
+
+void
+MessageListModel::insertMessage(const QString& message)
+{
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
+    // data_.append(line);
+    endInsertRows();
+    if (rowCount() >= 10000) {
+        removeLine();
+    }
+}
+void
+MessageListModel::clearModel()
+{
+    // data_.clear();
+}
+
+QVariant
+MessageListModel::data(const QModelIndex& index, int role) const
+{
+    if (!index.isValid() || index.row() < 0 || index.row() >= rowCount())
+        return QVariant();
+    // return data_.at(index.row());
+    return QVariant();
+}
+
 } // namespace lrc
