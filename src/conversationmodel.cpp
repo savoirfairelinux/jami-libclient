@@ -223,10 +223,6 @@ public:
 
     // filter out ourself from conversation participants.
     const VectorString peersForConversation(const conversation::Info& conversation) const;
-
-    // for each contact we must have one non-swarm conversation or one active one-to-one
-    // conversation. Where active means peer did not leave the conversation.
-    bool isCoreDialog(const conversation::Info& conversation) const;
     // insert swarm interactions. Return false if interaction already exists.
     bool insertSwarmInteraction(const QString& interactionId,
                                 const interaction::Info& interaction,
@@ -425,7 +421,7 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
         // conversations with calls will be added in call section
         // we want to add only contacts non-swarm or one-to-one conversation
         auto& peers = pimpl_->peersForConversation(conv);
-        if (!conv.callId.isEmpty() || !conv.confId.isEmpty() || !pimpl_->isCoreDialog(conv)
+        if (!conv.callId.isEmpty() || !conv.confId.isEmpty() || !conv.isCoreDialog()
             || peers.empty()) {
             continue;
         }
@@ -495,7 +491,7 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
                                            && std::find(calls.begin(), calls.end(), conv.callId)
                                                   != calls.end();
                 auto& peers = pimpl_->peersForConversation(conv);
-                if ((!confFilterPredicate && !callFilterPredicate) || !pimpl_->isCoreDialog(conv)) {
+                if ((!confFilterPredicate && !callFilterPredicate) || !conv.isCoreDialog()) {
                     return;
                 }
 
@@ -545,7 +541,7 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
                 auto& account = pimpl_->lrc.getAccountModel().getAccountInfo(accConv.accountId);
                 auto& conv = account.conversationModel->getConversationForUid(accConv.convId)->get();
                 auto& peers = pimpl_->peersForConversation(conv);
-                if (!pimpl_->isCoreDialog(conv)) {
+                if (!conv.isCoreDialog()) {
                     continue;
                 }
                 auto cont = account.contactModel->getContact(peers.front());
@@ -582,7 +578,7 @@ ConversationModel::getFilteredConversations(const FilterType& filter,
     return pimpl_->customFilteredConversations.reset(pimpl_->conversations)
         .filter([this, &includeBanned](const conversation::Info& entry) {
             try {
-                if (entry.isNotASwarm()) {
+                if (entry.isLegacy()) {
                     auto& peers = pimpl_->peersForConversation(entry);
                     if (peers.isEmpty()) {
                         return false;
@@ -645,7 +641,7 @@ ConversationModel::getConversationForPeerUri(const QString& uri) const
     try {
         return std::make_optional(pimpl_->getConversation(
             [this, uri](const conversation::Info& conv) -> bool {
-                if (!pimpl_->isCoreDialog(conv)) {
+                if (!conv.isCoreDialog()) {
                     return false;
                 }
                 if (conv.mode == conversation::Mode::ONE_TO_ONE) {
@@ -798,7 +794,7 @@ ConversationModel::removeConversation(const QString& uid, bool banned)
                     "participant";
         return;
     }
-    if (!pimpl_->isCoreDialog(conversation)) {
+    if (!conversation.isCoreDialog()) {
         ConfigurationManager::instance().removeConversation(owner.id, uid);
         pimpl_->eraseConversation(conversationIdx);
         pimpl_->invalidateModel();
@@ -1004,7 +1000,7 @@ ConversationModel::title(const QString& conversationId) const
         return {};
     }
     auto& conversation = conversationOpt->get();
-    if (conversation.mode == conversation::Mode::NON_SWARM) {
+    if (conversation.isLegacy()) {
         // In this case, we can just display contact name
         return owner.contactModel->bestNameForContact(conversation.participants.at(0));
     }
@@ -1031,7 +1027,7 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
 {
     try {
         auto& conversation = pimpl_->getConversationForUid(uid, true).get();
-        if (!conversation.isNotASwarm()) {
+        if (!conversation.isLegacy()) {
             ConfigurationManager::instance().sendMessage(owner.id, uid, body, parentId);
             return;
         }
@@ -1055,7 +1051,7 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
             auto& newConv = isTemporary ? pimpl_->getConversationForUid(conversationId).get()
                                         : conversation;
 
-            if (newConv.mode != conversation::Mode::NON_SWARM) {
+            if (newConv.isSwarm()) {
                 ConfigurationManager::instance().sendMessage(owner.id,
                                                              conversationId,
                                                              body,
@@ -1252,7 +1248,7 @@ ConversationModel::clearInteractionFromConversation(const QString& convId,
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
         try {
             auto& conversation = pimpl_->conversations.at(conversationIdx);
-            if (conversation.mode != conversation::Mode::NON_SWARM) {
+            if (conversation.isSwarm()) {
                 // WARNING: clearInteractionFromConversation not implemented for swarm
                 return;
             }
@@ -1319,7 +1315,7 @@ ConversationModel::retryInteraction(const QString& convId, const QString& intera
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
         try {
             auto& conversation = pimpl_->conversations.at(conversationIdx);
-            if (conversation.mode != conversation::Mode::NON_SWARM) {
+            if (conversation.isSwarm()) {
                 // WARNING: retry interaction is not implemented for swarm
                 return;
             }
@@ -1383,7 +1379,7 @@ ConversationModel::clearAllHistory()
 
     for (auto& conversation : pimpl_->conversations) {
         {
-            if (conversation.mode != conversation::Mode::NON_SWARM) {
+            if (conversation.isSwarm()) {
                 // WARNING: clear all history is not implemented for swarm
                 continue;
             }
@@ -1422,7 +1418,7 @@ ConversationModel::setInteractionRead(const QString& convId, const QString& inte
     }
     if (emitUpdated) {
         pimpl_->invalidateModel();
-        if (pimpl_->conversations[conversationIdx].mode != conversation::Mode::NON_SWARM) {
+        if (pimpl_->conversations[conversationIdx].isSwarm()) {
             ConfigurationManager::instance().setMessageDisplayed(owner.id,
                                                                  "swarm:" + convId,
                                                                  interactionId,
@@ -1466,7 +1462,7 @@ ConversationModel::clearUnreadInteractions(const QString& convId)
                           if (!it.second.isRead) {
                               emitUpdated = true;
                               it.second.isRead = true;
-                              if (conversation.mode != conversation::Mode::NON_SWARM) {
+                              if (conversation.isSwarm()) {
                                   lastDisplayed = it.first;
                                   return;
                               }
@@ -1478,7 +1474,7 @@ ConversationModel::clearUnreadInteractions(const QString& convId)
                       });
     }
     if (!lastDisplayed.isEmpty()) {
-        auto to = conversation.mode != conversation::Mode::NON_SWARM
+        auto to = conversation.isSwarm()
                       ? "swarm:" + convId
                       : "jami:" + pimpl_->peersForConversation(conversation).front();
         ConfigurationManager::instance().setMessageDisplayed(owner.id, to, lastDisplayed, 3);
@@ -1971,19 +1967,6 @@ ConversationModelPimpl::peersForConversation(const conversation::Info& conversat
         if (participant != linked.owner.profileInfo.uri)
             result.push_back(participant);
     return result;
-}
-
-bool
-ConversationModelPimpl::isCoreDialog(const conversation::Info& conversation) const
-{
-    switch (conversation.mode) {
-    case conversation::Mode::NON_SWARM:
-    case conversation::Mode::ONE_TO_ONE:
-        return true;
-    default:
-        break;
-    }
-    return false;
 }
 
 bool
@@ -2871,7 +2854,7 @@ ConversationModelPimpl::getConversationForPeerUri(const QString& uri,
 {
     return getConversation(
         [this, uri](const conversation::Info& conv) -> bool {
-            if (!isCoreDialog(conv)) {
+            if (!conv.isCoreDialog()) {
                 return false;
             }
             auto members = peersForConversation(conv);
@@ -2886,7 +2869,7 @@ int
 ConversationModelPimpl::indexOfContact(const QString& uri) const
 {
     for (unsigned int i = 0; i < conversations.size(); ++i) {
-        if (!isCoreDialog(conversations.at(i))) {
+        if (!conversations.at(i).isCoreDialog()) {
             continue;
         }
         if (peersForConversation(conversations.at(i)).front() == uri)
@@ -3683,7 +3666,7 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid,
                                        const QString& path)
 {
     auto& conversation = getConversationForUid(convUid).get();
-    if (conversation.isNotASwarm()) {
+    if (conversation.isLegacy()) {
         // This is a fallback, will be removed when swarm will be mandatory
         auto destinationDir = linked.owner.accountModel->downloadDirectory;
         if (destinationDir.isEmpty()) {
@@ -3730,7 +3713,7 @@ ConversationModelPimpl::acceptTransfer(const QString& convUid,
             }
         }
         if (emitUpdated) {
-            if (isCoreDialog(conversations[conversationIdx])) {
+            if (conversations[conversationIdx].isCoreDialog()) {
                 sendContactRequest(peersForConversation(conversations[conversationIdx]).front());
             }
             invalidateModel();
