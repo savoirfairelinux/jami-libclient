@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
  *    Copyright (C) 2017-2021 Savoir-faire Linux Inc.                                  *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
@@ -31,6 +31,33 @@ namespace api {
 namespace interaction {
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
+
+enum class Linkified {NO_URL, PENDING ,URL_PRESENT};
+Q_ENUM_NS(Linkified)
+
+static inline const QString
+to_string(const Linkified& linkified)
+{
+    switch(linkified){
+    case Linkified::NO_URL:
+        return "NO_URL";
+    case Linkified::PENDING:
+        return "PENDING";
+    case Linkified::URL_PRESENT:
+        return "URL_PRESENT";
+    }
+}
+
+static inline Linkified
+to_linkified(const QString& linkified)
+{
+    if (linkified == "NO_URL")
+        return interaction::Linkified::NO_URL;
+    if (linkified == "PENDING")
+        return interaction::Linkified::PENDING;
+    else if (linkified == "URL_PRESENT")
+        return interaction::Linkified::URL_PRESENT;
+}
 
 enum class Type { INVALID, TEXT, CALL, CONTACT, DATA_TRANSFER, MERGE, COUNT__ };
 Q_ENUM_NS(Type)
@@ -247,6 +274,8 @@ struct Info
     Status status = Status::INVALID;
     bool isRead = false;
     MapStringString commit;
+    QVariantMap hyperlinkPreviewInformation;
+    Linkified linkified = Linkified::PENDING;
 
     Info() {}
 
