@@ -19,6 +19,9 @@
  */
 #pragma once
 
+#include "api/interaction.h"
+#include <QAbstractListModel>
+
 namespace lrc {
 namespace api {
 
@@ -29,17 +32,26 @@ struct Info;
 typedef QList<QPair<QString, interaction::Info>>::ConstIterator constIterator;
 typedef QList<QPair<QString, interaction::Info>>::Iterator iterator;
 typedef QList<QPair<QString, interaction::Info>>::reverse_iterator reverseIterator;
-class MessagesList
+
+class MessageListModel : public QAbstractListModel
 {
+    Q_OBJECT
+
 public:
+    explicit MessageListModel(QObject* parent = nullptr);
+//    MessageListModel& operator=(const MessageListModel& other);
+//    MessageListModel(const MessageListModel& other);
+    ~MessageListModel() = default;
     // map functions
-    QPair<iterator, bool> emplace(QString msgId, interaction::Info message, bool beginning = false);
-    iterator find(QString msgId);
-    constIterator find(QString msgId) const;
+    QPair<iterator, bool> emplace(const QString& msgId,
+                                  interaction::Info message,
+                                  bool beginning = false);
+    iterator find(const QString& msgId);
+    constIterator find(const QString& msgId) const;
     QPair<iterator, bool> insert(std::pair<QString, interaction::Info> message,
                                  bool beginning = false);
-    int erase(QString msgId);
-    interaction::Info& operator[](QString);
+    int erase(const QString& msgId);
+    interaction::Info& operator[](const QString& messageId);
     iterator end();
     constIterator end() const;
     constIterator cend() const;
@@ -49,18 +61,29 @@ public:
     int size() const;
     void clear();
     bool empty() const;
-    interaction::Info at(QString intId) const;
+    interaction::Info at(const QString& intId) const;
     QPair<QString, interaction::Info> front() const;
     QPair<QString, interaction::Info> last() const;
     QPair<QString, interaction::Info> atIndex(int index);
     // jami functions
     QPair<iterator, bool> insert(int it, QPair<QString, interaction::Info> message);
-    int indexOfMessage(QString msgId, bool reverse = true) const;
-    void moveMessages(QList<QString> msgIds, QString parentId);
+    int indexOfMessage(const QString& msgId, bool reverse = true) const;
+    void moveMessages(QList<QString> msgIds, const QString& parentId);
+
+    enum Role { Content };
+    Q_ENUMS(Role)
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+    Q_INVOKABLE void insertMessage(const QString& message);
+    Q_INVOKABLE void removeLine();
+    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+    QHash<int, QByteArray> roleNames() const override;
+    Q_INVOKABLE void clearModel();
+
+    bool contains(const QString& msgId);
 
 private:
     QList<QPair<QString, interaction::Info>> interactions_;
-    void moveMessage(QString msgId, QString parentId);
+    void moveMessage(const QString& msgId, const QString& parentId);
 };
 } // namespace api
 } // namespace lrc
