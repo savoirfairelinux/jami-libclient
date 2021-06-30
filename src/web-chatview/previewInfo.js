@@ -122,3 +122,49 @@ function getImage(doc) {
     }
     return null
 }
+
+
+new QWebChannel(qt.webChannelTransport, function (channel) {
+    window.jsbridge = channel.objects.previewJSBridge
+})
+
+
+function trial(url){
+    window.jsbridge.printExample(url)
+}
+
+function getPreviewInformation(messageId, url) {
+    trial("before fetch")
+    var title = null
+    var description = null
+    var img = null
+    fetch(url).then(function (response) {
+        trial("after fetch")
+        return response.text()
+    }).then(function (html) {
+        // create DOM from html string
+        var parser = new DOMParser()
+        var doc = parser.parseFromString(html, "text/html")
+
+        if (!url.includes("twitter.com")){
+           // title = getTitle(doc)
+            // img = getImage(doc, urlInMessage)
+            // description = getDescription(doc)
+        }
+        else{
+            title = "Twitter. It's what's happening."
+        }
+
+        title = "whats up"
+        var previewInfo = [title /*, img, description*/]
+       // return doc
+
+        window.jsbridge.previewInformationReady(messageId, previewInfo)
+        
+    }).catch(function (err) {
+        // Error occured while fetching document
+       
+        console.warn("Warning", err)
+    })
+}
+
