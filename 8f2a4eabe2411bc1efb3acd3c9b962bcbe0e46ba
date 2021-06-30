@@ -22,6 +22,30 @@
       "revId": "8f2a4eabe2411bc1efb3acd3c9b962bcbe0e46ba",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8ae9106_5244214b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-06-30T01:41:06Z",
+      "side": 1,
+      "message": "somehow when adding and removing contacts I was able to produce conversations containing a participant that is no longer a contact, will leave this for now and track the precise cause",
+      "parentUuid": "8dde1fef_1d2e4524",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 17
+      },
+      "revId": "8f2a4eabe2411bc1efb3acd3c9b962bcbe0e46ba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a",
+      "unresolved": true
     }
   ]
 }
