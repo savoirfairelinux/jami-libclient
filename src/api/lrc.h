@@ -70,7 +70,6 @@ public:
      * @return a PluginModel&.
      */
     PluginModel& getPluginModel() const;
-
     /**
      * Inform the daemon that the connectivity changed
      */
