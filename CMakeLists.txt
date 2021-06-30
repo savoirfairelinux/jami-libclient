@@ -72,7 +72,8 @@ set(COMMON_SOURCES
     ${SRC_DIR}/conversationlistmodelbase.cpp
     ${SRC_DIR}/conversationlistmodel.cpp
     ${SRC_DIR}/searchresultslistmodel.cpp
-    ${SRC_DIR}/calloverlaymodel.cpp)
+    ${SRC_DIR}/calloverlaymodel.cpp
+    ${SRC_DIR}/filestosendlistmodel.cpp)
 
 set(COMMON_HEADERS
     ${SRC_DIR}/avatarimageprovider.h
@@ -128,7 +129,8 @@ set(COMMON_HEADERS
     ${SRC_DIR}/conversationlistmodelbase.h
     ${SRC_DIR}/conversationlistmodel.h
     ${SRC_DIR}/searchresultslistmodel.h
-    ${SRC_DIR}/calloverlaymodel.h)
+    ${SRC_DIR}/calloverlaymodel.h
+    ${SRC_DIR}/filestosendlistmodel.h)
 
 set(QML_LIBS
     Qt5::Quick

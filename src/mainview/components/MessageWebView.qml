@@ -30,11 +30,8 @@ import "../../commoncomponents"
 import "../js/pluginhandlerpickercreation.js" as PluginHandlerPickerCreation
 
 Rectangle {
-    id: messageWebViewRect
+    id: root
 
-    color: JamiTheme.backgroundColor
-
-    property int messageWebViewHeaderPreferredHeight: 64
     property string headerUserAliasLabelText: ""
     property string headerUserUserNameLabelText: ""
     property bool jsLoaded: false
@@ -69,13 +66,6 @@ Rectangle {
         messageWebViewHeader.resetBackToWelcomeViewButtonSource(reset)
     }
 
-    function setFilePathsToSend(filePaths) {
-        for (var index = 0; index < filePaths.length; ++index) {
-            var path = UtilsAdapter.getAbsPath(filePaths[index])
-            MessagesAdapter.setNewMessagesContent(path)
-        }
-    }
-
     function updateChatviewTheme() {
         var theme = 'setTheme("\
             --svg-invert-percentage:' + JamiTheme.invertPercentageInDecimal + ';\
@@ -107,55 +97,13 @@ Rectangle {
         messageWebView.runJavaScript(theme);
     }
 
+    color: JamiTheme.primaryBackgroundColor
+
     Connections {
         target: JamiTheme
 
         function onDarkThemeChanged() {
             updateChatviewTheme()
-        }
-    }
-
-    JamiFileDialog {
-        id: jamiFileDialog
-
-        mode: JamiFileDialog.Mode.OpenFiles
-
-        onAccepted: setFilePathsToSend(jamiFileDialog.files)
-    }
-
-    MessageWebViewHeader {
-
-        DropArea{
-            anchors.fill: parent
-            onDropped: setFilePathsToSend(drop.urls)
-        }
-
-        id: messageWebViewHeader
-
-        anchors.top: messageWebViewRect.top
-        anchors.left: messageWebViewRect.left
-
-        width: messageWebViewRect.width
-        height: messageWebViewHeaderPreferredHeight
-
-        userAliasLabelText: headerUserAliasLabelText
-        userUserNameLabelText: headerUserUserNameLabelText
-
-        onBackClicked: {
-            MessagesAdapter.updateDraft()
-            mainView.showWelcomeView()
-        }
-
-        onNeedToHideConversationInCall: {
-            messageWebViewRect.needToHideConversationInCall()
-        }
-
-        onPluginSelector : {
-            // Create plugin handler picker - PLUGINS
-            PluginHandlerPickerCreation.createPluginHandlerPickerObjects(messageWebViewRect, false)
-            PluginHandlerPickerCreation.calculateCurrentGeo(
-                        messageWebViewRect.width / 2, messageWebViewRect.height / 2)
-            PluginHandlerPickerCreation.openPluginHandlerPicker()
         }
     }
 
@@ -203,10 +151,6 @@ Rectangle {
             MessagesAdapter.sendFile(arg)
         }
 
-        function selectFile() {
-            jamiFileDialog.open()
-        }
-
         function acceptInvitation() {
             MessagesAdapter.acceptInvitation()
         }
@@ -220,11 +164,11 @@ Rectangle {
         }
 
         function emitMessagesCleared() {
-            messageWebViewRect.messagesCleared()
+            root.messagesCleared()
         }
 
         function emitMessagesLoaded() {
-            messageWebViewRect.messagesLoaded()
+            root.messagesLoaded()
         }
 
         function copyToDownloads(interactionId, displayName) {
@@ -244,7 +188,7 @@ Rectangle {
         }
 
         function saveSendMessageContent(arg) {
-            messageWebViewRect.sendMessageContentSaved(arg)
+            root.sendMessageContentSaved(arg)
         }
 
         function onComposing(isComposing) {
@@ -260,104 +204,152 @@ Rectangle {
         }
     }
 
-    WebEngineView {
-        id: messageWebView
-
-        anchors.top: messageWebViewHeader.bottom
-        anchors.topMargin: 1
-        anchors.left: messageWebViewRect.left
-
-        width: messageWebViewRect.width
-        height: messageWebViewRect.height - messageWebViewHeaderPreferredHeight
-
-        backgroundColor: "transparent"
-
-        settings.javascriptEnabled: true
-        settings.javascriptCanOpenWindows: true
-        settings.javascriptCanAccessClipboard: true
-        settings.javascriptCanPaste: true
-        settings.fullScreenSupportEnabled: true
-        settings.allowRunningInsecureContent: true
-        settings.localContentCanAccessRemoteUrls: true
-        settings.localContentCanAccessFileUrls: true
-        settings.errorPageEnabled: false
-        settings.pluginsEnabled: false
-        settings.screenCaptureEnabled: false
-        settings.linksIncludedInFocusChain: false
-        settings.localStorageEnabled: true
-
-        webChannel: messageWebViewChannel
-
-        DropArea{
-            anchors.fill: parent
-            onDropped: setFilePathsToSend(drop.urls)
-        }
-
-        onNavigationRequested: {
-            if(request.navigationType === WebEngineView.LinkClickedNavigation) {
-                MessagesAdapter.openUrl(request.url)
-                request.action = WebEngineView.IgnoreRequest
-            }
-        }
-
-        onLoadingChanged: {
-            if (loadRequest.status == WebEngineView.LoadSucceededStatus) {
-                messageWebView.runJavaScript(UtilsAdapter.getStyleSheet(
-                                                 "chatcss",
-                                                 UtilsAdapter.qStringFromFile(
-                                                     ":/chatview.css")))
-                messageWebView.runJavaScript(UtilsAdapter.getStyleSheet(
-                                                 "chatwin",
-                                                 UtilsAdapter.qStringFromFile(
-                                                     ":/chatview-qt.css")))
-                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                 ":/linkify.js"))
-                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                 ":/linkify-html.js"))
-                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                 ":/linkify-string.js"))
-                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                 ":/qwebchannel.js"))
-                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                 ":/jed.js"))
-                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                 ":/emoji.js"))
-                messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                 ":/previewInfo.js"))
-                messageWebView.runJavaScript(
-                            UtilsAdapter.qStringFromFile(":/chatview.js"),
-                            function() {
-                                messageWebView.runJavaScript("init_i18n();")
-                                MessagesAdapter.setDisplayLinks()
-                                updateChatviewTheme()
-                                messageWebView.runJavaScript("displayNavbar(false);")
-                                jsLoaded = true
-                            })
-            }
-        }
-
-        onContextMenuRequested: {
-            var needContextMenu = request.selectedText.length || request.isContentEditable
-            if (!needContextMenu)
-                request.accepted = true
-        }
-
-        Component.onCompleted: {
-            profile.cachePath = UtilsAdapter.getCachePath()
-            profile.persistentStoragePath = UtilsAdapter.getCachePath()
-            profile.persistentCookiesPolicy = WebEngineProfile.NoPersistentCookies
-            profile.httpCacheType = WebEngineProfile.NoCache
-            profile.httpUserAgent = JamiStrings.httpUserAgentName
-
-            messageWebView.loadHtml(UtilsAdapter.qStringFromFile(
-                                        ":/chatview.html"), ":/chatview.html")
-            messageWebView.url = "qrc:/chatview.html"
-        }
-    }
-
     // Provide WebChannel by registering jsBridgeObject.
     WebChannel {
         id: messageWebViewChannel
         registeredObjects: [jsBridgeObject]
+    }
+
+    ColumnLayout {
+        anchors.fill: root
+
+        spacing: 0
+
+        MessageWebViewHeader {
+            id: messageWebViewHeader
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.preferredHeight: JamiTheme.messageWebViewHeaderPreferredHeight
+            Layout.maximumHeight: JamiTheme.messageWebViewHeaderPreferredHeight
+
+            userAliasLabelText: headerUserAliasLabelText
+            userUserNameLabelText: headerUserUserNameLabelText
+
+            DropArea{
+                anchors.fill: parent
+                //onDropped: setFilePathsToSend(drop.urls)
+            }
+
+            onBackClicked: {
+                MessagesAdapter.updateDraft()
+                mainView.showWelcomeView()
+            }
+
+            onNeedToHideConversationInCall: {
+                root.needToHideConversationInCall()
+            }
+
+            onPluginSelector : {
+                // Create plugin handler picker - PLUGINS
+                PluginHandlerPickerCreation.createPluginHandlerPickerObjects(root, false)
+                PluginHandlerPickerCreation.calculateCurrentGeo(root.width / 2, root.height / 2)
+                PluginHandlerPickerCreation.openPluginHandlerPicker()
+            }
+        }
+
+        WebEngineView {
+            id: messageWebView
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.topMargin: messageWebViewHeader.hairLineSize
+            Layout.bottomMargin: messageWebViewFooter.hairLineSize
+
+            backgroundColor: "transparent"
+
+            settings.javascriptEnabled: true
+            settings.javascriptCanOpenWindows: true
+            settings.javascriptCanAccessClipboard: true
+            settings.javascriptCanPaste: true
+            settings.fullScreenSupportEnabled: true
+            settings.allowRunningInsecureContent: true
+            settings.localContentCanAccessRemoteUrls: true
+            settings.localContentCanAccessFileUrls: true
+            settings.errorPageEnabled: false
+            settings.pluginsEnabled: false
+            settings.screenCaptureEnabled: false
+            settings.linksIncludedInFocusChain: false
+            settings.localStorageEnabled: true
+
+            webChannel: messageWebViewChannel
+
+            DropArea{
+                anchors.fill: parent
+                //onDropped: setFilePathsToSend(drop.urls)
+            }
+
+            onNavigationRequested: {
+                if(request.navigationType === WebEngineView.LinkClickedNavigation) {
+                    MessagesAdapter.openUrl(request.url)
+                    request.action = WebEngineView.IgnoreRequest
+                }
+            }
+
+            onLoadingChanged: {
+                if (loadRequest.status == WebEngineView.LoadSucceededStatus) {
+                    messageWebView.runJavaScript(UtilsAdapter.getStyleSheet(
+                                                     "chatcss",
+                                                     UtilsAdapter.qStringFromFile(
+                                                         ":/chatview.css")))
+                    messageWebView.runJavaScript(UtilsAdapter.getStyleSheet(
+                                                     "chatwin",
+                                                     UtilsAdapter.qStringFromFile(
+                                                         ":/chatview-qt.css")))
+                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                     ":/linkify.js"))
+                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                     ":/linkify-html.js"))
+                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                     ":/linkify-string.js"))
+                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                     ":/qwebchannel.js"))
+                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                     ":/jed.js"))
+                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                     ":/emoji.js"))
+                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                     ":/previewInfo.js"))
+                    messageWebView.runJavaScript(
+                                UtilsAdapter.qStringFromFile(":/chatview.js"),
+                                function() {
+                                    messageWebView.runJavaScript("init_i18n();")
+                                    MessagesAdapter.setDisplayLinks()
+                                    updateChatviewTheme()
+                                    messageWebView.runJavaScript("displayNavbar(false);")
+                                    messageWebView.runJavaScript("hideMessageBar(true);")
+                                    jsLoaded = true
+                                })
+                }
+            }
+
+            onContextMenuRequested: {
+                var needContextMenu = request.selectedText.length || request.isContentEditable
+                if (!needContextMenu)
+                    request.accepted = true
+            }
+
+            Component.onCompleted: {
+                profile.cachePath = UtilsAdapter.getCachePath()
+                profile.persistentStoragePath = UtilsAdapter.getCachePath()
+                profile.persistentCookiesPolicy = WebEngineProfile.NoPersistentCookies
+                profile.httpCacheType = WebEngineProfile.NoCache
+                profile.httpUserAgent = JamiStrings.httpUserAgentName
+
+                messageWebView.loadHtml(UtilsAdapter.qStringFromFile(
+                                            ":/chatview.html"), ":/chatview.html")
+                messageWebView.url = "qrc:/chatview.html"
+            }
+        }
+
+        MessageWebViewFooter {
+            id: messageWebViewFooter
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.preferredHeight: implicitHeight
+            Layout.maximumHeight: JamiTheme.messageWebViewFooterMaximumHeight
+        }
     }
 }

@@ -27,6 +27,7 @@ Popup {
 
     // convient access to closePolicy
     property bool autoClose: true
+    property alias backgroundColor: container.color
 
     onContentItemChanged: {
         if(root.contentItem !== null)
@@ -52,9 +53,7 @@ Popup {
     background: Rectangle {
         id: container
 
-        // TODO: this is the MaterialButton radius and should be part of
-        // a theme.
-        radius: 4
+        radius: JamiTheme.modalPopupRadius
         width: root.width
         height: root.height
     }
@@ -66,7 +65,7 @@ Popup {
         horizontalOffset: 3.0
         verticalOffset: 3.0
         radius: container.radius * 4
-        samples: 16
+        samples: JamiTheme.modalPopupDropShadowSamples
         color: JamiTheme.shadowColor
         source: container
     }

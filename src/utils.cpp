@@ -820,7 +820,7 @@ Utils::humanFileSize(qint64 fileSize)
     if (abs(fileSizeF) < thresh) {
         return QString::number(fileSizeF) + " B";
     }
-    QString units[] = {"kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
+    QString units[] = {"KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
     int unit_position = -1;
     do {
         fileSizeF /= thresh;

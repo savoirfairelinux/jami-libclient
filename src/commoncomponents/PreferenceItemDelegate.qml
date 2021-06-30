@@ -89,7 +89,7 @@ ItemDelegate {
         id: preferenceFilePathDialog
 
         title: JamiStrings.selectFile
-        folder: "file:///" + currentPath
+        folder: JamiQmlUtils.qmlFilePrefix + currentPath
 
         onAccepted: {
             var url = UtilsAdapter.getAbsPath(file.toString())

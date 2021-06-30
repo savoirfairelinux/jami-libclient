@@ -158,6 +158,10 @@ Item {
     property color previewImageBackgroundColor: whiteColor
     property color previewCardContainerColor : darkTheme ? blackColor : whiteColor
     property color previewUrlColor : darkTheme ? "#eeeeee" : "#333"
+    property color messageWebViewFooterButtonImageColor: darkTheme ? "#838383" : "#656565"
+
+    // Files To Send Container
+    property color removeFileButtonColor: Qt.rgba(96, 95, 97, 0.5)
 
     // Font.
     property color faddedFontColor: darkTheme? "#c0c0c0" : "#a0a0a0"
@@ -245,7 +249,31 @@ Item {
     property real lineEditContextMenuItemsWidth: 100
     property real lineEditContextMenuSeparatorsHeight: 2
 
-    // main application spec
+    // Modal Popup
+    property real modalPopupRadius: 4
+    property real modalPopupDropShadowSamples: 16
+
+    // MessageWebView
+    property real messageWebViewHeaderPreferredHeight: 64
+    property real messageWebViewFooterPreferredHeight: 50
+    property real messageWebViewFooterMaximumHeight: 230
+    property real messageWebViewFooterRowSpacing: 1
+    property real messageWebViewFooterButtonSize: 36
+    property real messageWebViewFooterButtonIconSize: 48
+    property real messageWebViewFooterButtonRadius: 5
+    property real messageWebViewFooterFileContainerPreferredHeight: 150
+    property real messageWebViewFooterTextAreaMaximumHeight: 80
+
+    // MessageWebView File Transfer Container
+    property real filesToSendContainerSpacing: 5
+    property real filesToSendContainerPadding: 10
+    property real filesToSendDelegateWidth: 100
+    property real filesToSendDelegateHeight: 100
+    property real filesToSendDelegateRadius: 7
+    property real filesToSendDelegateButtonSize: 16
+    property real filesToSendDelegateFontPointSize: textFontSize + 2
+
+    // Main application spec
     property real mainViewMinWidth: 300
     property real mainViewMinHeight: 400
 

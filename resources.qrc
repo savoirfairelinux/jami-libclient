@@ -60,7 +60,6 @@
         <file>images/icons/ic_video_call_24px.svg</file>
         <file>images/icons/ic_videocam_off_white_24dp.png</file>
         <file>images/icons/ic_videocam_white.png</file>
-        <file>images/icons/ic_voicemail_white_24dp_2x.png</file>
         <file>images/icons/ic_call_end_white_24px.svg</file>
         <file>images/icons/round-add-24px.svg</file>
         <file>images/icons/round-arrow_drop_down-24px.svg</file>
@@ -84,7 +83,6 @@
         <file>images/icons/round-add_a_photo-24px.svg</file>
         <file>images/icons/ic_mic_white_24dp.png</file>
         <file>images/icons/ic_play_white_24dp.png</file>
-        <file>images/icons/ic_voicemail_black_24dp_2x_.png</file>
         <file>images/icons/av_icons/delete-24px.svg</file>
         <file>images/icons/av_icons/fiber_manual_record-24px.svg</file>
         <file>images/icons/av_icons/play_circle_outline-24px.svg</file>
@@ -99,7 +97,6 @@
         <file>images/icons/person-24px.svg</file>
         <file>images/icons/drafts-24px.svg</file>
         <file>images/icons/router-24px.svg</file>
-        <file>images/icons/insert_drive_file-24dp.svg</file>
         <file>images/icons/arrow_back-white-24dp.svg</file>
         <file>images/icons/videocam-24px.svg</file>
         <file>images/icons/qr_code-24px.svg</file>
@@ -122,10 +119,9 @@
         <file>images/logo-jami-standard-coul-white.svg</file>
         <file>images/icons/moderator.svg</file>
         <file>images/icons/star_outline-24px.svg</file>
-        <file>images/icons/send_file-24px.svg</file>
-        <file>images/icons/message_video-24px.svg</file>
-        <file>images/icons/message_audio-24px.svg</file>
-        <file>images/icons/send-24px.svg</file>
+        <file>images/icons/message_audio_black-24dp.svg</file>
+        <file>images/icons/message_video_black-24dp.svg</file>
+        <file>images/icons/send_black-24dp.svg</file>
         <file>images/icons/back-24px.svg</file>
         <file>images/icons/place_audiocall-24px.svg</file>
         <file>images/icons/add_people-24px.svg</file>
@@ -146,5 +142,8 @@
         <file>images/icons/spk_none_black_24dp.svg</file>
         <file>images/icons/more_vert-24dp.svg</file>
         <file>images/icons/chevron_left_black_24dp.svg</file>
+        <file>images/icons/emoji_black-24dp.svg</file>
+        <file>images/icons/link_black-24dp.svg</file>
+        <file>images/icons/file_black-24dp.svg</file>
     </qresource>
 </RCC>

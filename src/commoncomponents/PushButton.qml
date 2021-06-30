@@ -50,7 +50,7 @@ AbstractButton {
     property alias textHAlign: textContent.horizontalAlignment
     property bool buttonTextEnableElide: false
 
-    property string toolTipText: ""
+    property alias toolTipText: toolTip.text
 
     // State colors
     property string pressedColor: JamiTheme.pressedButtonColor
@@ -80,9 +80,14 @@ AbstractButton {
     hoverEnabled: true
     focusPolicy: Qt.TabFocus
 
-    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-    ToolTip.visible: hovered && (toolTipText.length > 0)
-    ToolTip.text: toolTipText
+
+    MaterialToolTip {
+        id: toolTip
+
+        parent: root
+        visible: hovered && (toolTipText.length > 0)
+        delay: Qt.styleHints.mousePressAndHoldInterval
+    }
 
     ResponsiveImage {
         id: image
