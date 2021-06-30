@@ -25,6 +25,7 @@ SOFTWARE.*/
  * @param doc the DOM of the url that is being previewed
  * @returns the title of the given webpage
  */
+
 function getTitle(doc){
     const og_title = doc.querySelector("meta[property=\"og:title\"]")
     if (og_title !== null && og_title.content.length > 0) {
@@ -122,3 +123,44 @@ function getImage(doc) {
     }
     return null
 }
+
+// Qt Interop
+
+_ = new QWebChannel(qt.webChannelTransport, function (channel) {
+    window.jsbridge = channel.objects.previewJSBridge
+})
+
+function log(url) {
+    window.jsbridge.log(url)
+}
+
+function getPreviewInfo(messageId, url) {
+    var title = null
+    var description = null
+    var img = null
+    fetch(url, {
+              mode: 'cors',
+              headers: {'Set-Cookie': 'SameSite=None; Secure'}
+          })
+    .then(function (response) {
+        window.jsbridge.log("after fetch")
+        return response.text()
+    }).then(function (html) {
+        // create DOM from html string
+        var parser = new DOMParser()
+        var doc = parser.parseFromString(html, "text/html")
+        if (!url.includes("twitter.com")){
+            title = getTitle(doc)
+            img = getImage(doc, url)
+            description = getDescription(doc)
+        } else {
+            title = "Twitter. It's what's happening."
+        }
+        window.jsbridge.infoReady(messageId, [title, img, description])
+    }).catch(function (err) {
+        // Error occured while fetching document
+        window.jsbridge.log("Error occured while fetching document")
+        console.warn("Warning", err)
+    })
+}
+
