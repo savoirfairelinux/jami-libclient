@@ -247,6 +247,7 @@ struct Info
     Status status = Status::INVALID;
     bool isRead = false;
     MapStringString commit;
+    QVariantMap hyperlinkPreviewInformation;
 
     Info() {}
 
