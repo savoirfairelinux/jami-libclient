@@ -517,6 +517,20 @@ Q_SIGNALS:
      */
     void needsSyncingSet(const QString& conversationId) const;
 
+    /**
+     * Emitted once a row has been added to the messagelistmodel
+     * @param conversation id
+     * @param size of all current interactions
+     * @param number of rows being added
+     */
+    void beginInsertInteractionRows(const QString& conversationId, int size, int rowsAdded) const;
+
+    /**
+     * Emitted once the adding of a row to the messagelistmodel has been
+     * completed
+     */
+    void endInsertInteractionRows() const;
+
 private:
     std::unique_ptr<ConversationModelPimpl> pimpl_;
 };
