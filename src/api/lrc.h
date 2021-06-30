@@ -69,8 +69,7 @@ public:
      * get a reference on the PLUGIN controller.
      * @return a PluginModel&.
      */
-    PluginModel& getPluginModel() const;
-
+    PluginModel& getPluginModel() const;    
     /**
      * Inform the daemon that the connectivity changed
      */

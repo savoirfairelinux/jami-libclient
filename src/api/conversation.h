@@ -19,7 +19,7 @@
 #pragma once
 
 #include "interaction.h"
-#include "messageslist.h"
+#include "messagelistmodel.h"
 #include "typedefs.h"
 
 #include <vector>
@@ -66,7 +66,7 @@ struct Info
     VectorString participants;
     QString callId;
     QString confId;
-    MessagesList interactions;
+    MessageListModel interactions;
     QString lastMessageUid = 0;
     QHash<QString, QString> parentsId; // pair messageid/parentid for messages without parent loaded
     std::map<QString, QString> lastDisplayedMessageUid;
