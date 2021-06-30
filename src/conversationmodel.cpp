@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
  *    Copyright (C) 2017-2021 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
@@ -236,6 +236,9 @@ public:
     void emplaceBackConversation(conversation::Info&& conversation);
     void eraseConversation(const QString& convId);
     void eraseConversation(int index);
+
+    bool insertInteraction(conversation::Info& conv,
+                           std::pair<QString, interaction::Info> interaction);
 
     const ConversationModel& linked;
     Lrc& lrc;
@@ -1076,8 +1079,10 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
 
             {
                 std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
-                ret = newConv.interactions.insert(std::pair<QString, interaction::Info>(msgId, msg))
-                          .second;
+                ret = pimpl_
+                          ->insertInteraction(newConv,
+                                              std::pair<QString, lrc::api::interaction::Info>(msgId,
+                                                                                              msg));
             }
 
             if (!ret) {
@@ -2161,8 +2166,9 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t,
                     msg.body = path;
                 }
                 msg.status = bytesProgress == 0 ? interaction::Status::TRANSFER_AWAITING_HOST
-                             : bytesProgress == totalSize ? interaction::Status::TRANSFER_FINISHED
-                                                          : interaction::Status::TRANSFER_ONGOING;
+                                                : bytesProgress == totalSize
+                                                      ? interaction::Status::TRANSFER_FINISHED
+                                                      : interaction::Status::TRANSFER_ONGOING;
                 linked.owner.dataTransferModel->registerTransferId(fileId, msgId);
             } else if (msg.type == interaction::Type::CALL) {
                 msg.body = storage::getCallInteractionString(msg.authorUri, msg.duration);
@@ -2228,9 +2234,10 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
             } else {
                 msg.body = path;
             }
-            msg.status = bytesProgress == 0           ? interaction::Status::TRANSFER_AWAITING_HOST
-                         : bytesProgress == totalSize ? interaction::Status::TRANSFER_FINISHED
-                                                      : interaction::Status::TRANSFER_ONGOING;
+            msg.status = bytesProgress == 0
+                             ? interaction::Status::TRANSFER_AWAITING_HOST
+                             : bytesProgress == totalSize ? interaction::Status::TRANSFER_FINISHED
+                                                          : interaction::Status::TRANSFER_ONGOING;
             linked.owner.dataTransferModel->registerTransferId(fileId, msgId);
         } else if (msg.type == interaction::Type::CALL) {
             msg.body = storage::getCallInteractionString(msg.authorUri, msg.duration);
@@ -3924,6 +3931,18 @@ ConversationModelPimpl::updateTransfer(QTimer* timer,
 
     timer->stop();
     timer->deleteLater();
+}
+
+bool
+ConversationModelPimpl::insertInteraction(conversation::Info& conv,
+                                          std::pair<QString, interaction::Info> interaction)
+{
+    std::lock_guard<std::mutex> lk(interactionsLocks[conv.uid]);
+    Q_EMIT linked.beginInsertInteractionRows(conv.uid, conv.interactions.size(), 1);
+    // auto result = conv.interactions.insert(interaction, false);
+    auto result = conv.interactions.insert(interaction, false);
+    Q_EMIT linked.endInsertInteractionRows();
+    return result.second;
 }
 
 } // namespace lrc
