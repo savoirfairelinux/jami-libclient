@@ -76,7 +76,12 @@ struct Info
     unsigned int unreadMessages = 0;
 
     QString getCallId() const { return confId.isEmpty() ? callId : confId; }
-    bool isNotASwarm() const { return mode == Mode::NON_SWARM; }
+
+    inline bool isLegacy() const { return mode == Mode::NON_SWARM; }
+    inline bool isSwarm() const { return !isLegacy(); }
+    // for each contact we must have one non-swarm conversation or one active one-to-one
+    // conversation. Where active means peer did not leave the conversation.
+    inline bool isCoreDialog() const { return isLegacy() || mode == Mode::ONE_TO_ONE; };
 
     Mode mode = Mode::NON_SWARM;
     bool needsSyncing = false;
