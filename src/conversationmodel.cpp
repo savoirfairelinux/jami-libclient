@@ -2706,19 +2706,38 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     const VectorMapStringString& members = ConfigurationManager::instance()
                                                .getConversationMembers(linked.owner.id, convId);
     auto accountURI = linked.owner.profileInfo.uri;
+    QString otherMember;
+    const MapStringString& details = ConfigurationManager::instance()
+                                         .conversationInfos(linked.owner.id, convId);
+    auto mode = conversation::to_mode(details["mode"].toInt());
     for (auto& member : members) {
         // this check should be removed once all usage of participants replaced by
         // peersForConversation. We should have ourself in participants list
-        if (member["uri"] != accountURI)
+        if (member["uri"] != accountURI) {
             participants.append(member["uri"]);
+            if (mode == conversation::Mode::ONE_TO_ONE) {
+                otherMember = member["uri"];
+            }
+        }
     }
     conversation::Info conversation;
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
     conversation.participants = participants;
-    const MapStringString& details = ConfigurationManager::instance()
-                                         .conversationInfos(linked.owner.id, convId);
-    conversation.mode = conversation::to_mode(details["mode"].toInt());
+    conversation.mode = mode;
+    if (mode == conversation::Mode::ONE_TO_ONE && !otherMember.isEmpty()) {
+        try {
+            conversation.confId = linked.owner.callModel->getConferenceFromURI(otherMember)
+                                      .id;
+        } catch (...) {
+            conversation.confId = "";
+        }
+        try {
+            conversation.callId = linked.owner.callModel->getCallFromURI(otherMember).id;
+        } catch (...) {
+            conversation.callId = "";
+        }
+    }
     // If conversation has only one peer it is possible that non swarm conversation was created.
     // remove non swarm conversation
     auto& peers = peersForConversation(conversation);
