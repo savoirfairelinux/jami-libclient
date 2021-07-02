@@ -1,5 +1,5 @@
 /******************************************************************************
- *    Copyright (C) 2014-2021 Savoir-faire Linux Inc.                               *
+ *   Copyright (C) 2014-2021 Savoir-faire Linux Inc.                          *
  *   Author : Philippe Groarke <philippe.groarke@savoirfairelinux.com>        *
  *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>        *
  *                                                                            *
@@ -860,16 +860,16 @@ public Q_SLOTS: // METHODS
                               QString conversationId,
                               QString fileId,
                               QString& path,
-                              int64_t& total,
-                              int64_t& progress)
+                              qlonglong& total,
+                              qlonglong& progress)
     {
         std::string pathstr;
         auto result = uint32_t(DRing::fileTransferInfo(accountId.toStdString(),
                                                        conversationId.toStdString(),
                                                        fileId.toStdString(),
                                                        pathstr,
-                                                       total,
-                                                       progress));
+                                                       reinterpret_cast<int64_t&>(total),
+                                                       reinterpret_cast<int64_t&>(progress)));
         path = pathstr.c_str();
         return result;
     }
