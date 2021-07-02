@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a97915b6_a810c508",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 998,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-02T18:34:22Z",
+      "side": 1,
+      "message": "should get the value of item[MediaAttributeKey::MUTED]",
+      "range": {
+        "startLine": 998,
+        "startChar": 35,
+        "endLine": 998,
+        "endChar": 40
+      },
+      "revId": "ec355d3d5a54e777590cb8ba8be505e75875969f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
