@@ -135,7 +135,7 @@ def generate(force, qtver, sdk, toolset, arch):
     print('Generating lrc with Qt-' + qtver + ' ' +
           arch + ' ' + sdk + ' ' + toolset)
     daemon_dir = os.path.dirname(this_dir) + '\\daemon'
-    daemon_bin = daemon_dir + '\\build\\x64\\ReleaseLib_win32\\bin\\dring.lib'
+    daemon_bin = daemon_dir + '\\build\\x64\\ReleaseLib_win32\\bin\\jami.lib'
     if not os.path.exists(daemon_bin):
         print("Daemon library not found!")
         sys.exit(1)
