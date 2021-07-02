@@ -425,7 +425,8 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
         // conversations with calls will be added in call section
         // we want to add only contacts non-swarm or one-to-one conversation
         auto& peers = pimpl_->peersForConversation(conv);
-        if (!conv.callId.isEmpty() || !conv.confId.isEmpty() || !pimpl_->isCoreDialog(conv)) {
+        if (!conv.callId.isEmpty() || !conv.confId.isEmpty() || !pimpl_->isCoreDialog(conv)
+            || peers.empty()) {
             continue;
         }
         try {
