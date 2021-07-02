@@ -2719,6 +2719,19 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     const MapStringString& details = ConfigurationManager::instance()
                                          .conversationInfos(linked.owner.id, convId);
     conversation.mode = conversation::to_mode(details["mode"].toInt());
+    if (conversation.mode == conversation::Mode::ONE_TO_ONE && participants.size() > 0) {
+        try {
+            conversation.confId = linked.owner.callModel->getConferenceFromURI(participants.front())
+                                      .id;
+        } catch (...) {
+            conversation.confId = "";
+        }
+        try {
+            conversation.callId = linked.owner.callModel->getCallFromURI(participants.front()).id;
+        } catch (...) {
+            conversation.callId = "";
+        }
+    }
     // If conversation has only one peer it is possible that non swarm conversation was created.
     // remove non swarm conversation
     auto& peers = peersForConversation(conversation);
