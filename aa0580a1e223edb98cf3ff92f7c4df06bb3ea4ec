@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a786528f_997acc4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-07-05T14:35:00Z",
+      "side": 1,
+      "message": "good for me otherwise",
+      "revId": "aa0580a1e223edb98cf3ff92f7c4df06bb3ea4ec",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "554e1501_75b21f62",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-07-05T14:35:00Z",
+      "side": 1,
+      "message": "seems problematic that most of these emissions have an empty convId, is this TBD in other patches?",
+      "revId": "aa0580a1e223edb98cf3ff92f7c4df06bb3ea4ec",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
