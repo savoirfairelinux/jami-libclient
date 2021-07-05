@@ -582,14 +582,16 @@ ConversationModel::getFilteredConversations(const FilterType& filter,
     return pimpl_->customFilteredConversations.reset(pimpl_->conversations)
         .filter([this, &includeBanned](const conversation::Info& entry) {
             try {
-                auto& peers = pimpl_->peersForConversation(entry);
-                if (peers.isEmpty()) {
-                    return false;
+                if (entry.isNotASwarm()) {
+                    auto& peers = pimpl_->peersForConversation(entry);
+                    if (peers.isEmpty()) {
+                        return false;
+                    }
+                    auto contactInfo = owner.contactModel->getContact(peers.front());
+                    // do not check blocked contacts for conversation with many participants
+                    if (!includeBanned && (contactInfo.isBanned && peers.size() == 1))
+                        return false;
                 }
-                auto contactInfo = owner.contactModel->getContact(peers.front());
-                // do not check blocked contacts for conversation with many participants
-                if (!includeBanned && (contactInfo.isBanned && peers.size() == 1))
-                    return false;
                 switch (pimpl_->customTypeFilter) {
                 case FilterType::JAMI:
                     // we have conversation with many participants only for JAMI
@@ -1994,7 +1996,16 @@ ConversationModelPimpl::filter(const conversation::Info& entry)
         if (peers.size() < 1) {
             return false;
         }
-        auto contactInfo = linked.owner.contactModel->getContact(peers.front());
+        auto uriPeer = peers.front();
+        contact::Info contactInfo;
+        try {
+            contactInfo = linked.owner.contactModel->getContact(uriPeer);
+        } catch (...) {
+            // Note: as we search for contacts, when importing a new account,
+            // the conversation's request can be there without contact, causing
+            // the function to fail.
+            contactInfo.profileInfo.uri = uriPeer;
+        }
 
         auto uri = URI(currentFilter);
         bool stripScheme = (uri.schemeType() < URI::SchemeType::COUNT__);
