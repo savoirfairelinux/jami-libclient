@@ -51,6 +51,24 @@
       "parentUuid": "554e1501_75b21f62",
       "revId": "aa0580a1e223edb98cf3ff92f7c4df06bb3ea4ec",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ef7c6c5_684b718f",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-07-05T19:22:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "911478f7_dbfce591",
+      "revId": "aa0580a1e223edb98cf3ff92f7c4df06bb3ea4ec",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
