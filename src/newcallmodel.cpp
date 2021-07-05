@@ -505,8 +505,6 @@ NewCallModel::toggleMedia(const QString& callId, const NewCallModel::Media media
 {
     if (!hasCall(callId))
         return;
-    auto& call = pimpl_->calls[callId];
-
     auto mediaLabel = media == NewCallModel::Media::VIDEO ? "video_0" : "audio_0";
     requestMediaChange(callId, mediaLabel);
 }

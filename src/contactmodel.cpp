@@ -995,7 +995,7 @@ ContactModelPimpl::slotIncomingContactRequest(const QString& accountId,
     }
     emit linked.incomingContactRequest(contactUri);
     if (emitTrust) {
-        emit behaviorController.newTrustRequest(linked.owner.id, contactUri);
+        emit behaviorController.newTrustRequest(linked.owner.id, conversationId, contactUri);
     }
 }
 
@@ -1028,7 +1028,7 @@ ContactModelPimpl::slotIncomingCall(const QString& fromId,
         if (linked.owner.profileInfo.type == profile::Type::SIP)
             emit linked.contactAdded(fromId);
         else if (linked.owner.profileInfo.type == profile::Type::JAMI)
-            emit behaviorController.newTrustRequest(linked.owner.id, fromId);
+            emit behaviorController.newTrustRequest(linked.owner.id, "", fromId);
     } else
         emit linked.profileUpdated(fromId);
 
@@ -1068,7 +1068,7 @@ ContactModelPimpl::slotNewAccountMessage(const QString& accountId,
         }
     }
     if (emitNewTrust) {
-        emit behaviorController.newTrustRequest(linked.owner.id, peerId);
+        emit behaviorController.newTrustRequest(linked.owner.id, "", peerId);
     }
     emit linked.newAccountMessage(accountId, peerId2, msgId, payloads);
 }
@@ -1149,7 +1149,7 @@ ContactModelPimpl::slotNewAccountTransfer(const QString& fileId, datatransfer::I
         }
     }
     if (emitNewTrust) {
-        emit behaviorController.newTrustRequest(linked.owner.id, info.peerUri);
+        emit behaviorController.newTrustRequest(linked.owner.id, "", info.peerUri);
     }
 
     emit linked.newAccountTransfer(fileId, info);
