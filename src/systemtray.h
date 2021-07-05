@@ -37,6 +37,7 @@ public:
     explicit SystemTray(AppSettingsManager* settingsManager, QObject* parent = nullptr);
     ~SystemTray();
 
+    void setCount(int count);
 #ifdef Q_OS_LINUX
     bool hideNotification(const QString& id);
     void showNotification(const QString& id,

@@ -115,6 +115,12 @@ LRCInstance::getActiveCalls()
     return lrc_->activeCalls();
 }
 
+int
+LRCInstance::notificationsCount() const
+{
+    return lrc_->getAccountModel().notificationsCount();
+}
+
 const account::Info&
 LRCInstance::getAccountInfo(const QString& accountId)
 {

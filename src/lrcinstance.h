@@ -83,6 +83,7 @@ public:
     bool isConnected();
     void connectivityChanged();
     VectorString getActiveCalls();
+    int notificationsCount() const;
 
     const account::Info& getAccountInfo(const QString& accountId);
     const account::Info& getCurrentAccountInfo();

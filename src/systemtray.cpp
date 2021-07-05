@@ -137,6 +137,16 @@ SystemTray::~SystemTray()
     hide();
 }
 
+void
+SystemTray::setCount(int count)
+{
+    if (count == 0) {
+        setIcon(QIcon(":images/jami.svg"));
+    } else {
+        setIcon(QIcon(":images/jami-new.svg"));
+    }
+}
+
 #ifdef Q_OS_LINUX
 bool
 SystemTray::hideNotification(const QString& id)
@@ -242,9 +252,9 @@ SystemTray::showNotification(const QString& message,
     setOnClickedCallback(std::move(onClickedCb));
 
     if (from.isEmpty())
-        showMessage(message, "", QIcon(":images/jami.png"));
+        showMessage(message, "", QIcon(":images/jami.svg"));
     else
-        showMessage(from, message, QIcon(":images/jami.png"));
+        showMessage(from, message, QIcon(":images/jami.svg"));
 }
 
 template<typename Func>

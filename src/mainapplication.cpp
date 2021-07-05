@@ -491,7 +491,7 @@ MainApplication::initQmlLayer()
 void
 MainApplication::initSystray()
 {
-    systemTray_->setIcon(QIcon(":images/jami.png"));
+    systemTray_->setIcon(QIcon(":images/jami.svg"));
 
     QMenu* systrayMenu = new QMenu();
 
