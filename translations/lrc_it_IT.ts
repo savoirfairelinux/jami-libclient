@@ -33,7 +33,7 @@
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
-        <location filename="../src/chatview.cpp" line="71"/>
+        <location filename="../src/chatview.cpp" line="72"/>
         <source>Connecting</source>
         <translation>Collegamento</translation>
     </message>
@@ -50,7 +50,7 @@
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
-        <location filename="../src/chatview.cpp" line="78"/>
+        <location filename="../src/chatview.cpp" line="79"/>
         <source>Finished</source>
         <translation>Finito</translation>
     </message>
@@ -105,12 +105,12 @@
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
         <location filename="../src/authority/storagehelper.cpp" line="912"/>
         <source>Missed outgoing call</source>
-        <translation>Chiamata persa in uscita</translation>
+        <translation>Chiamata in uscita persa</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <source>Missed incoming call</source>
-        <translation>Chiamata persa in arrivo</translation>
+        <translation>Chiamata in arrivo persa</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="220"/>
@@ -161,7 +161,7 @@
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="72"/>
+        <location filename="../src/chatview.cpp" line="73"/>
         <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Accepted</source>
         <translation>Accettato</translation>
@@ -250,7 +250,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
         <source>Request URI Too Long</source>
-        <translation>URI richiesta troppo lungo</translation>
+        <translation>l&apos;URI richiesto è troppo lungo</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="80"/>
@@ -275,7 +275,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Session Timer Too Small</source>
-        <translation>Timer di sessione troppo piccolo</translation>
+        <translation>Timer di sessione troppo breve</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="85"/>
@@ -469,56 +469,61 @@
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
+        <source>Copy to downloads</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="45"/>
         <source>Write to {0}</source>
         <translation>Scrivi a {0}</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="49"/>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
         <translation>ti ha inviato una richiesta di conversazione.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
         <translation>Ciao, vuoi partecipare alla conversazione?</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
         <translation>Hai accettato la richiesta di conversazione.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="55"/>
+        <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
         <translation>In attesa che altri dispositivi sincronizzino la conversazione.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="66"/>
+        <location filename="../src/chatview.cpp" line="67"/>
         <source>Accept</source>
         <translation>Accetta</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="67"/>
+        <location filename="../src/chatview.cpp" line="68"/>
         <source>Refuse</source>
         <translation>Rifiuta</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="70"/>
+        <location filename="../src/chatview.cpp" line="71"/>
         <source>Unable to make contact</source>
         <translation>Impossibile prendere contatto</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="75"/>
+        <location filename="../src/chatview.cpp" line="76"/>
         <source>Waiting for contact</source>
         <translation>In attesa di contatto</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="76"/>
+        <location filename="../src/chatview.cpp" line="77"/>
         <source>Incoming transfer</source>
         <translation>Trasferimento in entrata</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="77"/>
+        <location filename="../src/chatview.cpp" line="78"/>
         <source>Timed out waiting for contact</source>
         <translation>Tempo scaduto in attesa di contatto</translation>
     </message>
@@ -528,87 +533,87 @@
         <translation>Blocca</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="46"/>
+        <location filename="../src/chatview.cpp" line="47"/>
         <source>Note: an interaction will create a new contact.</source>
         <translation>Nota: un&apos;interazione creerà un nuovo contatto.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="47"/>
+        <location filename="../src/chatview.cpp" line="48"/>
         <source>is not in your contacts</source>
         <translation>non è nei tuoi contatti</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="57"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>Nota: puoi accettare automaticamente questo invito inviando un messaggio.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>{0} days ago</source>
         <translation>{0} giorni fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="60"/>
         <source>{0} hours ago</source>
         <translation>{0} ore fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="61"/>
+        <location filename="../src/chatview.cpp" line="62"/>
         <source>{0} minutes ago</source>
         <translation>{0} minuti fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="73"/>
+        <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
         <translation>Annullato</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="74"/>
+        <location filename="../src/chatview.cpp" line="75"/>
         <source>Ongoing</source>
         <translation>In corso</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>%d days ago</source>
         <translation>%d giorni fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="60"/>
         <source>%d hours ago</source>
         <translation>%d ore fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="61"/>
+        <location filename="../src/chatview.cpp" line="62"/>
         <source>%d minutes ago</source>
         <translation>%d minuti fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="62"/>
+        <location filename="../src/chatview.cpp" line="63"/>
         <source>one day ago</source>
         <translation>un giorno fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="63"/>
+        <location filename="../src/chatview.cpp" line="64"/>
         <source>one hour ago</source>
         <translation>un&apos;ora fa</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="64"/>
+        <location filename="../src/chatview.cpp" line="65"/>
         <source>just now</source>
         <translation>proprio adesso</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="65"/>
+        <location filename="../src/chatview.cpp" line="66"/>
         <source>Failure</source>
         <translation>Fallito</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="68"/>
+        <location filename="../src/chatview.cpp" line="69"/>
         <source>Delete</source>
         <translation>Elimina</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="69"/>
+        <location filename="../src/chatview.cpp" line="70"/>
         <source>Retry</source>
         <translation>Riprova</translation>
     </message>
@@ -633,7 +638,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="960"/>
         <source>Couldn&apos;t lookup…</source>
-        <translation>Lookup non possibile…</translation>
+        <translation>Impossibile cercare…</translation>
     </message>
 </context>
 <context>

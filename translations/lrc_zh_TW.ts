@@ -33,7 +33,7 @@
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
-        <location filename="../src/chatview.cpp" line="71"/>
+        <location filename="../src/chatview.cpp" line="72"/>
         <source>Connecting</source>
         <translation>連接中</translation>
     </message>
@@ -50,7 +50,7 @@
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
-        <location filename="../src/chatview.cpp" line="78"/>
+        <location filename="../src/chatview.cpp" line="79"/>
         <source>Finished</source>
         <translation>已結束</translation>
     </message>
@@ -161,7 +161,7 @@
         <translation>確定</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="72"/>
+        <location filename="../src/chatview.cpp" line="73"/>
         <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Accepted</source>
         <translation>已接受</translation>
@@ -469,56 +469,61 @@
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
+        <source>Copy to downloads</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="45"/>
         <source>Write to {0}</source>
         <translation>寫入到 {0}</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="49"/>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
         <translation>已向您傳送對話請求。</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
         <translation>您好，您想加入對話嗎？</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
         <translation>您已接受對話請求。</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="55"/>
+        <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
         <translation>我們正在等待其他裝置同步對話。</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="66"/>
+        <location filename="../src/chatview.cpp" line="67"/>
         <source>Accept</source>
         <translation>接聽</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="67"/>
+        <location filename="../src/chatview.cpp" line="68"/>
         <source>Refuse</source>
         <translation>拒絕</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="70"/>
+        <location filename="../src/chatview.cpp" line="71"/>
         <source>Unable to make contact</source>
         <translation>無法加為聯絡人</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="75"/>
+        <location filename="../src/chatview.cpp" line="76"/>
         <source>Waiting for contact</source>
         <translation>等待聯絡人</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="76"/>
+        <location filename="../src/chatview.cpp" line="77"/>
         <source>Incoming transfer</source>
         <translation>來電轉發</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="77"/>
+        <location filename="../src/chatview.cpp" line="78"/>
         <source>Timed out waiting for contact</source>
         <translation>等待聯絡人逾時</translation>
     </message>
@@ -528,87 +533,87 @@
         <translation>阻擋</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="46"/>
+        <location filename="../src/chatview.cpp" line="47"/>
         <source>Note: an interaction will create a new contact.</source>
         <translation>注意：互動將會建立新聯絡人。</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="47"/>
+        <location filename="../src/chatview.cpp" line="48"/>
         <source>is not in your contacts</source>
         <translation>不在您的通訊錄中</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="57"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>注意：您可以透過傳送訊息來自動接受此邀請。</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>{0} days ago</source>
         <translation>{0} 天前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="60"/>
         <source>{0} hours ago</source>
         <translation>{0} 小時前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="61"/>
+        <location filename="../src/chatview.cpp" line="62"/>
         <source>{0} minutes ago</source>
         <translation>{0} 分鐘前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="73"/>
+        <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
         <translation>已取消</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="74"/>
+        <location filename="../src/chatview.cpp" line="75"/>
         <source>Ongoing</source>
         <translation>進行中</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>%d days ago</source>
         <translation>%d 天前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="60"/>
         <source>%d hours ago</source>
         <translation>%d 小時前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="61"/>
+        <location filename="../src/chatview.cpp" line="62"/>
         <source>%d minutes ago</source>
         <translation>%d 分鐘前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="62"/>
+        <location filename="../src/chatview.cpp" line="63"/>
         <source>one day ago</source>
         <translation>1 天前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="63"/>
+        <location filename="../src/chatview.cpp" line="64"/>
         <source>one hour ago</source>
         <translation>1 小時前</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="64"/>
+        <location filename="../src/chatview.cpp" line="65"/>
         <source>just now</source>
         <translation>現在</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="65"/>
+        <location filename="../src/chatview.cpp" line="66"/>
         <source>Failure</source>
         <translation>失敗</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="68"/>
+        <location filename="../src/chatview.cpp" line="69"/>
         <source>Delete</source>
         <translation>刪除</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="69"/>
+        <location filename="../src/chatview.cpp" line="70"/>
         <source>Retry</source>
         <translation>重試</translation>
     </message>

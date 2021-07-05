@@ -33,7 +33,7 @@
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
-        <location filename="../src/chatview.cpp" line="71"/>
+        <location filename="../src/chatview.cpp" line="72"/>
         <source>Connecting</source>
         <translation>Kapcsolódás</translation>
     </message>
@@ -50,7 +50,7 @@
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
-        <location filename="../src/chatview.cpp" line="78"/>
+        <location filename="../src/chatview.cpp" line="79"/>
         <source>Finished</source>
         <translation>Befejezett</translation>
     </message>
@@ -161,7 +161,7 @@
         <translation>Rendben</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="72"/>
+        <location filename="../src/chatview.cpp" line="73"/>
         <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Accepted</source>
         <translation>Elfogadott</translation>
@@ -469,56 +469,61 @@
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
+        <source>Copy to downloads</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/chatview.cpp" line="45"/>
         <source>Write to {0}</source>
         <translation>Írj a következőknek: {0}</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="49"/>
+        <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
         <translation>beszélgetési kérelmet küldött Önnek.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="51"/>
+        <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
         <translation>Helló, csatlakozni szeretne a beszélgetéshez?</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="53"/>
+        <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
         <translation>Elfogadta a beszélgetési kérelmet.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="55"/>
+        <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
         <translation>Várunk egy másik eszközre, hogy összehangolja a beszélgetést. </translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="66"/>
+        <location filename="../src/chatview.cpp" line="67"/>
         <source>Accept</source>
         <translation>Elfogadás</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="67"/>
+        <location filename="../src/chatview.cpp" line="68"/>
         <source>Refuse</source>
         <translation>Elutasítás</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="70"/>
+        <location filename="../src/chatview.cpp" line="71"/>
         <source>Unable to make contact</source>
         <translation>Nem sikerült kapcsolatba lépni</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="75"/>
+        <location filename="../src/chatview.cpp" line="76"/>
         <source>Waiting for contact</source>
         <translation>Várakozás a kapcsolatfelvételre</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="76"/>
+        <location filename="../src/chatview.cpp" line="77"/>
         <source>Incoming transfer</source>
         <translation>Bejövő fájlátvitel</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="77"/>
+        <location filename="../src/chatview.cpp" line="78"/>
         <source>Timed out waiting for contact</source>
         <translation>Időtúllépés várt a kapcsolattartásra</translation>
     </message>
@@ -528,87 +533,87 @@
         <translation>Letiltás</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="46"/>
+        <location filename="../src/chatview.cpp" line="47"/>
         <source>Note: an interaction will create a new contact.</source>
         <translation>Megjegyzés: az együttműködés új kapcsolatot hoz létre.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="47"/>
+        <location filename="../src/chatview.cpp" line="48"/>
         <source>is not in your contacts</source>
         <translation>nincs a kapcsolataiban</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="57"/>
+        <location filename="../src/chatview.cpp" line="58"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
         <translation>Megjegyzés: az üzenet elküldésével önműködően elfogadhatja ezt a meghívást.</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>{0} days ago</source>
         <translation>{0} napja</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="60"/>
         <source>{0} hours ago</source>
         <translation>{0} órája</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="61"/>
+        <location filename="../src/chatview.cpp" line="62"/>
         <source>{0} minutes ago</source>
         <translation>{0} perce</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="73"/>
+        <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
         <translation>Törölve</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="74"/>
+        <location filename="../src/chatview.cpp" line="75"/>
         <source>Ongoing</source>
         <translation>Folyamatban lévő</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="58"/>
+        <location filename="../src/chatview.cpp" line="59"/>
         <source>%d days ago</source>
         <translation>%d napja</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="59"/>
+        <location filename="../src/chatview.cpp" line="60"/>
         <source>%d hours ago</source>
         <translation>%d órája</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="61"/>
+        <location filename="../src/chatview.cpp" line="62"/>
         <source>%d minutes ago</source>
         <translation>%d perce</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="62"/>
+        <location filename="../src/chatview.cpp" line="63"/>
         <source>one day ago</source>
         <translation>egy napja</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="63"/>
+        <location filename="../src/chatview.cpp" line="64"/>
         <source>one hour ago</source>
         <translation>egy órája</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="64"/>
+        <location filename="../src/chatview.cpp" line="65"/>
         <source>just now</source>
         <translation>most</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="65"/>
+        <location filename="../src/chatview.cpp" line="66"/>
         <source>Failure</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="68"/>
+        <location filename="../src/chatview.cpp" line="69"/>
         <source>Delete</source>
         <translation>Törlés</translation>
     </message>
     <message>
-        <location filename="../src/chatview.cpp" line="69"/>
+        <location filename="../src/chatview.cpp" line="70"/>
         <source>Retry</source>
         <translation>Újra</translation>
     </message>
