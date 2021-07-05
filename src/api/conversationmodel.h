@@ -358,6 +358,10 @@ public:
      * @return number of conversations requests
      */
     int pendingRequestCount() const;
+    /**
+     * @return number of conversations requests + unread
+     */
+    int notificationsCount() const;
     const VectorString peersForConversation(const QString& conversationId);
 
     // Presentation
