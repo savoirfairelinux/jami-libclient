@@ -1197,6 +1197,16 @@ NewAccountModel::isAllModerators(const QString& accountID)
     return ConfigurationManager::instance().isAllModerators(accountID);
 }
 
+int
+NewAccountModel::notificationsCount() const
+{
+    auto total = 0;
+    for (const auto& [_id, account] : pimpl_->accounts) {
+        total += account.first.conversationModel->notificationsCount();
+    }
+    return total;
+}
+
 } // namespace lrc
 
 #include "api/moc_newaccountmodel.cpp"
