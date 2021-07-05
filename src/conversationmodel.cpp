@@ -992,6 +992,22 @@ ConversationModel::pendingRequestCount() const
     return pendingRequestCount;
 }
 
+int
+ConversationModel::notificationsCount() const
+{
+    int notificationsCount = 0;
+    std::for_each(pimpl_->conversations.begin(),
+                  pimpl_->conversations.end(),
+                  [&notificationsCount](const auto& c) {
+                      if (c.isRequest)
+                          notificationsCount += 1;
+                      else {
+                          notificationsCount += c.unreadMessages;
+                      }
+                  });
+    return notificationsCount;
+}
+
 QString
 ConversationModel::title(const QString& conversationId) const
 {
@@ -2872,7 +2888,10 @@ ConversationModelPimpl::indexOfContact(const QString& uri) const
         if (!conversations.at(i).isCoreDialog()) {
             continue;
         }
-        if (peersForConversation(conversations.at(i)).front() == uri)
+        auto peers = peersForConversation(conversations.at(i));
+        if (peers.isEmpty())
+            continue;
+        if (peers.front() == uri)
             return i;
     }
     return -1;

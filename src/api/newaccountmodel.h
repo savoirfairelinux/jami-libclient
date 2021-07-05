@@ -255,6 +255,10 @@ public:
      * @return if all moderator is enabled
      */
     bool isAllModerators(const QString& accountID);
+    /**
+     * Get notifications count across accounts
+     */
+    int notificationsCount() const;
 
 Q_SIGNALS:
     /**
