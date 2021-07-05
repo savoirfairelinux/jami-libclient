@@ -187,12 +187,12 @@
 <context>
     <name>ConversationsAdapter</name>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="208"/>
+        <location filename="../src/conversationsadapter.cpp" line="202"/>
         <source>New message</source>
         <translation>Neue Nachricht</translation>
     </message>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="253"/>
+        <location filename="../src/conversationsadapter.cpp" line="250"/>
         <source>Trust request</source>
         <translation>Anfrage vertrauen</translation>
     </message>
@@ -295,15 +295,14 @@
     <name>DaemonReconnectWindow</name>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
-        <source>Could not re-connect to the Jami daemon (dring).
+        <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
-        <translation>Neuverbindung zum Jami-Daemon (dring) fehlgeschlagen.
-Jami wird nun beendet.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="99"/>
-        <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation>Neuer Verbindungsversuch zum Jami-Daemon (dring)...</translation>
+        <source>Trying to reconnect to the Jami daemon (jamid)…</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="154"/>
@@ -1672,6 +1671,17 @@ Jami wird nun beendet.</translation>
         <translation>Stop</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="481"/>
+        <source>Trying to reconnect to the Jami daemon (jamid)…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="482"/>
+        <source>Could not re-connect to the Jami daemon (jamid).
+Jami will now quit.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="485"/>
         <source>Is swarm:</source>
         <translation type="unfinished"/>
@@ -1973,18 +1983,6 @@ Kopieren und teilen Sie diesen mit Ihren Freunden!</translation>
         <location filename="../src/constant/JamiStrings.qml" line="478"/>
         <source>Remove default moderator</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="481"/>
-        <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation>Neuer Verbindungsversuch zum Jami-Daemon (dring)...</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="482"/>
-        <source>Could not re-connect to the Jami daemon (dring).
-Jami will now quit.</source>
-        <translation>Neuverbindung zum Jami-Daemon (dring) fehlgeschlagen.
-Jami wird nun beendet.</translation>
     </message>
 </context>
 <context>

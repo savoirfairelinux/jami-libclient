@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/calladapter.cpp" line="130"/>
         <source>Missed call from %1</source>
-        <translation type="unfinished"/>
+        <translation>Пропущенный звонок от %1</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="496"/>
@@ -145,7 +145,7 @@
     <message>
         <location filename="../src/calladapter.cpp" line="558"/>
         <source>%1 is calling you</source>
-        <translation type="unfinished"/>
+        <translation>%1 звонит вам</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="569"/>
@@ -187,12 +187,12 @@
 <context>
     <name>ConversationsAdapter</name>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="208"/>
+        <location filename="../src/conversationsadapter.cpp" line="202"/>
         <source>New message</source>
         <translation>Новое сообщение</translation>
     </message>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="253"/>
+        <location filename="../src/conversationsadapter.cpp" line="250"/>
         <source>Trust request</source>
         <translation>Запрос доверия</translation>
     </message>
@@ -295,15 +295,14 @@
     <name>DaemonReconnectWindow</name>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
-        <source>Could not re-connect to the Jami daemon (dring).
+        <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
-        <translation>Не удалось переподключиться к демону Jami (dring).
-Завершение работы Jami.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="99"/>
-        <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation>Пробуем переподключиться к демону Jami (dring)…</translation>
+        <source>Trying to reconnect to the Jami daemon (jamid)…</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="154"/>
@@ -513,12 +512,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="35"/>
         <source>Incoming audio call from {}</source>
-        <translation type="unfinished"/>
+        <translation>Входящий вызов от {}</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="36"/>
         <source>Incoming video call from {}</source>
-        <translation type="unfinished"/>
+        <translation>Входящий вызов от {}</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="69"/>
@@ -653,7 +652,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="104"/>
         <source>Registration expiration time (seconds)</source>
-        <translation type="unfinished"/>
+        <translation>Срок действия регистрации (секунд)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="117"/>
@@ -865,12 +864,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="31"/>
         <source>Accept in audio</source>
-        <translation type="unfinished"/>
+        <translation>Принять в аудио</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="32"/>
         <source>Accept in video</source>
-        <translation type="unfinished"/>
+        <translation>Принять в видео</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="99"/>
@@ -1187,7 +1186,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="202"/>
         <source>Mosaic</source>
-        <translation type="unfinished"/>
+        <translation>Мозаика</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="206"/>
@@ -1282,7 +1281,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="229"/>
         <source>Select sharing method</source>
-        <translation type="unfinished"/>
+        <translation>Выберите метод доступа</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="230"/>
@@ -1563,7 +1562,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="320"/>
         <source>Display hyperlink previews in the chatview</source>
-        <translation type="unfinished"/>
+        <translation>Отображение превью гиперссылок в окне чата</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="323"/>
@@ -1635,17 +1634,17 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="341"/>
         <source>Troubleshoot</source>
-        <translation type="unfinished"/>
+        <translation>Устранение неполадок</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="342"/>
         <source>Open logs</source>
-        <translation type="unfinished"/>
+        <translation>Открыть журнал логов</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="343"/>
         <source>Get logs</source>
-        <translation type="unfinished"/>
+        <translation>Получить журнал логов</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="346"/>
@@ -1655,17 +1654,17 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="349"/>
         <source>Debug</source>
-        <translation type="unfinished"/>
+        <translation>Отладка</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="350"/>
         <source>Show Stats</source>
-        <translation type="unfinished"/>
+        <translation>Показать статистику</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="351"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Начать</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="352"/>
@@ -1673,19 +1672,30 @@ Jami will now quit.</source>
         <translation>Стоп</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="481"/>
+        <source>Trying to reconnect to the Jami daemon (jamid)…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="482"/>
+        <source>Could not re-connect to the Jami daemon (jamid).
+Jami will now quit.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="485"/>
         <source>Is swarm:</source>
-        <translation type="unfinished"/>
+        <translation>Рой:</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="486"/>
         <source>True</source>
-        <translation type="unfinished"/>
+        <translation>Правда</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="487"/>
         <source>False</source>
-        <translation type="unfinished"/>
+        <translation>Ложь</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="205"/>
@@ -1696,12 +1706,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="226"/>
         <source>Stop sharing screen or file</source>
-        <translation type="unfinished"/>
+        <translation>Остановить трансляцию или доступ к файлу</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="354"/>
         <source>Report Bug</source>
-        <translation type="unfinished"/>
+        <translation>Сообщить об ошибке</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="355"/>
@@ -1711,12 +1721,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Copied to clipboard!</source>
-        <translation type="unfinished"/>
+        <translation>Cкопировано в буфер обмена!</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Receive Logs</source>
-        <translation type="unfinished"/>
+        <translation>Получить журнал логов</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="361"/>
@@ -1908,7 +1918,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="447"/>
         <source>Clear Text</source>
-        <translation type="unfinished"/>
+        <translation>Очистить Текст</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="449"/>
@@ -1963,7 +1973,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="476"/>
         <source>Make all participants moderators</source>
-        <translation type="unfinished"/>
+        <translation>Сделать всех участников модераторами</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="477"/>
@@ -1974,18 +1984,6 @@ Copy and share it with your friends!</source>
         <location filename="../src/constant/JamiStrings.qml" line="478"/>
         <source>Remove default moderator</source>
         <translation>Удалить модератора по умолчанию</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="481"/>
-        <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation>Пробуем переподключиться к демону Jami (dring)…</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="482"/>
-        <source>Could not re-connect to the Jami daemon (dring).
-Jami will now quit.</source>
-        <translation>Не удалось переподключиться к демону Jami (dring).
-Завершение работы Jami.</translation>
     </message>
 </context>
 <context>
@@ -2184,17 +2182,17 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainapplication.cpp" line="482"/>
         <source>E&amp;xit</source>
-        <translation type="unfinished"/>
+        <translation>В&amp;ыход</translation>
     </message>
     <message>
         <location filename="../src/mainapplication.cpp" line="484"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Выход</translation>
     </message>
     <message>
         <location filename="../src/mainapplication.cpp" line="490"/>
         <source>&amp;Show Jami</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Показать Jami</translation>
     </message>
 </context>
 <context>

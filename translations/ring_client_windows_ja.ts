@@ -28,12 +28,12 @@
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="87"/>
         <source>Audio Files</source>
-        <translation type="unfinished"/>
+        <translation>音声ファイル</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedCallSettings.qml" line="87"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>全てのファイル</translation>
     </message>
 </context>
 <context>
@@ -49,12 +49,12 @@
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="94"/>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>全てのファイル</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedJamiSecuritySettings.qml" line="114"/>
         <source>Key File</source>
-        <translation type="unfinished"/>
+        <translation>鍵ファイル</translation>
     </message>
 </context>
 <context>
@@ -83,12 +83,12 @@
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="113"/>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>全てのファイル</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/AdvancedSIPSecuritySettings.qml" line="131"/>
         <source>Key File</source>
-        <translation type="unfinished"/>
+        <translation>鍵ファイル</translation>
     </message>
 </context>
 <context>
@@ -104,12 +104,12 @@
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="48"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Jamiアーカイブファイル</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/BackupKeyPage.qml" line="48"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>全てのファイル</translation>
     </message>
 </context>
 <context>
@@ -125,17 +125,17 @@
     <message>
         <location filename="../src/calladapter.cpp" line="129"/>
         <source>Missed call</source>
-        <translation type="unfinished"/>
+        <translation>不在着信</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="130"/>
         <source>Missed call from %1</source>
-        <translation type="unfinished"/>
+        <translation>%1から不在着信</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="496"/>
         <source>me</source>
-        <translation type="unfinished"/>
+        <translation>自分</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="557"/>
@@ -145,12 +145,12 @@
     <message>
         <location filename="../src/calladapter.cpp" line="558"/>
         <source>%1 is calling you</source>
-        <translation type="unfinished"/>
+        <translation>%1から着信があります</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="569"/>
         <source>is calling you</source>
-        <translation type="unfinished"/>
+        <translation>着信があります</translation>
     </message>
 </context>
 <context>
@@ -163,7 +163,7 @@
     <message>
         <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="98"/>
         <source>Confirm Password</source>
-        <translation type="unfinished"/>
+        <translation>暗証語の再入力</translation>
     </message>
 </context>
 <context>
@@ -176,25 +176,25 @@
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="87"/>
         <source>Transfer this call</source>
-        <translation type="unfinished"/>
+        <translation>この通話を転送</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="89"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>既定担当者を追加</translation>
     </message>
 </context>
 <context>
     <name>ConversationsAdapter</name>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="208"/>
+        <location filename="../src/conversationsadapter.cpp" line="202"/>
         <source>New message</source>
-        <translation type="unfinished"/>
+        <translation>新規メッセージ</translation>
     </message>
     <message>
-        <location filename="../src/conversationsadapter.cpp" line="253"/>
+        <location filename="../src/conversationsadapter.cpp" line="250"/>
         <source>Trust request</source>
-        <translation type="unfinished"/>
+        <translation>要求を信頼</translation>
     </message>
 </context>
 <context>
@@ -202,12 +202,12 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="76"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Jamiアーカイブファイル</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="76"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>全てのファイル</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="121"/>
@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="149"/>
         <source>Choose a name</source>
-        <translation type="unfinished"/>
+        <translation>名前を選択</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="164"/>
@@ -232,7 +232,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="164"/>
         <source>Invalid name</source>
-        <translation type="unfinished"/>
+        <translation>不正な名前</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="166"/>
@@ -242,7 +242,7 @@
     <message>
         <location filename="../src/wizardview/components/CreateAccountPage.qml" line="166"/>
         <source>Name already taken</source>
-        <translation type="unfinished"/>
+        <translation>この名前はすでに取得されています</translation>
     </message>
 </context>
 <context>
@@ -267,12 +267,12 @@
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="156"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Jamiアーカイブファイル</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/CurrentAccountSettings.qml" line="156"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>全てのファイル</translation>
     </message>
 </context>
 <context>
@@ -295,13 +295,13 @@
     <name>DaemonReconnectWindow</name>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
-        <source>Could not re-connect to the Jami daemon (dring).
+        <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="99"/>
-        <source>Trying to reconnect to the Jami daemon (dring)…</source>
+        <source>Trying to reconnect to the Jami daemon (jamid)…</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -328,7 +328,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/settingsview/components/DeviceItemDelegate.qml" line="120"/>
         <source>Device Id</source>
-        <translation type="unfinished"/>
+        <translation>機器識別子</translation>
     </message>
 </context>
 <context>
@@ -336,12 +336,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="64"/>
         <source>Jami archive files</source>
-        <translation type="unfinished"/>
+        <translation>Jamiアーカイブファイル</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="64"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>全てのファイル</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="88"/>
@@ -351,12 +351,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="159"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>アカウントを生成中…</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="204"/>
         <source>Back to welcome page</source>
-        <translation type="unfinished"/>
+        <translation>歓迎画面に戻る</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromBackupPage.qml" line="141"/>
@@ -374,12 +374,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="140"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>アカウントを生成中…</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="180"/>
         <source>Back to welcome page</source>
-        <translation type="unfinished"/>
+        <translation>歓迎画面に戻る</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ImportFromDevicePage.qml" line="123"/>
@@ -392,12 +392,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="37"/>
         <source>Find a user or search for a conversation</source>
-        <translation type="unfinished"/>
+        <translation>利用者を見付けたり会話を検索したりしましょう</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="38"/>
         <source>Search your invitations</source>
-        <translation type="unfinished"/>
+        <translation>送信した招待を検索</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="39"/>
@@ -407,7 +407,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="40"/>
         <source>Jami is free software for universal communication which respects the freedoms and the privacy of its users.</source>
-        <translation type="unfinished"/>
+        <translation>Jamiは世界中の利用者と繋がることができる自由ソフトウェアであり，利用者の自由と私事権とを尊重しています。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="43"/>
@@ -522,7 +522,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="69"/>
         <source>Convert your account into a rendezvous point</source>
-        <translation type="unfinished"/>
+        <translation>アカウントを待合室に変換</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="70"/>
@@ -723,7 +723,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="254"/>
         <source>Create a rendezvous point</source>
-        <translation type="unfinished"/>
+        <translation>待合室を作成</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="257"/>
@@ -748,7 +748,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>Enable typing indicators</source>
-        <translation type="unfinished"/>
+        <translation>自分の入力状況を表示</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="332"/>
@@ -763,7 +763,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="371"/>
         <source>Enter the PIN from another configured Jami account. Use the &quot;Link Another Device&quot; feature to obtain a PIN.</source>
-        <translation type="unfinished"/>
+        <translation>他で構成されたJamiアカウントからのPINを入力します。PINは「他の機器を接続する」機能を用いて取得できます。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="373"/>
@@ -884,7 +884,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="103"/>
         <source>Auto Registration After Expired</source>
-        <translation type="unfinished"/>
+        <translation>期限切れの後 自動的に登録</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="105"/>
@@ -1044,7 +1044,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="153"/>
         <source>Ringtone device</source>
-        <translation type="unfinished"/>
+        <translation>機器の着信音</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="154"/>
@@ -1099,7 +1099,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="174"/>
         <source>Backup your account!</source>
-        <translation type="unfinished"/>
+        <translation>アカウントをバックアップしてください！</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="175"/>
@@ -1154,19 +1154,19 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="189"/>
         <source>is calling you</source>
-        <translation type="unfinished"/>
+        <translation>着信があります</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="192"/>
         <location filename="../src/constant/JamiStrings.qml" line="465"/>
         <source>Mute</source>
-        <translation type="unfinished"/>
+        <translation>消音</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="193"/>
         <location filename="../src/constant/JamiStrings.qml" line="466"/>
         <source>Unmute</source>
-        <translation type="unfinished"/>
+        <translation>消音を解除</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="199"/>
@@ -1181,7 +1181,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="201"/>
         <source>More options</source>
-        <translation type="unfinished"/>
+        <translation>詳細な設定</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="202"/>
@@ -1326,7 +1326,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="242"/>
         <source>Enter Jami Account Management Server (JAMS) URL</source>
-        <translation type="unfinished"/>
+        <translation>Jamiアカウント管理サーバー (JAMS) URLを入力</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="243"/>
@@ -1341,7 +1341,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="245"/>
         <source>Enter your JAMS credentials</source>
-        <translation type="unfinished"/>
+        <translation>JAMS資格情報を入力</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="246"/>
@@ -1351,7 +1351,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="248"/>
         <source>Back to welcome page</source>
-        <translation type="unfinished"/>
+        <translation>歓迎画面に戻る</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="251"/>
@@ -1391,12 +1391,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="264"/>
         <source>Create SIP account</source>
-        <translation type="unfinished"/>
+        <translation>SIPアカウントを作成</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="265"/>
         <source>Configure an existing SIP account</source>
-        <translation type="unfinished"/>
+        <translation>既存のSIPアカウントを構成</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="268"/>
@@ -1671,6 +1671,17 @@ Jami will now quit.</source>
         <translation>停止</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="481"/>
+        <source>Trying to reconnect to the Jami daemon (jamid)…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="482"/>
+        <source>Could not re-connect to the Jami daemon (jamid).
+Jami will now quit.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="485"/>
         <source>Is swarm:</source>
         <translation type="unfinished"/>
@@ -1734,17 +1745,17 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="364"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
-        <translation type="unfinished"/>
+        <translation>アカウント設定で「アカウントをバックアップする」を実行してアーカイブを取得できます。機器に.gzファイルが保存されます。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="367"/>
         <source>Restore an account from backup</source>
-        <translation type="unfinished"/>
+        <translation>バックアップからアカウントを復元</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="370"/>
         <source>Enter Jami account password</source>
-        <translation type="unfinished"/>
+        <translation>Jamiアカウントの暗証語を入力してください</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="376"/>
@@ -1876,12 +1887,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="435"/>
         <source>Link this device to an existing account</source>
-        <translation type="unfinished"/>
+        <translation>この機器を既存のアカウントと関連付ける</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="436"/>
         <source>Advanced features</source>
-        <translation type="unfinished"/>
+        <translation>高度な機能</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="437"/>
@@ -1891,7 +1902,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="438"/>
         <source>Connect to a JAMS server</source>
-        <translation type="unfinished"/>
+        <translation>JAMSサーバーに接続</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="440"/>
@@ -1916,12 +1927,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="463"/>
         <source>Set moderator</source>
-        <translation type="unfinished"/>
+        <translation>調停者を設定</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="464"/>
         <source>Unset moderator</source>
-        <translation type="unfinished"/>
+        <translation>担当者を取り消し</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="467"/>
@@ -1966,22 +1977,11 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="477"/>
         <source>Add default moderator</source>
-        <translation type="unfinished"/>
+        <translation>既定担当者を追加</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="478"/>
         <source>Remove default moderator</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="481"/>
-        <source>Trying to reconnect to the Jami daemon (dring)…</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="482"/>
-        <source>Could not re-connect to the Jami daemon (dring).
-Jami will now quit.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2003,7 +2003,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="47"/>
         <source>Open account list</source>
-        <translation type="unfinished"/>
+        <translation>アカウント一覧を表示</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="52"/>
@@ -2244,7 +2244,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="105"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>全てのファイル</translation>
     </message>
     <message>
         <location filename="../src/commoncomponents/PhotoboothView.qml" line="252"/>
@@ -2271,7 +2271,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="109"/>
         <source>Choose plugin</source>
-        <translation type="unfinished"/>
+        <translation>追加機能を選択</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/PluginHandlerPicker.qml" line="211"/>
@@ -2330,7 +2330,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="68"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>全てのファイル</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/PluginListSettingsView.qml" line="88"/>
@@ -2351,7 +2351,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="78"/>
         <source>Profile is only shared with contacts</source>
-        <translation type="unfinished"/>
+        <translation>個人情報を共有できるのは連絡先だけです</translation>
     </message>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="86"/>
@@ -2366,7 +2366,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/wizardview/components/ProfilePage.qml" line="152"/>
         <source>Generating account…</source>
-        <translation type="unfinished"/>
+        <translation>アカウントを生成中…</translation>
     </message>
 </context>
 <context>
@@ -2506,7 +2506,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="42"/>
         <source>Plugin</source>
-        <translation type="unfinished"/>
+        <translation>プラグイン</translation>
     </message>
 </context>
 <context>
@@ -2524,7 +2524,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/SettingsView.qml" line="158"/>
         <source>Plugin</source>
-        <translation type="unfinished"/>
+        <translation>プラグイン</translation>
     </message>
 </context>
 <context>
