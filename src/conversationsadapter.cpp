@@ -221,17 +221,20 @@ ConversationsAdapter::onNewReadInteraction(const QString& accountId,
 }
 
 void
-ConversationsAdapter::onNewTrustRequest(const QString& accountId, const QString& peerUri)
+ConversationsAdapter::onNewTrustRequest(const QString& accountId, const QString& convId, const QString& peerUri)
 {
 #ifdef Q_OS_LINUX
     if (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrentAccountId()) {
-        auto& convInfo = lrcInstance_->getConversationFromPeerUri(peerUri);
-        if (convInfo.uid.isEmpty())
-            return;
+        auto conv = convId;
+        if (conv.isEmpty()) {
+            auto& convInfo = lrcInstance_->getConversationFromPeerUri(peerUri);
+            if (convInfo.uid.isEmpty())
+                return;
+        }
         auto& accInfo = lrcInstance_->getAccountInfo(accountId);
         auto from = accInfo.contactModel->bestNameForContact(peerUri);
         auto contactPhoto = Utils::contactPhoto(lrcInstance_, peerUri, QSize(50, 50), accountId);
-        auto notifId = QString("%1;%2").arg(accountId).arg(convInfo.uid);
+        auto notifId = QString("%1;%2").arg(accountId).arg(conv);
         systemTray_->showNotification(notifId,
                                       tr("Trust request"),
                                       "New request from " + from,

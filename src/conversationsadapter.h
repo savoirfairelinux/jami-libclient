@@ -70,7 +70,7 @@ private Q_SLOTS:
     void onNewReadInteraction(const QString& accountId,
                               const QString& convUid,
                               const QString& interactionId);
-    void onNewTrustRequest(const QString& accountId, const QString& peerUri);
+    void onNewTrustRequest(const QString& accountId, const QString& convId, const QString& peerUri);
     void onTrustRequestTreated(const QString& accountId, const QString& peerUri);
 
     // per-account slots
