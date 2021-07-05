@@ -72,7 +72,7 @@ Q_SIGNALS:
     /**
      * Emitted when the client receives a new trust request
      */
-    void newTrustRequest(const QString& accountId, const QString& contactUri) const;
+    void newTrustRequest(const QString& accountId, const QString& conversationId, const QString& contactUri) const;
     /**
      * Emitted when a trust request has been accepted, refused or blocked
      */
