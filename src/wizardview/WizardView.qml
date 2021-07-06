@@ -291,7 +291,7 @@ Rectangle {
                     inputParaObject["password"] = importFromBackupPage.text_passwordFromBackupEditAlias
                     showBackUp = false
                     showBottom = false
-                    showProfile = true
+                    showProfile = false
                     AccountAdapter.createJamiAccount(
                         "", inputParaObject, "", false)
                 }
@@ -346,7 +346,7 @@ Rectangle {
                     inputParaObject["archivePin"] = importFromDevicePage.text_pinFromDeviceAlias
                     inputParaObject["password"] = importFromDevicePage.text_passwordFromDeviceAlias
 
-                    showProfile = true
+                    showProfile = false
                     showBackUp = false
                     showBottom = false
                     AccountAdapter.createJamiAccount(
