@@ -1171,7 +1171,6 @@ ContactModelPimpl::slotProfileReceived(const QString& accountId,
     in.setCodec("UTF-8");
 
     auto vCard = in.readAll();
-    vCardFile.remove();
 
     profile::Info profileInfo;
     profileInfo.uri = peer;
@@ -1182,6 +1181,21 @@ ContactModelPimpl::slotProfileReceived(const QString& accountId,
             profileInfo.avatar = e.split(":")[1];
         else if (e.contains("FN"))
             profileInfo.alias = e.split(":")[1];
+
+    if (peer == linked.owner.profileInfo.uri) {
+        if (linked.owner.profileInfo.avatar.isEmpty() && !profileInfo.avatar.isEmpty()) {
+            auto dest = storage::getPath() + accountId + "/profile.vcf";
+            QFile oldvCard(dest);
+            if (oldvCard.exists())
+                oldvCard.remove();
+            vCardFile.rename(dest);
+            linked.owner.accountModel->setAlias(linked.owner.id, profileInfo.alias);
+            linked.owner.accountModel->setAvatar(linked.owner.id, profileInfo.avatar);
+            emit linked.profileUpdated(peer);
+        }
+        return;
+    }
+    vCardFile.remove();
 
     contact::Info contactInfo;
     contactInfo.profileInfo = profileInfo;
