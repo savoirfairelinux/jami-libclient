@@ -679,8 +679,10 @@ ContactModelPimpl::fillWithJamiContacts()
     for (const auto& tr_info : pending_tr) {
         // Get pending requests.
         auto payload = tr_info[DRing::Account::TrustRequest::PAYLOAD].toUtf8();
-
         auto contactUri = tr_info[DRing::Account::TrustRequest::FROM];
+        auto convId = tr_info[DRing::Account::TrustRequest::CONVERSATIONID];
+        if (!convId.isEmpty())
+            continue; // This will be added via getConversationsRequests
 
         auto contactInfo = storage::buildContactFromProfile(linked.owner.id,
                                                             contactUri,
@@ -700,7 +702,6 @@ ContactModelPimpl::fillWithJamiContacts()
             contactInfo.profileInfo.avatar = photo.constData();
         contactInfo.registeredName = "";
         contactInfo.isBanned = false;
-        contactInfo.conversationId = tr_info[DRing::Account::TrustRequest::CONVERSATIONID];
 
         {
             std::lock_guard<std::mutex> lk(contactsMtx_);
