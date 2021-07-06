@@ -24,6 +24,7 @@
 #include "contactadapter.h"
 #include "pluginadapter.h"
 #include "messagesadapter.h"
+#include "previewengine.h"
 #include "utilsadapter.h"
 #include "conversationsadapter.h"
 #include "currentconversation.h"
@@ -99,21 +100,22 @@ void
 registerTypes(QQmlEngine* engine,
               SystemTray* systemTray,
               LRCInstance* lrcInstance,
-              AppSettingsManager* appSettingsManager,
+              AppSettingsManager* settingsManager,
+              PreviewEngine* previewEngine,
               ScreenInfo* screenInfo,
               QObject* parent)
 {
     // setup the adapters (their lifetimes are that of MainApplication)
     auto callAdapter = new CallAdapter(systemTray, lrcInstance, parent);
-    auto messagesAdapter = new MessagesAdapter(appSettingsManager, lrcInstance, parent);
+    auto messagesAdapter = new MessagesAdapter(settingsManager, previewEngine, lrcInstance, parent);
     auto conversationsAdapter = new ConversationsAdapter(systemTray, lrcInstance, parent);
     auto avAdapter = new AvAdapter(lrcInstance, parent);
     auto contactAdapter = new ContactAdapter(lrcInstance, parent);
-    auto accountAdapter = new AccountAdapter(appSettingsManager, lrcInstance, parent);
-    auto utilsAdapter = new UtilsAdapter(appSettingsManager, systemTray, lrcInstance, parent);
+    auto accountAdapter = new AccountAdapter(settingsManager, lrcInstance, parent);
+    auto utilsAdapter = new UtilsAdapter(settingsManager, systemTray, lrcInstance, parent);
     auto pluginAdapter = new PluginAdapter(lrcInstance, parent);
     auto currentConversation = new CurrentConversation(lrcInstance, parent);
-    auto currentAccount = new CurrentAccount(lrcInstance, appSettingsManager, parent);
+    auto currentAccount = new CurrentAccount(lrcInstance, settingsManager, parent);
     auto videoDevices = new VideoDevices(lrcInstance, parent);
 
     // qml adapter registration
@@ -155,12 +157,14 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERTYPE(NS_MODELS, PluginListPreferenceModel);
     QML_REGISTERTYPE(NS_MODELS, FilesToSendListModel);
     QML_REGISTERTYPE(NS_MODELS, SmartListModel);
+    QML_REGISTERTYPE(NS_MODELS, MessageListModel);
 
     // Roles & type enums for models
     QML_REGISTERNAMESPACE(NS_MODELS, AccountList::staticMetaObject, "AccountList");
     QML_REGISTERNAMESPACE(NS_MODELS, ConversationList::staticMetaObject, "ConversationList");
     QML_REGISTERNAMESPACE(NS_MODELS, ContactList::staticMetaObject, "ContactList");
     QML_REGISTERNAMESPACE(NS_MODELS, FilesToSend::staticMetaObject, "FilesToSend");
+    QML_REGISTERNAMESPACE(NS_MODELS, MessageList::staticMetaObject, "MessageList");
 
     // QQuickItems
     QML_REGISTERTYPE(NS_MODELS, PreviewRenderer);
@@ -176,10 +180,10 @@ registerTypes(QQmlEngine* engine,
 
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, screenInfo, "ScreenInfo")
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, lrcInstance, "LRCInstance")
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, appSettingsManager, "AppSettingsManager")
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, settingsManager, "AppSettingsManager")
 
     auto avatarRegistry = new AvatarRegistry(lrcInstance, parent);
-    auto wizardViewStepModel = new WizardViewStepModel(lrcInstance, accountAdapter, appSettingsManager, parent);
+    auto wizardViewStepModel = new WizardViewStepModel(lrcInstance, accountAdapter, settingsManager, parent);
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_HELPERS, avatarRegistry, "AvatarRegistry");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_MODELS, wizardViewStepModel, "WizardViewStepModel")
 

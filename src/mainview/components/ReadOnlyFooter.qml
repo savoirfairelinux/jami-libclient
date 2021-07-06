@@ -34,7 +34,7 @@ Control {
 
         Rectangle {
             anchors.top: parent.top
-            height: JamiTheme.messageWebViewHairLineSize
+            height: JamiTheme.chatViewHairLineSize
             width: parent.width
             color: JamiTheme.tabbarBorderColor
         }

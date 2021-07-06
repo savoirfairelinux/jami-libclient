@@ -76,8 +76,8 @@ Rectangle {
         callStackView.needToCloseInCallConversationAndPotentialWindow()
         LRCInstance.deselectConversation()
         if (isPageInStack("callStackViewObject", sidePanelViewStack) ||
-                isPageInStack("communicationPageMessageWebView", sidePanelViewStack) ||
-                isPageInStack("communicationPageMessageWebView", mainViewStack) ||
+                isPageInStack("chatView", sidePanelViewStack) ||
+                isPageInStack("chatView", mainViewStack) ||
                 isPageInStack("callStackViewObject", mainViewStack)) {
             sidePanelViewStack.pop(StackView.Immediate)
             mainViewStack.pop(welcomePage, StackView.Immediate)
@@ -98,10 +98,10 @@ Rectangle {
     function pushCommunicationMessageWebView() {
         if (sidePanelOnly) {
             sidePanelViewStack.pop(StackView.Immediate)
-            sidePanelViewStack.push(communicationPageMessageWebView, StackView.Immediate)
+            sidePanelViewStack.push(chatView, StackView.Immediate)
         } else {
             mainViewStack.pop(welcomePage, StackView.Immediate)
-            mainViewStack.push(communicationPageMessageWebView, StackView.Immediate)
+            mainViewStack.push(chatView, StackView.Immediate)
         }
     }
 
@@ -164,24 +164,17 @@ Rectangle {
     }
 
     function setMainView(convId) {
-        if (!(communicationPageMessageWebView.jsLoaded)) {
-            communicationPageMessageWebView.jsLoadedChanged.connect(
-                        function(convId) {
-                            return function() { setMainView(convId) }
-                        }(convId))
-            return
-        }
         var item = ConversationsAdapter.getConvInfoMap(convId)
         if (item.convId === undefined)
             return
-        communicationPageMessageWebView.headerUserAliasLabelText = item.title
-        communicationPageMessageWebView.headerUserUserNameLabelText = item.bestId
+        chatView.headerUserAliasLabelText = item.title
+        chatView.headerUserUserNameLabelText = item.bestId
         if (item.callStackViewShouldShow) {
             if (inSettingsView) {
                 toggleSettingsView()
             }
             MessagesAdapter.setupChatView(item)
-            callStackView.setLinkedWebview(communicationPageMessageWebView)
+            callStackView.setLinkedWebview(chatView)
             callStackView.responsibleAccountId = LRCInstance.currentAccountId
             callStackView.responsibleConvUid = convId
             callStackView.isAudioOnly = item.isAudioOnly
@@ -201,13 +194,13 @@ Rectangle {
                 callStackView.needToCloseInCallConversationAndPotentialWindow()
                 MessagesAdapter.setupChatView(item)
                 pushCommunicationMessageWebView()
-                communicationPageMessageWebView.focusMessageWebView()
+                chatView.focusChatView()
                 currentConvUID = convId
             } else if (isPageInStack("callStackViewObject", sidePanelViewStack)
                        || isPageInStack("callStackViewObject", mainViewStack)) {
                 callStackView.needToCloseInCallConversationAndPotentialWindow()
                 pushCommunicationMessageWebView()
-                communicationPageMessageWebView.focusMessageWebView()
+                chatView.focusChatView()
             }
         }
     }
@@ -396,21 +389,12 @@ Rectangle {
         onSettingsBackArrowClicked: sidePanelViewStack.pop(StackView.Immediate)
     }
 
-    MessageWebView {
-        id: communicationPageMessageWebView
+    ChatView {
+        id: chatView
 
-        objectName: "communicationPageMessageWebView"
-
-        signal toSendMessageContentSaved(string arg)
-        signal toMessagesCleared
-        signal toMessagesLoaded
-
+        objectName: "chatView"
         visible: false
-
-        Component.onCompleted: {
-            // Set qml MessageWebView object pointer to c++.
-            MessagesAdapter.setQmlObject(this)
-        }
+        Component.onCompleted: MessagesAdapter.setQmlObject(this)
     }
 
     onWidthChanged: {

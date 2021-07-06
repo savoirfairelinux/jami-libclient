@@ -45,7 +45,6 @@ set(COMMON_SOURCES
     ${SRC_DIR}/networkmanager.cpp
     ${SRC_DIR}/runguard.cpp
     ${SRC_DIR}/updatemanager.cpp
-    ${SRC_DIR}/webchathelpers.cpp
     ${SRC_DIR}/main.cpp
     ${SRC_DIR}/smartlistmodel.cpp
     ${SRC_DIR}/utils.cpp
@@ -87,7 +86,8 @@ set(COMMON_SOURCES
     ${SRC_DIR}/avatarregistry.cpp
     ${SRC_DIR}/currentconversation.cpp
     ${SRC_DIR}/currentaccount.cpp
-    ${SRC_DIR}/videodevices.cpp)
+    ${SRC_DIR}/videodevices.cpp
+    ${SRC_DIR}/previewengine.cpp)
 
 set(COMMON_HEADERS
     ${SRC_DIR}/avatarimageprovider.h
@@ -99,7 +99,6 @@ set(COMMON_HEADERS
     ${SRC_DIR}/version.h
     ${SRC_DIR}/accountlistmodel.h
     ${SRC_DIR}/runguard.h
-    ${SRC_DIR}/webchathelpers.h
     ${SRC_DIR}/rendermanager.h
     ${SRC_DIR}/connectivitymonitor.h
     ${SRC_DIR}/jamiavatartheme.h
@@ -144,7 +143,8 @@ set(COMMON_HEADERS
     ${SRC_DIR}/avatarregistry.h
     ${SRC_DIR}/currentconversation.h
     ${SRC_DIR}/currentaccount.h
-    ${SRC_DIR}/videodevices.h)
+    ${SRC_DIR}/videodevices.h
+    ${SRC_DIR}/previewengine.h)
 
 set(QML_LIBS
     Qt5::Quick
@@ -155,7 +155,8 @@ set(QML_LIBS
     Qt5::Concurrent
     Qt5::QuickControls2
     Qt5::WebEngine
-    Qt5::Core)
+    Qt5::Core
+    Qt5::WebEngineWidgets)
 
 set(QML_LIBS_LIST
     Core
@@ -166,7 +167,8 @@ set(QML_LIBS_LIST
     Svg
     Sql
     QuickControls2
-    WebEngine)
+    WebEngine
+    WebEngineWidgets)
 
 set(WINDOWS_SYS_LIBS Shell32.lib
                      Ole32.lib

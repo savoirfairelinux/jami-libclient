@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (C) 2015-2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -25,6 +25,7 @@
 #include "appsettingsmanager.h"
 #include "connectivitymonitor.h"
 #include "systemtray.h"
+#include "previewengine.h"
 
 #include <QAction>
 #include <QCommandLineParser>
@@ -149,18 +150,12 @@ MainApplication::MainApplication(int& argc, char** argv)
     , connectivityMonitor_(new ConnectivityMonitor(this))
     , settingsManager_(new AppSettingsManager(this))
     , systemTray_(new SystemTray(settingsManager_.get(), this))
+    , previewEngine_(new PreviewEngine(this))
 {
     QObject::connect(this, &QApplication::aboutToQuit, [this] { cleanup(); });
 }
 
-MainApplication::~MainApplication()
-{
-    engine_.reset();
-    systemTray_.reset();
-    settingsManager_.reset();
-    lrcInstance_.reset();
-    connectivityMonitor_.reset();
-}
+MainApplication::~MainApplication() {}
 
 bool
 MainApplication::init()
@@ -414,6 +409,7 @@ MainApplication::initQmlLayer()
                          systemTray_.get(),
                          lrcInstance_.get(),
                          settingsManager_.get(),
+                         previewEngine_.get(),
                          &screenInfo_,
                          this);
 

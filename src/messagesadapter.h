@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang   <mingrui.zhang@savoirfairelinux.com>
  *
@@ -20,28 +20,66 @@
 
 #include "lrcinstance.h"
 #include "qmladapterbase.h"
+#include "previewengine.h"
+
 #include "api/chatview.h"
 
 #include <QObject>
 #include <QString>
+
+#include <QSortFilterProxyModel>
+
+class FilteredMsgListModel final : public QSortFilterProxyModel
+{
+    Q_OBJECT
+
+public:
+    explicit FilteredMsgListModel(QObject* parent = nullptr)
+        : QSortFilterProxyModel(parent)
+    {
+        sort(0, Qt::AscendingOrder);
+    }
+
+    bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override
+    {
+        auto index = sourceModel()->index(sourceRow, 0, sourceParent);
+        auto type = sourceModel()->data(index, MessageList::Role::Type).toInt();
+        return static_cast<interaction::Type>(type) != interaction::Type::MERGE;
+    };
+
+    bool lessThan(const QModelIndex& left, const QModelIndex& right) const override
+    {
+        return left.row() > right.row();
+    };
+};
 
 class AppSettingsManager;
 
 class MessagesAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
-    Q_PROPERTY(QVariantMap chatviewTranslatedStrings MEMBER chatviewTranslatedStrings_ CONSTANT)
+    QML_RO_PROPERTY(QVariant, messageListModel)
 
 public:
     explicit MessagesAdapter(AppSettingsManager* settingsManager,
+                             PreviewEngine* previewEngine,
                              LRCInstance* instance,
                              QObject* parent = nullptr);
     ~MessagesAdapter() = default;
+
+Q_SIGNALS:
+    void newInteraction(int type);
+    void newMessageBarPlaceholderText(QString placeholderText);
+    void newFilePasted(QString filePath);
+    void newTextPasted();
+    void previewInformationToQML(QString messageId, QStringList previewInformation);
+    void moreMessagesLoaded();
 
 protected:
     void safeInit() override;
 
     Q_INVOKABLE void setupChatView(const QVariantMap& convInfo);
+    Q_INVOKABLE void loadMoreMessages();
     Q_INVOKABLE void connectConversationModel();
     Q_INVOKABLE void sendConversationRequest();
     Q_INVOKABLE void removeConversation(const QString& convUid);
@@ -51,70 +89,39 @@ protected:
     Q_INVOKABLE void refuseInvitation(const QString& convUid = "");
     Q_INVOKABLE void blockConversation(const QString& convUid = "");
     Q_INVOKABLE void unbanContact(int index);
-
-    // JS Q_INVOKABLE.
-    Q_INVOKABLE void setDisplayLinks();
     Q_INVOKABLE void sendMessage(const QString& message);
     Q_INVOKABLE void sendFile(const QString& message);
-    Q_INVOKABLE void retryInteraction(const QString& interactionId);
-    Q_INVOKABLE void deleteInteraction(const QString& interactionId);
-    Q_INVOKABLE void openUrl(const QString& url);
-    Q_INVOKABLE void openFile(const QString& arg);
     Q_INVOKABLE void acceptFile(const QString& arg);
     Q_INVOKABLE void refuseFile(const QString& arg);
-    Q_INVOKABLE void pasteKeyDetected();
-    Q_INVOKABLE void userIsComposing(bool isComposing);
-    Q_INVOKABLE void loadMessages(int n);
+    Q_INVOKABLE void openUrl(const QString& url);
+    Q_INVOKABLE void openFile(const QString& arg);
+    Q_INVOKABLE void retryInteraction(const QString& interactionId);
+    Q_INVOKABLE void deleteInteraction(const QString& interactionId);
     Q_INVOKABLE void copyToDownloads(const QString& interactionId, const QString& displayName);
+    Q_INVOKABLE void userIsComposing(bool isComposing);
+    Q_INVOKABLE bool isImage(const QString& msg);
+    Q_INVOKABLE bool isAnimatedImage(const QString& msg);
+    Q_INVOKABLE QString getFormattedTime(const quint64 timestamp);
+    Q_INVOKABLE void parseMessageUrls(const QString& messageId, const QString& msg);
+    Q_INVOKABLE void onPaste();
 
     // Run corrsponding js functions, c++ to qml.
-    void setMessagesVisibility(bool visible);
-    void setIsSwarm(bool isSwarm);
-    void clearChatView();
-    void updateHistory(ConversationModel& conversationModel,
-                       MessagesList interactions,
-                       bool allLoaded);
-    void setSenderImage(const QString& sender, const QString& senderImage);
-    void printNewInteraction(lrc::api::ConversationModel& conversationModel,
-                             const QString& msgId,
-                             const lrc::api::interaction::Info& interaction);
-    void updateInteraction(lrc::api::ConversationModel& conversationModel,
-                           const QString& msgId,
-                           const lrc::api::interaction::Info& interaction);
     void setMessagesImageContent(const QString& path, bool isBased64 = false);
     void setMessagesFileContent(const QString& path);
-    void removeInteraction(const QString& interactionId);
     void setSendMessageContent(const QString& content);
-    void contactIsComposing(const QString& contactUri, bool isComposing);
-
-Q_SIGNALS:
-    void newInteraction(int type);
-    void newMessageBarPlaceholderText(QString placeholderText);
-    void newFilePasted(QString filePath);
-    void newTextPasted();
 
 private Q_SLOTS:
-    void slotMessagesCleared();
-    void slotMessagesLoaded();
     void onNewInteraction(const QString& convUid,
                           const QString& interactionId,
                           const interaction::Info& interaction);
-    void onInteractionStatusUpdated(const QString& convUid,
-                                    const QString& interactionId,
-                                    const interaction::Info& interaction);
-    void onInteractionRemoved(const QString& convUid, const QString& interactionId);
-    void onNewMessagesAvailable(const QString& accountId, const QString& conversationId);
-    void updateConversation(const QString& conversationId);
-    void onComposingStatusChanged(const QString& uid, const QString& contactUri, bool isComposing);
+    void onPreviewInfoReady(QString messageIndex, QVariantMap urlInMessage);
+    void onConversationMessagesLoaded(uint32_t requestId, const QString& convId);
+    void onMessageLinkified(const QString& messageId, const QString& linkified);
 
 private:
-    void setConversationProfileData(const lrc::api::conversation::Info& convInfo);
-    void newInteraction(const QString& accountId,
-                        const QString& convUid,
-                        const QString& interactionId,
-                        const interaction::Info& interaction);
-
-    const QVariantMap chatviewTranslatedStrings_ {lrc::api::chatview::getTranslatedStrings()};
-
     AppSettingsManager* settingsManager_;
+    PreviewEngine* previewEngine_;
+    FilteredMsgListModel* filteredMsgListModel_;
+
+    static constexpr const int loadChunkSize_ {20};
 };

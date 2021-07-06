@@ -1,4 +1,4 @@
-/*!
+/*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
@@ -35,6 +35,7 @@ class ConnectivityMonitor;
 class AppSettingsManager;
 class SystemTray;
 class CallAdapter;
+class PreviewEngine;
 
 // Provides information about the screen the app is displayed on
 class ScreenInfo : public QObject
@@ -97,8 +98,7 @@ private:
     QScopedPointer<ConnectivityMonitor> connectivityMonitor_;
     QScopedPointer<AppSettingsManager> settingsManager_;
     QScopedPointer<SystemTray> systemTray_;
+    QScopedPointer<PreviewEngine> previewEngine_;
 
     ScreenInfo screenInfo_;
-
-    CallAdapter* callAdapter_;
 };

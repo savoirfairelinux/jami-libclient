@@ -108,22 +108,22 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
     case Role::UnreadMessagesCount:
         return QVariant(item.unreadMessages);
     case Role::LastInteractionTimeStamp: {
-        if (!item.interactions.empty()) {
-            auto ts = static_cast<qint32>(item.interactions.at(item.lastMessageUid).timestamp);
+        if (!item.interactions->empty()) {
+            auto ts = static_cast<qint32>(item.interactions->at(item.lastMessageUid).timestamp);
             return QVariant(ts);
         }
         break;
     }
     case Role::LastInteractionDate: {
-        if (!item.interactions.empty()) {
+        if (!item.interactions->empty()) {
             return QVariant(
-                Utils::formatTimeString(item.interactions.at(item.lastMessageUid).timestamp));
+                Utils::formatTimeString(item.interactions->at(item.lastMessageUid).timestamp));
         }
         break;
     }
     case Role::LastInteraction: {
-        if (!item.interactions.empty()) {
-            return QVariant(item.interactions.at(item.lastMessageUid).body);
+        if (!item.interactions->empty()) {
+            return QVariant(item.interactions->at(item.lastMessageUid).body);
         }
         break;
     }

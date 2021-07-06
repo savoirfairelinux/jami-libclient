@@ -136,7 +136,7 @@ Flickable {
         //     Shift + Enter -> Next Line
         Keys.onPressed: function (keyEvent) {
             if (keyEvent.matches(StandardKey.Paste)) {
-                MessagesAdapter.pasteKeyDetected()
+                MessagesAdapter.onPaste()
                 keyEvent.accepted = true
             } else if (keyEvent.key === Qt.Key_Enter ||
                        keyEvent.key === Qt.Key_Return) {

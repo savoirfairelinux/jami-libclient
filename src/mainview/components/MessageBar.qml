@@ -48,9 +48,9 @@ ColumnLayout {
         id: messageBarHairLine
 
         Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-        Layout.preferredHeight: JamiTheme.messageWebViewHairLineSize
+        Layout.preferredHeight: JamiTheme.chatViewHairLineSize
         Layout.fillWidth: true
-        Layout.maximumWidth: JamiTheme.messageWebViewFooterContentMaximumWidth
+        Layout.maximumWidth: JamiTheme.chatViewMaximumWidth
 
         color: JamiTheme.tabbarBorderColor
     }
@@ -60,20 +60,20 @@ ColumnLayout {
 
         Layout.alignment: Qt.AlignCenter
         Layout.fillWidth: true
-        Layout.maximumWidth: JamiTheme.messageWebViewFooterContentMaximumWidth
+        Layout.maximumWidth: JamiTheme.chatViewMaximumWidth
 
-        spacing: JamiTheme.messageWebViewFooterRowSpacing
+        spacing: JamiTheme.chatViewFooterRowSpacing
 
         PushButton {
             id: sendFileButton
 
             Layout.alignment: Qt.AlignVCenter
             Layout.leftMargin: marginSize
-            Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
-            Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
+            Layout.preferredWidth: JamiTheme.chatViewFooterButtonSize
+            Layout.preferredHeight: JamiTheme.chatViewFooterButtonSize
 
-            radius: JamiTheme.messageWebViewFooterButtonRadius
-            preferredSize: JamiTheme.messageWebViewFooterButtonIconSize - 6
+            radius: JamiTheme.chatViewFooterButtonRadius
+            preferredSize: JamiTheme.chatViewFooterButtonIconSize - 6
 
             toolTipText: JamiStrings.sendFile
 
@@ -89,11 +89,11 @@ ColumnLayout {
             id: audioRecordMessageButton
 
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
-            Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
+            Layout.preferredWidth: JamiTheme.chatViewFooterButtonSize
+            Layout.preferredHeight: JamiTheme.chatViewFooterButtonSize
 
-            radius: JamiTheme.messageWebViewFooterButtonRadius
-            preferredSize: JamiTheme.messageWebViewFooterButtonIconSize
+            radius: JamiTheme.chatViewFooterButtonRadius
+            preferredSize: JamiTheme.chatViewFooterButtonIconSize
 
             toolTipText: JamiStrings.leaveAudioMessage
 
@@ -111,11 +111,11 @@ ColumnLayout {
             id: videoRecordMessageButton
 
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
-            Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
+            Layout.preferredWidth: JamiTheme.chatViewFooterButtonSize
+            Layout.preferredHeight: JamiTheme.chatViewFooterButtonSize
 
-            radius: JamiTheme.messageWebViewFooterButtonRadius
-            preferredSize: JamiTheme.messageWebViewFooterButtonIconSize
+            radius: JamiTheme.chatViewFooterButtonRadius
+            preferredSize: JamiTheme.chatViewFooterButtonIconSize
 
             toolTipText: JamiStrings.leaveVideoMessage
 
@@ -144,10 +144,10 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.margins: marginSize / 2
             Layout.preferredHeight: {
-                return JamiTheme.messageWebViewFooterPreferredHeight
-                        > contentHeight ? JamiTheme.messageWebViewFooterPreferredHeight : contentHeight
+                return JamiTheme.chatViewFooterPreferredHeight
+                        > contentHeight ? JamiTheme.chatViewFooterPreferredHeight : contentHeight
             }
-            Layout.maximumHeight: JamiTheme.messageWebViewFooterTextAreaMaximumHeight
+            Layout.maximumHeight: JamiTheme.chatViewFooterTextAreaMaximumHeight
                                   - marginSize / 2
 
             onSendMessagesRequired: root.sendMessageButtonClicked()
@@ -158,11 +158,11 @@ ColumnLayout {
 
             Layout.alignment: Qt.AlignVCenter
             Layout.rightMargin: sendMessageButton.visible ? 0 : marginSize
-            Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
-            Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
+            Layout.preferredWidth: JamiTheme.chatViewFooterButtonSize
+            Layout.preferredHeight: JamiTheme.chatViewFooterButtonSize
 
-            radius: JamiTheme.messageWebViewFooterButtonRadius
-            preferredSize: JamiTheme.messageWebViewFooterButtonIconSize
+            radius: JamiTheme.chatViewFooterButtonRadius
+            preferredSize: JamiTheme.chatViewFooterButtonIconSize
 
             toolTipText: JamiStrings.addEmoji
 
@@ -183,11 +183,11 @@ ColumnLayout {
 
             Layout.alignment: Qt.AlignVCenter
             Layout.rightMargin: visible ? marginSize : 0
-            Layout.preferredWidth: scale * JamiTheme.messageWebViewFooterButtonSize
-            Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
+            Layout.preferredWidth: scale * JamiTheme.chatViewFooterButtonSize
+            Layout.preferredHeight: JamiTheme.chatViewFooterButtonSize
 
-            radius: JamiTheme.messageWebViewFooterButtonRadius
-            preferredSize: JamiTheme.messageWebViewFooterButtonIconSize - 6
+            radius: JamiTheme.chatViewFooterButtonRadius
+            preferredSize: JamiTheme.chatViewFooterButtonIconSize - 6
 
             toolTipText: JamiStrings.send
 

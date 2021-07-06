@@ -40,9 +40,9 @@ ColumnLayout {
 
         Layout.alignment: Qt.AlignHCenter
         Layout.preferredWidth: root.width
-        Layout.maximumWidth: JamiTheme.messageWebViewFooterContentMaximumWidth
+        Layout.maximumWidth: JamiTheme.chatViewMaximumWidth
         Layout.preferredHeight: filesToSendCount ?
-                                    JamiTheme.messageWebViewFooterFileContainerPreferredHeight : 0
+                                    JamiTheme.chatViewFooterFileContainerPreferredHeight : 0
 
         TestCase {
             name: "FilesToSendContainer add/remove file test"

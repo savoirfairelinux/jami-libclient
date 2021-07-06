@@ -33,6 +33,7 @@
 class SystemTray;
 class LRCInstance;
 class AppSettingsManager;
+class PreviewEngine;
 class ScreenInfo;
 
 // Hack for QtCreator autocomplete (part 1)
@@ -63,6 +64,7 @@ void registerTypes(QQmlEngine* engine,
                    SystemTray* systemTray,
                    LRCInstance* lrcInstance,
                    AppSettingsManager* appSettingsManager,
+                   PreviewEngine* previewEngine,
                    ScreenInfo* screenInfo,
                    QObject* parent);
 }

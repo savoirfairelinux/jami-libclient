@@ -136,7 +136,7 @@ Rectangle {
                 emojiPicker.y = Qt.binding(function() {
                     var buttonY = JamiQmlUtils.audioRecordMessageButtonInMainViewPoint.y
                     return buttonY - emojiPicker.height - messageBar.marginSize
-                            - JamiTheme.messageWebViewHairLineSize
+                            - JamiTheme.chatViewHairLineSize
                 })
 
                 emojiPicker.openEmojiPicker()
@@ -201,9 +201,9 @@ Rectangle {
 
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: footerColumnLayout.width
-            Layout.maximumWidth: JamiTheme.messageWebViewFooterContentMaximumWidth
+            Layout.maximumWidth: JamiTheme.chatViewMaximumWidth
             Layout.preferredHeight: filesToSendCount ?
-                                        JamiTheme.messageWebViewFooterFileContainerPreferredHeight : 0
+                                        JamiTheme.chatViewFooterFileContainerPreferredHeight : 0
         }
     }
 }

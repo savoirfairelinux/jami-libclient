@@ -22,6 +22,7 @@
 #include "appsettingsmanager.h"
 #include "connectivitymonitor.h"
 #include "systemtray.h"
+#include "previewengine.h"
 
 #include <atomic>
 
@@ -75,6 +76,7 @@ public:
                              systemTray_.get(),
                              lrcInstance_.get(),
                              settingsManager_.get(),
+                             previewEngine_.get(),
                              &screenInfo_,
                              this);
     }
@@ -116,6 +118,7 @@ private:
     QScopedPointer<ConnectivityMonitor> connectivityMonitor_;
     QScopedPointer<AppSettingsManager> settingsManager_;
     QScopedPointer<SystemTray> systemTray_;
+    QScopedPointer<PreviewEngine> previewEngine_;
     ScreenInfo screenInfo_;
 
     bool muteDring_ {false};

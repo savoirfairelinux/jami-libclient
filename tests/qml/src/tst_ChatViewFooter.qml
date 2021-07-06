@@ -35,13 +35,13 @@ ColumnLayout {
     width: 300
     height: uut.implicitHeight
 
-    MessageWebViewFooter {
+    ChatViewFooter {
         id: uut
 
         Layout.alignment: Qt.AlignHCenter
         Layout.fillWidth: true
         Layout.preferredHeight: implicitHeight
-        Layout.maximumHeight: JamiTheme.messageWebViewFooterMaximumHeight
+        Layout.maximumHeight: JamiTheme.chatViewMaximumWidth
 
         TestCase {
             name: "MessageWebViewFooter Send Message Button Visibility Test"

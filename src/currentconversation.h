@@ -44,6 +44,7 @@ class CurrentConversation final : public QObject
     QML_PROPERTY(bool, inCall)
     QML_PROPERTY(bool, isTemporary)
     QML_PROPERTY(bool, isContact)
+    QML_PROPERTY(bool, allMessagesLoaded)
 
 public:
     explicit CurrentConversation(LRCInstance* lrcInstance, QObject* parent = nullptr);

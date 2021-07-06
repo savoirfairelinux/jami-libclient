@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>src/tst_LocalAccount.qml</file>
         <file>src/tst_PresenceIndicator.qml</file>
-        <file>src/tst_MessageWebViewFooter.qml</file>
+        <file>src/tst_ChatViewFooter.qml</file>
         <file>src/resources/gif_test.gif</file>
         <file>src/resources/gz_test.gz</file>
         <file>src/resources/png_test.png</file>

@@ -147,12 +147,12 @@ Item {
     // Chatview
     property color jamiLightBlue: darkTheme ? "#003b4e" : Qt.rgba(59, 193, 211, 0.3)
     property color jamiDarkBlue: darkTheme ? "#28b1ed" : "#003b4e"
-    property color chatviewTextColor: textColor
+    property color chatviewTextColor: darkTheme ? "#f0f0f0" : "#353637"
     property color timestampColor: darkTheme ? "#bbb" : "#333"
     property color messageOutBgColor: darkTheme ? "#28b1ed" : "#cfd8dc"
-    property color messageOutTxtColor: textColor
+    property color messageOutTxtColor: chatviewTextColor
     property color messageInBgColor: darkTheme? "#616161" : "#cfebf5"
-    property color messageInTxtColor: textColor
+    property color messageInTxtColor: chatviewTextColor
     property color fileOutTimestampColor: darkTheme ? "#eee" : "#555"
     property color fileInTimestampColor: darkTheme ? "#999" : "#555"
     property color chatviewBgColor: darkTheme ? bgDarkMode_ : whiteColor
@@ -271,17 +271,17 @@ Item {
     property real modalPopupDropShadowSamples: 16
 
     // MessageWebView
-    property real messageWebViewHairLineSize: 1
+    property real chatViewHairLineSize: 1
     property real messageWebViewHeaderPreferredHeight: 64
-    property real messageWebViewFooterContentMaximumWidth: 1000
-    property real messageWebViewFooterPreferredHeight: 50
-    property real messageWebViewFooterMaximumHeight: 280
-    property real messageWebViewFooterRowSpacing: 1
-    property real messageWebViewFooterButtonSize: 36
-    property real messageWebViewFooterButtonIconSize: 48
-    property real messageWebViewFooterButtonRadius: 5
-    property real messageWebViewFooterFileContainerPreferredHeight: 150
-    property real messageWebViewFooterTextAreaMaximumHeight: 130
+    property real chatViewMaximumWidth: 900
+    property real chatViewFooterPreferredHeight: 50
+    property real chatViewFooterMaximumHeight: 280
+    property real chatViewFooterRowSpacing: 1
+    property real chatViewFooterButtonSize: 36
+    property real chatViewFooterButtonIconSize: 48
+    property real chatViewFooterButtonRadius: 5
+    property real chatViewFooterFileContainerPreferredHeight: 150
+    property real chatViewFooterTextAreaMaximumHeight: 130
 
     // MessageWebView File Transfer Container
     property real filesToSendContainerSpacing: 5

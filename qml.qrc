@@ -94,7 +94,7 @@
         <file>src/mainview/components/AboutPopUp.qml</file>
         <file>src/mainview/components/SidePanel.qml</file>
         <file>src/mainview/components/WelcomePage.qml</file>
-        <file>src/mainview/components/MessageWebView.qml</file>
+        <file>src/mainview/components/ChatView.qml</file>
         <file>src/mainview/components/MessageWebViewHeader.qml</file>
         <file>src/mainview/components/AccountComboBox.qml</file>
         <file>src/mainview/components/CallStackView.qml</file>
@@ -143,7 +143,7 @@
         <file>src/commoncomponents/contextmenu/GeneralMenuSeparator.qml</file>
         <file>src/mainview/components/ParticipantOverlayButton.qml</file>
         <file>src/mainview/components/ParticipantControlLayout.qml</file>
-        <file>src/mainview/components/MessageWebViewFooter.qml</file>
+        <file>src/mainview/components/ChatViewFooter.qml</file>
         <file>src/commoncomponents/emojipicker/EmojiPicker.qml</file>
         <file>src/commoncomponents/emojipicker/emojiPickerLoader.js</file>
         <file>src/commoncomponents/emojipicker/emojiPickerLoader.html</file>
@@ -161,5 +161,7 @@
         <file>src/commoncomponents/BackButton.qml</file>
         <file>src/commoncomponents/JamiSwitch.qml</file>
         <file>src/mainview/components/ReadOnlyFooter.qml</file>
+        <file>src/commoncomponents/MessageDelegate.qml</file>
+        <file>src/mainview/components/MessageListView.qml</file>
     </qresource>
 </RCC>

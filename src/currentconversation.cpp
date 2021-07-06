@@ -60,6 +60,7 @@ CurrentConversation::updateData()
             set_needsSyncing(convInfo.needsSyncing);
             set_isSip(accInfo.profileInfo.type == profile::Type::SIP);
             set_callId(convInfo.getCallId());
+            set_allMessagesLoaded(convInfo.allMessagesLoaded);
             if (accInfo.callModel->hasCall(callId_)) {
                 auto call = accInfo.callModel->getCall(callId_);
                 set_callState(call.status);
