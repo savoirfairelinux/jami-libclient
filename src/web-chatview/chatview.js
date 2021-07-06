@@ -1567,7 +1567,6 @@ function createHyperlinkPreview(message_id, message_text, message_direction) {
     var description = null
     var img = null
     var link_array = linkify.find(message_text)
-    console.log(link_array)
     var url = link_array[0].href
     //scrolling
     var atEnd = messages.scrollTop >= messages.scrollHeight - messages.clientHeight - scrollDetectionThresh
