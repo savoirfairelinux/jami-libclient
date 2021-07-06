@@ -151,7 +151,7 @@
         <file>src/commoncomponents/emojipicker/emojiPickerLoader.js</file>
         <file>src/commoncomponents/emojipicker/emojiPickerLoader.html</file>
         <file>src/commoncomponents/emojipicker/emoji.js</file>
-        <file>src/commoncomponents/JamiTextArea.qml</file>
+        <file>src/mainview/components/MessageBarTextArea.qml</file>
         <file>src/mainview/components/FilesToSendDelegate.qml</file>
         <file>src/mainview/components/MessageBar.qml</file>
         <file>src/mainview/components/FilesToSendContainer.qml</file>

@@ -495,4 +495,5 @@ Item {
     property string leaveVideoMessage: qsTr("Leave video message")
     property string send: qsTr("Send")
     property string remove: qsTr("Remove")
+    property string writeTo: qsTr("Write to %1")
 }

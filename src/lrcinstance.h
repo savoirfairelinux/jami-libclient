@@ -104,6 +104,10 @@ public:
     Q_INVOKABLE void deselectConversation();
     Q_INVOKABLE void makeConversationPermanent(const QString& convId = {},
                                                const QString& accountId = {});
+    Q_INVOKABLE QString getContentDraft(const QString& convUid, const QString& accountId);
+    Q_INVOKABLE void setContentDraft(const QString& convUid,
+                                     const QString& accountId,
+                                     const QString& content);
 
     const QString& getCurrentAccountId();
     void setCurrentAccountId(const QString& accountId = {});
@@ -117,9 +121,6 @@ public:
 
     void startAudioMeter(bool async);
     void stopAudioMeter(bool async);
-
-    QString getContentDraft(const QString& convUid, const QString& accountId);
-    void setContentDraft(const QString& convUid, const QString& accountId, const QString& content);
 
     void monitor(bool continous);
 

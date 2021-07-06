@@ -51,7 +51,6 @@ void
 MessagesAdapter::safeInit()
 {
     connect(lrcInstance_, &LRCInstance::currentAccountIdChanged, [this]() {
-        currentConvUid_.clear();
         connectConversationModel();
     });
     connectConversationModel();
@@ -64,9 +63,6 @@ MessagesAdapter::setupChatView(const QString& convUid)
     if (convModel == nullptr) {
         return;
     }
-
-    if (currentConvUid_ == convUid)
-        return;
 
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid);
     if (convInfo.uid.isEmpty() || convInfo.participants.isEmpty()) {
@@ -95,19 +91,10 @@ MessagesAdapter::setupChatView(const QString& convUid)
                   !convInfo.isSwarm(),
                   convInfo.needsSyncing);
 
-    // Draft and message content set up.
-    Utils::oneShotConnect(qmlObj_,
-                          SIGNAL(sendMessageContentSaved(const QString&)),
-                          this,
-                          SLOT(slotSendMessageContentSaved(const QString&)));
+    Utils::oneShotConnect(qmlObj_, SIGNAL(messagesCleared()), this, SLOT(slotMessagesCleared()));
+    clearChatView();
 
-    requestSendMessageContent();
-
-    currentConvUid_ = convUid;
-
-    QString s = QString::fromLatin1("reset_message_bar_input(`%1`);")
-                    .arg(accountInfo.contactModel->bestNameForContact(contactURI));
-    QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
+    Q_EMIT newMessageBarPlaceholderText(accountInfo.contactModel->bestNameForContact(contactURI));
 }
 
 void
@@ -225,31 +212,6 @@ MessagesAdapter::sendConversationRequest()
 }
 
 void
-MessagesAdapter::slotSendMessageContentSaved(const QString& content)
-{
-    if (!LastConvUid_.isEmpty()) {
-        lrcInstance_->setContentDraft(LastConvUid_, lrcInstance_->getCurrentAccountId(), content);
-    }
-    LastConvUid_ = lrcInstance_->get_selectedConvUid();
-
-    Utils::oneShotConnect(qmlObj_, SIGNAL(messagesCleared()), this, SLOT(slotMessagesCleared()));
-
-    setInvitation(false);
-    clearChatView();
-    auto restoredContent = lrcInstance_->getContentDraft(lrcInstance_->get_selectedConvUid(),
-                                                         lrcInstance_->getCurrentAccountId());
-    setSendMessageContent(restoredContent);
-}
-
-void
-MessagesAdapter::slotUpdateDraft(const QString& content)
-{
-    if (!LastConvUid_.isEmpty()) {
-        lrcInstance_->setContentDraft(LastConvUid_, lrcInstance_->getCurrentAccountId(), content);
-    }
-}
-
-void
 MessagesAdapter::slotMessagesCleared()
 {
     auto* convModel = lrcInstance_->getCurrentConversationModel();
@@ -284,63 +246,6 @@ MessagesAdapter::sendMessage(const QString& message)
 }
 
 void
-MessagesAdapter::sendImage(const QString& message)
-{
-    if (message.startsWith("data:image/png;base64,")) {
-        /*
-         * Img tag contains base64 data, trim "data:image/png;base64," from data.
-         */
-        QByteArray data = QByteArray::fromStdString(message.toStdString().substr(22));
-        auto img_name_hash = QString::fromStdString(
-            QCryptographicHash::hash(data, QCryptographicHash::Sha1).toHex().toStdString());
-        QString fileName = "\\img_" + img_name_hash + ".png";
-
-        QPixmap image_to_save;
-        if (!image_to_save.loadFromData(QByteArray::fromBase64(data))) {
-            qDebug().noquote() << "Errors during loadFromData"
-                               << "\n";
-        }
-
-        QString path = QString(Utils::WinGetEnv("TEMP")) + fileName;
-        if (!image_to_save.save(path, "PNG")) {
-            qDebug().noquote() << "Errors during QPixmap save"
-                               << "\n";
-        }
-
-        try {
-            auto convUid = lrcInstance_->get_selectedConvUid();
-            lrcInstance_->getCurrentConversationModel()->sendFile(convUid, path, fileName);
-        } catch (...) {
-            qDebug().noquote() << "Exception during sendFile - base64 img"
-                               << "\n";
-        }
-
-    } else {
-        /*
-         * Img tag contains file paths.
-         */
-
-        // TODO: put all QRegExp strings together
-        QString msg(message);
-#ifdef Q_OS_WIN
-        msg = msg.replace(QRegExp("^file:\\/{2,3}"), "");
-#else
-        msg = msg.replace(QRegExp("^file:\\/{2,3}"), "/");
-#endif
-        QFileInfo fi(msg);
-        QString fileName = fi.fileName();
-
-        try {
-            auto convUid = lrcInstance_->get_selectedConvUid();
-            lrcInstance_->getCurrentConversationModel()->sendFile(convUid, msg, fileName);
-        } catch (...) {
-            qDebug().noquote() << "Exception during sendFile - image from path"
-                               << "\n";
-        }
-    }
-}
-
-void
 MessagesAdapter::sendFile(const QString& message)
 {
     QFileInfo fi(message);
@@ -370,25 +275,6 @@ MessagesAdapter::copyToDownloads(const QString& interactionId, const QString& di
                                            interactionId,
                                            downloadDir,
                                            displayName);
-}
-
-void
-MessagesAdapter::setNewMessagesContent(const QString& path)
-{
-    if (path.length() == 0)
-        return;
-
-    // QImageReader will treat .gz file (Jami archive) as svgz image format
-    // so decideFormatFromContent is needed
-    QImageReader reader;
-    reader.setDecideFormatFromContent(true);
-    reader.setFileName(path);
-
-    if (!reader.read().isNull()) {
-        setMessagesImageContent(path);
-    } else {
-        setMessagesFileContent(path);
-    }
 }
 
 void
@@ -435,49 +321,40 @@ MessagesAdapter::pasteKeyDetected()
     const QMimeData* mimeData = QApplication::clipboard()->mimeData();
 
     if (mimeData->hasImage()) {
-        /*
-         * Save temp data into base64 format.
-         */
+        // Save temp data into a temp file.
         QPixmap pixmap = qvariant_cast<QPixmap>(mimeData->imageData());
-        QByteArray ba;
-        QBuffer bu(&ba);
-        bu.open(QIODevice::WriteOnly);
-        pixmap.save(&bu, "PNG");
-        auto str = Utils::byteArrayToBase64String(ba);
 
-        setMessagesImageContent(str, true);
+        auto img_name_hash
+            = QCryptographicHash::hash(QString::number(pixmap.cacheKey()).toLocal8Bit(),
+                                       QCryptographicHash::Sha1);
+        QString fileName = "\\img_" + QString(img_name_hash.toHex()) + ".png";
+        QString path = QString(Utils::WinGetEnv("TEMP")) + fileName;
+
+        if (!pixmap.save(path, "PNG")) {
+            qDebug().noquote() << "Errors during QPixmap save"
+                               << "\n";
+            return;
+        }
+
+        Q_EMIT newFilePasted(path);
     } else if (mimeData->hasUrls()) {
         QList<QUrl> urlList = mimeData->urls();
-        /*
-         * Extract the local paths of the files.
-         */
-        for (int i = 0; i < urlList.size(); ++i) {
-            /*
-             * Trim file:// or file:/// from url.
-             */
-            QString filePath = urlList.at(i).toString().remove(QRegExp("^file:\\/{2,3}"));
-            QByteArray imageFormat = QImageReader::imageFormat(filePath);
 
-            /*
-             * Check if file is qt supported image file type.
-             */
-            if (!imageFormat.isEmpty()) {
-                setMessagesImageContent(filePath);
-            } else {
-                setMessagesFileContent(filePath);
-            }
+        // Extract the local paths of the files.
+        for (int i = 0; i < urlList.size(); ++i) {
+            // Trim file:// or file:/// from url.
+            QString filePath = urlList.at(i).toString().remove(QRegExp("^file:\\/{2,3}"));
+            Q_EMIT newFilePasted(filePath);
         }
     } else {
         // Treat as text content, make chatview.js handle in order to
         // avoid string escape problems
-        QMetaObject::invokeMethod(qmlObj_,
-                                  "webViewRunJavaScript",
-                                  Q_ARG(QVariant, QStringLiteral("replaceText()")));
+        Q_EMIT newTextPasted();
     }
 }
 
 void
-MessagesAdapter::onComposing(bool isComposing)
+MessagesAdapter::userIsComposing(bool isComposing)
 {
     if (!settingsManager_->getValue(Settings::Key::EnableTypingIndicator).toBool()) {
         return;
@@ -552,19 +429,6 @@ MessagesAdapter::newInteraction(const QString& accountId,
     }
 }
 
-void
-MessagesAdapter::updateDraft()
-{
-    currentConvUid_.clear();
-
-    Utils::oneShotConnect(qmlObj_,
-                          SIGNAL(sendMessageContentSaved(const QString&)),
-                          this,
-                          SLOT(slotUpdateDraft(const QString&)));
-
-    requestSendMessageContent();
-}
-
 /*
  * JS invoke.
  */
@@ -576,16 +440,11 @@ MessagesAdapter::setMessagesVisibility(bool visible)
 }
 
 void
-MessagesAdapter::requestSendMessageContent()
-{
-    QString s = QString::fromLatin1("requestSendMessageContent();");
-    QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
-}
-
-void
 MessagesAdapter::setInvitation(
     bool show, const QString& contactUri, const QString& contactId, bool isSwarm, bool needsSyncing)
 {
+    Q_EMIT changeMessageWebViewFooterVisibilityRequest(show ? !isSwarm : !show);
+
     QString s = show ? QString::fromLatin1("showInvitation(\"%1\", \"%2\", %3, %4)")
                            .arg(contactUri)
                            .arg(contactId)
@@ -752,8 +611,6 @@ MessagesAdapter::acceptInvitation(const QString& convId)
     auto conversationId = convId.isEmpty() ? lrcInstance_->get_selectedConvUid() : convId;
     auto* convModel = lrcInstance_->getCurrentConversationModel();
     convModel->acceptConversationRequest(conversationId);
-    if (conversationId == currentConvUid_)
-        currentConvUid_.clear();
 }
 
 void
@@ -762,8 +619,6 @@ MessagesAdapter::refuseInvitation(const QString& convUid)
     const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, false);
     setInvitation(false);
-    if (convUid == currentConvUid_)
-        currentConvUid_.clear();
 }
 
 void
@@ -772,8 +627,6 @@ MessagesAdapter::blockConversation(const QString& convUid)
     const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, true);
     setInvitation(false);
-    if (convUid == currentConvUid_)
-        currentConvUid_.clear();
     Q_EMIT contactBanned();
 }
 
@@ -781,8 +634,6 @@ void
 MessagesAdapter::clearConversationHistory(const QString& accountId, const QString& convUid)
 {
     lrcInstance_->getAccountInfo(accountId).conversationModel->clearHistory(convUid);
-    if (convUid == currentConvUid_)
-        currentConvUid_.clear();
 }
 
 void
@@ -800,15 +651,13 @@ MessagesAdapter::removeConversation(const QString& accountId,
 
     lrcInstance_->getAccountInfo(accountId).conversationModel->removeConversation(convUid,
                                                                                   banContact);
-    if (convUid == currentConvUid_)
-        currentConvUid_.clear();
 }
 
 void
 MessagesAdapter::loadMessages(int n)
 {
     auto* convModel = lrcInstance_->getCurrentConversationModel();
-    auto convOpt = convModel->getConversationForUid(currentConvUid_);
+    auto convOpt = convModel->getConversationForUid(lrcInstance_->get_selectedConvUid());
     if (!convOpt)
         return;
     if (convOpt->get().isSwarm() && !convOpt->get().allMessagesLoaded)

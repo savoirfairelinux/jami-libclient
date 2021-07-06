@@ -21,178 +21,213 @@ import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 
 import net.jami.Adapters 1.0
+import net.jami.Models 1.0
 import net.jami.Constants 1.0
 
 import "../../commoncomponents"
 
-RowLayout {
+ColumnLayout {
     id: root
 
+    property alias text: textArea.text
     property var textAreaObj: textArea
     property real marginSize: 10
 
+    signal sendMessageButtonClicked
     signal sendFileButtonClicked
     signal audioRecordMessageButtonClicked
     signal videoRecordMessageButtonClicked
     signal emojiButtonClicked
 
-    spacing: JamiTheme.messageWebViewFooterRowSpacing
-
-    PushButton {
-        id: sendFileButton
-
-        Layout.alignment: Qt.AlignVCenter
-        Layout.leftMargin: marginSize
-        Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
-        Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
-
-        radius: JamiTheme.messageWebViewFooterButtonRadius
-        preferredSize: JamiTheme.messageWebViewFooterButtonIconSize - 6
-
-        toolTipText: JamiStrings.sendFile
-
-        source: "qrc:/images/icons/link_black-24dp.svg"
-
-        normalColor: JamiTheme.primaryBackgroundColor
-        imageColor: JamiTheme.messageWebViewFooterButtonImageColor
-
-        onClicked: root.sendFileButtonClicked()
+    function showSendMessageButton() {
+        sendMessageButton.visible = true
+        sendMessageButton.state = "buttonFadeOut"
     }
 
-    PushButton {
-        id: audioRecordMessageButton
-
-        Layout.alignment: Qt.AlignVCenter
-        Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
-        Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
-
-        radius: JamiTheme.messageWebViewFooterButtonRadius
-        preferredSize: JamiTheme.messageWebViewFooterButtonIconSize
-
-        toolTipText: JamiStrings.leaveAudioMessage
-
-        source: "qrc:/images/icons/message_audio_black-24dp.svg"
-
-        normalColor: JamiTheme.primaryBackgroundColor
-        imageColor: JamiTheme.messageWebViewFooterButtonImageColor
-
-        onClicked: root.audioRecordMessageButtonClicked()
+    function hideSendMessageButton() {
+        sendMessageButton.state = "buttonFadeIn"
     }
 
-    PushButton {
-        id: videoRecordMessageButton
+    implicitHeight: messageBarRowLayout.height
 
-        Layout.alignment: Qt.AlignVCenter
-        Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
-        Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
+    spacing: 0
 
-        radius: JamiTheme.messageWebViewFooterButtonRadius
-        preferredSize: JamiTheme.messageWebViewFooterButtonIconSize
+    Rectangle {
+        id: messageBarHairLine
 
-        toolTipText: JamiStrings.leaveVideoMessage
-
-        source: "qrc:/images/icons/message_video_black-24dp.svg"
-
-        normalColor: JamiTheme.primaryBackgroundColor
-        imageColor: JamiTheme.messageWebViewFooterButtonImageColor
-
-        onClicked: root.videoRecordMessageButtonClicked()
-    }
-
-    JamiTextArea {
-        id: textArea
-
-        Layout.alignment: Qt.AlignVCenter
+        Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+        Layout.preferredHeight: JamiTheme.messageWebViewHairLineSize
         Layout.fillWidth: true
-        Layout.margins: marginSize / 2
-        Layout.preferredHeight: {
-            return JamiTheme.messageWebViewFooterPreferredHeight
-                    > contentHeight ? JamiTheme.messageWebViewFooterPreferredHeight : contentHeight
-        }
-        Layout.maximumHeight: JamiTheme.messageWebViewFooterTextAreaMaximumHeight
-                              - marginSize / 2
+        Layout.maximumWidth: JamiTheme.messageWebViewFooterContentMaximumWidth
 
-        onTextChanged: {
-            if (text) {
-                sendMessageButton.visible = true
-                sendMessageButton.state = "buttonFadeOut"
-            } else
-                sendMessageButton.state = "buttonFadeIn"
-        }
+        color: JamiTheme.tabbarBorderColor
     }
 
-    PushButton {
-        id: emojiButton
+    RowLayout {
+        id: messageBarRowLayout
 
-        Layout.alignment: Qt.AlignVCenter
-        Layout.rightMargin: sendMessageButton.visible ? 0 : marginSize
-        Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
-        Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
+        Layout.alignment: Qt.AlignCenter
+        Layout.fillWidth: true
+        Layout.maximumWidth: JamiTheme.messageWebViewFooterContentMaximumWidth
 
-        radius: JamiTheme.messageWebViewFooterButtonRadius
-        preferredSize: JamiTheme.messageWebViewFooterButtonIconSize
+        spacing: JamiTheme.messageWebViewFooterRowSpacing
 
-        toolTipText: JamiStrings.addEmoji
+        PushButton {
+            id: sendFileButton
 
-        source: "qrc:/images/icons/emoji_black-24dp.svg"
+            Layout.alignment: Qt.AlignVCenter
+            Layout.leftMargin: marginSize
+            Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
+            Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
 
-        normalColor: JamiTheme.primaryBackgroundColor
-        imageColor: JamiTheme.messageWebViewFooterButtonImageColor
+            radius: JamiTheme.messageWebViewFooterButtonRadius
+            preferredSize: JamiTheme.messageWebViewFooterButtonIconSize - 6
 
-        onClicked: root.emojiButtonClicked()
-    }
+            toolTipText: JamiStrings.sendFile
 
-    PushButton {
-        id: sendMessageButton
+            source: "qrc:/images/icons/link_black-24dp.svg"
 
-        Layout.alignment: Qt.AlignVCenter
-        Layout.rightMargin: visible ? marginSize : 0
-        Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
-        Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
+            normalColor: JamiTheme.primaryBackgroundColor
+            imageColor: JamiTheme.messageWebViewFooterButtonImageColor
 
-        radius: JamiTheme.messageWebViewFooterButtonRadius
-        preferredSize: JamiTheme.messageWebViewFooterButtonIconSize - 6
+            onClicked: root.sendFileButtonClicked()
+        }
 
-        toolTipText: JamiStrings.send
+        PushButton {
+            id: audioRecordMessageButton
 
-        source: "qrc:/images/icons/send_black-24dp.svg"
+            Layout.alignment: Qt.AlignVCenter
+            Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
+            Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
 
-        normalColor: JamiTheme.primaryBackgroundColor
-        imageColor: JamiTheme.messageWebViewFooterButtonImageColor
+            radius: JamiTheme.messageWebViewFooterButtonRadius
+            preferredSize: JamiTheme.messageWebViewFooterButtonIconSize
 
-        opacity: 0
-        visible: false
-        states: [
-            State {
-                name: "buttonFadeIn"
-                PropertyChanges {
-                    target: sendMessageButton
-                    opacity: 0
+            toolTipText: JamiStrings.leaveAudioMessage
+
+            source: "qrc:/images/icons/message_audio_black-24dp.svg"
+
+            normalColor: JamiTheme.primaryBackgroundColor
+            imageColor: JamiTheme.messageWebViewFooterButtonImageColor
+
+            onClicked: root.audioRecordMessageButtonClicked()
+
+            Component.onCompleted: JamiQmlUtils.audioRecordMessageButtonObj = audioRecordMessageButton
+        }
+
+        PushButton {
+            id: videoRecordMessageButton
+
+            Layout.alignment: Qt.AlignVCenter
+            Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
+            Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
+
+            radius: JamiTheme.messageWebViewFooterButtonRadius
+            preferredSize: JamiTheme.messageWebViewFooterButtonIconSize
+
+            toolTipText: JamiStrings.leaveVideoMessage
+
+            source: "qrc:/images/icons/message_video_black-24dp.svg"
+
+            normalColor: JamiTheme.primaryBackgroundColor
+            imageColor: JamiTheme.messageWebViewFooterButtonImageColor
+
+            onClicked: root.videoRecordMessageButtonClicked()
+
+            Component.onCompleted: JamiQmlUtils.videoRecordMessageButtonObj = videoRecordMessageButton
+        }
+
+        MessageBarTextArea {
+            id: textArea
+
+            Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
+            Layout.margins: marginSize / 2
+            Layout.preferredHeight: {
+                return JamiTheme.messageWebViewFooterPreferredHeight
+                        > contentHeight ? JamiTheme.messageWebViewFooterPreferredHeight : contentHeight
+            }
+            Layout.maximumHeight: JamiTheme.messageWebViewFooterTextAreaMaximumHeight
+                                  - marginSize / 2
+
+            onSendMessagesRequired: root.sendMessageButtonClicked()
+        }
+
+        PushButton {
+            id: emojiButton
+
+            Layout.alignment: Qt.AlignVCenter
+            Layout.rightMargin: sendMessageButton.visible ? 0 : marginSize
+            Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
+            Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
+
+            radius: JamiTheme.messageWebViewFooterButtonRadius
+            preferredSize: JamiTheme.messageWebViewFooterButtonIconSize
+
+            toolTipText: JamiStrings.addEmoji
+
+            source: "qrc:/images/icons/emoji_black-24dp.svg"
+
+            normalColor: JamiTheme.primaryBackgroundColor
+            imageColor: JamiTheme.messageWebViewFooterButtonImageColor
+
+            onClicked: root.emojiButtonClicked()
+
+            Component.onCompleted: JamiQmlUtils.emojiPickerButtonObj = emojiButton
+        }
+
+        PushButton {
+            id: sendMessageButton
+
+            Layout.alignment: Qt.AlignVCenter
+            Layout.rightMargin: visible ? marginSize : 0
+            Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
+            Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
+
+            radius: JamiTheme.messageWebViewFooterButtonRadius
+            preferredSize: JamiTheme.messageWebViewFooterButtonIconSize - 6
+
+            toolTipText: JamiStrings.send
+
+            source: "qrc:/images/icons/send_black-24dp.svg"
+
+            normalColor: JamiTheme.primaryBackgroundColor
+            imageColor: JamiTheme.messageWebViewFooterButtonImageColor
+
+            opacity: 0
+            visible: false
+            states: [
+                State {
+                    name: "buttonFadeIn"
+                    PropertyChanges {
+                        target: sendMessageButton
+                        opacity: 0
+                    }
+                },
+                State {
+                    name: "buttonFadeOut"
+                    PropertyChanges {
+                        target: sendMessageButton
+                        opacity: 1
+                    }
                 }
-            },
-            State {
-                name: "buttonFadeOut"
-                PropertyChanges {
-                    target: sendMessageButton
-                    opacity: 1
+            ]
+            transitions: Transition {
+                NumberAnimation {
+                    properties: "opacity"
+                    easing.type: Easing.InOutQuad
+                    duration: 300
                 }
             }
-        ]
-        transitions: Transition {
-            NumberAnimation {
-                properties: "opacity"
-                easing.type: Easing.InOutQuad
-                duration: 300
+
+            onOpacityChanged: {
+                if (opacity === 0)
+                    visible = false
             }
+
+            onClicked: root.sendMessageButtonClicked()
         }
 
-        onOpacityChanged: {
-            if (opacity === 0)
-                visible = false
-        }
-
-        onClicked: {
-
-        }
+        Component.onCompleted: JamiQmlUtils.messageBarButtonsRowObj = messageBarRowLayout
     }
 }

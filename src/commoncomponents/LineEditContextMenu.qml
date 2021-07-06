@@ -20,8 +20,6 @@ import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtGraphicalEffects 1.14
 
-import net.jami.Models 1.0
-import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
 import "contextmenu"
@@ -33,7 +31,10 @@ ContextMenuAutoLoader {
     property var lineEditObj
     property var selectionStart
     property var selectionEnd
+    property bool customizePaste: false
     property bool selectOnly: false
+
+    signal contextMenuRequirePaste
 
     property list<GeneralMenuItem> menuItems: [
         GeneralMenuItem {
@@ -61,7 +62,10 @@ ContextMenuAutoLoader {
             canTrigger: !selectOnly
             itemName: JamiStrings.paste
             onClicked: {
-                lineEditObj.paste()
+                if (customizePaste)
+                    root.contextMenuRequirePaste()
+                else
+                    lineEditObj.paste()
             }
         }
     ]

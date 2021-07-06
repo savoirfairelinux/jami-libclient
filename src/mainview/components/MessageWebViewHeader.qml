@@ -29,7 +29,6 @@ import "../../commoncomponents"
 Rectangle {
     id: messagingHeaderRect
 
-    property real hairLineSize: 1
     property string userAliasLabelText
     property string userUserNameLabelText
     property string backToWelcomeViewButtonSource: "qrc:/images/icons/back-24px.svg"
@@ -230,7 +229,7 @@ Rectangle {
         lBorderwidth: 0
         rBorderwidth: 0
         tBorderwidth: 0
-        bBorderwidth: hairLineSize
+        bBorderwidth: JamiTheme.messageWebViewHairLineSize
         borderColor: JamiTheme.tabbarBorderColor
     }
 }

@@ -18,7 +18,6 @@
 
 import QtQuick 2.14
 import QtQuick.Controls 2.14
-import QtQuick.Layouts 1.14
 import QtGraphicalEffects 1.14
 import QtQuick.Shapes 1.14
 
@@ -28,21 +27,14 @@ import net.jami.Constants 1.0
 
 import "../../commoncomponents"
 
-
 Rectangle {
+    id: root
 
     enum States {
         INIT,
         RECORDING,
         REC_SUCCESS
     }
-
-    id: recBox
-    width: 320
-    height: 240
-    radius: 5
-    border.color: JamiTheme.tabbarBorderColor
-    color: JamiTheme.backgroundColor
 
     property string pathRecorder: ""
     property string timeText: "00:00"
@@ -56,28 +48,23 @@ Rectangle {
 
     property int offset: 3
     property int curveRadius: 6
-    property int x_offset: 0
-    property int y_offset: 0
+    property int spikeHeight: 10 + offset
 
-    function openRecorder(set_x, set_y, vid) {
-
+    function openRecorder(vid) {
         focus = true
         visible = true
         isVideo = vid
 
-        x_offset = (isVideo ? -34 : -80)
         scaleHeight()
-        y_offset = -64-height
-
         updateState(RecordBox.States.INIT)
 
-        if (isVideo){
+        if (isVideo) {
             AccountAdapter.startPreviewing(false)
             previewAvailable = true
         }
     }
 
-    function scaleHeight(){
+    function scaleHeight() {
         height = preferredHeight
         if (isVideo) {
             var device = AVModel.getDefaultDevice()
@@ -85,22 +72,10 @@ Rectangle {
             var res = settings.split("x")
             var aspectRatio = res[1] / res[0]
             if (aspectRatio) {
-                height = preferredWidth*aspectRatio
+                height = preferredWidth * aspectRatio
             } else {
                 console.error("Could not scale recording video preview")
             }
-        }
-    }
-
-    onActiveFocusChanged:  {
-        if (visible) {
-            closeRecorder()
-        }
-    }
-
-    onVisibleChanged: {
-        if (!visible) {
-            closeRecorder()
         }
     }
 
@@ -114,16 +89,16 @@ Rectangle {
 
     function updateState(new_state) {
         state = new_state
-        recordButton.visible = (state == RecordBox.States.INIT)
-        btnStop.visible = (state == RecordBox.States.RECORDING)
-        btnRestart.visible = (state == RecordBox.States.REC_SUCCESS)
-        btnSend.visible = (state == RecordBox.States.REC_SUCCESS)
+        recordButton.visible = (state === RecordBox.States.INIT)
+        btnStop.visible = (state === RecordBox.States.RECORDING)
+        btnRestart.visible = (state === RecordBox.States.REC_SUCCESS)
+        btnSend.visible = (state === RecordBox.States.REC_SUCCESS)
 
-        if (state == RecordBox.States.INIT) {
+        if (state === RecordBox.States.INIT) {
             duration = 0
             time.text = "00:00"
             timer.stop()
-        } else if (state == RecordBox.States.REC_SUCCESS) {
+        } else if (state === RecordBox.States.REC_SUCCESS) {
             timer.stop()
         }
     }
@@ -158,69 +133,121 @@ Rectangle {
         var min = (m < 10) ? "0" + String(m) : String(m)
         var sec = (s < 10) ? "0" + String(s) : String(s)
 
-        time.text = min + ":" + sec;
+        time.text = min + ":" + sec
+    }
+
+    width: 320
+    height: 240
+    radius: 5
+    border.color: JamiTheme.tabbarBorderColor
+    color: JamiTheme.backgroundColor
+
+    onActiveFocusChanged: {
+        if (visible) {
+            closeRecorder()
+        }
+    }
+
+    onVisibleChanged: {
+        if (!visible) {
+            closeRecorder()
+        }
     }
 
     Shape {
         id: backgroundShape
-        width: recBox.width
-        height: recBox.height
+
         anchors.centerIn: parent
+
+        width: root.width
+        height: root.height
+
         x: -offset
         y: -offset
+
         ShapePath {
             fillColor: JamiTheme.backgroundColor
 
             strokeWidth: 1
             strokeColor: JamiTheme.tabbarBorderColor
 
-            startX: -offset+curveRadius; startY: -offset
+            startX: -offset + curveRadius
+            startY: -offset
             joinStyle: ShapePath.RoundJoin
 
-            PathLine { x: width+offset-curveRadius; y: -offset }
-
-            PathArc {
-                x: width+offset; y: -offset+curveRadius
-                radiusX: curveRadius; radiusY: curveRadius
+            PathLine {
+                x: width + offset - curveRadius
+                y: -offset
             }
 
-            PathLine { x: width+offset; y: height+offset-curveRadius }
-
             PathArc {
-                x: width+offset-curveRadius; y: height+offset
-                radiusX: curveRadius; radiusY: curveRadius
+                x: width + offset
+                y: -offset + curveRadius
+                radiusX: curveRadius
+                radiusY: curveRadius
             }
 
-            PathLine { x: width/2+10; y: height+offset }
-            PathLine { x: width/2; y: height+offset+10 }
-            PathLine { x: width/2-10; y: height+offset }
-
-
-            PathLine { x: -offset+curveRadius; y: height+offset }
-
-            PathArc {
-                x: -offset; y: height+offset-curveRadius
-                radiusX: curveRadius; radiusY: curveRadius
+            PathLine {
+                x: width + offset
+                y: height + offset - curveRadius
             }
 
-            PathLine { x: -offset; y: -offset+curveRadius }
+            PathArc {
+                x: width + offset - curveRadius
+                y: height + offset
+                radiusX: curveRadius
+                radiusY: curveRadius
+            }
+
+            PathLine {
+                x: width / 2 + 10
+                y: height + offset
+            }
+            PathLine {
+                x: width / 2
+                y: height + spikeHeight
+            }
+            PathLine {
+                x: width / 2 - 10
+                y: height + offset
+            }
+
+            PathLine {
+                x: -offset + curveRadius
+                y: height + offset
+            }
 
             PathArc {
-                x: -offset+curveRadius; y: -offset
-                radiusX: curveRadius; radiusY: curveRadius
+                x: -offset
+                y: height + offset - curveRadius
+                radiusX: curveRadius
+                radiusY: curveRadius
+            }
+
+            PathLine {
+                x: -offset
+                y: -offset + curveRadius
+            }
+
+            PathArc {
+                x: -offset + curveRadius
+                y: -offset
+                radiusX: curveRadius
+                radiusY: curveRadius
             }
         }
     }
 
     Rectangle {
         id: rectBox
-        visible: (isVideo && previewAvailable)
-        Layout.alignment: Qt.AlignHCenter
+
         anchors.fill: parent
+
+        visible: (isVideo && previewAvailable)
         color: JamiTheme.blackColor
         radius: 5
 
-        PreviewRenderer{
+        PreviewRenderer {
             id: previewWidget
 
             anchors.fill: rectBox
@@ -236,10 +263,11 @@ Rectangle {
     }
 
     Label {
-        visible: (isVideo && !previewAvailable)
+        anchors.centerIn: parent
 
-        Layout.fillWidth: true
-        Layout.alignment: Qt.AlignCenter
+        width: root.width
+
+        visible: (isVideo && !previewAvailable)
 
         text: qsTr("Preview unavailable")
         font.pointSize: 10
@@ -248,34 +276,37 @@ Rectangle {
 
     Timer {
         id: timer
-        interval: 1000;
-        running: false;
+
+        interval: 1000
+        running: false
         repeat: true
+
         onTriggered: updateTimer()
     }
 
     Text {
         id: time
-        visible: true
-        text: "00:00"
-        color: (isVideo? JamiTheme.whiteColor : JamiTheme.textColor)
-        font.pointSize: (isVideo ? 12 : 20)
 
         anchors.centerIn: recordButton
         anchors.horizontalCenterOffset: (isVideo ? 100 : 0)
         anchors.verticalCenterOffset: (isVideo ? 0 : -100)
+
+        visible: true
+        text: "00:00"
+        color: (isVideo ? JamiTheme.whiteColor : JamiTheme.textColor)
+        font.pointSize: (isVideo ? 12 : 20)
     }
 
     PushButton {
         id: recordButton
 
-        preferredSize: btnSize
-
-        anchors.horizontalCenter: recBox.horizontalCenter
-        anchors.bottom: recBox.bottom
+        anchors.horizontalCenter: root.horizontalCenter
+        anchors.bottom: root.bottom
         anchors.bottomMargin: 5
 
-        normalColor: isVideo? "transparent" : JamiTheme.backgroundColor
+        preferredSize: btnSize
+
+        normalColor: isVideo ? "transparent" : JamiTheme.backgroundColor
 
         source: "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg"
         imageColor: JamiTheme.recordIconColor
@@ -289,16 +320,16 @@ Rectangle {
     PushButton {
         id: btnStop
 
-        preferredSize: btnSize
-
-        anchors.horizontalCenter: recBox.horizontalCenter
-        anchors.bottom: recBox.bottom
+        anchors.horizontalCenter: root.horizontalCenter
+        anchors.bottom: root.bottom
         anchors.bottomMargin: 5
 
-        normalColor: isVideo? "transparent" : JamiTheme.backgroundColor
+        preferredSize: btnSize
+
+        normalColor: isVideo ? "transparent" : JamiTheme.backgroundColor
 
         source: "qrc:/images/icons/av_icons/stop-24px-red.svg"
-        imageColor: isVideo? JamiTheme.whiteColor : JamiTheme.textColor
+        imageColor: isVideo ? JamiTheme.whiteColor : JamiTheme.textColor
 
         onClicked: {
             stopRecording()
@@ -309,17 +340,17 @@ Rectangle {
     PushButton {
         id: btnRestart
 
-        preferredSize: btnSize
-
-        anchors.horizontalCenter: recBox.horizontalCenter
+        anchors.horizontalCenter: root.horizontalCenter
         anchors.horizontalCenterOffset: -25
-        anchors.bottom: recBox.bottom
+        anchors.bottom: root.bottom
         anchors.bottomMargin: 5
 
-        normalColor: isVideo? "transparent" : JamiTheme.backgroundColor
+        preferredSize: btnSize
+
+        normalColor: isVideo ? "transparent" : JamiTheme.backgroundColor
 
         source: "qrc:/images/icons/av_icons/re-record-24px.svg"
-        imageColor: isVideo? JamiTheme.whiteColor : JamiTheme.textColor
+        imageColor: isVideo ? JamiTheme.whiteColor : JamiTheme.textColor
 
         onClicked: {
             stopRecording()
@@ -330,17 +361,17 @@ Rectangle {
     PushButton {
         id: btnSend
 
-        preferredSize: btnSize
-
-        anchors.horizontalCenter: recBox.horizontalCenter
+        anchors.horizontalCenter: root.horizontalCenter
         anchors.horizontalCenterOffset: 25
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 5
 
-        normalColor: isVideo? "transparent" : JamiTheme.backgroundColor
+        preferredSize: btnSize
+
+        normalColor: isVideo ? "transparent" : JamiTheme.backgroundColor
 
         source: "qrc:/images/icons/av_icons/send-24px.svg"
-        imageColor: isVideo? JamiTheme.whiteColor : JamiTheme.textColor
+        imageColor: isVideo ? JamiTheme.whiteColor : JamiTheme.textColor
 
         onClicked: {
             stopRecording()

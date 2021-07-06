@@ -30,7 +30,7 @@ import "../../commoncomponents/emojipicker"
 Rectangle {
     id: root
 
-    property real hairLineSize: 1
+    property string previousConvId: ""
 
     function setFilePathsToSend(filePaths) {
         for (var index = 0; index < filePaths.length; ++index) {
@@ -42,6 +42,54 @@ Rectangle {
     implicitHeight: footerColumnLayout.implicitHeight
 
     color: JamiTheme.primaryBackgroundColor
+
+    Connections {
+        target: LRCInstance
+
+        function onSelectedConvUidChanged() {
+            // Handle Draft
+            if (previousConvId !== "") {
+                LRCInstance.setContentDraft(previousConvId, LRCInstance.currentAccountId,
+                                            messageBar.text);
+            }
+
+            messageBar.textAreaObj.clearText()
+            previousConvId = LRCInstance.selectedConvUid
+
+            var restoredContent = LRCInstance.getContentDraft(LRCInstance.selectedConvUid,
+                                                              LRCInstance.currentAccountId);
+            if (restoredContent)
+                messageBar.textAreaObj.insertText(restoredContent)
+        }
+    }
+
+    Connections {
+        target: MessagesAdapter
+
+        function onNewMessageBarPlaceholderText(placeholderText) {
+            messageBar.textAreaObj.placeholderText = JamiStrings.writeTo.arg(placeholderText)
+        }
+
+        function onNewFilePasted(filePath) {
+            dataTransferSendContainer.filesToSendListModel.addToPending(filePath)
+        }
+
+        function onNewTextPasted() {
+            messageBar.textAreaObj.pasteText()
+        }
+
+        function onChangeMessageWebViewFooterVisibilityRequest(visible) {
+            messageBar.visible = visible
+            dataTransferSendContainer.visible = visible
+            root.visible = visible
+        }
+    }
+
+    RecordBox{
+        id: recordBox
+
+        visible: false
+    }
 
     EmojiPicker {
         id: emojiPicker
@@ -70,29 +118,102 @@ Rectangle {
             id: messageBar
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
+            Layout.preferredWidth: footerColumnLayout.width
             Layout.preferredHeight: implicitHeight
 
-            onEmojiButtonClicked: emojiPicker.openEmojiPicker()
+            onTextChanged: {
+                if (text)
+                    showSendMessageButton()
+                else if (!dataTransferSendContainer.filesToSendCount)
+                    hideSendMessageButton()
+            }
+
+            onEmojiButtonClicked: {
+                JamiQmlUtils.updateMessageBarButtonsPoints()
+
+                emojiPicker.parent = JamiQmlUtils.mainViewRectObj
+
+                emojiPicker.x = Qt.binding(function() {
+                    var buttonX = JamiQmlUtils.emojiPickerButtonInMainViewPoint.x +
+                            JamiQmlUtils.emojiPickerButtonObj.width
+                    return buttonX - emojiPicker.width
+                })
+                emojiPicker.y = Qt.binding(function() {
+                    var buttonY = JamiQmlUtils.audioRecordMessageButtonInMainViewPoint.y
+                    return buttonY - emojiPicker.height - messageBar.marginSize
+                            - JamiTheme.messageWebViewHairLineSize
+                })
+
+                emojiPicker.openEmojiPicker()
+            }
             onSendFileButtonClicked: jamiFileDialog.open()
+            onSendMessageButtonClicked: {
+                // Send text message
+                if (messageBar.text)
+                    MessagesAdapter.sendMessage(messageBar.text)
+                messageBar.textAreaObj.clearText()
+
+                // Send file messages
+                var fileCounts = dataTransferSendContainer.filesToSendListModel.rowCount()
+                for (var i = 0; i < fileCounts; i++) {
+                    var currentIndex = dataTransferSendContainer.filesToSendListModel.index(i, 0)
+                    var filePath = dataTransferSendContainer.filesToSendListModel.data(
+                                currentIndex, FilesToSend.FilePath)
+                    MessagesAdapter.sendFile(filePath)
+                }
+                dataTransferSendContainer.filesToSendListModel.flush()
+            }
+            onVideoRecordMessageButtonClicked: {
+                JamiQmlUtils.updateMessageBarButtonsPoints()
+
+                recordBox.parent = JamiQmlUtils.mainViewRectObj
+
+                recordBox.x = Qt.binding(function() {
+                    var buttonCenterX = JamiQmlUtils.videoRecordMessageButtonInMainViewPoint.x +
+                            JamiQmlUtils.videoRecordMessageButtonObj.width / 2
+                    return buttonCenterX - recordBox.width / 2
+                })
+                recordBox.y = Qt.binding(function() {
+                    var buttonY = JamiQmlUtils.videoRecordMessageButtonInMainViewPoint.y
+                    return buttonY - recordBox.height - recordBox.spikeHeight
+                })
+
+                recordBox.openRecorder(true)
+            }
+            onAudioRecordMessageButtonClicked: {
+                JamiQmlUtils.updateMessageBarButtonsPoints()
+
+                recordBox.parent = JamiQmlUtils.mainViewRectObj
+
+                recordBox.x = Qt.binding(function() {
+                    var buttonCenterX = JamiQmlUtils.audioRecordMessageButtonInMainViewPoint.x +
+                            JamiQmlUtils.audioRecordMessageButtonObj.width / 2
+                    return buttonCenterX - recordBox.width / 2
+                })
+                recordBox.y = Qt.binding(function() {
+                    var buttonY = JamiQmlUtils.audioRecordMessageButtonInMainViewPoint.y
+                    return buttonY - recordBox.height - recordBox.spikeHeight
+                })
+
+                recordBox.openRecorder(false)
+            }
         }
 
         FilesToSendContainer {
             id: dataTransferSendContainer
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.fillWidth: true
+            Layout.preferredWidth: footerColumnLayout.width
+            Layout.maximumWidth: JamiTheme.messageWebViewFooterContentMaximumWidth
             Layout.preferredHeight: filesToSendCount ?
                                         JamiTheme.messageWebViewFooterFileContainerPreferredHeight : 0
-        }
-    }
 
-    CustomBorder {
-        commonBorder: false
-        lBorderwidth: 0
-        rBorderwidth: 0
-        tBorderwidth: hairLineSize
-        bBorderwidth: 0
-        borderColor: JamiTheme.tabbarBorderColor
+            onFilesToSendCountChanged: {
+                if (filesToSendCount !== 0)
+                    messageBar.showSendMessageButton()
+                else if (!messageBar.text)
+                    messageBar.hideSendMessageButton()
+            }
+        }
     }
 }

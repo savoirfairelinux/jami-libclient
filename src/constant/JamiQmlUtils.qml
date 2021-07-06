@@ -35,6 +35,33 @@ Item {
     property bool callIsFullscreen: false
     signal fullScreenCallEnded
 
+    // MessageBar buttons in mainview points
+    property var mainViewRectObj
+    property var messageBarButtonsRowObj
+    property var audioRecordMessageButtonObj
+    property var videoRecordMessageButtonObj
+    property var emojiPickerButtonObj
+    property point audioRecordMessageButtonInMainViewPoint
+    property point videoRecordMessageButtonInMainViewPoint
+    property var emojiPickerButtonInMainViewPoint
+
+    function updateMessageBarButtonsPoints() {
+        if (messageBarButtonsRowObj && audioRecordMessageButtonObj && videoRecordMessageButtonObj) {
+            audioRecordMessageButtonInMainViewPoint =
+                    messageBarButtonsRowObj.mapToItem(mainViewRectObj,
+                                                      audioRecordMessageButtonObj.x,
+                                                      audioRecordMessageButtonObj.y)
+            videoRecordMessageButtonInMainViewPoint =
+                    messageBarButtonsRowObj.mapToItem(mainViewRectObj,
+                                                      videoRecordMessageButtonObj.x,
+                                                      videoRecordMessageButtonObj.y)
+            emojiPickerButtonInMainViewPoint =
+                    messageBarButtonsRowObj.mapToItem(mainViewRectObj,
+                                                      emojiPickerButtonObj.x,
+                                                      emojiPickerButtonObj.y)
+        }
+    }
+
     Connections {
         target: CallAdapter
 

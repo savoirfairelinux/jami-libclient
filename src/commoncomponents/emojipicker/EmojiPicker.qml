@@ -26,103 +26,109 @@ import net.jami.Adapters 1.0
 
 import "../"
 
-ModalPopup {
+Rectangle {
     id: root
 
     signal emojiIsPicked(string content)
 
-    backgroundColor: JamiTheme.transparentColor
-
     function openEmojiPicker() {
-        open()
+        emojiPickerWebView.focus = true
+        visible = true
         emojiPickerWebView.runJavaScript(
                     "prepare_to_show(" + JamiTheme.darkTheme + ");")
     }
 
-    onClosed: {
+    function closeEmojiPicker() {
         emojiPickerWebView.runJavaScript("prepare_to_hide();")
     }
 
-    contentItem: Rectangle {
-        id: contentRect
+    implicitWidth: 400
+    implicitHeight: 425
 
-        implicitWidth: 400
-        implicitHeight: 425
+    visible: false
 
-        color: JamiTheme.transparentColor
+    color: JamiTheme.transparentColor
 
-        QtObject {
-            id: jsBridgeObject
+    QtObject {
+        id: jsBridgeObject
 
-            // ID, under which this object will be known at chatview.js side.
-            WebChannel.id: "jsbridge"
+        // ID, under which this object will be known at chatview.js side.
+        WebChannel.id: "jsbridge"
 
-            // Functions that are exposed, return code can be derived from js side
-            // by setting callback function.
-            function emojiIsPicked(arg) {
-                root.emojiIsPicked(arg)
-            }
+        // Functions that are exposed, return code can be derived from js side
+        // by setting callback function.
+        function emojiIsPicked(arg) {
+            root.emojiIsPicked(arg)
         }
 
-        WebEngineView {
-            id: emojiPickerWebView
+        // For emojiPicker to properly close
+        function emojiPickerHideFinished() {
+            root.visible = false
+        }
+    }
 
-            anchors.fill: contentRect
+    WebEngineView {
+        id: emojiPickerWebView
 
-            backgroundColor: JamiTheme.transparentColor
+        anchors.fill: root
 
-            settings.javascriptEnabled: true
-            settings.javascriptCanOpenWindows: false
-            settings.javascriptCanAccessClipboard: true
-            settings.javascriptCanPaste: true
-            settings.fullScreenSupportEnabled: true
-            settings.allowRunningInsecureContent: true
-            settings.localContentCanAccessRemoteUrls: false
-            settings.localContentCanAccessFileUrls: false
-            settings.errorPageEnabled: false
-            settings.pluginsEnabled: false
-            settings.screenCaptureEnabled: false
-            settings.linksIncludedInFocusChain: false
-            settings.localStorageEnabled: true
+        backgroundColor: JamiTheme.transparentColor
 
-            webChannel: emojiPickerWebViewChannel
+        settings.javascriptEnabled: true
+        settings.javascriptCanOpenWindows: false
+        settings.javascriptCanAccessClipboard: true
+        settings.javascriptCanPaste: true
+        settings.fullScreenSupportEnabled: true
+        settings.allowRunningInsecureContent: true
+        settings.localContentCanAccessRemoteUrls: false
+        settings.localContentCanAccessFileUrls: false
+        settings.errorPageEnabled: false
+        settings.pluginsEnabled: false
+        settings.screenCaptureEnabled: false
+        settings.linksIncludedInFocusChain: false
+        settings.localStorageEnabled: true
 
-            onLoadingChanged: {
-                if (loadRequest.status == WebEngineView.LoadSucceededStatus) {
-                    emojiPickerWebView.runJavaScript(
-                                UtilsAdapter.qStringFromFile(
-                                    ":qwebchannel.js"))
-                    emojiPickerWebView.runJavaScript(
-                                UtilsAdapter.qStringFromFile(
-                                    ":/src/commoncomponents/emojipicker/emoji.js"))
-                    emojiPickerWebView.runJavaScript(
-                                UtilsAdapter.qStringFromFile(
-                                    ":/src/commoncomponents/emojipicker/emojiPickerLoader.js"))
-                    emojiPickerWebView.runJavaScript(
-                                "init_emoji_picker(" + JamiTheme.darkTheme + ");")
-                }
-            }
+        webChannel: emojiPickerWebViewChannel
 
-            Component.onCompleted: {
-                profile.cachePath = UtilsAdapter.getCachePath()
-                profile.persistentStoragePath = UtilsAdapter.getCachePath()
-                profile.persistentCookiesPolicy = WebEngineProfile.NoPersistentCookies
-                profile.httpCacheType = WebEngineProfile.NoCache
-                profile.httpUserAgent = JamiStrings.httpUserAgentName
-
-                emojiPickerWebView.loadHtml(
+        onLoadingChanged: {
+            if (loadRequest.status == WebEngineView.LoadSucceededStatus) {
+                emojiPickerWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                     ":qwebchannel.js"))
+                emojiPickerWebView.runJavaScript(
                             UtilsAdapter.qStringFromFile(
-                                ":/src/commoncomponents/emojipicker/emojiPickerLoader.html"),
-                            ":/src/commoncomponents/emojipicker/emojiPickerLoader.html")
-                emojiPickerWebView.url
-                        = "qrc:/src/commoncomponents/emojipicker/emojiPickerLoader.html"
+                                ":/src/commoncomponents/emojipicker/emoji.js"))
+                emojiPickerWebView.runJavaScript(
+                            UtilsAdapter.qStringFromFile(
+                                ":/src/commoncomponents/emojipicker/emojiPickerLoader.js"))
+                emojiPickerWebView.runJavaScript(
+                            "init_emoji_picker(" + JamiTheme.darkTheme + ");")
             }
         }
 
-        // Provide WebChannel by registering jsBridgeObject.
-        WebChannel {
-            id: emojiPickerWebViewChannel
-            registeredObjects: [jsBridgeObject]
+        onActiveFocusChanged: {
+            if (visible) {
+                closeEmojiPicker()
+            }
         }
+
+        Component.onCompleted: {
+            profile.cachePath = UtilsAdapter.getCachePath()
+            profile.persistentStoragePath = UtilsAdapter.getCachePath()
+            profile.persistentCookiesPolicy = WebEngineProfile.NoPersistentCookies
+            profile.httpCacheType = WebEngineProfile.NoCache
+            profile.httpUserAgent = JamiStrings.httpUserAgentName
+
+            emojiPickerWebView.loadHtml(
+                        UtilsAdapter.qStringFromFile(
+                            ":/src/commoncomponents/emojipicker/emojiPickerLoader.html"),
+                        ":/src/commoncomponents/emojipicker/emojiPickerLoader.html")
+            emojiPickerWebView.url = "qrc:/src/commoncomponents/emojipicker/emojiPickerLoader.html"
+        }
+    }
+
+    // Provide WebChannel by registering jsBridgeObject.
+    WebChannel {
+        id: emojiPickerWebViewChannel
+        registeredObjects: [jsBridgeObject]
     }
 }

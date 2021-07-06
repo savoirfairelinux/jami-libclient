@@ -254,15 +254,17 @@ Item {
     property real modalPopupDropShadowSamples: 16
 
     // MessageWebView
+    property real messageWebViewHairLineSize: 1
     property real messageWebViewHeaderPreferredHeight: 64
+    property real messageWebViewFooterContentMaximumWidth: 1000
     property real messageWebViewFooterPreferredHeight: 50
-    property real messageWebViewFooterMaximumHeight: 230
+    property real messageWebViewFooterMaximumHeight: 280
     property real messageWebViewFooterRowSpacing: 1
     property real messageWebViewFooterButtonSize: 36
     property real messageWebViewFooterButtonIconSize: 48
     property real messageWebViewFooterButtonRadius: 5
     property real messageWebViewFooterFileContainerPreferredHeight: 150
-    property real messageWebViewFooterTextAreaMaximumHeight: 80
+    property real messageWebViewFooterTextAreaMaximumHeight: 130
 
     // MessageWebView File Transfer Container
     property real filesToSendContainerSpacing: 5

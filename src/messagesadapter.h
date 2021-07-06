@@ -53,10 +53,8 @@ protected:
     Q_INVOKABLE void acceptInvitation(const QString& convId = {});
     Q_INVOKABLE void refuseInvitation(const QString& convUid = "");
     Q_INVOKABLE void blockConversation(const QString& convUid = "");
-    Q_INVOKABLE void setNewMessagesContent(const QString& path);
     Q_INVOKABLE void setDisplayLinks();
     Q_INVOKABLE void sendMessage(const QString& message);
-    Q_INVOKABLE void sendImage(const QString& message);
     Q_INVOKABLE void sendFile(const QString& message);
     Q_INVOKABLE void retryInteraction(const QString& interactionId);
     Q_INVOKABLE void deleteInteraction(const QString& interactionId);
@@ -65,16 +63,12 @@ protected:
     Q_INVOKABLE void acceptFile(const QString& arg);
     Q_INVOKABLE void refuseFile(const QString& arg);
     Q_INVOKABLE void pasteKeyDetected();
-    Q_INVOKABLE void onComposing(bool isComposing);
+    Q_INVOKABLE void userIsComposing(bool isComposing);
     Q_INVOKABLE void loadMessages(int n);
     Q_INVOKABLE void copyToDownloads(const QString& interactionId, const QString& displayName);
 
-    // Manually update draft when hiding message web view (Back to welcome page).
-    Q_INVOKABLE void updateDraft();
-
     // Run corrsponding js functions, c++ to qml.
     void setMessagesVisibility(bool visible);
-    void requestSendMessageContent();
     void setInvitation(bool show,
                        const QString& contactUri = {},
                        const QString& contactId = {},
@@ -102,10 +96,12 @@ protected:
 Q_SIGNALS:
     void contactBanned();
     void newInteraction(int type);
+    void newMessageBarPlaceholderText(QString placeholderText);
+    void newFilePasted(QString filePath);
+    void newTextPasted();
+    void changeMessageWebViewFooterVisibilityRequest(bool visible);
 
 private Q_SLOTS:
-    void slotSendMessageContentSaved(const QString& content);
-    void slotUpdateDraft(const QString& content);
     void slotMessagesCleared();
     void slotMessagesLoaded();
     void onNewInteraction(const QString& convUid,
@@ -125,9 +121,6 @@ private:
                         const QString& convUid,
                         const QString& interactionId,
                         const interaction::Info& interaction);
-
-    QString LastConvUid_;
-    QString currentConvUid_;
 
     const QVariantMap chatviewTranslatedStrings_ {lrc::api::chatview::getTranslatedStrings()};
 

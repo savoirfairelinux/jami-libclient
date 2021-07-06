@@ -37,8 +37,6 @@ Rectangle {
     property bool jsLoaded: false
 
     signal needToHideConversationInCall
-
-    signal sendMessageContentSaved(string arg)
     signal messagesCleared
     signal messagesLoaded
 
@@ -139,18 +137,6 @@ Rectangle {
             MessagesAdapter.refuseFile(arg)
         }
 
-        function sendMessage(arg) {
-            MessagesAdapter.sendMessage(arg)
-        }
-
-        function sendImage(arg) {
-            MessagesAdapter.sendImage(arg)
-        }
-
-        function sendFile(arg) {
-            MessagesAdapter.sendFile(arg)
-        }
-
         function acceptInvitation() {
             MessagesAdapter.acceptInvitation()
         }
@@ -173,26 +159,6 @@ Rectangle {
 
         function copyToDownloads(interactionId, displayName) {
             MessagesAdapter.copyToDownloads(interactionId, displayName)
-        }
-
-        function emitPasteKeyDetected() {
-            MessagesAdapter.pasteKeyDetected()
-        }
-
-        function openAudioRecorder(spikePosX, spikePosY) {
-            recordBox.openRecorder(spikePosX, spikePosY, false)
-        }
-
-        function openVideoRecorder(spikePosX, spikePosY) {
-            recordBox.openRecorder(spikePosX, spikePosY, true)
-        }
-
-        function saveSendMessageContent(arg) {
-            root.sendMessageContentSaved(arg)
-        }
-
-        function onComposing(isComposing) {
-            MessagesAdapter.onComposing(isComposing)
         }
 
         function parseI18nData() {
@@ -226,13 +192,12 @@ Rectangle {
             userAliasLabelText: headerUserAliasLabelText
             userUserNameLabelText: headerUserUserNameLabelText
 
-            DropArea{
+            DropArea {
                 anchors.fill: parent
-                //onDropped: setFilePathsToSend(drop.urls)
+                onDropped: messageWebViewFooter.setFilePathsToSend(drop.urls)
             }
 
             onBackClicked: {
-                MessagesAdapter.updateDraft()
                 mainView.showWelcomeView()
             }
 
@@ -240,10 +205,12 @@ Rectangle {
                 root.needToHideConversationInCall()
             }
 
-            onPluginSelector : {
+            onPluginSelector: {
                 // Create plugin handler picker - PLUGINS
-                PluginHandlerPickerCreation.createPluginHandlerPickerObjects(root, false)
-                PluginHandlerPickerCreation.calculateCurrentGeo(root.width / 2, root.height / 2)
+                PluginHandlerPickerCreation.createPluginHandlerPickerObjects(
+                            root, false)
+                PluginHandlerPickerCreation.calculateCurrentGeo(root.width / 2,
+                                                                root.height / 2)
                 PluginHandlerPickerCreation.openPluginHandlerPicker()
             }
         }
@@ -254,8 +221,8 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.topMargin: messageWebViewHeader.hairLineSize
-            Layout.bottomMargin: messageWebViewFooter.hairLineSize
+            Layout.topMargin: JamiTheme.messageWebViewHairLineSize
+            Layout.bottomMargin: JamiTheme.messageWebViewHairLineSize
 
             backgroundColor: "transparent"
 
@@ -275,13 +242,13 @@ Rectangle {
 
             webChannel: messageWebViewChannel
 
-            DropArea{
+            DropArea {
                 anchors.fill: parent
-                //onDropped: setFilePathsToSend(drop.urls)
+                onDropped: messageWebViewFooter.setFilePathsToSend(drop.urls)
             }
 
             onNavigationRequested: {
-                if(request.navigationType === WebEngineView.LinkClickedNavigation) {
+                if (request.navigationType === WebEngineView.LinkClickedNavigation) {
                     MessagesAdapter.openUrl(request.url)
                     request.action = WebEngineView.IgnoreRequest
                 }
@@ -350,6 +317,11 @@ Rectangle {
             Layout.fillWidth: true
             Layout.preferredHeight: implicitHeight
             Layout.maximumHeight: JamiTheme.messageWebViewFooterMaximumHeight
+
+            DropArea {
+                anchors.fill: parent
+                onDropped: messageWebViewFooter.setFilePathsToSend(drop.urls)
+            }
         }
     }
 }
