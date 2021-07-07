@@ -212,7 +212,7 @@ UtilsAdapter::getCallId(const QString& accountId, const QString& convUid)
 int
 UtilsAdapter::getCallStatus(const QString& callId)
 {
-    const auto callStatus = lrcInstance_->getCallInfo(callId, lrcInstance_->getCurrentAccountId());
+    const auto callStatus = lrcInstance_->getCallInfo(callId, lrcInstance_->get_currentAccountId());
     return static_cast<int>(callStatus->status);
 }
 

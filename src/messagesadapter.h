@@ -94,7 +94,6 @@ protected:
     void contactIsComposing(const QString& contactUri, bool isComposing);
 
 Q_SIGNALS:
-    void contactBanned();
     void newInteraction(int type);
     void newMessageBarPlaceholderText(QString placeholderText);
     void newFilePasted(QString filePath);

@@ -84,14 +84,16 @@ public:
     explicit ContactAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~ContactAdapter() = default;
 
-protected:
     using Role = ConversationList::Role;
 
-    void safeInit() override {};
+    void safeInit() override;
 
     Q_INVOKABLE QVariant getContactSelectableModel(int type);
     Q_INVOKABLE void setSearchFilter(const QString& filter);
     Q_INVOKABLE void contactSelected(int index);
+
+Q_SIGNALS:
+    void bannedStatusChanged(const QString& uri, bool banned);
 
 private:
     SmartListModel::Type listModeltype_;

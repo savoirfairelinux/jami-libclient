@@ -41,21 +41,17 @@ ColumnLayout {
     }
 
     Connections {
-        target: MessagesAdapter
+        target: ContactAdapter
 
-        function onContactBanned() {
-            bannedListWidget.model.reset()
-            root.visible = true
-            bannedContactsBtn.visible = true
-            bannedListWidget.visible = false
-        }
-    }
-
-    Connections {
-        target: AccountAdapter
-
-        function onContactUnbanned() {
-            updateAndShowBannedContactsSlot()
+        function onBannedStatusChanged(uri, banned) {
+            if (banned) {
+                bannedListWidget.model.reset()
+                root.visible = true
+                bannedContactsBtn.visible = true
+                bannedListWidget.visible = false
+            } else {
+                updateAndShowBannedContactsSlot()
+            }
         }
     }
 

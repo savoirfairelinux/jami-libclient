@@ -1,11 +1,8 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
- * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
- * Author: Anthony L�onard <anthony.leonard@savoirfairelinux.com
- * Author: Olivier Soldano <olivier.soldano@savoirfairelinux.com>
+ * Copyright (C) 2020-2021 by Savoir-faire Linux
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ * Author: Yang Wang <yang.yang@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
- * Author: Isa Nanic <isa.nanic@savoirfairelinux.com>
- * Author: Mingrui Zhang   <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,28 +34,31 @@ AccountAdapter::AccountAdapter(AppSettingsManager* settingsManager,
     , accSrcModel_(new AccountListModel(instance))
     , accModel_(new CurrentAccountFilterModel(instance, accSrcModel_.get()))
 {
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_MODELS, accModel_.get(), "CurrentAccountFilterModel");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_MODELS, accSrcModel_.get(), "AccountListModel");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_MODELS, accModel_.get(), "CurrentAccountFilterModel");
 }
 
 void
 AccountAdapter::safeInit()
 {
-    connect(lrcInstance_,
-            &LRCInstance::currentAccountIdChanged,
+    connect(&lrcInstance_->accountModel(),
+            &NewAccountModel::accountStatusChanged,
             this,
-            &AccountAdapter::onCurrentAccountChanged);
+            &AccountAdapter::accountStatusChanged);
 
-    connectAccount(lrcInstance_->getCurrentAccountId());
+    connect(&lrcInstance_->accountModel(),
+            &NewAccountModel::profileUpdated,
+            this,
+            &AccountAdapter::accountStatusChanged);
 }
 
-lrc::api::NewAccountModel*
+NewAccountModel*
 AccountAdapter::getModel()
 {
     return &(lrcInstance_->accountModel());
 }
 
-lrc::api::NewDeviceModel*
+NewDeviceModel*
 AccountAdapter::getDeviceModel()
 {
     return lrcInstance_->getCurrentAccountInfo().deviceModel.get();
@@ -69,7 +69,7 @@ AccountAdapter::changeAccount(int row)
 {
     auto accountList = lrcInstance_->accountModel().getAccountList();
     if (accountList.size() > row) {
-        lrcInstance_->setCurrentAccountId(accountList.at(row));
+        lrcInstance_->set_currentAccountId(accountList.at(row));
     }
 }
 
@@ -82,6 +82,7 @@ AccountAdapter::connectFailure()
                               Q_UNUSED(accountId);
                               Q_EMIT reportFailure();
                           });
+
     Utils::oneShotConnect(&lrcInstance_->accountModel(),
                           &lrc::api::NewAccountModel::invalidAccountDetected,
                           [this](const QString& accountId) {
@@ -226,7 +227,7 @@ AccountAdapter::createJAMSAccount(const QVariantMap& settings)
 void
 AccountAdapter::deleteCurrentAccount()
 {
-    lrcInstance_->accountModel().removeAccount(lrcInstance_->getCurrentAccountId());
+    lrcInstance_->accountModel().removeAccount(lrcInstance_->get_currentAccountId());
     Q_EMIT lrcInstance_->accountListChanged();
 }
 
@@ -270,12 +271,6 @@ AccountAdapter::setCurrAccDisplayName(const QString& text)
     lrcInstance_->setCurrAccDisplayName(text);
 }
 
-lrc::api::profile::Type
-AccountAdapter::getCurrentAccountType()
-{
-    return lrcInstance_->getCurrentAccountInfo().profileInfo.type;
-}
-
 void
 AccountAdapter::setCurrAccAvatar(bool fromFile, const QString& source)
 {
@@ -292,17 +287,11 @@ AccountAdapter::setCurrAccAvatar(bool fromFile, const QString& source)
     });
 }
 
-void
-AccountAdapter::onCurrentAccountChanged()
-{
-    connectAccount(lrcInstance_->getCurrentAccountId());
-}
-
 bool
 AccountAdapter::hasPassword()
 {
     auto confProps = lrcInstance_->accountModel().getAccountConfig(
-        lrcInstance_->getCurrentAccountId());
+        lrcInstance_->get_currentAccountId());
     return confProps.archiveHasPassword;
 }
 
@@ -310,9 +299,9 @@ void
 AccountAdapter::setArchiveHasPassword(bool isHavePassword)
 {
     auto confProps = lrcInstance_->accountModel().getAccountConfig(
-        lrcInstance_->getCurrentAccountId());
+        lrcInstance_->get_currentAccountId());
     confProps.archiveHasPassword = isHavePassword;
-    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->getCurrentAccountId(), confProps);
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->get_currentAccountId(), confProps);
 }
 bool
 AccountAdapter::exportToFile(const QString& accountId,
@@ -339,52 +328,5 @@ AccountAdapter::passwordSetStatusMessageBox(bool success, QString title, QString
         QMessageBox::information(0, title, infoToDisplay);
     } else {
         QMessageBox::critical(0, title, infoToDisplay);
-    }
-}
-
-void
-AccountAdapter::connectAccount(const QString& accountId)
-{
-    try {
-        auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
-
-        QObject::disconnect(accountStatusChangedConnection_);
-        QObject::disconnect(accountProfileUpdatedConnection_);
-        QObject::disconnect(addedToConferenceConnection_);
-        QObject::disconnect(bannedStatusChangedConnection_);
-
-        accountStatusChangedConnection_
-            = QObject::connect(accInfo.accountModel,
-                               &lrc::api::NewAccountModel::accountStatusChanged,
-                               [this](const QString& accountId) {
-                                   Q_EMIT accountStatusChanged(accountId);
-                               });
-
-        accountProfileUpdatedConnection_
-            = QObject::connect(accInfo.accountModel,
-                               &lrc::api::NewAccountModel::profileUpdated,
-                               [this](const QString& accountId) {
-                                   Q_EMIT accountStatusChanged(accountId);
-                               });
-
-        addedToConferenceConnection_
-            = QObject::connect(accInfo.callModel.get(),
-                               &NewCallModel::callAddedToConference,
-                               [this](const QString& callId, const QString& confId) {
-                                   Q_UNUSED(callId);
-                                   lrcInstance_->renderer()->addDistantRenderer(confId);
-                               });
-
-        bannedStatusChangedConnection_
-            = QObject::connect(accInfo.contactModel.get(),
-                               &lrc::api::ContactModel::bannedStatusChanged,
-                               [this](const QString& uri, bool banned) {
-                                   if (!banned)
-                                       Q_EMIT contactUnbanned();
-                                   else
-                                       Q_EMIT lrcInstance_->contactBanned(uri);
-                               });
-    } catch (...) {
-        qWarning() << "Couldn't get account: " << accountId;
     }
 }

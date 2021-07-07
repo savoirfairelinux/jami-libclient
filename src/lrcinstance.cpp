@@ -38,6 +38,21 @@ LRCInstance::LRCInstance(migrateCallback willMigrateCb,
     , updateManager_(std::make_unique<UpdateManager>(updateUrl, connectivityMonitor, this))
 {
     lrc_->holdConferences = false;
+
+    connect(this, &LRCInstance::currentAccountIdChanged, [this] {
+        // save to config, editing the accountlistmodel's underlying data
+        accountModel().setTopAccount(currentAccountId_);
+        Q_EMIT accountListChanged();
+
+        // update type
+        set_currentAccountType(getCurrentAccountInfo().profileInfo.type);
+    });
+
+    // set the current account if any
+    auto accountList = accountModel().getAccountList();
+    if (accountList.size()) {
+        set_currentAccountId(accountList.at(0));
+    }
 };
 
 VectorString
@@ -109,20 +124,7 @@ LRCInstance::getAccountInfo(const QString& accountId)
 const account::Info&
 LRCInstance::getCurrentAccountInfo()
 {
-    return getAccountInfo(getCurrentAccountId());
-}
-
-profile::Type
-LRCInstance::getCurrentAccountType()
-{
-    if (currentAccountType_ == profile::Type::INVALID) {
-        try {
-            currentAccountType_ = getCurrentAccountInfo().profileInfo.type;
-        } catch (...) {
-            qDebug() << "Cannot find current account info";
-        }
-    }
-    return currentAccountType_;
+    return getAccountInfo(get_currentAccountId());
 }
 
 bool
@@ -194,7 +196,7 @@ const conversation::Info&
 LRCInstance::getConversationFromConvUid(const QString& convUid, const QString& accountId)
 {
     auto& accInfo = accountModel().getAccountInfo(!accountId.isEmpty() ? accountId
-                                                                       : getCurrentAccountId());
+                                                                       : get_currentAccountId());
     auto& convModel = accInfo.conversationModel;
     return convModel->getConversationForUid(convUid).value_or(invalid);
 }
@@ -203,7 +205,7 @@ const conversation::Info&
 LRCInstance::getConversationFromPeerUri(const QString& peerUri, const QString& accountId)
 {
     auto& accInfo = accountModel().getAccountInfo(!accountId.isEmpty() ? accountId
-                                                                       : getCurrentAccountId());
+                                                                       : get_currentAccountId());
     auto& convModel = accInfo.conversationModel;
     return convModel->getConversationForPeerUri(peerUri).value_or(invalid);
 }
@@ -212,7 +214,7 @@ const conversation::Info&
 LRCInstance::getConversationFromCallId(const QString& callId, const QString& accountId)
 {
     auto& accInfo = accountModel().getAccountInfo(!accountId.isEmpty() ? accountId
-                                                                       : getCurrentAccountId());
+                                                                       : get_currentAccountId());
     auto& convModel = accInfo.conversationModel;
     return convModel->getConversationForCallId(callId).value_or(invalid);
 }
@@ -250,43 +252,11 @@ LRCInstance::getCurrentContactModel()
     }
 }
 
-const QString&
-LRCInstance::getCurrentAccountId()
-{
-    if (currentAccountId_.isEmpty()) {
-        auto accountList = accountModel().getAccountList();
-        if (accountList.size())
-            currentAccountId_ = accountList.at(0);
-    }
-    return currentAccountId_;
-}
-
-void
-LRCInstance::setCurrentAccountId(const QString& accountId)
-{
-    if (accountId == currentAccountId_)
-        return; // No need to select current selected account
-
-    auto newAccountType = getAccountInfo(accountId).profileInfo.type;
-    bool accountTypeChanged = getCurrentAccountType() != newAccountType;
-
-    currentAccountId_ = accountId;
-
-    // Last selected account should be set as preferred.
-    accountModel().setTopAccount(accountId);
-
-    if (accountTypeChanged) {
-        currentAccountType_ = newAccountType;
-        Q_EMIT currentAccountTypeChanged(newAccountType);
-    }
-    Q_EMIT currentAccountIdChanged(accountId);
-}
-
 int
 LRCInstance::getCurrentAccountIndex()
 {
     for (int i = 0; i < accountModel().getAccountList().size(); i++) {
-        if (accountModel().getAccountList()[i] == getCurrentAccountId()) {
+        if (accountModel().getAccountList()[i] == get_currentAccountId()) {
             return i;
         }
     }
@@ -312,19 +282,19 @@ LRCInstance::setCurrAccAvatar(const QPixmap& avatarPixmap)
     bu.open(QIODevice::WriteOnly);
     avatarPixmap.save(&bu, "PNG");
     auto str = QString::fromLocal8Bit(ba.toBase64());
-    accountModel().setAvatar(getCurrentAccountId(), str);
+    accountModel().setAvatar(get_currentAccountId(), str);
 }
 
 void
 LRCInstance::setCurrAccAvatar(const QString& avatar)
 {
-    accountModel().setAvatar(getCurrentAccountId(), avatar);
+    accountModel().setAvatar(get_currentAccountId(), avatar);
 }
 
 void
 LRCInstance::setCurrAccDisplayName(const QString& displayName)
 {
-    auto accountId = getCurrentAccountId();
+    auto accountId = get_currentAccountId();
     accountModel().setAlias(accountId, displayName);
     /*
      * Force save to .yml.
@@ -423,11 +393,11 @@ LRCInstance::selectConversation(const QString& convId, const QString& accountId)
     }
     // if the account is not currently selected, do that first, then
     // proceed to select the conversation
-    if (!accountId.isEmpty() && accountId != getCurrentAccountId()) {
+    if (!accountId.isEmpty() && accountId != get_currentAccountId()) {
         Utils::oneShotConnect(this, &LRCInstance::currentAccountIdChanged, [this, convId] {
             set_selectedConvUid(convId);
         });
-        setCurrentAccountId(accountId);
+        set_currentAccountId(accountId);
         return;
     }
     set_selectedConvUid(convId);

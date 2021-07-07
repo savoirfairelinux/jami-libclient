@@ -28,6 +28,18 @@ ContactAdapter::ContactAdapter(LRCInstance* instance, QObject* parent)
     selectableProxyModel_.reset(new SelectableProxyModel(this));
 }
 
+void
+ContactAdapter::safeInit()
+{
+    connect(lrcInstance_, &LRCInstance::currentAccountIdChanged, [this] {
+        connect(lrcInstance_->getCurrentContactModel(),
+                &ContactModel::bannedStatusChanged,
+                this,
+                &ContactAdapter::bannedStatusChanged,
+                Qt::UniqueConnection);
+    });
+}
+
 QVariant
 ContactAdapter::getContactSelectableModel(int type)
 {
@@ -36,7 +48,7 @@ ContactAdapter::getContactSelectableModel(int type)
 
     if (listModeltype_ == SmartListModel::Type::CONVERSATION) {
         defaultModerators_ = lrcInstance_->accountModel().getDefaultModerators(
-            lrcInstance_->getCurrentAccountId());
+            lrcInstance_->get_currentAccountId());
     }
 
     smartListModel_.reset(new SmartListModel(this, listModeltype_, lrcInstance_));
@@ -63,7 +75,7 @@ ContactAdapter::getContactSelectableModel(int type)
                 lrcInstance_->get_selectedConvUid());
             if (!conv.participants.isEmpty()) {
                 QString calleeDisplayId = lrcInstance_
-                                              ->getAccountInfo(lrcInstance_->getCurrentAccountId())
+                                              ->getAccountInfo(lrcInstance_->get_currentAccountId())
                                               .contactModel->bestIdForContact(conv.participants[0]);
 
                 QRegExp matchExcept = QRegExp(QString("\\b(?!" + calleeDisplayId + "\\b)\\w+"));
@@ -171,7 +183,7 @@ ContactAdapter::contactSelected(int index)
                 return;
             }
 
-            lrcInstance_->accountModel().setDefaultModerator(lrcInstance_->getCurrentAccountId(),
+            lrcInstance_->accountModel().setDefaultModerator(lrcInstance_->get_currentAccountId(),
                                                              contactUri,
                                                              true);
             Q_EMIT defaultModeratorsUpdated();

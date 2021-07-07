@@ -39,7 +39,7 @@ CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject*
     overlayModel_.reset(new CallOverlayModel(lrcInstance_, this));
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_MODELS, overlayModel_.get(), "CallOverlayModel");
 
-    accountId_ = lrcInstance_->getCurrentAccountId();
+    accountId_ = lrcInstance_->get_currentAccountId();
     if (!accountId_.isEmpty())
         connectCallModel(accountId_);
 
@@ -90,7 +90,7 @@ CallAdapter::CallAdapter(SystemTray* systemTray, LRCInstance* instance, QObject*
 void
 CallAdapter::onAccountChanged()
 {
-    accountId_ = lrcInstance_->getCurrentAccountId();
+    accountId_ = lrcInstance_->get_currentAccountId();
     connectCallModel(accountId_);
 }
 
@@ -284,7 +284,7 @@ void
 CallAdapter::onCallAddedToConference(const QString& callId, const QString& confId)
 {
     Q_UNUSED(callId)
-    Q_UNUSED(confId)
+    lrcInstance_->renderer()->addDistantRenderer(confId);
     saveConferenceSubcalls();
 }
 
@@ -362,7 +362,7 @@ CallAdapter::onShowIncomingCallView(const QString& accountId, const QString& con
     // this will update various UI elements that portray the call state
     Q_EMIT callStatusChanged(static_cast<int>(call.status), accountId, convInfo.uid);
 
-    auto callBelongsToSelectedAccount = accountId == lrcInstance_->getCurrentAccountId();
+    auto callBelongsToSelectedAccount = accountId == lrcInstance_->get_currentAccountId();
     auto accountProperties = lrcInstance_->accountModel().getAccountConfig(accountId);
 
     // do nothing but update the status UI for incoming calls on RendezVous accounts

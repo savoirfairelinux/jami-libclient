@@ -46,7 +46,7 @@ Label {
     Connections {
         target: LRCInstance
 
-        function onCurrentAccountIdChanged() {
+        function onAccountListChanged() {
             root.update()
             resetAccountListModel(LRCInstance.currentAccountId)
         }

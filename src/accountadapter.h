@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Mingrui Zhang   <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -20,13 +20,12 @@
 
 #include "qmladapterbase.h"
 
-#include <QObject>
-#include <QSettings>
-#include <QString>
-
 #include "accountlistmodel.h"
 #include "lrcinstance.h"
 #include "utils.h"
+
+#include <QSettings>
+#include <QString>
 
 class AppSettingsManager;
 
@@ -51,10 +50,8 @@ public:
                             QObject* parent = nullptr);
     ~AccountAdapter() = default;
 
-protected:
     void safeInit() override;
 
-public:
     // Change to account corresponding to combox box index.
     Q_INVOKABLE void changeAccount(int row);
 
@@ -89,8 +86,6 @@ public:
     Q_INVOKABLE bool hasVideoCall();
     Q_INVOKABLE bool isPreviewing();
     Q_INVOKABLE void setCurrAccDisplayName(const QString& text);
-    Q_INVOKABLE lrc::api::profile::Type getCurrentAccountType();
-
     Q_INVOKABLE void setCurrAccAvatar(bool fromFile, const QString& source);
 
 Q_SIGNALS:
@@ -100,22 +95,11 @@ Q_SIGNALS:
     // Send report failure to QML to make it show the right UI state .
     void reportFailure();
     void accountAdded(QString accountId, bool showBackUp, int index);
-    void contactUnbanned();
-
-private Q_SLOTS:
-    void onCurrentAccountChanged();
 
 private:
-    // Make account signal connections.
-    void connectAccount(const QString& accountId);
-
     // Implement what to do when account creation fails.
     void connectFailure();
 
-    QMetaObject::Connection accountStatusChangedConnection_;
-    QMetaObject::Connection accountProfileUpdatedConnection_;
-    QMetaObject::Connection addedToConferenceConnection_;
-    QMetaObject::Connection bannedStatusChangedConnection_;
     QMetaObject::Connection registeredNameSavedConnection_;
 
     AppSettingsManager* settingsManager_;

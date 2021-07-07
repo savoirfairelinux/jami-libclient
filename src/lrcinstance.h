@@ -55,10 +55,8 @@ class LRCInstance : public QObject
 {
     Q_OBJECT
     QML_PROPERTY(QString, selectedConvUid)
-    Q_PROPERTY(lrc::api::profile::Type currentAccountType READ getCurrentAccountType NOTIFY
-                   currentAccountTypeChanged)
-    Q_PROPERTY(QString currentAccountId READ getCurrentAccountId WRITE setCurrentAccountId NOTIFY
-                   currentAccountIdChanged)
+    QML_PROPERTY(QString, currentAccountId)
+    QML_RO_PROPERTY(lrc::api::profile::Type, currentAccountType)
 
 public:
     explicit LRCInstance(migrateCallback willMigrateCb = {},
@@ -88,7 +86,6 @@ public:
 
     const account::Info& getAccountInfo(const QString& accountId);
     const account::Info& getCurrentAccountInfo();
-    profile::Type getCurrentAccountType();
     QString getCallIdForConversationUid(const QString& convUid, const QString& accountId);
     const call::Info* getCallInfo(const QString& callId, const QString& accountId);
     const call::Info* getCallInfoForConversation(const conversation::Info& convInfo,
@@ -109,8 +106,6 @@ public:
                                      const QString& accountId,
                                      const QString& content);
 
-    const QString& getCurrentAccountId();
-    void setCurrentAccountId(const QString& accountId = {});
     int getCurrentAccountIndex();
     void setAvatarForAccount(const QPixmap& avatarPixmap, const QString& accountID);
     void setCurrAccAvatar(const QPixmap& avatarPixmap);
@@ -134,17 +129,12 @@ Q_SIGNALS:
     void quitEngineRequested();
     void conversationUpdated(const QString& convId, const QString& accountId);
     void draftSaved(const QString& convId);
-    void contactBanned(const QString& uri);
-    void currentAccountIdChanged(const QString& accountId);
-    void currentAccountTypeChanged(profile::Type type);
 
 private:
     std::unique_ptr<Lrc> lrc_;
     std::unique_ptr<RenderManager> renderer_;
     std::unique_ptr<UpdateManager> updateManager_;
 
-    QString currentAccountId_ {};
-    profile::Type currentAccountType_ = profile::Type::INVALID;
     MapStringString contentDrafts_;
     MapStringString lastConferences_;
 

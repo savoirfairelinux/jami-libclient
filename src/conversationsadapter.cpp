@@ -82,16 +82,6 @@ ConversationsAdapter::ConversationsAdapter(SystemTray* systemTray,
         Q_EMIT convSrcModel_->dataChanged(index, index);
     });
 
-    connect(lrcInstance_, &LRCInstance::contactBanned, [this](const QString& uri) {
-        auto& convInfo = lrcInstance_->getConversationFromPeerUri(uri);
-        if (convInfo.uid.isEmpty())
-            return;
-        auto row = lrcInstance_->indexOf(convInfo.uid);
-        const auto index = convSrcModel_->index(row, 0);
-        Q_EMIT convSrcModel_->dataChanged(index, index);
-        lrcInstance_->set_selectedConvUid();
-    });
-
 #ifdef Q_OS_LINUX
     // notification responses
     connect(systemTray_,
@@ -174,7 +164,7 @@ ConversationsAdapter::onNewUnreadInteraction(const QString& accountId,
                                              const interaction::Info& interaction)
 {
     if (!interaction.authorUri.isEmpty()
-        && (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrentAccountId()
+        && (!QApplication::focusWindow() || accountId != lrcInstance_->get_currentAccountId()
             || convUid != lrcInstance_->get_selectedConvUid())) {
         auto& accountInfo = lrcInstance_->getAccountInfo(accountId);
         auto from = accountInfo.contactModel->bestNameForContact(interaction.authorUri);
@@ -224,7 +214,7 @@ void
 ConversationsAdapter::onNewTrustRequest(const QString& accountId, const QString& convId, const QString& peerUri)
 {
 #ifdef Q_OS_LINUX
-    if (!QApplication::focusWindow() || accountId != lrcInstance_->getCurrentAccountId()) {
+    if (!QApplication::focusWindow() || accountId != lrcInstance_->get_currentAccountId()) {
         auto conv = convId;
         if (conv.isEmpty()) {
             auto& convInfo = lrcInstance_->getConversationFromPeerUri(peerUri);
@@ -325,6 +315,19 @@ ConversationsAdapter::updateConversation(const QString& convId)
     // - clear search bar
     Q_EMIT conversationReady(convId);
     lrcInstance_->selectConversation(convId);
+}
+
+void
+ConversationsAdapter::onBannedStatusChanged(const QString& uri, bool banned)
+{
+    Q_UNUSED(banned)
+    auto& convInfo = lrcInstance_->getConversationFromPeerUri(uri);
+    if (convInfo.uid.isEmpty())
+        return;
+    auto row = lrcInstance_->indexOf(convInfo.uid);
+    const auto index = convSrcModel_->index(row, 0);
+    Q_EMIT convSrcModel_->dataChanged(index, index);
+    lrcInstance_->set_selectedConvUid();
 }
 
 void
@@ -459,6 +462,12 @@ ConversationsAdapter::connectConversationModel()
                      &ConversationModel::needsSyncingSet,
                      this,
                      &ConversationsAdapter::updateConversation,
+                     Qt::UniqueConnection);
+
+    QObject::connect(lrcInstance_->getCurrentContactModel(),
+                     &ContactModel::bannedStatusChanged,
+                     this,
+                     &ConversationsAdapter::onBannedStatusChanged,
                      Qt::UniqueConnection);
 
     convSrcModel_.reset(new ConversationListModel(lrcInstance_));

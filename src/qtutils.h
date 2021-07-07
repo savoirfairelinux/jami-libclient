@@ -24,9 +24,7 @@
 
 #include <QObject>
 
-#define QML_PROPERTY(type, prop) \
-private: \
-    Q_PROPERTY(type prop MEMBER prop##_ NOTIFY prop##Changed); \
+#define PROPERTY_BASE(type, prop) \
     type prop##_ {}; \
 \
 public: \
@@ -42,6 +40,16 @@ public: \
             Q_EMIT prop##Changed(); \
         } \
     }
+
+#define QML_RO_PROPERTY(type, prop) \
+private: \
+    Q_PROPERTY(type prop READ get_##prop NOTIFY prop##Changed); \
+    PROPERTY_BASE(type, prop)
+
+#define QML_PROPERTY(type, prop) \
+private: \
+    Q_PROPERTY(type prop MEMBER prop##_ NOTIFY prop##Changed); \
+    PROPERTY_BASE(type, prop)
 
 namespace Utils {
 

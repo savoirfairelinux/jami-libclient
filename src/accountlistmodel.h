@@ -63,32 +63,23 @@ public:
     {
         // Accept all contacts in conversation list filtered with account type, except those in a call.
         auto index = sourceModel()->index(sourceRow, 0, sourceParent);
-        auto accountID = sourceModel()->data(index, AccountList::ID);
-        return accountID != lrcInstance_->getCurrentAccountId();
+        auto accountId = sourceModel()->data(index, AccountList::ID);
+        return accountId != lrcInstance_->get_currentAccountId();
     }
 
 protected:
     LRCInstance* lrcInstance_ {nullptr};
 };
 
-class AccountListModel : public AbstractListModelBase
+class AccountListModel final : public AbstractListModelBase
 {
     Q_OBJECT
 
 public:
     explicit AccountListModel(LRCInstance* instance, QObject* parent = nullptr);
-    ~AccountListModel();
 
-    /*
-     * QAbstractListModel override.
-     */
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex& parent) const override;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
-
-    /*
-     * Override role name as access point in qml.
-     */
     QHash<int, QByteArray> roleNames() const override;
 
     /*

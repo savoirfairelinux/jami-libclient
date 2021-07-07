@@ -35,7 +35,7 @@ public:
     explicit ConversationListModel(LRCInstance* instance, QObject* parent = nullptr);
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 };
 
 // The top level filtered and sorted model to be consumed by QML ListViews
