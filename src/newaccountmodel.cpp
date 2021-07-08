@@ -320,6 +320,13 @@ NewAccountModel::exportOnRing(const QString& accountId, const QString& password)
 void
 NewAccountModel::removeAccount(const QString& accountId) const
 {
+    auto account = pimpl_->accounts.find(accountId);
+    if (account == pimpl_->accounts.end()) {
+        return;
+    }
+
+    // Close db here for its removal
+    account->second.second->close();
     ConfigurationManager::instance().removeAccount(accountId);
 }
 
@@ -764,6 +771,11 @@ NewAccountModelPimpl::removeFromAccounts(const QString& accountId)
         return;
     }
     auto& accountInfo = account->second.first;
+    if (accountInfo.profileInfo.type == profile::Type::SIP) {
+        auto accountDir = QDir(authority::storage::getPath() + accountId);
+        accountDir.removeRecursively();
+    }
+
     /* Inform client about account removal. Do *not* free account structures
        before we are sure that the client stopped using it, otherwise we might
        get into use-after-free troubles. */
