@@ -22,6 +22,30 @@
       },
       "revId": "61d613c408bfe5220e227cd66d7b0c31e9e8a54b",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f72930d3_bafcd5e1",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-07-08T19:43:36Z",
+      "side": 1,
+      "message": "videomuted is related to the main video stream, which has video_0 label for now.\nIt\u0027s a known problem repported to mohamed. The main video should be better addressed.",
+      "parentUuid": "98d243a8_1ccee6be",
+      "range": {
+        "startLine": 995,
+        "startChar": 50,
+        "endLine": 995,
+        "endChar": 59
+      },
+      "revId": "61d613c408bfe5220e227cd66d7b0c31e9e8a54b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
