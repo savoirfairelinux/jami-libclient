@@ -78,10 +78,11 @@ Rectangle {
             messageBar.textAreaObj.pasteText()
         }
 
-        function onChangeMessageWebViewFooterVisibilityRequest(visible) {
-            messageBar.visible = visible
-            dataTransferSendContainer.visible = visible
-            root.visible = visible
+        function onChangeInvitationViewRequest(show, isSwarm) {
+            var footerVisibility = show ? !isSwarm : !show
+            messageBar.visible = footerVisibility
+            dataTransferSendContainer.visible = footerVisibility
+            root.visible = footerVisibility
         }
     }
 

@@ -495,4 +495,10 @@ Item {
     property string send: qsTr("Send")
     property string remove: qsTr("Remove")
     property string writeTo: qsTr("Write to %1")
+
+    // Invitation View
+    property string invitationViewSentRequest: qsTr("%1 has sent you a request for a conversation.")
+    property string invitationViewJoinConversation: qsTr("Hello,\nWould you like to join the conversation?")
+    property string invitationViewAcceptedConversation: qsTr("You have accepted\nthe conversation request")
+    property string invitationViewWaitingForSync: qsTr("Waiting until %1\nconnects to synchronize the conversation.")
 }

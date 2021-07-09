@@ -48,11 +48,11 @@ protected:
                                         const QString& convUid,
                                         bool banContact = false);
     Q_INVOKABLE void clearConversationHistory(const QString& accountId, const QString& convUid);
-
-    // JS Q_INVOKABLE.
     Q_INVOKABLE void acceptInvitation(const QString& convId = {});
     Q_INVOKABLE void refuseInvitation(const QString& convUid = "");
     Q_INVOKABLE void blockConversation(const QString& convUid = "");
+
+    // JS Q_INVOKABLE.
     Q_INVOKABLE void setDisplayLinks();
     Q_INVOKABLE void sendMessage(const QString& message);
     Q_INVOKABLE void sendFile(const QString& message);
@@ -69,11 +69,6 @@ protected:
 
     // Run corrsponding js functions, c++ to qml.
     void setMessagesVisibility(bool visible);
-    void setInvitation(bool show,
-                       const QString& contactUri = {},
-                       const QString& contactId = {},
-                       bool isSwarm = false,
-                       bool needsSyncing = false);
     void setIsSwarm(bool isSwarm);
     void clearChatView();
     void printHistory(ConversationModel& conversationModel, MessagesList interactions);
@@ -98,7 +93,11 @@ Q_SIGNALS:
     void newMessageBarPlaceholderText(QString placeholderText);
     void newFilePasted(QString filePath);
     void newTextPasted();
-    void changeMessageWebViewFooterVisibilityRequest(bool visible);
+    void changeInvitationViewRequest(bool show,
+                                     bool isSwarm = false,
+                                     bool needsSyncing = false,
+                                     QString contactTitle = {},
+                                     QString contactUri = {});
 
 private Q_SLOTS:
     void slotMessagesCleared();

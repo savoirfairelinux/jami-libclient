@@ -85,11 +85,11 @@ MessagesAdapter::setupChatView(const QString& convUid)
 
     setMessagesVisibility(false);
     setIsSwarm(convInfo.isSwarm());
-    setInvitation(convInfo.isRequest or convInfo.needsSyncing,
-                  convModel->title(convInfo.uid),
-                  contactURI,
-                  !convInfo.isSwarm(),
-                  convInfo.needsSyncing);
+    changeInvitationViewRequest(convInfo.isRequest or convInfo.needsSyncing,
+                                !convInfo.isSwarm(),
+                                convInfo.needsSyncing,
+                                convModel->title(convInfo.uid),
+                                contactURI);
 
     Utils::oneShotConnect(qmlObj_, SIGNAL(messagesCleared()), this, SLOT(slotMessagesCleared()));
     clearChatView();
@@ -384,11 +384,11 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
                                         !(convInfo.isSwarm()
                                           && (convInfo.isRequest || convInfo.needsSyncing))));
 
-        setInvitation(convInfo.isRequest or convInfo.needsSyncing,
-                      title,
-                      contactUri,
-                      convInfo.isSwarm(),
-                      convInfo.needsSyncing);
+        changeInvitationViewRequest(convInfo.isRequest or convInfo.needsSyncing,
+                                    convInfo.isSwarm(),
+                                    convInfo.needsSyncing,
+                                    title,
+                                    contactUri);
         if (convInfo.isSwarm())
             return;
         auto& contact = accInfo->contactModel->getContact(contactUri);
@@ -436,21 +436,6 @@ void
 MessagesAdapter::setMessagesVisibility(bool visible)
 {
     QString s = QString::fromLatin1(visible ? "showMessagesDiv();" : "hideMessagesDiv();");
-    QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
-}
-
-void
-MessagesAdapter::setInvitation(
-    bool show, const QString& contactUri, const QString& contactId, bool isSwarm, bool needsSyncing)
-{
-    Q_EMIT changeMessageWebViewFooterVisibilityRequest(show ? !isSwarm : !show);
-
-    QString s = show ? QString::fromLatin1("showInvitation(\"%1\", \"%2\", %3, %4)")
-                           .arg(contactUri)
-                           .arg(contactId)
-                           .arg(isSwarm)
-                           .arg(needsSyncing)
-                     : QString::fromLatin1("showInvitation()");
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
 }
 
@@ -618,7 +603,7 @@ MessagesAdapter::refuseInvitation(const QString& convUid)
 {
     const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, false);
-    setInvitation(false);
+    changeInvitationViewRequest(false);
 }
 
 void
@@ -626,7 +611,7 @@ MessagesAdapter::blockConversation(const QString& convUid)
 {
     const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, true);
-    setInvitation(false);
+    changeInvitationViewRequest(false);
 }
 
 void

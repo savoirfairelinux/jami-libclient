@@ -67,28 +67,20 @@ Rectangle {
         }
     }
 
-    WebEngineView {
+    GeneralWebEngineView {
         id: emojiPickerWebView
 
         anchors.fill: root
 
-        backgroundColor: JamiTheme.transparentColor
+        webChannel.registeredObjects: [jsBridgeObject]
 
-        settings.javascriptEnabled: true
-        settings.javascriptCanOpenWindows: false
-        settings.javascriptCanAccessClipboard: true
-        settings.javascriptCanPaste: true
-        settings.fullScreenSupportEnabled: true
-        settings.allowRunningInsecureContent: true
-        settings.localContentCanAccessRemoteUrls: false
-        settings.localContentCanAccessFileUrls: false
-        settings.errorPageEnabled: false
-        settings.pluginsEnabled: false
-        settings.screenCaptureEnabled: false
-        settings.linksIncludedInFocusChain: false
-        settings.localStorageEnabled: true
+        onCompletedLoadHtml: ":/src/commoncomponents/emojipicker/emojiPickerLoader.html"
 
-        webChannel: emojiPickerWebViewChannel
+        onActiveFocusChanged: {
+            if (visible) {
+                closeEmojiPicker()
+            }
+        }
 
         onLoadingChanged: {
             if (loadRequest.status == WebEngineView.LoadSucceededStatus) {
@@ -104,31 +96,5 @@ Rectangle {
                             "init_emoji_picker(" + JamiTheme.darkTheme + ");")
             }
         }
-
-        onActiveFocusChanged: {
-            if (visible) {
-                closeEmojiPicker()
-            }
-        }
-
-        Component.onCompleted: {
-            profile.cachePath = UtilsAdapter.getCachePath()
-            profile.persistentStoragePath = UtilsAdapter.getCachePath()
-            profile.persistentCookiesPolicy = WebEngineProfile.NoPersistentCookies
-            profile.httpCacheType = WebEngineProfile.NoCache
-            profile.httpUserAgent = JamiStrings.httpUserAgentName
-
-            emojiPickerWebView.loadHtml(
-                        UtilsAdapter.qStringFromFile(
-                            ":/src/commoncomponents/emojipicker/emojiPickerLoader.html"),
-                        ":/src/commoncomponents/emojipicker/emojiPickerLoader.html")
-            emojiPickerWebView.url = "qrc:/src/commoncomponents/emojipicker/emojiPickerLoader.html"
-        }
-    }
-
-    // Provide WebChannel by registering jsBridgeObject.
-    WebChannel {
-        id: emojiPickerWebViewChannel
-        registeredObjects: [jsBridgeObject]
     }
 }

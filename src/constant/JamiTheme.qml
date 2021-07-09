@@ -135,6 +135,10 @@ Item {
     // ParticipantCallInStatusView
     property color participantCallInStatusTextColor: whiteColor
 
+    // InvitationView
+    property color blockOrange: rgba256(232, 92, 36, 100)
+    property color blockOrangeTransparency: rgba256(232, 92, 36, 56)
+
     // Chatview
     property color jamiLightBlue: darkTheme ? "#003b4e" : Qt.rgba(59, 193, 211, 0.3)
     property color jamiDarkBlue: darkTheme ? "#28b1ed" : "#003b4e"
@@ -276,9 +280,16 @@ Item {
     property real filesToSendDelegateButtonSize: 16
     property real filesToSendDelegateFontPointSize: textFontSize + 2
 
+    // InvitationView
+    property real invitationViewAvatarSize: 112
+    property real invitationViewButtonRadius: 25
+    property real invitationViewButtonSize: 48
+    property real invitationViewButtonIconSize: 24
+    property real invitationViewButtonsSpacing: 30
+
     // Main application spec
     property real mainViewMinWidth: 300
-    property real mainViewMinHeight: 400
+    property real mainViewMinHeight: 500
 
     property real wizardViewMinWidth: 500
     property real wizardViewMinHeight: 600

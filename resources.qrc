@@ -22,6 +22,7 @@
         <file>images/icons/backup-24px.svg</file>
         <file>images/icons/check_box_outline_blank-24px.svg</file>
         <file>images/icons/check_box-24px.svg</file>
+        <file>images/icons/check_black-24dp.svg</file>
         <file>images/icons/devices-24px.svg</file>
         <file>images/icons/ic_arrow_back_24px.svg</file>
         <file>images/icons/ic_arrow_back_white_24dp.svg</file>
@@ -32,13 +33,12 @@
         <file>images/icons/ic_arrow_forward_white_48dp_2x.png</file>
         <file>images/icons/ic_arrow_tab_next_black_9dp_2x.png</file>
         <file>images/icons/ic_arrow_tab_previous_black_9dp_2x.png</file>
-        <file>images/icons/ic_block_24px.svg</file>
+        <file>images/icons/block_black-24dp.svg</file>
         <file>images/icons/ic_hangup_participant-24px.svg</file>
         <file>images/icons/delete_forever-24px.svg</file>
         <file>images/icons/phone_forwarded-24px.svg</file>
         <file>images/icons/ic_chat_black_24dp_2x.png</file>
         <file>images/icons/ic_chat_white_24dp.png</file>
-        <file>images/icons/ic_check_white_18dp_2x.png</file>
         <file>images/icons/ic_clear_24px.svg</file>
         <file>images/icons/ic_content_copy.svg</file>
         <file>images/icons/ic_done_white_24dp.png</file>
@@ -102,7 +102,6 @@
         <file>images/icons/qr_code-24px.svg</file>
         <file>images/icons/content_copy-24px.svg</file>
         <file>images/icons/videocam_off-24px.svg</file>
-        <file>images/icons/check-24px.svg</file>
         <file>images/icons/mic_off-24px.svg</file>
         <file>images/icons/mic-24px.svg</file>
         <file>images/icons/group_add-24px.svg</file>

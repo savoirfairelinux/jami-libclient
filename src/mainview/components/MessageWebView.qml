@@ -32,9 +32,15 @@ import "../js/pluginhandlerpickercreation.js" as PluginHandlerPickerCreation
 Rectangle {
     id: root
 
+    enum Mode {
+        Chat = 0,
+        Invitation
+    }
+
     property string headerUserAliasLabelText: ""
     property string headerUserUserNameLabelText: ""
     property bool jsLoaded: false
+    property var mode: MessageWebView.Mode.Chat
 
     signal needToHideConversationInCall
     signal messagesCleared
@@ -105,6 +111,24 @@ Rectangle {
         }
     }
 
+    Connections {
+        target: MessagesAdapter
+
+        function onChangeInvitationViewRequest(show, isSwarm, needsSyncing,
+                                               contactTitle, contactUri) {
+            if (show)
+                root.mode = MessageWebView.Mode.Invitation
+            else {
+                root.mode = MessageWebView.Mode.Chat
+                return
+            }
+
+            invitationView.invitationViewImageId = contactUri
+            invitationView.invitationViewContactTitle = contactTitle
+            invitationView.invitationViewNeedSyncing = needsSyncing
+        }
+    }
+
     QtObject {
         id: jsBridgeObject
 
@@ -137,18 +161,6 @@ Rectangle {
             MessagesAdapter.refuseFile(arg)
         }
 
-        function acceptInvitation() {
-            MessagesAdapter.acceptInvitation()
-        }
-
-        function refuseInvitation() {
-            MessagesAdapter.refuseInvitation()
-        }
-
-        function blockConversation() {
-            MessagesAdapter.blockConversation()
-        }
-
         function emitMessagesCleared() {
             root.messagesCleared()
         }
@@ -168,12 +180,6 @@ Rectangle {
         function loadMessages(n) {
             return MessagesAdapter.loadMessages(n)
         }
-    }
-
-    // Provide WebChannel by registering jsBridgeObject.
-    WebChannel {
-        id: messageWebViewChannel
-        registeredObjects: [jsBridgeObject]
     }
 
     ColumnLayout {
@@ -215,8 +221,8 @@ Rectangle {
             }
         }
 
-        WebEngineView {
-            id: messageWebView
+        StackLayout {
+            id: messageWebViewStack
 
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
@@ -224,89 +230,66 @@ Rectangle {
             Layout.topMargin: JamiTheme.messageWebViewHairLineSize
             Layout.bottomMargin: JamiTheme.messageWebViewHairLineSize
 
-            backgroundColor: "transparent"
+            currentIndex: root.mode
 
-            settings.javascriptEnabled: true
-            settings.javascriptCanOpenWindows: true
-            settings.javascriptCanAccessClipboard: true
-            settings.javascriptCanPaste: true
-            settings.fullScreenSupportEnabled: true
-            settings.allowRunningInsecureContent: true
-            settings.localContentCanAccessRemoteUrls: true
-            settings.localContentCanAccessFileUrls: true
-            settings.errorPageEnabled: false
-            settings.pluginsEnabled: false
-            settings.screenCaptureEnabled: false
-            settings.linksIncludedInFocusChain: false
-            settings.localStorageEnabled: true
+            GeneralWebEngineView {
+                id: messageWebView
 
-            webChannel: messageWebViewChannel
+                Layout.fillWidth: true
+                Layout.fillHeight: true
 
-            DropArea {
-                anchors.fill: parent
-                onDropped: messageWebViewFooter.setFilePathsToSend(drop.urls)
-            }
+                onCompletedLoadHtml: ":/chatview.html"
 
-            onNavigationRequested: {
-                if (request.navigationType === WebEngineView.LinkClickedNavigation) {
-                    MessagesAdapter.openUrl(request.url)
-                    request.action = WebEngineView.IgnoreRequest
+                webChannel.registeredObjects: [jsBridgeObject]
+
+                DropArea {
+                    anchors.fill: parent
+                    onDropped: messageWebViewFooter.setFilePathsToSend(drop.urls)
+                }
+
+                onLoadingChanged: {
+                    if (loadRequest.status == WebEngineView.LoadSucceededStatus) {
+                        messageWebView.runJavaScript(UtilsAdapter.getStyleSheet(
+                                                         "chatcss",
+                                                         UtilsAdapter.qStringFromFile(
+                                                             ":/chatview.css")))
+                        messageWebView.runJavaScript(UtilsAdapter.getStyleSheet(
+                                                         "chatwin",
+                                                         UtilsAdapter.qStringFromFile(
+                                                             ":/chatview-qt.css")))
+                        messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                         ":/linkify.js"))
+                        messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                         ":/linkify-html.js"))
+                        messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                         ":/linkify-string.js"))
+                        messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                         ":/qwebchannel.js"))
+                        messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                         ":/jed.js"))
+                        messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                         ":/emoji.js"))
+                        messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
+                                                         ":/previewInfo.js"))
+                        messageWebView.runJavaScript(
+                                    UtilsAdapter.qStringFromFile(":/chatview.js"),
+                                    function() {
+                                        messageWebView.runJavaScript("init_i18n();")
+                                        MessagesAdapter.setDisplayLinks()
+                                        updateChatviewTheme()
+                                        messageWebView.runJavaScript("displayNavbar(false);")
+                                        messageWebView.runJavaScript("hideMessageBar(true);")
+                                        jsLoaded = true
+                                    })
+                    }
                 }
             }
 
-            onLoadingChanged: {
-                if (loadRequest.status == WebEngineView.LoadSucceededStatus) {
-                    messageWebView.runJavaScript(UtilsAdapter.getStyleSheet(
-                                                     "chatcss",
-                                                     UtilsAdapter.qStringFromFile(
-                                                         ":/chatview.css")))
-                    messageWebView.runJavaScript(UtilsAdapter.getStyleSheet(
-                                                     "chatwin",
-                                                     UtilsAdapter.qStringFromFile(
-                                                         ":/chatview-qt.css")))
-                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                     ":/linkify.js"))
-                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                     ":/linkify-html.js"))
-                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                     ":/linkify-string.js"))
-                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                     ":/qwebchannel.js"))
-                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                     ":/jed.js"))
-                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                     ":/emoji.js"))
-                    messageWebView.runJavaScript(UtilsAdapter.qStringFromFile(
-                                                     ":/previewInfo.js"))
-                    messageWebView.runJavaScript(
-                                UtilsAdapter.qStringFromFile(":/chatview.js"),
-                                function() {
-                                    messageWebView.runJavaScript("init_i18n();")
-                                    MessagesAdapter.setDisplayLinks()
-                                    updateChatviewTheme()
-                                    messageWebView.runJavaScript("displayNavbar(false);")
-                                    messageWebView.runJavaScript("hideMessageBar(true);")
-                                    jsLoaded = true
-                                })
-                }
-            }
+            InvitationView {
+                id: invitationView
 
-            onContextMenuRequested: {
-                var needContextMenu = request.selectedText.length || request.isContentEditable
-                if (!needContextMenu)
-                    request.accepted = true
-            }
-
-            Component.onCompleted: {
-                profile.cachePath = UtilsAdapter.getCachePath()
-                profile.persistentStoragePath = UtilsAdapter.getCachePath()
-                profile.persistentCookiesPolicy = WebEngineProfile.NoPersistentCookies
-                profile.httpCacheType = WebEngineProfile.NoCache
-                profile.httpUserAgent = JamiStrings.httpUserAgentName
-
-                messageWebView.loadHtml(UtilsAdapter.qStringFromFile(
-                                            ":/chatview.html"), ":/chatview.html")
-                messageWebView.url = "qrc:/chatview.html"
+                Layout.fillWidth: true
+                Layout.fillHeight: true
             }
         }
 

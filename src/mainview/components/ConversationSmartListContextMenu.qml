@@ -135,7 +135,7 @@ ContextMenuAutoLoader {
 
             canTrigger: !hasCall && contactType !== Profile.Type.SIP
             itemName: JamiStrings.blockContact
-            iconSource: "qrc:/images/icons/ic_block_24px.svg"
+            iconSource: "qrc:/images/icons/block_black-24dp.svg"
             addMenuSeparatorAfter: contactType !== Profile.Type.SIP
             onClicked: {
                 MessagesAdapter.blockConversation(responsibleConvUid)
