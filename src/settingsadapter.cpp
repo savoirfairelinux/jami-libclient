@@ -898,6 +898,27 @@ SettingsAdapter::registrationExpirationTimeSpinBoxValueChanged(int value)
 }
 
 void
+SettingsAdapter::autoAcceptFiles(bool value)
+{
+    lrcInstance_->accountModel().autoTransferFromTrusted = value;
+    setAppValue(Settings::Key::AutoAcceptFiles, value);
+}
+
+void
+SettingsAdapter::allowFromUntrusted(bool value)
+{
+    lrcInstance_->accountModel().autoTransferFromUntrusted = value;
+    setAppValue(Settings::Key::AllowFromUntrusted, value);
+}
+
+void
+SettingsAdapter::acceptTransferBelow(int value)
+{
+    lrcInstance_->accountModel().autoTransferSizeThreshold = value;
+    setAppValue(Settings::Key::AcceptTransferBelow, value);
+}
+
+void
 SettingsAdapter::networkInterfaceSpinBoxValueChanged(int value)
 {
     auto confProps = lrcInstance_->accountModel().getAccountConfig(

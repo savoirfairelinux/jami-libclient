@@ -202,6 +202,10 @@ public:
     Q_INVOKABLE void videoRTPMinPortSpinBoxEditFinished(int value);
     Q_INVOKABLE void videoRTPMaxPortSpinBoxEditFinished(int value);
 
+    Q_INVOKABLE void autoAcceptFiles(bool value);
+    Q_INVOKABLE void allowFromUntrusted(bool value);
+    Q_INVOKABLE void acceptTransferBelow(int value);
+
     Q_INVOKABLE void tlsProtocolComboBoxIndexChanged(const int& index);
 
     Q_INVOKABLE void setDeviceName(QString text);

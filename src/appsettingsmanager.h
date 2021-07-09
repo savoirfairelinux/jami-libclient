@@ -36,6 +36,9 @@ const QString defaultDownloadPath = QStandardPaths::writableLocation(
     X(DownloadPath, defaultDownloadPath) \
     X(EnableNotifications, true) \
     X(EnableTypingIndicator, true) \
+    X(AllowFromUntrusted, false) \
+    X(AcceptTransferBelow, 20) \
+    X(AutoAcceptFiles, true) \
     X(DisplayHyperlinkPreviews, true) \
     X(EnableDarkTheme, false) \
     X(AutoUpdate, true) \

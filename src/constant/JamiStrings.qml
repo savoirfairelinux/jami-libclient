@@ -321,6 +321,13 @@ Item {
     property string enableTypingIndicator: qsTr("Enable typing indicators")
     property string displayHyperlinkPreviews: qsTr("Display hyperlink previews in the chatview")
 
+    // File transfer settings
+    property string fileTransfer: qsTr("File transfer")
+    property string allowFromUntrusted: qsTr("Allow incoming files from unknown contacts")
+    property string autoAcceptFiles: qsTr("Automatically accept incoming files")
+    property string acceptTransferBelow: qsTr("Accept transfer limit")
+    property string acceptTransferTooltip: qsTr("in MB, 0 = unlimited")
+
     // Updates
     property string betaInstall: qsTr("Install beta version")
     property string checkForUpdates: qsTr("Check for updates now")

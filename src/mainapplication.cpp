@@ -263,7 +263,15 @@ MainApplication::init()
     }
 
     auto downloadPath = settingsManager_->getValue(Settings::Key::DownloadPath);
+    auto allowTransferFromUntrusted = settingsManager_->getValue(Settings::Key::AllowFromUntrusted)
+                                          .toBool();
+    auto allowTransferFromTrusted = settingsManager_->getValue(Settings::Key::AutoAcceptFiles)
+                                        .toBool();
+    auto acceptTransferBelow = settingsManager_->getValue(Settings::Key::AcceptTransferBelow).toInt();
     lrcInstance_->accountModel().downloadDirectory = downloadPath.toString() + "/";
+    lrcInstance_->accountModel().autoTransferFromUntrusted = allowTransferFromUntrusted;
+    lrcInstance_->accountModel().autoTransferFromTrusted = allowTransferFromTrusted;
+    lrcInstance_->accountModel().autoTransferSizeThreshold = acceptTransferBelow;
 
     initQmlLayer();
     initSystray();

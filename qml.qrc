@@ -33,6 +33,7 @@
         <file>src/commoncomponents/SpinningAnimation.qml</file>
         <file>src/settingsview/SettingsView.qml</file>
         <file>src/settingsview/components/ChatviewSettings.qml</file>
+        <file>src/settingsview/components/FileTransferSettings.qml</file>
         <file>src/settingsview/components/SettingsMenu.qml</file>
         <file>src/settingsview/components/SettingsHeader.qml</file>
         <file>src/settingsview/components/SystemSettings.qml</file>

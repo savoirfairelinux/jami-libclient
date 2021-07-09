@@ -39,6 +39,7 @@ RowLayout {
     property int topValue
     property int step
     property int valueField
+    property string tooltipText: ""
 
     signal newValue
 
@@ -87,5 +88,10 @@ RowLayout {
             border.color: enabled? root.borderColor : "transparent"
             color: JamiTheme.editBackgroundColor
         }
+
+        hoverEnabled: true
+        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
+        ToolTip.visible: hovered && (root.tooltipText.length > 0)
+        ToolTip.text: root.tooltipText
     }
 }

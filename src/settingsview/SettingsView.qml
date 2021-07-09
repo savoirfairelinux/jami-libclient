@@ -61,6 +61,7 @@ Rectangle {
                 pageIdCurrentAccountSettings.updateAccountInfoDisplayed()
                 break
             case SettingsView.General:
+                generalSettings.updateValues()
                 AccountAdapter.stopPreviewing()
                 selectedMenu = sel
                 break
