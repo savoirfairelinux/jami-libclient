@@ -470,7 +470,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>Copia in Download</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
