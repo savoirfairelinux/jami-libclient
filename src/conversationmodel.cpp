@@ -3888,7 +3888,8 @@ ConversationModelPimpl::updateTransferStatus(const QString& fileId,
     if (conversationIdx < 0) {
         return false;
     }
-    if (conversations[conversationIdx].mode == conversation::Mode::NON_SWARM) {
+    auto& conversation = conversations[conversationIdx];
+    if (conversation.isLegacy()) {
         storage::updateInteractionStatus(db, interactionId, newStatus);
     }
     bool emitUpdated = false;
@@ -3900,7 +3901,9 @@ ConversationModelPimpl::updateTransferStatus(const QString& fileId,
         if (it != interactions.end()) {
             emitUpdated = true;
             it->second.status = newStatus;
-            it->second.body = info.path;
+            if (conversation.isSwarm()) {
+                it->second.body = info.path;
+            }
             itCopy = it->second;
         }
     }
