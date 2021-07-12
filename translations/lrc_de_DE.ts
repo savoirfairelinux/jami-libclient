@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt hat das Gespräch verlassen</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
@@ -455,7 +455,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Add emoji</source>
-        <translation type="unfinished"/>
+        <translation>Emoji hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -470,7 +470,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>Zu Downloads kopieren</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
@@ -480,22 +480,22 @@
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>hat dir eine Konversationsanfrage gesendet.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Hallo, möchtest du an der Unterhaltung teilnehmen?</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Sie haben die Unterhaltungsanfrage angenommen.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Wir warten auf ein anderes Gerät, um das Gespräch zu synchronisieren.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
@@ -633,7 +633,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="957"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Benutzername nicht gefunden</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="960"/>
