@@ -209,13 +209,6 @@ Rectangle {
             Layout.maximumWidth: JamiTheme.messageWebViewFooterContentMaximumWidth
             Layout.preferredHeight: filesToSendCount ?
                                         JamiTheme.messageWebViewFooterFileContainerPreferredHeight : 0
-
-            onFilesToSendCountChanged: {
-                if (filesToSendCount !== 0)
-                    messageBar.showSendMessageButton()
-                else if (!messageBar.text)
-                    messageBar.hideSendMessageButton()
-            }
         }
     }
 }
