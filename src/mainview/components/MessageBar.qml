@@ -32,21 +32,14 @@ ColumnLayout {
     property alias text: textArea.text
     property var textAreaObj: textArea
     property real marginSize: 10
+    property bool sendButtonVisibility: false
+    property bool animate: false
 
     signal sendMessageButtonClicked
     signal sendFileButtonClicked
     signal audioRecordMessageButtonClicked
     signal videoRecordMessageButtonClicked
     signal emojiButtonClicked
-
-    function showSendMessageButton() {
-        sendMessageButton.visible = true
-        sendMessageButton.state = "buttonFadeOut"
-    }
-
-    function hideSendMessageButton() {
-        sendMessageButton.state = "buttonFadeIn"
-    }
 
     implicitHeight: messageBarRowLayout.height
 
@@ -181,7 +174,7 @@ ColumnLayout {
 
             Layout.alignment: Qt.AlignVCenter
             Layout.rightMargin: visible ? marginSize : 0
-            Layout.preferredWidth: JamiTheme.messageWebViewFooterButtonSize
+            Layout.preferredWidth: scale * JamiTheme.messageWebViewFooterButtonSize
             Layout.preferredHeight: JamiTheme.messageWebViewFooterButtonSize
 
             radius: JamiTheme.messageWebViewFooterButtonRadius
@@ -194,35 +187,16 @@ ColumnLayout {
             normalColor: JamiTheme.primaryBackgroundColor
             imageColor: JamiTheme.messageWebViewFooterButtonImageColor
 
-            opacity: 0
-            visible: false
-            states: [
-                State {
-                    name: "buttonFadeIn"
-                    PropertyChanges {
-                        target: sendMessageButton
-                        opacity: 0
-                    }
-                },
-                State {
-                    name: "buttonFadeOut"
-                    PropertyChanges {
-                        target: sendMessageButton
-                        opacity: 1
-                    }
-                }
-            ]
-            transitions: Transition {
-                NumberAnimation {
-                    properties: "opacity"
-                    easing.type: Easing.InOutQuad
-                    duration: 300
-                }
-            }
+            opacity: sendButtonVisibility ? 1 : 0
+            visible: opacity
+            scale: opacity
 
-            onOpacityChanged: {
-                if (opacity === 0)
-                    visible = false
+            Behavior on opacity {
+                enabled: animate
+                NumberAnimation {
+                    duration: JamiTheme.shortFadeDuration
+                    easing.type: Easing.InOutQuad
+                }
             }
 
             onClicked: root.sendMessageButtonClicked()

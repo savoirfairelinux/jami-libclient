@@ -53,6 +53,9 @@ Rectangle {
                                             messageBar.text);
             }
 
+            // turn off the button animations when switching convs
+            messageBar.animate = false
+
             messageBar.textAreaObj.clearText()
             previousConvId = LRCInstance.selectedConvUid
 
@@ -60,6 +63,8 @@ Rectangle {
                                                               LRCInstance.currentAccountId);
             if (restoredContent)
                 messageBar.textAreaObj.insertText(restoredContent)
+
+            messageBar.animate = true
         }
     }
 
@@ -122,12 +127,8 @@ Rectangle {
             Layout.preferredWidth: footerColumnLayout.width
             Layout.preferredHeight: implicitHeight
 
-            onTextChanged: {
-                if (text)
-                    showSendMessageButton()
-                else if (!dataTransferSendContainer.filesToSendCount)
-                    hideSendMessageButton()
-            }
+            sendButtonVisibility: text ||
+                                  dataTransferSendContainer.filesToSendCount
 
             onEmojiButtonClicked: {
                 JamiQmlUtils.updateMessageBarButtonsPoints()
