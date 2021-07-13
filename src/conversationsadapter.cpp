@@ -352,6 +352,9 @@ ConversationsAdapter::updateConversationFilterData()
     set_totalUnreadMessageCount(totalUnreadMessages);
     set_pendingRequestCount(accountInfo.conversationModel->pendingRequestCount());
     systemTray_->setCount(lrcInstance_->notificationsCount());
+
+    if (get_pendingRequestCount() == 0 && get_filterRequests())
+        set_filterRequests(false);
 }
 
 void
