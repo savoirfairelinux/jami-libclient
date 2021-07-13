@@ -30,6 +30,11 @@
 #define VER_MAJ      1
 #define VER_MIN      0
 
+class SystemTray;
+class LRCInstance;
+class AppSettingsManager;
+class ScreenInfo;
+
 // Hack for QtCreator autocomplete (part 1)
 // https://bugreports.qt.io/browse/QTCREATORBUG-20569
 namespace dummy {
@@ -53,5 +58,10 @@ Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 // clang-format on
 
 namespace Utils {
-void registerTypes();
+void registerTypes(QQmlEngine* engine,
+                   SystemTray* systemTray,
+                   LRCInstance* lrcInstance,
+                   AppSettingsManager* appSettingsManager,
+                   ScreenInfo* screenInfo,
+                   QObject* parent);
 }

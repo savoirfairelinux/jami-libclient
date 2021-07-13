@@ -18,6 +18,16 @@
 
 #include "qmlregister.h"
 
+#include "accountadapter.h"
+#include "avadapter.h"
+#include "calladapter.h"
+#include "contactadapter.h"
+#include "pluginadapter.h"
+#include "messagesadapter.h"
+#include "settingsadapter.h"
+#include "utilsadapter.h"
+#include "conversationsadapter.h"
+
 #include "accountlistmodel.h"
 #include "accountstomigratelistmodel.h"
 #include "mediacodeclistmodel.h"
@@ -30,7 +40,12 @@
 #include "conversationlistmodelbase.h"
 #include "filestosendlistmodel.h"
 
+#include "qrimageprovider.h"
+#include "tintedbuttonimageprovider.h"
+#include "avatarimageprovider.h"
+#include "avatarregistry.h"
 #include "appsettingsmanager.h"
+#include "mainapplication.h"
 #include "distantrenderer.h"
 #include "namedirectory.h"
 #include "updatemanager.h"
@@ -82,8 +97,43 @@ namespace Utils {
  * This function will expose custom types to the QML engine.
  */
 void
-registerTypes()
+registerTypes(QQmlEngine* engine,
+              SystemTray* systemTray,
+              LRCInstance* lrcInstance,
+              AppSettingsManager* appSettingsManager,
+              ScreenInfo* screenInfo,
+              QObject* parent)
 {
+    // setup the adapters (their lifetimes are that of MainApplication)
+    auto callAdapter = new CallAdapter(systemTray, lrcInstance, parent);
+    auto messagesAdapter = new MessagesAdapter(appSettingsManager, lrcInstance, parent);
+    auto conversationsAdapter = new ConversationsAdapter(systemTray, lrcInstance, parent);
+    auto avAdapter = new AvAdapter(lrcInstance, parent);
+    auto contactAdapter = new ContactAdapter(lrcInstance, parent);
+    auto accountAdapter = new AccountAdapter(appSettingsManager, lrcInstance, parent);
+    auto utilsAdapter = new UtilsAdapter(systemTray, lrcInstance, parent);
+    auto settingsAdapter = new SettingsAdapter(appSettingsManager, lrcInstance, parent);
+    auto pluginAdapter = new PluginAdapter(lrcInstance, parent);
+
+    // qml adapter registration
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, callAdapter, "CallAdapter");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, messagesAdapter, "MessagesAdapter");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, conversationsAdapter, "ConversationsAdapter");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, avAdapter, "AvAdapter");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, contactAdapter, "ContactAdapter");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, accountAdapter, "AccountAdapter");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, utilsAdapter, "UtilsAdapter");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, settingsAdapter, "SettingsAdapter");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, pluginAdapter, "PluginAdapter");
+
+    auto avatarRegistry = new AvatarRegistry(lrcInstance, parent);
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_HELPERS, avatarRegistry, "AvatarRegistry");
+
+    // TODO: remove these
+    QML_REGISTERSINGLETONTYPE_CUSTOM(NS_MODELS, AVModel, &lrcInstance->avModel())
+    QML_REGISTERSINGLETONTYPE_CUSTOM(NS_MODELS, PluginModel, &lrcInstance->pluginModel())
+    QML_REGISTERSINGLETONTYPE_CUSTOM(NS_HELPERS, UpdateManager, lrcInstance->getUpdateManager())
+
     // Hack for QtCreator autocomplete (part 2)
     // https://bugreports.qt.io/browse/QTCREATORBUG-20569
     // Use a dummy object to register the import namespace.
@@ -125,6 +175,8 @@ registerTypes()
     QML_REGISTERSINGLETONTYPE_URL(NS_CONSTANTS, "qrc:/src/constant/JamiTheme.qml", JamiTheme);
     QML_REGISTERSINGLETONTYPE_URL(NS_MODELS, "qrc:/src/constant/JamiQmlUtils.qml", JamiQmlUtils);
     QML_REGISTERSINGLETONTYPE_URL(NS_CONSTANTS, "qrc:/src/constant/JamiStrings.qml", JamiStrings);
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, screenInfo, "ScreenInfo")
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, lrcInstance, "LRCInstance")
 
     // C++ singletons
     // TODO: remove this
@@ -154,6 +206,17 @@ registerTypes()
     // Enums
     QML_REGISTERUNCREATABLE(NS_ENUMS, Settings);
     QML_REGISTERUNCREATABLE(NS_ENUMS, NetWorkManager);
+
+    engine->addImageProvider(QLatin1String("qrImage"), new QrImageProvider(lrcInstance));
+    engine->addImageProvider(QLatin1String("tintedPixmap"),
+                              new TintedButtonImageProvider(lrcInstance));
+    engine->addImageProvider(QLatin1String("avatarImage"),
+                              new AvatarImageProvider(lrcInstance));
+
+    engine->setObjectOwnership(&lrcInstance->avModel(), QQmlEngine::CppOwnership);
+    engine->setObjectOwnership(&lrcInstance->pluginModel(), QQmlEngine::CppOwnership);
+    engine->setObjectOwnership(lrcInstance->getUpdateManager(), QQmlEngine::CppOwnership);
+    engine->setObjectOwnership(&NameDirectory::instance(), QQmlEngine::CppOwnership);
 }
 // clang-format on
 } // namespace Utils

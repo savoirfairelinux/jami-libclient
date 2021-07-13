@@ -204,6 +204,8 @@ Rectangle {
         FilesToSendContainer {
             id: dataTransferSendContainer
 
+            objectName: "dataTransferSendContainer"
+
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: footerColumnLayout.width
             Layout.maximumWidth: JamiTheme.messageWebViewFooterContentMaximumWidth

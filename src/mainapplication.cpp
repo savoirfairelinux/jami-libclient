@@ -25,21 +25,6 @@
 #include "appsettingsmanager.h"
 #include "connectivitymonitor.h"
 #include "systemtray.h"
-#include "namedirectory.h"
-#include "qrimageprovider.h"
-#include "tintedbuttonimageprovider.h"
-#include "avatarimageprovider.h"
-#include "avatarregistry.h"
-
-#include "accountadapter.h"
-#include "avadapter.h"
-#include "calladapter.h"
-#include "contactadapter.h"
-#include "pluginadapter.h"
-#include "messagesadapter.h"
-#include "settingsadapter.h"
-#include "utilsadapter.h"
-#include "conversationsadapter.h"
 
 #include <QAction>
 #include <QCommandLineParser>
@@ -435,55 +420,13 @@ MainApplication::setApplicationFont()
 void
 MainApplication::initQmlLayer()
 {
-    // setup the adapters (their lifetimes are that of MainApplication)
-    auto callAdapter = new CallAdapter(systemTray_.get(), lrcInstance_.data(), this);
-    auto messagesAdapter = new MessagesAdapter(settingsManager_.get(), lrcInstance_.data(), this);
-    auto conversationsAdapter = new ConversationsAdapter(systemTray_.get(),
-                                                         lrcInstance_.data(),
-                                                         this);
-    auto avAdapter = new AvAdapter(lrcInstance_.data(), this);
-    auto contactAdapter = new ContactAdapter(lrcInstance_.data(), this);
-    auto accountAdapter = new AccountAdapter(settingsManager_.get(), lrcInstance_.data(), this);
-    auto utilsAdapter = new UtilsAdapter(systemTray_.get(), lrcInstance_.data(), this);
-    auto settingsAdapter = new SettingsAdapter(settingsManager_.get(), lrcInstance_.data(), this);
-    auto pluginAdapter = new PluginAdapter(lrcInstance_.data(), this);
-
-    // qml adapter registration
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, callAdapter, "CallAdapter");
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, messagesAdapter, "MessagesAdapter");
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, conversationsAdapter, "ConversationsAdapter");
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, avAdapter, "AvAdapter");
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, contactAdapter, "ContactAdapter");
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, accountAdapter, "AccountAdapter");
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, utilsAdapter, "UtilsAdapter");
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, settingsAdapter, "SettingsAdapter");
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, pluginAdapter, "PluginAdapter");
-
-    auto avatarRegistry = new AvatarRegistry(lrcInstance_.data(), this);
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_HELPERS, avatarRegistry, "AvatarRegistry");
-
-    // TODO: remove these
-    QML_REGISTERSINGLETONTYPE_CUSTOM(NS_MODELS, AVModel, &lrcInstance_->avModel())
-    QML_REGISTERSINGLETONTYPE_CUSTOM(NS_MODELS, PluginModel, &lrcInstance_->pluginModel())
-    QML_REGISTERSINGLETONTYPE_CUSTOM(NS_HELPERS, UpdateManager, lrcInstance_->getUpdateManager())
-
-    // register other types that don't require injection(e.g. uncreatables, c++/qml singletons)
-    Utils::registerTypes();
-
-    engine_->addImageProvider(QLatin1String("qrImage"), new QrImageProvider(lrcInstance_.get()));
-    engine_->addImageProvider(QLatin1String("tintedPixmap"),
-                              new TintedButtonImageProvider(lrcInstance_.get()));
-    engine_->addImageProvider(QLatin1String("avatarImage"),
-                              new AvatarImageProvider(lrcInstance_.get()));
-
-    engine_->rootContext()->setContextProperty("ScreenInfo", &screenInfo_);
-    engine_->rootContext()->setContextProperty("LRCInstance", lrcInstance_.get());
-
-    engine_->setObjectOwnership(&lrcInstance_->avModel(), QQmlEngine::CppOwnership);
-    engine_->setObjectOwnership(&lrcInstance_->pluginModel(), QQmlEngine::CppOwnership);
-    engine_->setObjectOwnership(lrcInstance_->getUpdateManager(), QQmlEngine::CppOwnership);
-    engine_->setObjectOwnership(lrcInstance_.get(), QQmlEngine::CppOwnership);
-    engine_->setObjectOwnership(&NameDirectory::instance(), QQmlEngine::CppOwnership);
+    // Expose custom types to the QML engine.
+    Utils::registerTypes(engine_.get(),
+                         systemTray_.get(),
+                         lrcInstance_.get(),
+                         settingsManager_.get(),
+                         &screenInfo_,
+                         this);
 
     engine_->load(QUrl(QStringLiteral("qrc:/src/MainApplicationWindow.qml")));
 }

@@ -20,6 +20,7 @@ set(TESTS_INCLUDES
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/tests/qml
     ${CMAKE_SOURCE_DIR}/tests/unittests)
+set(TEST_QML_RESOURCES ${CMAKE_SOURCE_DIR}/tests/qml/resources.qrc)
 
 # Common jami files
 add_library(test_common_obj OBJECT ${COMMON_SOURCES} ${COMMON_HEADERS})
@@ -33,6 +34,7 @@ add_executable(qml_tests
                ${CMAKE_SOURCE_DIR}/tests/qml/main.cpp
                ${QML_RESOURCES}
                ${QML_RESOURCES_QML}
+               ${TEST_QML_RESOURCES}
                $<TARGET_OBJECTS:test_common_obj>)
 
 target_link_libraries(qml_tests

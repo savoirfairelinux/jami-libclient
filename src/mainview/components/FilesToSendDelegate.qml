@@ -97,7 +97,17 @@ Rectangle {
 
         asynchronous: true
         fillMode: Image.PreserveAspectCrop
-        source: IsImage ? JamiQmlUtils.qmlFilePrefix + FilePath : ""
+        source: {
+            if (!IsImage)
+                return ""
+
+            // :/ -> resource url for test purposes
+            var sourceUrl = FilePath
+            if (!sourceUrl.includes(":/"))
+                return JamiQmlUtils.qmlFilePrefix + sourceUrl
+            else
+                return "qrc" + sourceUrl
+        }
 
         layer.enabled: true
         layer.effect: OpacityMask {

@@ -22,20 +22,6 @@
 #include "appsettingsmanager.h"
 #include "connectivitymonitor.h"
 #include "systemtray.h"
-#include "namedirectory.h"
-#include "qrimageprovider.h"
-#include "tintedbuttonimageprovider.h"
-#include "avatarimageprovider.h"
-
-#include "accountadapter.h"
-#include "avadapter.h"
-#include "calladapter.h"
-#include "contactadapter.h"
-#include "pluginadapter.h"
-#include "messagesadapter.h"
-#include "settingsadapter.h"
-#include "utilsadapter.h"
-#include "conversationsadapter.h"
 
 #include <atomic>
 
@@ -43,6 +29,7 @@
 #include <QtQuickTest/quicktest.h>
 #include <QQmlEngine>
 #include <QQmlContext>
+#include <QtWebEngine>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -67,11 +54,12 @@ public:
         settingsManager_.reset(new AppSettingsManager(this));
         systemTray_.reset(new SystemTray(settingsManager_.get(), this));
 
+        QFontDatabase::addApplicationFont(":/images/FontAwesome.otf");
+
 #if defined _MSC_VER && !COMPILE_ONLY
         gnutls_global_init();
 #endif
 
-        std::atomic_bool isMigrating(false);
         lrcInstance_.reset(
             new LRCInstance(nullptr, nullptr, "", connectivityMonitor_.get(), muteDring_));
         lrcInstance_->subscribeToDebugReceived();
@@ -82,56 +70,13 @@ public:
 
     void qmlEngineRegistration(QQmlEngine* engine)
     {
-        // setup the adapters (their lifetimes are that of MainApplication)
-        auto callAdapter = new CallAdapter(systemTray_.get(), lrcInstance_.data(), this);
-        auto messagesAdapter = new MessagesAdapter(settingsManager_.get(),
-                                                   lrcInstance_.data(),
-                                                   this);
-        auto conversationsAdapter = new ConversationsAdapter(systemTray_.get(),
-                                                             lrcInstance_.data(),
-                                                             this);
-        auto avAdapter = new AvAdapter(lrcInstance_.data(), this);
-        auto contactAdapter = new ContactAdapter(lrcInstance_.data(), this);
-        auto accountAdapter = new AccountAdapter(settingsManager_.get(), lrcInstance_.data(), this);
-        auto utilsAdapter = new UtilsAdapter(systemTray_.get(), lrcInstance_.data(), this);
-        auto settingsAdapter = new SettingsAdapter(settingsManager_.get(),
-                                                   lrcInstance_.data(),
-                                                   this);
-        auto pluginAdapter = new PluginAdapter(lrcInstance_.data(), this);
-
-        // qml adapter registration
-        QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, callAdapter, "CallAdapter");
-        QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, messagesAdapter, "MessagesAdapter");
-        QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, conversationsAdapter, "ConversationsAdapter");
-        QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, avAdapter, "AvAdapter");
-        QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, contactAdapter, "ContactAdapter");
-        QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, accountAdapter, "AccountAdapter");
-        QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, utilsAdapter, "UtilsAdapter");
-        QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, settingsAdapter, "SettingsAdapter");
-        QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, pluginAdapter, "PluginAdapter");
-
-        // TODO: remove these
-        QML_REGISTERSINGLETONTYPE_CUSTOM(NS_MODELS, AVModel, &lrcInstance_->avModel())
-        QML_REGISTERSINGLETONTYPE_CUSTOM(NS_MODELS, PluginModel, &lrcInstance_->pluginModel())
-        QML_REGISTERSINGLETONTYPE_CUSTOM(NS_HELPERS, UpdateManager, lrcInstance_->getUpdateManager())
-
-        // register other types that don't require injection(e.g. uncreatables, c++/qml singletons)
-        Utils::registerTypes();
-
-        engine->addImageProvider(QLatin1String("qrImage"), new QrImageProvider(lrcInstance_.get()));
-        engine->addImageProvider(QLatin1String("tintedPixmap"),
-                                 new TintedButtonImageProvider(lrcInstance_.get()));
-        engine->addImageProvider(QLatin1String("avatarImage"),
-                                 new AvatarImageProvider(lrcInstance_.get()));
-
-        engine->rootContext()->setContextProperty("ScreenInfo", &screenInfo_);
-        engine->rootContext()->setContextProperty("LRCInstance", lrcInstance_.get());
-
-        engine->setObjectOwnership(&lrcInstance_->avModel(), QQmlEngine::CppOwnership);
-        engine->setObjectOwnership(&lrcInstance_->pluginModel(), QQmlEngine::CppOwnership);
-        engine->setObjectOwnership(lrcInstance_->getUpdateManager(), QQmlEngine::CppOwnership);
-        engine->setObjectOwnership(lrcInstance_.get(), QQmlEngine::CppOwnership);
-        engine->setObjectOwnership(&NameDirectory::instance(), QQmlEngine::CppOwnership);
+        // Expose custom types to the QML engine.
+        Utils::registerTypes(engine,
+                             systemTray_.get(),
+                             lrcInstance_.get(),
+                             settingsManager_.get(),
+                             &screenInfo_,
+                             this);
     }
 
 public Q_SLOTS:
@@ -156,7 +101,6 @@ public Q_SLOTS:
      */
     void qmlEngineAvailable(QQmlEngine* engine)
     {
-        engine->addImportPath("qrc:/tests/qml");
         qmlEngineRegistration(engine);
     }
 
@@ -196,6 +140,7 @@ main(int argc, char** argv)
     }
 
     QStandardPaths::setTestModeEnabled(true);
+    QtWebEngine::initialize();
 
     QTEST_SET_MAIN_SOURCE_PATH
     Setup setup(muteDring);

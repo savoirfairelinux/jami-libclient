@@ -133,6 +133,8 @@ ColumnLayout {
         MessageBarTextArea {
             id: textArea
 
+            objectName: "messageBarTextArea"
+
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
             Layout.margins: marginSize / 2
@@ -171,6 +173,8 @@ ColumnLayout {
 
         PushButton {
             id: sendMessageButton
+
+            objectName: "sendMessageButton"
 
             Layout.alignment: Qt.AlignVCenter
             Layout.rightMargin: visible ? marginSize : 0
