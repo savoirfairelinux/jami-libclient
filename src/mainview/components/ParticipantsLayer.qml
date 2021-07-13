@@ -77,7 +77,7 @@ Item {
                     participantOverlays[p].setMenu(participant.uri, participant.bestName,
                                                    participant.isLocal, participant.active, showMax)
                     if (participant.videoMuted)
-                        participantOverlays[p].setAvatar(true, participant.avatar, participant.uri, participant.isLocal, participant.isContact)
+                        participantOverlays[p].setAvatar(true, participant.uri, participant.isLocal)
                     else
                         participantOverlays[p].setAvatar(false)
                     currentUris.push(participantOverlays[p].uri)
@@ -120,7 +120,7 @@ Item {
                     hover.setMenu(infos[infoVariant].uri, infos[infoVariant].bestName,
                                   infos[infoVariant].isLocal, infos[infoVariant].active, showMax)
                     if (infos[infoVariant].videoMuted)
-                        hover.setAvatar(true, infos[infoVariant].avatar, infos[infoVariant].uri, infos[infoVariant].isLocal, infos[infoVariant].isContact)
+                        hover.setAvatar(true, infos[infoVariant].uri, infos[infoVariant].isLocal)
                     else
                         hover.setAvatar(false)
                     participantOverlays.push(hover)

@@ -495,17 +495,10 @@ CallAdapter::fillParticipantData(QMap<QString, QString> participant)
     if (bestName == accInfo.profileInfo.uri) {
         bestName = tr("me");
         data["isLocal"] = true;
-        if (participant["videoMuted"] == "true")
-            data["avatar"] = accInfo.profileInfo.avatar;
     } else {
         try {
-            auto& contact = lrcInstance_->getCurrentAccountInfo().contactModel->getContact(
-                participant["uri"]);
             bestName = lrcInstance_->getCurrentAccountInfo().contactModel->bestNameForContact(
                 participant["uri"]);
-            if (participant["videoMuted"] == "true")
-                data["avatar"] = contact.profileInfo.avatar;
-            data["isContact"] = true;
         } catch (...) {
         }
     }

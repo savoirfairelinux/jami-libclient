@@ -52,20 +52,18 @@ Item {
 
     z: 1
 
-    function setAvatar(show, base64, uri, local, isContact) {
+    function setAvatar(show, uri, isLocal) {
         if (!show)
-            contactImage.visible = false
+            avatar.visible = false
         else {
-            if (local) {
-                contactImage.imageId = LRCInstance.currentAccountId
-            } else if (isContact) {
-                contactImage.avatarMode = AvatarImage.AvatarMode.FromContactUri
-                contactImage.updateImage(uri)
+            if (isLocal) {
+                avatar.mode = Avatar.Mode.Account
+                avatar.imageId = LRCInstance.currentAccountId
             } else {
-                contactImage.avatarMode = AvatarImage.AvatarMode.FromTemporaryName
-                contactImage.updateImage(uri)
+                avatar.mode = Avatar.Mode.Contact
+                avatar.imageId = uri
             }
-            contactImage.visible = true
+            avatar.visible = true
         }
     }
 
@@ -169,8 +167,8 @@ Item {
         }
     }
 
-    ConversationAvatar {
-        id: contactImage
+    Avatar {
+        id: avatar
 
         anchors.centerIn: parent
         height:  Math.min(parent.width / 2, parent.height / 2)

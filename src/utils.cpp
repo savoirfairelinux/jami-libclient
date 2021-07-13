@@ -376,7 +376,8 @@ Utils::contactPhoto(LRCInstance* instance,
             photo = Utils::fallbackAvatar("ring:" + contactInfo.profileInfo.uri, avatarName);
         }
     } catch (const std::exception& e) {
-        qDebug() << Q_FUNC_INFO << e.what();
+        qDebug() << e.what() << "; Using default avatar";
+        photo = fallbackAvatar("jami:" + contactUri, QString(), size);
     }
     return Utils::scaleAndFrame(photo, size);
 }
