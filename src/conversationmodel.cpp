@@ -2721,8 +2721,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     conversation.mode = mode;
     if (mode == conversation::Mode::ONE_TO_ONE && !otherMember.isEmpty()) {
         try {
-            conversation.confId = linked.owner.callModel->getConferenceFromURI(otherMember)
-                                      .id;
+            conversation.confId = linked.owner.callModel->getConferenceFromURI(otherMember).id;
         } catch (...) {
             conversation.confId = "";
         }
@@ -2872,7 +2871,8 @@ ConversationModelPimpl::indexOfContact(const QString& uri) const
         if (!conversations.at(i).isCoreDialog()) {
             continue;
         }
-        if (peersForConversation(conversations.at(i)).front() == uri)
+        auto peers = peersForConversation(conversations.at(i));
+        if (peers.size() > 0 && peers.front() == uri)
             return i;
     }
     return -1;
