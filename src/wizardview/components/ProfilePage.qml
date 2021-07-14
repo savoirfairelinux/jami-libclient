@@ -20,7 +20,9 @@ import QtQuick 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Controls 2.14
 
+import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
+import net.jami.Helpers 1.0
 
 import "../../commoncomponents"
 
@@ -34,6 +36,7 @@ Rectangle {
     property alias displayName: aliasEdit.text
     property bool isRdv: false
     property alias avatarBooth: setAvatarWidget
+    property bool avatarSet
 
     signal leavePage
     signal saveProfile
@@ -42,6 +45,7 @@ Rectangle {
         createdAccountId = "dummy"
         clearAllTextFields()
         saveProfileBtn.spinnerTriggered = true
+        avatarSet = false
     }
 
     function clearAllTextFields() {
@@ -99,6 +103,7 @@ Rectangle {
             Layout.fillHeight: true
 
             imageId: createdAccountId
+            onAvatarSet: root.avatarSet = true
 
             size: 200
         }
@@ -106,7 +111,7 @@ Rectangle {
         MaterialLineEdit {
             id: aliasEdit
 
-            property string lastInitialCharacter: ""
+            property string lastFirstChar
 
             Layout.preferredHeight: fieldLayoutHeight
             Layout.preferredWidth: fieldLayoutWidth
@@ -122,18 +127,14 @@ Rectangle {
             fieldLayoutWidth: saveProfileBtn.width
 
             onTextEdited: {
-                if (!(setAvatarWidget.avatarSet)) {
-                    if (text.length === 0) {
-                        setAvatarWidget.setAvatarImage(AvatarImage.AvatarMode.FromAccount,
-                                                       createdAccountId)
-                        return
-                    }
-
-                    if (text.length == 1 && text.charAt(0) !== lastInitialCharacter) {
-                        lastInitialCharacter = text.charAt(0)
-                        setAvatarWidget.setAvatarImage(AvatarImage.AvatarMode.FromTemporaryName,
-                                                       text)
-                    }
+                if (root.avatarSet)
+                    return
+                if (text.length === 0) {
+                    lastFirstChar = ""
+                    AccountAdapter.setCurrAccDisplayName(lastFirstChar)
+                } else if (text.length == 1 && text.charAt(0) !== lastFirstChar) {
+                    lastFirstChar = text.charAt(0)
+                    AccountAdapter.setCurrAccDisplayName(lastFirstChar)
                 }
             }
         }
@@ -164,7 +165,9 @@ Rectangle {
             outlined: true
 
             onClicked: {
-                leavePage()
+                AccountAdapter.setCurrentAccountAvatarBase64()
+                aliasEdit.clear()
+                saveProfile()
             }
         }
 

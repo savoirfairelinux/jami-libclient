@@ -460,7 +460,7 @@ MainApplication::initQmlLayer()
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, pluginAdapter, "PluginAdapter");
 
     auto avatarRegistry = new AvatarRegistry(lrcInstance_.data(), this);
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, avatarRegistry, "AvatarRegistry");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_HELPERS, avatarRegistry, "AvatarRegistry");
 
     // TODO: remove these
     QML_REGISTERSINGLETONTYPE_CUSTOM(NS_MODELS, AVModel, &lrcInstance_->avModel())
