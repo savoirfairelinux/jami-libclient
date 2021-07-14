@@ -46,6 +46,30 @@
       },
       "revId": "61d613c408bfe5220e227cd66d7b0c31e9e8a54b",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eca816fb_c4b9389e",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-14T13:59:51Z",
+      "side": 1,
+      "message": "should check as discussed if the item is a camera instead of checking the label",
+      "parentUuid": "f72930d3_bafcd5e1",
+      "range": {
+        "startLine": 995,
+        "startChar": 50,
+        "endLine": 995,
+        "endChar": 59
+      },
+      "revId": "61d613c408bfe5220e227cd66d7b0c31e9e8a54b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
