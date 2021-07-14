@@ -1979,6 +1979,9 @@ ConversationModelPimpl::peersForConversation(const conversation::Info& conversat
     default:
         break;
     }
+    // Note: for one to one, we must return self
+    if (conversation.participants.size() == 1)
+        return conversation.participants;
     for (const auto& participant : conversation.participants)
         if (participant != linked.owner.profileInfo.uri)
             result.push_back(participant);
@@ -2723,7 +2726,8 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     for (auto& member : members) {
         // this check should be removed once all usage of participants replaced by
         // peersForConversation. We should have ourself in participants list
-        if (member["uri"] != accountURI) {
+        // Note: if members.size() == 1, it's a conv with self so we're also the peer
+        if (member["uri"] != accountURI || members.size() == 1) {
             participants.append(member["uri"]);
             if (mode == conversation::Mode::ONE_TO_ONE) {
                 otherMember = member["uri"];
