@@ -38,6 +38,11 @@ public:
     {
         Q_UNUSED(size)
 
+        if (requestedSize == QSize(0, 0)) {
+            qWarning() << Q_FUNC_INFO << "Image request has no dimensions";
+            return {};
+        }
+
         // the first string is the item uri and the second is a uid
         // that is used for trigger a reload of the underlying image
         // data and can be discarded at this point
