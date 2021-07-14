@@ -403,7 +403,7 @@ Utils::conversationAvatar(LRCInstance* instance,
     } catch (const std::exception& e) {
         qDebug() << Q_FUNC_INFO << e.what();
     }
-    return Utils::scaleAndFrame(avatar, size);
+    return avatar;
 }
 
 QImage
