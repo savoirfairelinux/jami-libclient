@@ -171,8 +171,15 @@ Item {
         id: avatar
 
         anchors.centerIn: parent
-        height:  Math.min(parent.width / 2, parent.height / 2)
-        width:  Math.min(parent.width / 2, parent.height / 2)
+
+        property real size: Math.min(parent.width / 2, parent.height / 2)
+        height:  size
+        width:  size
+
+        // round the avatar source size up to some nearest multiple
+        readonly property real step: 96
+        property real imageSize: Math.floor((size + step - 1) / step) * step
+        sourceSize: Qt.size(imageSize, imageSize)
 
         visible: false
         showPresenceIndicator: false

@@ -29,6 +29,7 @@ Item {
 
     enum Mode { Account, Contact, Conversation }
     property int mode: Avatar.Mode.Account
+    property alias sourceSize: image.sourceSize
 
     property string imageId
 
