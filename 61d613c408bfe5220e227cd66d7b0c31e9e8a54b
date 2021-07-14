@@ -70,6 +70,30 @@
       },
       "revId": "61d613c408bfe5220e227cd66d7b0c31e9e8a54b",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a32dcb6_b4528918",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-07-14T21:07:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eca816fb_c4b9389e",
+      "range": {
+        "startLine": 995,
+        "startChar": 50,
+        "endLine": 995,
+        "endChar": 59
+      },
+      "revId": "61d613c408bfe5220e227cd66d7b0c31e9e8a54b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
