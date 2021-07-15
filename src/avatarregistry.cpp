@@ -56,6 +56,7 @@ AvatarRegistry::addOrUpdateImage(const QString& id)
 void
 AvatarRegistry::connectAccount()
 {
+    uidMap_.clear();
     connect(lrcInstance_->getCurrentContactModel(),
             &ContactModel::profileUpdated,
             this,
