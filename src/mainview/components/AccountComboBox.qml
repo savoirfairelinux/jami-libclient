@@ -132,6 +132,9 @@ Label {
 
             imageId: LRCInstance.currentAccountId
             mode: Avatar.Mode.Account
+
+            presenceStatus: AccountListModel.data(
+                                AccountListModel.index(0, 0), AccountList.Status)
         }
 
         ColumnLayout {
