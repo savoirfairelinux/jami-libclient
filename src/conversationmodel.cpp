@@ -1016,9 +1016,12 @@ ConversationModel::title(const QString& conversationId) const
         return {};
     }
     auto& conversation = conversationOpt->get();
-    if (conversation.isLegacy()) {
+    if (conversation.isCoreDialog()) {
+        auto peer = pimpl_->peersForConversation(conversation);
+        if (peer.isEmpty())
+            return {};
         // In this case, we can just display contact name
-        return owner.contactModel->bestNameForContact(conversation.participants.at(0));
+        return owner.contactModel->bestNameForContact(peer.at(0));
     }
     // In this case, it depends if we have infos from daemon (TODO conferencesInfo() support)
     // NOTE: Do not call any daemon method there as title() is called a lot for drawing
@@ -2358,16 +2361,10 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
     // remove non swarm conversation that was added from slotContactAdded
     const VectorMapStringString& members = ConfigurationManager::instance()
                                                .getConversationMembers(accountId, conversationId);
-    const auto& accountURI = linked.owner.profileInfo.uri;
     VectorString participants;
     // it means conversation with one participant. In this case we could have non swarm conversation
     bool shouldRemoveNonSwarmConversation = members.size() == 2;
     for (const auto& member : members) {
-        // this check should be removed once all usage of participants replaced by
-        // peersForConversation. We should have ourself in participants list
-        if (member["uri"] == accountURI) {
-            continue;
-        }
         participants.append(member["uri"]);
         if (shouldRemoveNonSwarmConversation) {
             try {
@@ -2496,12 +2493,9 @@ ConversationModelPimpl::slotConversationMemberEvent(const QString& accountId,
     const VectorMapStringString& members
         = ConfigurationManager::instance().getConversationMembers(linked.owner.id, conversationId);
     VectorString uris;
-    auto accountURI = linked.owner.profileInfo.uri;
 
     for (auto& member : members) {
-        if (member["uri"] != accountURI) {
-            uris.append(member["uri"]);
-        }
+        uris.append(member["uri"]);
     }
     conversation.participants = uris;
     invalidateModel();
@@ -2618,7 +2612,7 @@ ConversationModelPimpl::addConversationRequest(const MapStringString& convReques
     conversation::Info conversation;
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
-    conversation.participants = {peer};
+    conversation.participants = {linked.owner.profileInfo.uri, peer};
     conversation.mode = mode;
     conversation.isRequest = true;
     emplaceBackConversation(std::move(conversation));
@@ -2727,11 +2721,9 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
         // this check should be removed once all usage of participants replaced by
         // peersForConversation. We should have ourself in participants list
         // Note: if members.size() == 1, it's a conv with self so we're also the peer
-        if (member["uri"] != accountURI || members.size() == 1) {
-            participants.append(member["uri"]);
-            if (mode == conversation::Mode::ONE_TO_ONE) {
-                otherMember = member["uri"];
-            }
+        participants.append(member["uri"]);
+        if (mode == conversation::Mode::ONE_TO_ONE && member["uri"] != accountURI) {
+            otherMember = member["uri"];
         }
     }
     conversation::Info conversation;
@@ -2741,8 +2733,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     conversation.mode = mode;
     if (mode == conversation::Mode::ONE_TO_ONE && !otherMember.isEmpty()) {
         try {
-            conversation.confId = linked.owner.callModel->getConferenceFromURI(otherMember)
-                                      .id;
+            conversation.confId = linked.owner.callModel->getConferenceFromURI(otherMember).id;
         } catch (...) {
             conversation.confId = "";
         }
