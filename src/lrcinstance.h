@@ -57,6 +57,7 @@ class LRCInstance : public QObject
     QML_PROPERTY(QString, selectedConvUid)
     QML_PROPERTY(QString, currentAccountId)
     QML_RO_PROPERTY(lrc::api::profile::Type, currentAccountType)
+    QML_PROPERTY(bool, currentAccountAvatarSet)
 
 public:
     explicit LRCInstance(migrateCallback willMigrateCb = {},

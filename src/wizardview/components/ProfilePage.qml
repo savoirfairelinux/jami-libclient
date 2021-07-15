@@ -32,11 +32,10 @@ Rectangle {
     // trigger a default avatar prior to account generation
     property string createdAccountId: "dummy"
     property int preferredHeight: profilePageColumnLayout.implicitHeight
-    property var showBottom: false
+    property bool showBottom: false
     property alias displayName: aliasEdit.text
     property bool isRdv: false
     property alias avatarBooth: setAvatarWidget
-    property bool avatarSet
 
     signal leavePage
     signal saveProfile
@@ -45,7 +44,6 @@ Rectangle {
         createdAccountId = "dummy"
         clearAllTextFields()
         saveProfileBtn.spinnerTriggered = true
-        avatarSet = false
     }
 
     function clearAllTextFields() {
@@ -99,13 +97,14 @@ Rectangle {
             id: setAvatarWidget
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: size
-            Layout.fillHeight: true
 
             imageId: createdAccountId
-            onAvatarSet: root.avatarSet = true
+            avatarSize: 200
 
-            size: 200
+            onVisibleChanged: {
+                if (visible)
+                    LRCInstance.currentAccountAvatarSet = false
+            }
         }
 
         MaterialLineEdit {
@@ -127,7 +126,7 @@ Rectangle {
             fieldLayoutWidth: saveProfileBtn.width
 
             onTextEdited: {
-                if (root.avatarSet)
+                if (LRCInstance.currentAccountAvatarSet)
                     return
                 if (text.length === 0) {
                     lastFirstChar = ""

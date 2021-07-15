@@ -44,8 +44,21 @@ LRCInstance::LRCInstance(migrateCallback willMigrateCb,
         accountModel().setTopAccount(currentAccountId_);
         Q_EMIT accountListChanged();
 
+        auto profileInfo = getCurrentAccountInfo().profileInfo;
+
         // update type
-        set_currentAccountType(getCurrentAccountInfo().profileInfo.type);
+        set_currentAccountType(profileInfo.type);
+
+        // notify if the avatar is stored locally
+        set_currentAccountAvatarSet(!profileInfo.avatar.isEmpty());
+    });
+
+    connect(&accountModel(), &NewAccountModel::profileUpdated, [this](const QString& id) {
+        if (id != currentAccountId_)
+            return;
+
+        auto profileInfo = getCurrentAccountInfo().profileInfo;
+        set_currentAccountAvatarSet(!getCurrentAccountInfo().profileInfo.avatar.isEmpty());
     });
 
     // set the current account if any

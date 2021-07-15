@@ -26,38 +26,33 @@ import net.jami.Models 1.0
 import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
-ColumnLayout {
+Item {
     id: root
 
-    enum Mode { Static, Previewing }
-    property int mode: PhotoboothView.Mode.Static
+    property bool isPreviewing: false
     property alias imageId: avatar.imageId
+    required property real avatarSize
 
-    property int size: 224
-
-    signal avatarSet
+    width: avatarSize
+    height: boothLayout.height
 
     function startBooth() {
         AccountAdapter.startPreviewing(false)
-        mode = PhotoboothView.Mode.Previewing
+        isPreviewing = true
     }
 
     function stopBooth(){
         if (!AccountAdapter.hasVideoCall()) {
             AccountAdapter.stopPreviewing()
         }
-        mode = PhotoboothView.Mode.Static
+        isPreviewing = false
     }
 
     onVisibleChanged: {
-        if (visible) {
-            mode = PhotoboothView.Mode.Static
-        } else {
+        if (!visible) {
             stopBooth()
         }
     }
-
-    spacing: 0
 
     JamiFileDialog {
         id: importFromFileDialog
@@ -74,125 +69,139 @@ ColumnLayout {
         onAccepted: {
             var filePath = UtilsAdapter.getAbsPath(file)
             AccountAdapter.setCurrentAccountAvatarFile(filePath)
-            avatarSet()
         }
     }
 
-    Item {
-        id: imageLayer
+    ColumnLayout {
+        id: boothLayout
 
-        Layout.preferredWidth: size
-        Layout.preferredHeight: size
-        Layout.alignment: Qt.AlignHCenter
+        spacing: JamiTheme.preferredMarginSize / 2
 
-        Avatar {
-            id: avatar
+        Item {
+            id: imageLayer
 
-            anchors.fill: parent
-            anchors.margins: 1
-
-            visible: !preview.visible
-
-            fillMode: Image.PreserveAspectCrop
-            showPresenceIndicator: false
-        }
-
-        PhotoboothPreviewRender {
-            id: preview
-
-            anchors.fill: parent
-            anchors.margins: 1
-
-            visible: mode === PhotoboothView.Mode.Previewing
-
-            onRenderingStopped: stopBooth()
-            lrcInstance: LRCInstance
-
-            layer.enabled: true
-            layer.effect: OpacityMask {
-                maskSource: Rectangle {
-                    width: size
-                    height: size
-                    radius: size / 2
-                }
-            }
-        }
-
-        Rectangle {
-            id: flashRect
-
-            anchors.fill: parent
-            anchors.margins: 0
-            radius: size / 2
-            color: "white"
-            opacity: 0
-
-            SequentialAnimation {
-                id: flashAnimation
-
-                NumberAnimation {
-                    target: flashRect; property: "opacity"
-                    to: 1; duration: 0
-                }
-                NumberAnimation {
-                    target: flashRect; property: "opacity"
-                    to: 0; duration: 500
-                }
-            }
-        }
-    }
-
-    RowLayout {
-        id: buttonsRowLayout
-
-        Layout.fillWidth: true
-        Layout.preferredHeight: JamiTheme.preferredFieldHeight
-        Layout.topMargin: JamiTheme.preferredMarginSize / 2
-        Layout.alignment: Qt.AlignHCenter
-
-        PushButton {
-            id: takePhotoButton
-
+            Layout.preferredWidth: avatarSize
+            Layout.preferredHeight: avatarSize
             Layout.alignment: Qt.AlignHCenter
-            radius: JamiTheme.primaryRadius
 
-            imageColor: JamiTheme.textColor
-            toolTipText: JamiStrings.takePhoto
+            Avatar {
+                id: avatar
 
-            source: mode === PhotoboothView.Mode.Static ?
-                        "qrc:/images/icons/baseline-camera_alt-24px.svg" :
-                        "qrc:/images/icons/round-add_a_photo-24px.svg"
+                anchors.fill: parent
+                anchors.margins: 1
 
-            onClicked: {
-                if (mode === PhotoboothView.Mode.Previewing) {
-                    flashAnimation.start()
-                    AccountAdapter.setCurrentAccountAvatarBase64(
-                                preview.takePhoto(size))
-                    avatarSet()
+                visible: !preview.visible
+
+                fillMode: Image.PreserveAspectCrop
+                showPresenceIndicator: false
+            }
+
+            PhotoboothPreviewRender {
+                id: preview
+
+                anchors.fill: parent
+                anchors.margins: 1
+
+                visible: isPreviewing
+
+                onRenderingStopped: stopBooth()
+                lrcInstance: LRCInstance
+
+                layer.enabled: true
+                layer.effect: OpacityMask {
+                    maskSource: Rectangle {
+                        width: avatarSize
+                        height: avatarSize
+                        radius: avatarSize / 2
+                    }
+                }
+            }
+
+            Rectangle {
+                id: flashRect
+
+                anchors.fill: parent
+                anchors.margins: 0
+                radius: avatarSize / 2
+                color: "white"
+                opacity: 0
+
+                SequentialAnimation {
+                    id: flashAnimation
+
+                    NumberAnimation {
+                        target: flashRect; property: "opacity"
+                        to: 1; duration: 0
+                    }
+                    NumberAnimation {
+                        target: flashRect; property: "opacity"
+                        to: 0; duration: 500
+                    }
+                }
+            }
+        }
+
+        RowLayout {
+            id: buttonsRowLayout
+
+            Layout.fillWidth: true
+            Layout.preferredHeight: childrenRect.height
+            Layout.bottomMargin: parent.spacing
+            Layout.alignment: Qt.AlignHCenter
+
+            PushButton {
+                id: takePhotoButton
+
+                Layout.alignment: Qt.AlignHCenter
+                radius: JamiTheme.primaryRadius
+                imageColor: JamiTheme.textColor
+                toolTipText: JamiStrings.takePhoto
+                source: isPreviewing ?
+                            "qrc:/images/icons/round-add_a_photo-24px.svg" :
+                            "qrc:/images/icons/baseline-camera_alt-24px.svg"
+
+                onClicked: {
+                    if (isPreviewing) {
+                        flashAnimation.start()
+                        AccountAdapter.setCurrentAccountAvatarBase64(
+                                    preview.takePhoto(avatarSize))
+                        stopBooth()
+                        return
+                    }
+
+                    startBooth()
+                }
+            }
+
+            PushButton {
+                id: clearButton
+
+                visible: LRCInstance.currentAccountAvatarSet
+                Layout.alignment: Qt.AlignHCenter
+                radius: JamiTheme.primaryRadius
+                source: "qrc:/images/icons/round-close-24px.svg"
+                toolTipText: JamiStrings.clearAvatar
+                imageColor: JamiTheme.textColor
+
+                onClicked: {
                     stopBooth()
-                    return
+                    AccountAdapter.setCurrentAccountAvatarBase64()
                 }
-
-                startBooth()
             }
-        }
 
-        PushButton {
-            id: importButton
+            PushButton {
+                id: importButton
 
-            Layout.preferredWidth: JamiTheme.preferredFieldHeight
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
-            Layout.alignment: Qt.AlignHCenter
+                Layout.alignment: Qt.AlignHCenter
+                radius: JamiTheme.primaryRadius
+                source: "qrc:/images/icons/round-folder-24px.svg"
+                toolTipText: JamiStrings.importFromFile
+                imageColor: JamiTheme.textColor
 
-            radius: JamiTheme.primaryRadius
-            source: "qrc:/images/icons/round-folder-24px.svg"
-
-            toolTipText: JamiStrings.importFromFile
-            imageColor: JamiTheme.textColor
-
-            onClicked: {
-                stopBooth()
-                importFromFileDialog.open()
+                onClicked: {
+                    stopBooth()
+                    importFromFileDialog.open()
+                }
             }
         }
     }

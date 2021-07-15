@@ -66,12 +66,10 @@ ColumnLayout {
     PhotoboothView {
         id: currentAccountAvatar
 
-        Layout.fillWidth: true
         Layout.alignment: Qt.AlignCenter
 
         imageId: LRCInstance.currentAccountId
-
-        size: 180
+        avatarSize: 180
     }
 
     MaterialLineEdit {
