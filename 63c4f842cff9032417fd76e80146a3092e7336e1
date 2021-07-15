@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac3835db_8eb76c41",
+        "filename": "src/api/contactmodel.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-15T15:24:06Z",
+      "side": 1,
+      "message": "fileId",
+      "range": {
+        "startLine": 157,
+        "startChar": 14,
+        "endLine": 157,
+        "endChar": 20
+      },
+      "revId": "63c4f842cff9032417fd76e80146a3092e7336e1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d109f62_8f58cd0b",
+        "filename": "src/callbackshandler.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-15T15:24:06Z",
+      "side": 1,
+      "message": "fileId",
+      "range": {
+        "startLine": 589,
+        "startChar": 46,
+        "endLine": 589,
+        "endChar": 52
+      },
+      "revId": "63c4f842cff9032417fd76e80146a3092e7336e1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a48fd6ac_88bd2afc",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-15T15:24:06Z",
+      "side": 1,
+      "message": "fileId, don\u0027t know why it was dringId there",
+      "range": {
+        "startLine": 194,
+        "startChar": 14,
+        "endLine": 194,
+        "endChar": 20
+      },
+      "revId": "63c4f842cff9032417fd76e80146a3092e7336e1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4a38e04_0bf81b12",
+        "filename": "src/qtwrapper/configurationmanager_wrap.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-15T15:24:06Z",
+      "side": 1,
+      "message": "transfer_info in this file will be clearer",
+      "range": {
+        "startLine": 814,
+        "startChar": 32,
+        "endLine": 814,
+        "endChar": 41
+      },
+      "revId": "63c4f842cff9032417fd76e80146a3092e7336e1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
