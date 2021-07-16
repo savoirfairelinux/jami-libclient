@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "708d0ecd_17b48a48",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 892
+      },
+      "writtenOn": "2021-07-16T19:20:16Z",
+      "side": 1,
+      "message": "i took this from chatview-qt.css, useful for e.g. the \"Copy to downloads\" dropdown menu option. wasn\u0027t sure if i should move that from chatview-qt.css to chatview.css, so i just duplicated it in chatview-gnome.css.  let me know if you prefer the other approach.",
+      "revId": "412667963f2be418786643f4f891852b8f531898",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
