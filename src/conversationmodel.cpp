@@ -437,9 +437,9 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
                 contactsVector.push_back(cv);
                 continue;
             }
-            bool result = contact.profileInfo.alias.contains(filter)
-                          || contact.profileInfo.uri.contains(filter)
-                          || contact.registeredName.contains(filter);
+            bool result = contact.profileInfo.alias.contains(filter, Qt::CaseInsensitive)
+                          || contact.profileInfo.uri.contains(filter, Qt::CaseInsensitive)
+                          || contact.registeredName.contains(filter, Qt::CaseInsensitive);
             if (result) {
                 contactsVector.push_back(cv);
             }
