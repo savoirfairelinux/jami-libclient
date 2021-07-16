@@ -232,7 +232,6 @@ NewAccountModel::setAccountConfig(const QString& accountId,
     // Set values from Info. No need to include ID and TYPE. SIP accounts may modify the USERNAME
     // TODO: move these into the ConfProperties_t struct ?
     using namespace DRing::Account;
-    qDebug("UPNP_ENABLED: %s\n", details[ConfProperties::UPNP_ENABLED].toStdString().c_str());
     details[ConfProperties::ENABLED] = accountInfo.enabled ? QString("true") : QString("false");
     details[ConfProperties::ALIAS] = accountInfo.profileInfo.alias;
     details[ConfProperties::DISPLAYNAME] = accountInfo.profileInfo.alias;
