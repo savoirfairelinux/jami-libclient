@@ -468,6 +468,8 @@ Item {
     // Generic dialog options
     property string optionOk: qsTr("Ok")
     property string optionCancel: qsTr("Cancel")
+    property string optionUpgrade: qsTr("Upgrade")
+    property string optionLater: qsTr("Later")
 
     // Conference moderation
     property string setModerator: qsTr("Set moderator")

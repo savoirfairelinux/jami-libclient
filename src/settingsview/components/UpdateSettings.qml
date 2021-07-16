@@ -167,7 +167,7 @@ ColumnLayout {
 
         property bool beta: false
 
-        buttonTitles: [JamiStrings.optionOk, JamiStrings.optionCancel]
+        buttonTitles: [JamiStrings.optionUpgrade, JamiStrings.optionLater]
         buttonStyles: [
             SimpleMessageDialog.ButtonStyle.TintedBlue,
             SimpleMessageDialog.ButtonStyle.TintedBlue
