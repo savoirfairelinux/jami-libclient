@@ -79,7 +79,7 @@ ItemDelegate {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
-                visible: text.length
+                visible: text.length && Alias != Username
 
                 text: Username
                 font.pointSize: JamiTheme.textFontSize

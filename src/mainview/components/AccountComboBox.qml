@@ -158,7 +158,7 @@ Label {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
-                visible: text.length
+                visible: text.length && text != userAliasText.text
 
                 text:  AccountListModel.data(AccountListModel.index(0,0),
                                              AccountList.Username)
