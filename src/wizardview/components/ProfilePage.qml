@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Yang Wang <yang.wang@savoirfairelinux.com>
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +24,7 @@ import QtQuick.Controls 2.14
 import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 import net.jami.Helpers 1.0
+import net.jami.Models 1.0
 
 import "../../commoncomponents"
 
@@ -32,13 +34,8 @@ Rectangle {
     // trigger a default avatar prior to account generation
     property string createdAccountId: "dummy"
     property int preferredHeight: profilePageColumnLayout.implicitHeight
-    property bool showBottom: false
-    property alias displayName: aliasEdit.text
-    property bool isRdv: false
-    property alias avatarBooth: setAvatarWidget
 
-    signal leavePage
-    signal saveProfile
+    signal showThisPage
 
     function initializeOnShowUp() {
         createdAccountId = "dummy"
@@ -50,46 +47,52 @@ Rectangle {
         aliasEdit.clear()
     }
 
-    function readyToSaveDetails() {
-        saveProfileBtn.spinnerTriggered = false
-    }
-
     color: JamiTheme.backgroundColor
+
+    Connections {
+        target: WizardViewStepModel
+
+        function onMainStepChanged() {
+            if (WizardViewStepModel.mainStep === WizardViewStepModel.MainSteps.Profile) {
+                initializeOnShowUp()
+                root.showThisPage()
+            }
+        }
+
+        function onAccountIsReady(accountId) {
+            saveProfileBtn.spinnerTriggered = false
+            createdAccountId = accountId
+            aliasEdit.forceActiveFocus()
+        }
+    }
 
     ColumnLayout {
         id: profilePageColumnLayout
 
-        spacing: layoutSpacing
+        spacing: JamiTheme.wizardViewPageLayoutSpacing
 
         width: parent.width
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
 
         RowLayout {
-            spacing: layoutSpacing
+            spacing: JamiTheme.wizardViewPageLayoutSpacing
 
-            Layout.topMargin: backButtonMargins
+            Layout.topMargin: JamiTheme.wizardViewPageBackButtonMargins
             Layout.preferredWidth: saveProfileBtn.width
             Layout.alignment: Qt.AlignCenter
 
             Label {
-                text: qsTr("Profile is only shared with contacts")
+                text: JamiStrings.profileSharedWithContacts
                 color: JamiTheme.textColor
                 font.pointSize: JamiTheme.textFontSize + 3
             }
 
-            Label {
+            BubbleLabel {
                 Layout.alignment: Qt.AlignRight
 
-                text: qsTr("Optional")
-                color: JamiTheme.whiteColor
-                padding: 8
-
-                background: Rectangle {
-                    color: JamiTheme.wizardBlueButtons
-                    radius: 24
-                    anchors.fill: parent
-                }
+                text: JamiStrings.optional
+                bubbleColor: JamiTheme.wizardBlueButtons
             }
         }
 
@@ -116,9 +119,17 @@ Rectangle {
             Layout.preferredWidth: fieldLayoutWidth
             Layout.alignment: Qt.AlignCenter
 
+            focus: visible
+
             selectByMouse: true
-            placeholderText: isRdv ? JamiStrings.enterRVName : qsTr("Enter your name")
-            font.pointSize: 9
+            placeholderText: {
+                if (WizardViewStepModel.accountCreationOption !==
+                        WizardViewStepModel.AccountCreationOption.CreateRendezVous)
+                    return JamiStrings.enterYourName
+                else
+                    return JamiStrings.enterRVName
+            }
+            font.pointSize: JamiTheme.textFontSize
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
@@ -147,8 +158,18 @@ Rectangle {
 
             enabled: !spinnerTriggered
             normalText: JamiStrings.saveProfile
-            spinnerTriggeredtext: root.isRdv ? JamiStrings.generatingRV : qsTr("Generating account…")
-            onClicked: saveProfile()
+            spinnerTriggeredtext: {
+                if (WizardViewStepModel.accountCreationOption ===
+                        WizardViewStepModel.AccountCreationOption.CreateRendezVous)
+                    return JamiStrings.generatingRV
+                else
+                    return JamiStrings.creatingAccount
+            }
+
+            onClicked: {
+                AccountAdapter.setCurrAccDisplayName(aliasEdit.text)
+                WizardViewStepModel.nextStep()
+            }
         }
 
         MaterialButton {
@@ -166,18 +187,8 @@ Rectangle {
             onClicked: {
                 AccountAdapter.setCurrentAccountAvatarBase64()
                 aliasEdit.clear()
-                saveProfile()
+                WizardViewStepModel.nextStep()
             }
-        }
-
-        AccountCreationStepIndicator {
-            Layout.topMargin: backButtonMargins
-            Layout.bottomMargin: backButtonMargins
-            Layout.alignment: Qt.AlignHCenter
-
-            spacing: layoutSpacing
-            steps: 3
-            currentStep: 3
         }
     }
 }

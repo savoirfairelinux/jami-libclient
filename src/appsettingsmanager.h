@@ -94,8 +94,8 @@ public:
     explicit AppSettingsManager(QObject* parent = nullptr);
     ~AppSettingsManager() = default;
 
-    QVariant getValue(const Settings::Key key);
-    void setValue(const Settings::Key key, const QVariant& value);
+    Q_INVOKABLE QVariant getValue(const Settings::Key key);
+    Q_INVOKABLE void setValue(const Settings::Key key, const QVariant& value);
 
 private:
     QSettings* settings_;

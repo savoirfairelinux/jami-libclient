@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Yang Wang <yang.wang@savoirfairelinux.com>
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +23,9 @@ import QtQuick.Controls 2.14
 import Qt.labs.platform 1.1
 
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
+import net.jami.Enums 1.0
 
 import "../../commoncomponents"
 import "../../settingsview/components"
@@ -32,28 +35,59 @@ Rectangle {
 
     property int preferredHeight: backupKeysPageColumnLayout.implicitHeight
 
-    signal neverShowAgainBoxClicked(bool isChecked)
-    signal leavePage
-    signal export_Btn_FileDialogAccepted(bool accepted, string folderDir)
+    signal showThisPage
+
+    Connections {
+        target: WizardViewStepModel
+
+        function onMainStepChanged() {
+            if (WizardViewStepModel.mainStep === WizardViewStepModel.MainSteps.BackupKeys)
+                root.showThisPage()
+        }
+    }
+
+    PasswordDialog {
+        id: passwordDialog
+
+        visible: false
+        purpose: PasswordDialog.ExportAccount
+
+        onDoneSignal: {
+            var title = success ? JamiStrings.success : JamiStrings.error
+            var info = success ? JamiStrings.backupSuccessful : JamiStrings.backupFailed
+
+            AccountAdapter.passwordSetStatusMessageBox(success, title, info)
+            if (success)
+                loaderSourceChangeRequested(MainApplicationWindow.LoadedSource.MainView)
+        }
+    }
 
     // JamiFileDialog for exporting account
     JamiFileDialog {
-        id: exportBtn_Dialog
+        id: exportDialog
 
         mode: JamiFileDialog.SaveFile
 
         title: JamiStrings.backupAccountHere
         folder: StandardPaths.writableLocation(StandardPaths.HomeLocation) + "/Desktop"
 
-        nameFilters: [qsTr("Jami archive files") + " (*.gz)", qsTr(
-                "All files") + " (*)"]
+        nameFilters: [JamiStrings.jamiArchiveFiles + " (*.gz)", JamiStrings.allFiles + " (*)"]
 
         onAccepted: {
-            export_Btn_FileDialogAccepted(true, file)
-        }
+            // Is there password? If so, go to password dialog, else, go to following directly
+            if (AccountAdapter.hasPassword()) {
+                passwordDialog.path = UtilsAdapter.getAbsPath(folder)
+                passwordDialog.open()
+                return
+            } else {
+                if (folder.length > 0) {
+                    AccountAdapter.exportToFile(
+                                LRCInstance.currentAccountId,
+                                UtilsAdapter.getAbsPath(folder))
+                }
+            }
 
-        onRejected: {
-            export_Btn_FileDialogAccepted(false, folder)
+            WizardViewStepModel.nextStep()
         }
 
         onVisibleChanged: {
@@ -68,16 +102,16 @@ Rectangle {
     ColumnLayout {
         id: backupKeysPageColumnLayout
 
-        spacing: layoutSpacing
+        spacing: JamiTheme.wizardViewPageLayoutSpacing
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
 
         RowLayout {
-            spacing: layoutSpacing
+            spacing: JamiTheme.wizardViewPageLayoutSpacing
 
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: backButtonMargins
+            Layout.topMargin: JamiTheme.wizardViewPageBackButtonMargins
             Layout.preferredWidth: backupBtn.width
 
             Label {
@@ -86,18 +120,10 @@ Rectangle {
                 font.pointSize: JamiTheme.textFontSize + 3
             }
 
-            Label {
+            BubbleLabel {
                 Layout.alignment: Qt.AlignRight
 
                 text: JamiStrings.recommended
-                color: "white"
-                padding: 8
-
-                background: Rectangle {
-                    color: JamiTheme.wizardGreenColor
-                    radius: 24
-                    anchors.fill: parent
-                }
             }
         }
 
@@ -121,7 +147,7 @@ Rectangle {
         }
 
         RowLayout {
-            spacing: layoutSpacing
+            spacing: JamiTheme.wizardViewPageLayoutSpacing
 
             Layout.alignment: Qt.AlignCenter
 
@@ -135,9 +161,7 @@ Rectangle {
                 id: passwordSwitch
                 Layout.alignment: Qt.AlignRight
 
-                onToggled: {
-                    neverShowAgainBoxClicked(checked)
-                }
+                onToggled: AppSettingsManager.setValue(Settings.NeverShowMeAgain, checked)
             }
         }
 
@@ -153,15 +177,12 @@ Rectangle {
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed
 
-            onClicked: {
-                exportBtn_Dialog.open()
-                leavePage()
-            }
+            onClicked: exportDialog.open()
         }
 
         MaterialButton {
             Layout.alignment: Qt.AlignCenter
-            Layout.bottomMargin: backButtonMargins
+            Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
@@ -171,9 +192,7 @@ Rectangle {
             pressedColor: JamiTheme.buttonTintedGreyPressed
             outlined: true
 
-            onClicked: {
-                leavePage()
-            }
+            onClicked: WizardViewStepModel.nextStep()
         }
     }
 }

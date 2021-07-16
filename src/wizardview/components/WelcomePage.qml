@@ -1,7 +1,8 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Yang Wang <yang.wang@savoirfairelinux.com>
  * Author: Sébastien blin <sebastien.blin@savoirfairelinux.com>
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,32 +34,40 @@ Rectangle {
 
     property int preferredHeight: welcomePageColumnLayout.implicitHeight
 
-    signal welcomePageRedirectPage(int toPageIndex)
-    signal leavePage
     signal scrollToBottom
+    signal showThisPage
 
-    color: "transparent"
+    color: JamiTheme.transparentColor
+
+    Connections {
+        target: WizardViewStepModel
+
+        function onMainStepChanged() {
+            if (WizardViewStepModel.mainStep === WizardViewStepModel.MainSteps.Initial)
+                root.showThisPage()
+        }
+    }
 
     ColumnLayout {
         id: welcomePageColumnLayout
 
         anchors.centerIn: parent
 
-        spacing: layoutSpacing
+        spacing: JamiTheme.wizardViewPageLayoutSpacing
 
         Text {
             id: welcomeLabel
 
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: backButtonMargins
+            Layout.topMargin: JamiTheme.wizardViewPageBackButtonMargins
             Layout.preferredHeight: contentHeight
 
-            text: qsTr("Welcome to")
+            text: JamiStrings.welcomeTo
             color: JamiTheme.textColor
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
 
-            font.pointSize: 30
+            font.pointSize: JamiTheme.welcomeLabelPointSize
             font.kerning: true
         }
 
@@ -66,8 +75,8 @@ Rectangle {
             id: welcomeLogo
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: 330
-            Layout.preferredHeight: 110
+            Layout.preferredWidth: JamiTheme.welcomeLogoWidth
+            Layout.preferredHeight: JamiTheme.welcomeLogoHeight
 
             source: JamiTheme.darkTheme ?
                         JamiResources.logo_jami_standard_coul_white_svg :
@@ -81,17 +90,16 @@ Rectangle {
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            text: JamiStrings.createNewJA
+            text: JamiStrings.createAJamiAccount
             fontCapitalization: Font.AllUppercase
-            toolTipText: qsTr("Create new Jami account")
+            toolTipText: JamiStrings.createNewJamiAccount
             source: JamiResources.default_avatar_overlay_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
 
-            onClicked: {
-                welcomePageRedirectPage(1)
-            }
+            onClicked: WizardViewStepModel.startAccountCreationFlow(
+                           WizardViewStepModel.AccountCreationOption.CreateJamiAccount)
         }
 
         MaterialButton {
@@ -109,9 +117,8 @@ Rectangle {
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
 
-            onClicked: {
-                welcomePageRedirectPage(8)
-            }
+            onClicked: WizardViewStepModel.startAccountCreationFlow(
+                           WizardViewStepModel.AccountCreationOption.CreateRendezVous)
         }
 
         MaterialButton {
@@ -123,15 +130,14 @@ Rectangle {
 
             text: JamiStrings.linkFromAnotherDevice
             fontCapitalization: Font.AllUppercase
-            toolTipText: qsTr("Import account from other device")
+            toolTipText: JamiStrings.importAccountFromOtherDevice
             source: JamiResources.devices_24dp_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
 
-            onClicked: {
-                welcomePageRedirectPage(5)
-            }
+            onClicked: WizardViewStepModel.startAccountCreationFlow(
+                           WizardViewStepModel.AccountCreationOption.ImportFromDevice)
         }
 
         MaterialButton {
@@ -143,22 +149,22 @@ Rectangle {
 
             text: JamiStrings.connectFromBackup
             fontCapitalization: Font.AllUppercase
-            toolTipText: qsTr("Import account from backup file")
+            toolTipText: JamiStrings.importAccountFromBackup
             source: JamiResources.backup_24dp_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
 
-            onClicked: {
-                welcomePageRedirectPage(3)
-            }
+            onClicked: WizardViewStepModel.startAccountCreationFlow(
+                           WizardViewStepModel.AccountCreationOption.ImportFromBackup)
         }
 
         MaterialButton {
             id: showAdvancedButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.bottomMargin: newSIPAccountButton.visible ? 0 : backButtonMargins
+            Layout.bottomMargin: newSIPAccountButton.visible ?
+                                     0 : JamiTheme.wizardViewPageBackButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
@@ -171,10 +177,6 @@ Rectangle {
             outlined: true
 
             hoverEnabled: true
-
-            ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-            ToolTip.visible: hovered
-            ToolTip.text: JamiStrings.showAdvancedFeatures
 
             onClicked: {
                 connectAccountManagerButton.visible = !connectAccountManagerButton.visible
@@ -199,16 +201,15 @@ Rectangle {
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
 
-            onClicked: {
-                welcomePageRedirectPage(6)
-            }
+            onClicked: WizardViewStepModel.startAccountCreationFlow(
+                           WizardViewStepModel.AccountCreationOption.ConnectToAccountManager)
         }
 
         MaterialButton {
             id: newSIPAccountButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.bottomMargin: backButtonMargins
+            Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
@@ -216,26 +217,25 @@ Rectangle {
 
             text: JamiStrings.addSIPAccount
             fontCapitalization: Font.AllUppercase
-            toolTipText: qsTr("Create new SIP account")
+            toolTipText: JamiStrings.createNewSipAccount
             source: JamiResources.default_avatar_overlay_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
 
-            onClicked: {
-                welcomePageRedirectPage(2)
-            }
+            onClicked: WizardViewStepModel.startAccountCreationFlow(
+                           WizardViewStepModel.AccountCreationOption.CreateSipAccount)
         }
 
         onHeightChanged: scrollToBottom()
     }
 
-    PushButton {
+    BackButton {
         id: backButton
 
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.margins: backButtonMargins
+        anchors.margins: JamiTheme.wizardViewPageBackButtonMargins
 
         Connections {
             target: LRCInstance
@@ -245,17 +245,10 @@ Rectangle {
             }
         }
 
-        width: 35
-        height: 35
+        preferredSize: JamiTheme.wizardViewPageBackButtonSize
 
         visible: UtilsAdapter.getAccountListSize()
 
-        normalColor: root.color
-        imageColor: JamiTheme.primaryForegroundColor
-
-        source: JamiResources.ic_arrow_back_24dp_svg
-        toolTipText: JamiStrings.back
-
-        onClicked: leavePage()
+        onClicked: WizardViewStepModel.previousStep()
     }
 }

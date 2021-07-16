@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Yang Wang <yang.wang@savoirfairelinux.com>
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,18 +29,10 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    property alias text_usernameManagerEditAlias: usernameManagerEdit.text
-    property alias text_passwordManagerEditAlias: passwordManagerEdit.text
-    property alias text_accountManagerEditAlias: accountManagerEdit.text
-    property string errorText: ""
     property int preferredHeight: connectToAccountManagerPageColumnLayout.implicitHeight
+    property string errorText: ""
 
-    signal leavePage
-    signal createAccount
-
-    function initializeOnShowUp() {
-        clearAllTextFields()
-    }
+    signal showThisPage
 
     function clearAllTextFields() {
         connectBtn.spinnerTriggered = false
@@ -54,6 +47,19 @@ Rectangle {
         errorText = errorMessage
     }
 
+    Connections {
+        target: WizardViewStepModel
+
+        function onMainStepChanged() {
+            if (WizardViewStepModel.mainStep === WizardViewStepModel.MainSteps.AccountCreation &&
+                    WizardViewStepModel.accountCreationOption ===
+                    WizardViewStepModel.AccountCreationOption.ConnectToAccountManager) {
+                clearAllTextFields()
+                root.showThisPage()
+            }
+        }
+    }
+
     color: JamiTheme.backgroundColor
 
     onVisibleChanged: {
@@ -64,16 +70,16 @@ Rectangle {
     ColumnLayout {
         id: connectToAccountManagerPageColumnLayout
 
-        spacing: layoutSpacing
+        spacing: JamiTheme.wizardViewPageLayoutSpacing
 
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
 
         RowLayout {
-            spacing: layoutSpacing
+            spacing: JamiTheme.wizardViewPageLayoutSpacing
 
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: backButtonMargins
+            Layout.topMargin: JamiTheme.wizardViewPageBackButtonMargins
             Layout.preferredWidth: implicitWidth
 
             Label {
@@ -82,18 +88,12 @@ Rectangle {
                 font.pointSize: JamiTheme.textFontSize + 3
             }
 
-            Label {
+            BubbleLabel {
                 Layout.alignment: Qt.AlignRight
 
                 text: JamiStrings.required
-                color: JamiTheme.requiredFieldColor
-                padding: 8
-
-                background: Rectangle {
-                    color: JamiTheme.requiredFieldBackgroundColor
-                    radius: 24
-                    anchors.fill: parent
-                }
+                textColor: JamiTheme.requiredFieldColor
+                bubbleColor: JamiTheme.requiredFieldBackgroundColor
             }
         }
 
@@ -106,7 +106,7 @@ Rectangle {
 
             selectByMouse: true
             placeholderText: JamiStrings.jamiManagementServerURL
-            font.pointSize: 9
+            font.pointSize: JamiTheme.textFontSize
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
@@ -135,7 +135,7 @@ Rectangle {
 
             selectByMouse: true
             placeholderText: JamiStrings.username
-            font.pointSize: 9
+            font.pointSize: JamiTheme.textFontSize
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
@@ -152,7 +152,7 @@ Rectangle {
 
             selectByMouse: true
             placeholderText: JamiStrings.password
-            font.pointSize: 9
+            font.pointSize: JamiTheme.textFontSize
             font.kerning: true
 
             echoMode: TextInput.Password
@@ -165,11 +165,11 @@ Rectangle {
             id: connectBtn
 
             Layout.alignment: Qt.AlignCenter
-            Layout.bottomMargin: errorLabel.visible ? 0 : backButtonMargins
+            Layout.bottomMargin: errorLabel.visible ? 0 : JamiTheme.wizardViewPageBackButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
-            spinnerTriggeredtext: JamiStrings.generatingAccount
+            spinnerTriggeredtext: JamiStrings.creatingAccount
             normalText: JamiStrings.connect
 
             enabled: accountManagerEdit.text.length !== 0
@@ -179,7 +179,13 @@ Rectangle {
 
             onClicked: {
                 spinnerTriggered = true
-                createAccount()
+
+                WizardViewStepModel.accountCreationInfo =
+                        JamiQmlUtils.setUpAccountCreationInputPara(
+                            {username : usernameManagerEdit.text,
+                             password : passwordManagerEdit.text,
+                             manager : accountManagerEdit.text})
+                WizardViewStepModel.nextStep()
             }
         }
 
@@ -187,32 +193,25 @@ Rectangle {
             id: errorLabel
 
             Layout.alignment: Qt.AlignCenter
-            Layout.bottomMargin: backButtonMargins
+            Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
 
             visible: errorText.length !== 0
             text: errorText
 
             font.pointSize: JamiTheme.textFontSize
-            color: "red"
+            color: JamiTheme.redColor
         }
     }
 
-    PushButton {
+    BackButton {
         id: backButton
 
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.margins: 20
 
-        width: 35
-        height: 35
+        preferredSize: JamiTheme.wizardViewPageBackButtonSize
 
-        normalColor: root.color
-        imageColor: JamiTheme.primaryForegroundColor
-
-        source: JamiResources.ic_arrow_back_24dp_svg
-        toolTipText: JamiStrings.backToWelcome
-
-        onClicked: leavePage()
+        onClicked: WizardViewStepModel.previousStep()
     }
 }

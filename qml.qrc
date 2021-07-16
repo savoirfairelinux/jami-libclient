@@ -157,5 +157,7 @@
         <file>src/mainview/components/InvitationView.qml</file>
         <file>src/commoncomponents/GeneralWebEngineView.qml</file>
         <file>src/constant/JamiResources.qml</file>
+        <file>src/commoncomponents/BubbleLabel.qml</file>
+        <file>src/commoncomponents/BackButton.qml</file>
     </qresource>
 </RCC>

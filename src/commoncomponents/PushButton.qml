@@ -80,7 +80,6 @@ AbstractButton {
     hoverEnabled: true
     focusPolicy: Qt.TabFocus
 
-
     MaterialToolTip {
         id: toolTip
 

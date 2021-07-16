@@ -28,7 +28,7 @@ Button {
 
     property alias fontCapitalization: buttonText.font.capitalization
     property alias source: buttonImage.source
-    property string toolTipText: ""
+    property alias toolTipText: toolTip.text
     property var color: "transparent"
     property var hoveredColor: undefined
     property var pressedColor: undefined
@@ -49,6 +49,14 @@ Button {
     font.pointSize: JamiTheme.textFontSize
 
     hoverEnabled: hoveredColor !== undefined
+
+    MaterialToolTip {
+        id: toolTip
+
+        parent: root
+        visible: hovered && (toolTipText.length > 0)
+        delay: Qt.styleHints.mousePressAndHoldInterval
+    }
 
     contentItem: Item {
         Rectangle {
@@ -130,10 +138,6 @@ Button {
             }
         }
     }
-
-    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-    ToolTip.visible: hovered && (toolTipText.length > 0)
-    ToolTip.text: toolTipText
 
     background: Rectangle {
         id: backgroundRect

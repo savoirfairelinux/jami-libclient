@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Yang Wang <yang.wang@savoirfairelinux.com>
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +23,7 @@ import QtQuick.Controls 2.14
 import Qt.labs.platform 1.1
 
 import net.jami.Models 1.0
+import net.jami.Adapters 1.0
 import net.jami.Constants 1.0
 
 import "../"
@@ -31,18 +33,14 @@ import "../../settingsview/components"
 Rectangle {
     id: root
 
-    property alias text_usernameEditAlias: usernameEdit.text
-    property alias nameRegistrationUIState: usernameEdit.nameRegistrationState
     property bool isRendezVous: false
-    property alias text_passwordEditAlias: passwordEdit.text
     property int preferredHeight: {
         if (createAccountStack.currentIndex === 0)
             return usernameColumnLayout.implicitHeight
         return passwordColumnLayout.implicitHeight
     }
 
-    signal createAccount
-    signal leavePage
+    signal showThisPage
 
     function initializeOnShowUp(isRdv) {
         isRendezVous = isRdv
@@ -59,34 +57,18 @@ Rectangle {
 
     color: JamiTheme.backgroundColor
 
-    onVisibleChanged: {
-        if (visible && createAccountStack.currentIndex === 0)
-            usernameEdit.focus = true
-    }
+    Connections {
+        target: WizardViewStepModel
 
-    // JamiFileDialog for exporting account
-    JamiFileDialog {
-        id: exportBtn_Dialog
-
-        mode: JamiFileDialog.SaveFile
-
-        title: JamiStrings.backupAccountHere
-        folder: StandardPaths.writableLocation(StandardPaths.HomeLocation) + "/Desktop"
-
-        nameFilters: [qsTr("Jami archive files") + " (*.gz)", qsTr(
-                "All files") + " (*)"]
-
-        onAccepted: {
-            export_Btn_FileDialogAccepted(true, file)
-        }
-
-        onRejected: {
-            export_Btn_FileDialogAccepted(false, folder)
-        }
-
-        onVisibleChanged: {
-            if (!visible) {
-                rejected()
+        function onMainStepChanged() {
+            var currentMainStep = WizardViewStepModel.mainStep
+            if (currentMainStep === WizardViewStepModel.MainSteps.NameRegistration) {
+                createAccountStack.currentIndex = nameRegistrationPage.stackIndex
+                initializeOnShowUp(WizardViewStepModel.accountCreationOption ===
+                                   WizardViewStepModel.AccountCreationOption.CreateRendezVous)
+                root.showThisPage()
+            } else if (currentMainStep === WizardViewStepModel.MainSteps.SetPassword) {
+                createAccountStack.currentIndex = passwordSetupPage.stackIndex
             }
         }
     }
@@ -96,45 +78,40 @@ Rectangle {
 
         anchors.fill: parent
 
-        currentIndex: 0
-
         Rectangle {
+            id: nameRegistrationPage
+
+            property int stackIndex: 0
+
             color: JamiTheme.backgroundColor
 
             ColumnLayout {
                 id: usernameColumnLayout
 
-                spacing: layoutSpacing
+                spacing: JamiTheme.wizardViewPageLayoutSpacing
 
                 anchors.centerIn: parent
 
                 width: root.width
 
                 RowLayout {
-                    spacing: layoutSpacing
+                    spacing: JamiTheme.wizardViewPageLayoutSpacing
 
                     Layout.alignment: Qt.AlignCenter
-                    Layout.topMargin: backButtonMargins
+                    Layout.topMargin: JamiTheme.wizardViewPageBackButtonMargins
                     Layout.preferredWidth: usernameEdit.width
 
                     Label {
-                        text: isRendezVous ? JamiStrings.chooseNameRV : qsTr("Choose a username for your account")
+                        text: isRendezVous ? JamiStrings.chooseUsernameForRV :
+                                             JamiStrings.chooseUsernameForAccount
                         color: JamiTheme.textColor
                         font.pointSize: JamiTheme.textFontSize + 3
                     }
 
-                    Label {
+                    BubbleLabel {
                         Layout.alignment: Qt.AlignRight
 
                         text: JamiStrings.recommended
-                        color: JamiTheme.whiteColor
-                        padding: 8
-
-                        background: Rectangle {
-                            color: JamiTheme.wizardGreenColor
-                            radius: 24
-                            anchors.fill: parent
-                        }
                     }
                 }
 
@@ -146,7 +123,10 @@ Rectangle {
                     Layout.preferredWidth:  chooseUsernameButton.width
                     Layout.alignment: Qt.AlignHCenter
 
-                    placeholderText: isRendezVous ? qsTr("Choose a name") : qsTr("Choose your username")
+                    focus: visible
+
+                    placeholderText: isRendezVous ? JamiStrings.chooseAName :
+                                                    JamiStrings.chooseYourUserName
                 }
 
                 Label {
@@ -155,19 +135,21 @@ Rectangle {
                     visible: text.length !==0
 
                     text: {
-                        switch(nameRegistrationUIState){
+                        switch(usernameEdit.nameRegistrationState){
                         case UsernameLineEdit.NameRegistrationState.BLANK:
                         case UsernameLineEdit.NameRegistrationState.SEARCHING:
                         case UsernameLineEdit.NameRegistrationState.FREE:
                             return ""
                         case UsernameLineEdit.NameRegistrationState.INVALID:
-                            return isRendezVous ? qsTr("Invalid name") : qsTr("Invalid username")
+                            return isRendezVous ? JamiStrings.invalidName :
+                                                  JamiStrings.invalidUsername
                         case UsernameLineEdit.NameRegistrationState.TAKEN:
-                            return isRendezVous ? qsTr("Name already taken") : qsTr("Username already taken")
+                            return isRendezVous ? JamiStrings.nameAlreadyTaken :
+                                                  JamiStrings.usernameAlreadyTaken
                         }
                     }
                     font.pointSize: JamiTheme.textFontSize
-                    color: "red"
+                    color: JamiTheme.redColor
                 }
 
                 MaterialButton {
@@ -179,17 +161,14 @@ Rectangle {
 
                     fontCapitalization: Font.AllUppercase
                     text: isRendezVous ? JamiStrings.chooseName : JamiStrings.chooseUsername
-                    enabled: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE
-                    color: nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE ?
+                    enabled: usernameEdit.nameRegistrationState === UsernameLineEdit.NameRegistrationState.FREE
+                    color: usernameEdit.nameRegistrationState === UsernameLineEdit.NameRegistrationState.FREE ?
                                JamiTheme.wizardBlueButtons :
                                JamiTheme.buttonTintedGreyInactive
                     hoveredColor: JamiTheme.buttonTintedBlueHovered
                     pressedColor: JamiTheme.buttonTintedBluePressed
 
-                    onClicked: {
-                        if (nameRegistrationUIState === UsernameLineEdit.NameRegistrationState.FREE)
-                            createAccountStack.currentIndex = createAccountStack.currentIndex + 1
-                    }
+                    onClicked: WizardViewStepModel.nextStep()
                 }
 
                 MaterialButton {
@@ -207,39 +186,42 @@ Rectangle {
 
                     onClicked: {
                         usernameEdit.clear()
-                        createAccountStack.currentIndex =
-                                createAccountStack.currentIndex + 1
+                        WizardViewStepModel.nextStep()
                     }
                 }
 
                 AccountCreationStepIndicator {
-                    Layout.topMargin: backButtonMargins
-                    Layout.bottomMargin: backButtonMargins
+                    Layout.topMargin: JamiTheme.wizardViewPageBackButtonMargins
+                    Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
                     Layout.alignment: Qt.AlignHCenter
 
-                    spacing: layoutSpacing
-                    steps: 3
+                    spacing: JamiTheme.wizardViewPageLayoutSpacing
+                    steps: 2
                     currentStep: 1
                 }
             }
         }
 
         Rectangle {
+            id: passwordSetupPage
+
+            property int stackIndex: 1
+
             color: JamiTheme.backgroundColor
 
             ColumnLayout {
                 id: passwordColumnLayout
 
-                spacing: layoutSpacing
+                spacing: JamiTheme.wizardViewPageLayoutSpacing
 
                 anchors.centerIn: parent
                 width: root.width
 
                 RowLayout {
-                    spacing: layoutSpacing
+                    spacing: JamiTheme.wizardViewPageLayoutSpacing
 
                     Layout.alignment: Qt.AlignCenter
-                    Layout.topMargin: backButtonMargins
+                    Layout.topMargin: JamiTheme.wizardViewPageBackButtonMargins
                     Layout.preferredWidth: usernameEdit.width
 
                     Label {
@@ -253,22 +235,15 @@ Rectangle {
                         id: passwordSwitch
 
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-                        Layout.leftMargin:  -layoutSpacing
+                        Layout.leftMargin: -JamiTheme.wizardViewPageLayoutSpacing
                         Layout.topMargin: 5
                     }
 
-                    Label {
+                    BubbleLabel {
                         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
 
                         text: JamiStrings.optional
-                        color: "white"
-                        padding: 8
-
-                        background: Rectangle {
-                            color: JamiTheme.wizardBlueButtons
-                            radius: 24
-                            anchors.fill: parent
-                        }
+                        bubbleColor: JamiTheme.wizardBlueButtons
                     }
                 }
 
@@ -279,12 +254,13 @@ Rectangle {
                     Layout.preferredWidth: createAccountButton.width
                     Layout.alignment: Qt.AlignHCenter
 
+                    focus: visible
                     visible: passwordSwitch.checked
 
                     selectByMouse: true
                     echoMode: TextInput.Password
                     placeholderText: JamiStrings.password
-                    font.pointSize: 9
+                    font.pointSize: JamiTheme.textFontSize
                     font.kerning: true
                 }
 
@@ -300,7 +276,7 @@ Rectangle {
                     selectByMouse: true
                     echoMode: TextInput.Password
                     placeholderText: JamiStrings.confirmPassword
-                    font.pointSize: 9
+                    font.pointSize: JamiTheme.textFontSize
                     font.kerning: true
                 }
 
@@ -337,45 +313,38 @@ Rectangle {
                     pressedColor: JamiTheme.buttonTintedBluePressed
 
                     onClicked: {
-                        createAccount()
-                        createAccountStack.currentIndex += 1
+                        WizardViewStepModel.accountCreationInfo =
+                                JamiQmlUtils.setUpAccountCreationInputPara(
+                                    {isRendezVous : WizardViewStepModel.accountCreationOption ===
+                                                    WizardViewStepModel.AccountCreationOption.CreateRendezVous,
+                                     password : passwordEdit.text,
+                                     registeredName : usernameEdit.text})
+                        WizardViewStepModel.nextStep()
                     }
                 }
 
                 AccountCreationStepIndicator {
-                    Layout.topMargin: backButtonMargins
-                    Layout.bottomMargin: backButtonMargins
+                    Layout.topMargin: JamiTheme.wizardViewPageBackButtonMargins
+                    Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
                     Layout.alignment: Qt.AlignHCenter
 
-                    spacing: layoutSpacing
-                    steps: 3
+                    spacing: JamiTheme.wizardViewPageLayoutSpacing
+                    steps: 2
                     currentStep: 2
                 }
             }
         }
     }
 
-    PushButton {
+    BackButton {
         id: backButton
 
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.margins: backButtonMargins
+        anchors.margins: JamiTheme.wizardViewPageBackButtonMargins
 
-        width: 35
-        height: 35
+        preferredSize: JamiTheme.wizardViewPageBackButtonSize
 
-        normalColor: root.color
-        imageColor: JamiTheme.primaryForegroundColor
-
-        source: JamiResources.ic_arrow_back_24dp_svg
-        toolTipText: JamiStrings.back
-
-        onClicked: {
-            if (createAccountStack.currentIndex == 0)
-                leavePage()
-            else
-                createAccountStack.currentIndex -= 1
-        }
+        onClicked: WizardViewStepModel.previousStep()
     }
 }

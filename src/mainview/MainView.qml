@@ -232,6 +232,15 @@ Rectangle {
         }
     }
 
+    Connections {
+        target: WizardViewStepModel
+
+        function onCloseWizardView() {
+            mainViewStackLayout.currentIndex = 0
+            backToMainView()
+        }
+    }
+
     StackLayout {
         id: mainViewStackLayout
 
@@ -326,11 +335,6 @@ Rectangle {
             Layout.fillHeight: true
 
             onLoaderSourceChangeRequested: {
-                mainViewStackLayout.currentIndex = 0
-                backToMainView()
-            }
-
-            onWizardViewIsClosed: {
                 mainViewStackLayout.currentIndex = 0
                 backToMainView()
             }

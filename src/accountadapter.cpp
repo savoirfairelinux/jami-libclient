@@ -107,20 +107,15 @@ AccountAdapter::createJamiAccount(QString registeredName,
             confProps.isRendezVous = settings["isRendezVous"].toBool();
             lrcInstance_->accountModel().setAccountConfig(accountId, confProps);
 
-            auto showBackup = isCreating
-                              && !settingsManager_->getValue(Settings::Key::NeverShowMeAgain)
-                                      .toBool();
             if (!registeredName.isEmpty()) {
                 QObject::disconnect(registeredNameSavedConnection_);
                 registeredNameSavedConnection_
                     = connect(&lrcInstance_->accountModel(),
                               &lrc::api::NewAccountModel::profileUpdated,
-                              [this, showBackup, addedAccountId = accountId](
-                                  const QString& accountId) {
+                              [this, addedAccountId = accountId](const QString& accountId) {
                                   if (addedAccountId == accountId) {
                                       Q_EMIT lrcInstance_->accountListChanged();
                                       Q_EMIT accountAdded(accountId,
-                                                          showBackup,
                                                           lrcInstance_->accountModel()
                                                               .getAccountList()
                                                               .indexOf(accountId));
@@ -134,7 +129,6 @@ AccountAdapter::createJamiAccount(QString registeredName,
             } else {
                 Q_EMIT lrcInstance_->accountListChanged();
                 Q_EMIT accountAdded(accountId,
-                                    showBackup,
                                     lrcInstance_->accountModel().getAccountList().indexOf(
                                         accountId));
             }
@@ -172,7 +166,6 @@ AccountAdapter::createSIPAccount(const QVariantMap& settings)
 
                               Q_EMIT lrcInstance_->accountListChanged();
                               Q_EMIT accountAdded(accountId,
-                                                  false,
                                                   lrcInstance_->accountModel()
                                                       .getAccountList()
                                                       .indexOf(accountId));
@@ -208,7 +201,6 @@ AccountAdapter::createJAMSAccount(const QVariantMap& settings)
                               lrcInstance_->accountModel().setAccountConfig(accountId, confProps);
 
                               Q_EMIT accountAdded(accountId,
-                                                  false,
                                                   lrcInstance_->accountModel()
                                                       .getAccountList()
                                                       .indexOf(accountId));

@@ -35,6 +35,14 @@ Item {
     property bool callIsFullscreen: false
     signal fullScreenCallEnded
 
+    property var accountCreationInputParaObject: ({})
+
+    function setUpAccountCreationInputPara(inputPara) {
+        JamiQmlUtils.accountCreationInputParaObject = {}
+        Object.assign(JamiQmlUtils.accountCreationInputParaObject, inputPara)
+        return accountCreationInputParaObject
+    }
+
     // MessageBar buttons in mainview points
     property var mainViewRectObj
     property var messageBarButtonsRowObj

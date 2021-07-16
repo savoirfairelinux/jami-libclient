@@ -177,8 +177,12 @@ Item {
     property string backupAccount: qsTr("Backup your account!")
     property string backupAccountBtn: qsTr("Backup account")
     property string skip: qsTr("Skip")
+    property string success: qsTr("Success")
+    property string error: qsTr("Error")
     property string neverShowAgain: qsTr("Never show me this again")
     property string recommended: qsTr("Recommended")
+    property string jamiArchiveFiles: qsTr("Jami archive files")
+    property string allFiles: qsTr("All files")
 
     // BannedItemDelegate
     property string reinstateContact: qsTr("Reinstate as contact")
@@ -247,7 +251,7 @@ Item {
     property string jamiManagementServerURL: qsTr("Jami Account Management Server URL")
     property string jamsCredentials: qsTr("Enter your JAMS credentials")
     property string connect: qsTr("Connect")
-    property string generatingAccount: qsTr("Creating account…")
+    property string creatingAccount: qsTr("Creating account…")
     property string backToWelcome: qsTr("Back to welcome page")
 
     // CreateAccountPage
@@ -259,7 +263,14 @@ Item {
     property string confirmPassword: qsTr("Confirm password")
     property string notePasswordRecovery: qsTr("Choose a password to encrypt your account on this device. Note that the password cannot be recovered.")
     property string optional: qsTr("Optional")
-    property string chooseNameRV: qsTr("Choose a name for your rendezvous point")
+    property string chooseUsernameForAccount: qsTr("Choose a username for your account")
+    property string chooseUsernameForRV: qsTr("Choose a name for your rendezvous point")
+    property string chooseAName: qsTr("Choose a name")
+    property string chooseYourUserName: qsTr("Choose your username")
+    property string invalidName: qsTr("Invalid name")
+    property string invalidUsername: qsTr("Invalid username")
+    property string nameAlreadyTaken: qsTr("Name already taken")
+    property string usernameAlreadyTaken: qsTr("Username already taken")
 
     // CreateSIPAccountPage
     property string proxy: qsTr("Proxy")
@@ -375,12 +386,15 @@ Item {
                                                    "in the account settings. " +
                                                    "This will create a .gz file on your device.")
     property string connectFromBackup: qsTr("Restore an account from backup")
+    property string generatingAccount: qsTr("Generating account…")
+    property string importFromBackup: qsTr("Import from backup")
 
     // ImportFromDevicePage
     property string mainAccountPassword: qsTr("Enter Jami account password")
     property string enterPIN: qsTr("Enter the PIN from another configured Jami account. " +
                                 "Use the \"Link Another Device\" feature to obtain a PIN.")
     property string connectFromAnotherDevice: qsTr("Link device")
+    property string pin: qsTr("PIN")
 
     // LinkDevicesDialog
     property string pinTimerInfos: qsTr("The PIN and the account password should be entered in your device within 10 minutes.")
@@ -423,7 +437,9 @@ Item {
     property string chooseImageFile: qsTr("Choose image file")
 
     // ProfilePage
+    property string profileSharedWithContacts: qsTr("Profile is only shared with contacts")
     property string saveProfile: qsTr("Save profile")
+    property string enterYourName: qsTr("Enter your name")
     property string enterRVName: qsTr("Enter the rendezvous point's name")
     property string generatingRV: qsTr("Creating rendezvous point…")
     property string information: qsTr("Information")
@@ -443,6 +459,8 @@ Item {
     // WelcomePage
     property string shareInvite: qsTr("This is your Jami username.\nCopy and share it with your friends!")
     property string linkFromAnotherDevice: qsTr("Link this device to an existing account")
+    property string importAccountFromOtherDevice: qsTr("Import account from other device")
+    property string importAccountFromBackup: qsTr("Import account from backup file")
     property string advancedFeatures: qsTr("Advanced features")
     property string showAdvancedFeatures: qsTr("Show advanced features")
     property string connectJAMSServer: qsTr("Connect to a JAMS server")
@@ -450,8 +468,11 @@ Item {
     property string addSIPAccount: qsTr("Add a SIP account")
     property string errorCreateAccount: qsTr("Error while creating your account. Check your credentials.")
     property string createNewRV: qsTr("Create new rendezvous point")
-    property string createNewJA: qsTr("Create a Jami account")
+    property string createAJamiAccount: qsTr("Create a Jami account")
+    property string createNewJamiAccount: qsTr("Create new Jami account")
+    property string createNewSipAccount: qsTr("Create new SIP account")
     property string aboutJami: qsTr("About Jami")
+    property string welcomeTo: qsTr("Welcome to")
 
     // SmartList
     property string clearText: qsTr("Clear Text")

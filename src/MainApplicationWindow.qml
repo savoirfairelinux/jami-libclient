@@ -106,9 +106,6 @@ ApplicationWindow {
     }
 
     function startClient(){
-        setX(Screen.width / 2 - width / 2)
-        setY(Screen.height / 2 - height / 2)
-
         if (UtilsAdapter.getAccountListSize() !== 0) {
             mainApplicationLoader.setSource(JamiQmlUtils.mainViewLoadPath)
         } else {

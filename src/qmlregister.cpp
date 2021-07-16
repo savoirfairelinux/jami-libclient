@@ -54,6 +54,7 @@
 #include "videoformatfpsmodel.h"
 #include "videoformatresolutionmodel.h"
 #include "videoinputdevicemodel.h"
+#include "wizardviewstepmodel.h"
 
 #include "api/peerdiscoverymodel.h"
 #include "api/newcodecmodel.h"
@@ -125,9 +126,6 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, settingsAdapter, "SettingsAdapter");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, pluginAdapter, "PluginAdapter");
 
-    auto avatarRegistry = new AvatarRegistry(lrcInstance, parent);
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_HELPERS, avatarRegistry, "AvatarRegistry");
-
     // TODO: remove these
     QML_REGISTERSINGLETONTYPE_CUSTOM(NS_MODELS, AVModel, &lrcInstance->avModel())
     QML_REGISTERSINGLETONTYPE_CUSTOM(NS_MODELS, PluginModel, &lrcInstance->pluginModel())
@@ -178,6 +176,12 @@ registerTypes(QQmlEngine* engine,
 
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, screenInfo, "ScreenInfo")
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, lrcInstance, "LRCInstance")
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, appSettingsManager, "AppSettingsManager")
+
+    auto avatarRegistry = new AvatarRegistry(lrcInstance, parent);
+    auto wizardViewStepModel = new WizardViewStepModel(lrcInstance, accountAdapter, appSettingsManager, parent);
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_HELPERS, avatarRegistry, "AvatarRegistry");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_MODELS, wizardViewStepModel, "WizardViewStepModel")
 
     // C++ singletons
     // TODO: remove this
@@ -207,6 +211,7 @@ registerTypes(QQmlEngine* engine,
     // Enums
     QML_REGISTERUNCREATABLE(NS_ENUMS, Settings);
     QML_REGISTERUNCREATABLE(NS_ENUMS, NetWorkManager);
+    QML_REGISTERUNCREATABLE(NS_ENUMS, WizardViewStepModel)
 
     engine->addImageProvider(QLatin1String("qrImage"), new QrImageProvider(lrcInstance));
     engine->addImageProvider(QLatin1String("avatarImage"),

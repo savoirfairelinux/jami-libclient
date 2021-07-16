@@ -287,6 +287,16 @@ Item {
     property real invitationViewButtonIconSize: 24
     property real invitationViewButtonsSpacing: 30
 
+    // WizardView
+    property real wizardViewPageLayoutSpacing: 12
+    property real wizardViewPageBackButtonMargins: 20
+    property real wizardViewPageBackButtonSize: 35
+
+    // WizardView Welcome Page
+    property real welcomeLabelPointSize: 30
+    property real welcomeLogoWidth: 330
+    property real welcomeLogoHeight: 110
+
     // Main application spec
     property real mainViewMinWidth: 300
     property real mainViewMinHeight: 500

@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Yang Wang <yang.wang@savoirfairelinux.com>
+ * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +21,7 @@ import QtQuick 2.14
 import QtQuick.Layouts 1.14
 import QtQuick.Controls 2.14
 
+import net.jami.Models 1.0
 import net.jami.Constants 1.0
 
 import "../../commoncomponents"
@@ -27,18 +29,9 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    property alias text_sipServernameEditAlias: sipServernameEdit.text
-    property alias text_sipProxyEditAlias: sipProxyEdit.text
-    property alias text_sipUsernameEditAlias: sipUsernameEdit.text
-    property alias text_sipPasswordEditAlias: sipPasswordEdit.text
     property int preferredHeight: createSIPAccountPageColumnLayout.implicitHeight
 
-    signal createAccount
-    signal leavePage
-
-    function initializeOnShowUp() {
-        clearAllTextFields()
-    }
+    signal showThisPage
 
     function clearAllTextFields() {
         sipUsernameEdit.clear()
@@ -48,25 +41,33 @@ Rectangle {
         sipUsernameEdit.clear()
     }
 
-    color: JamiTheme.backgroundColor
+    Connections {
+        target: WizardViewStepModel
 
-    onVisibleChanged: {
-        if (visible)
-            sipServernameEdit.focus = true
+        function onMainStepChanged() {
+            if (WizardViewStepModel.mainStep === WizardViewStepModel.MainSteps.AccountCreation &&
+                    WizardViewStepModel.accountCreationOption ===
+                    WizardViewStepModel.AccountCreationOption.CreateSipAccount) {
+                clearAllTextFields()
+                root.showThisPage()
+            }
+        }
     }
+
+    color: JamiTheme.backgroundColor
 
     ColumnLayout {
         id: createSIPAccountPageColumnLayout
 
-        spacing: layoutSpacing
+        spacing: JamiTheme.wizardViewPageLayoutSpacing
 
         anchors.centerIn: parent
 
         RowLayout {
-            spacing: layoutSpacing
+            spacing: JamiTheme.wizardViewPageLayoutSpacing
 
             Layout.alignment: Qt.AlignCenter
-            Layout.topMargin: backButtonMargins
+            Layout.topMargin: JamiTheme.wizardViewPageBackButtonMargins
             Layout.preferredWidth: createAccountButton.width
 
             Label {
@@ -75,18 +76,11 @@ Rectangle {
                 font.pointSize: JamiTheme.textFontSize + 3
             }
 
-            Label {
+            BubbleLabel {
                 Layout.alignment: Qt.AlignRight
 
                 text: JamiStrings.optional
-                color: JamiTheme.whiteColor
-                padding: 8
-
-                background: Rectangle {
-                    color: JamiTheme.wizardBlueButtons
-                    radius: 24
-                    anchors.fill: parent
-                }
+                bubbleColor: JamiTheme.wizardBlueButtons
             }
         }
 
@@ -97,9 +91,11 @@ Rectangle {
             Layout.preferredHeight: fieldLayoutHeight
             Layout.preferredWidth: createAccountButton.width
 
+            focus: visible
+
             selectByMouse: true
             placeholderText: JamiStrings.server
-            font.pointSize: 9
+            font.pointSize: JamiTheme.textFontSize
             font.kerning: true
         }
 
@@ -112,7 +108,7 @@ Rectangle {
 
             selectByMouse: true
             placeholderText: JamiStrings.proxy
-            font.pointSize: 9
+            font.pointSize: JamiTheme.textFontSize
             font.kerning: true
         }
 
@@ -125,7 +121,7 @@ Rectangle {
 
             selectByMouse: true
             placeholderText: JamiStrings.username
-            font.pointSize: 9
+            font.pointSize: JamiTheme.textFontSize
             font.kerning: true
         }
 
@@ -139,7 +135,7 @@ Rectangle {
             selectByMouse: true
             echoMode: TextInput.Password
             placeholderText: JamiStrings.password
-            font.pointSize: 9
+            font.pointSize: JamiTheme.textFontSize
             font.kerning: true
         }
 
@@ -147,7 +143,7 @@ Rectangle {
             id: createAccountButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.bottomMargin: backButtonMargins
+            Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
 
@@ -157,27 +153,26 @@ Rectangle {
             pressedColor: JamiTheme.buttonTintedBluePressed
 
             onClicked: {
-                createAccount()
+                WizardViewStepModel.accountCreationInfo =
+                        JamiQmlUtils.setUpAccountCreationInputPara(
+                            {hostname : sipServernameEdit.text,
+                             username : sipUsernameEdit.text,
+                             password : sipPasswordEdit.text,
+                             proxy : sipProxyEdit.text})
+                WizardViewStepModel.nextStep()
             }
         }
     }
 
-    PushButton {
+    BackButton {
         id: backButton
 
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.margins: 20
 
-        width: 35
-        height: 35
+        preferredSize: JamiTheme.wizardViewPageBackButtonSize
 
-        normalColor: root.color
-        imageColor: JamiTheme.primaryForegroundColor
-
-        source: JamiResources.ic_arrow_back_24dp_svg
-        toolTipText: JamiStrings.backToWelcome
-
-        onClicked: leavePage()
+        onClicked: WizardViewStepModel.previousStep()
     }
 }
