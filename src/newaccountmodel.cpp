@@ -1158,19 +1158,10 @@ NewAccountModel::bestIdForAccount(const QString& accountID)
     //        return empty string if duplicated with best name
     auto& accountInfo = getAccountInfo(accountID);
 
-    auto alias = accountInfo.profileInfo.alias.simplified();
     auto registeredName = accountInfo.registeredName.simplified();
     auto infoHash = accountInfo.profileInfo.uri.simplified();
 
-    if (alias.isEmpty()) {
-        if (!registeredName.isEmpty())
-            return infoHash;
-    } else if (registeredName.isEmpty()) {
-        return infoHash;
-    } else if (registeredName != alias) {
-        return registeredName;
-    }
-    return QString();
+    return registeredName.isEmpty() ? infoHash : registeredName;
 }
 
 void
