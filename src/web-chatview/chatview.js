@@ -262,8 +262,13 @@ function onScrolled_() {
         }
     }
 
-    if (messages.scrollTop === 0)
-        window.jsbridge.loadMessages(scrollBuffer)
+    if (messages.scrollTop === 0) {
+        if (use_qt) {
+            window.jsbridge.loadMessages(scrollBuffer)
+        } else {
+            window.prompt(`LOAD_MESSAGES:${scrollBuffer}`)
+        }
+    }
 }
 
 const debounce = (fn, time) => {
@@ -2446,8 +2451,13 @@ function updateHistory(messages_array, all_loaded)
     printHistoryPart(messages,  messages.scrollHeight, all_loaded)
     canLazyLoad = true
 
-    if (messages.scrollTop === 0)
-        window.jsbridge.loadMessages(scrollBuffer)
+    if (messages.scrollTop === 0) {
+        if (use_qt) {
+            window.jsbridge.loadMessages(scrollBuffer)
+        } else {
+            window.prompt(`LOAD_MESSAGES:${scrollBuffer}`)
+        }
+    }
 
     if (use_qt) {
         window.jsbridge.emitMessagesLoaded()
