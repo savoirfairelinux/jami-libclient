@@ -32,6 +32,11 @@
     word-wrap: break-word;
 }
 
+.menuoption {
+    user-select: none;
+    cursor: pointer;
+}
+
 #sendMessage {
     height: var(--navbar-height);
 }
