@@ -2370,7 +2370,7 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
             try {
                 auto& conversation = getConversationForPeerUri(member["uri"]).get();
                 // remove non swarm conversation
-                if (conversation.mode == conversation::Mode::NON_SWARM) {
+                if (conversation.isLegacy()) {
                     eraseConversation(conversation.uid);
                     storage::removeContact(db, member["uri"]);
                     invalidateModel();
@@ -2516,10 +2516,11 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
 {
     auto conv = storage::getConversationsWithPeer(db, contactUri);
     bool addConversation = false;
+    bool removeConversation = false;
     try {
         auto& conversation = getConversationForPeerUri(contactUri).get();
         // swarm conversation we update when receive conversation ready signal.
-        if (conversation.mode != conversation::Mode::NON_SWARM) {
+        if (conversation.isSwarm()) {
             QStringList swarms = ConfigurationManager::instance().getConversations(linked.owner.id);
             bool needsSyncing = swarms.indexOf(conversation.uid) == -1;
             if (conversation.needsSyncing != needsSyncing) {
@@ -2537,12 +2538,8 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
             conv.push_back(storage::beginConversationWithPeer(db, contactUri));
         }
         // remove temporary conversation that was added when receiving an incoming request
-        auto conversationIdx = indexOf(contactUri);
-        if (conversationIdx >= 0) {
-            eraseConversation(conversationIdx);
-            invalidateModel();
-            emit linked.modelChanged();
-        }
+        removeConversation = indexOf(contactUri) != -1;
+
         // add a conversation if not exists
         addConversation = indexOf(conv[0]) == -1;
     } catch (std::out_of_range&) {
@@ -2560,6 +2557,11 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
         addConversationWith(conv[0], contactUri);
         emit linked.conversationReady(conv[0], contactUri);
         emit linked.newConversation(conv[0]);
+    }
+    if (removeConversation) {
+        eraseConversation(indexOf(contactUri));
+        invalidateModel();
+        emit linked.modelChanged();
     }
 }
 
