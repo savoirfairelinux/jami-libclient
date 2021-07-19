@@ -311,14 +311,30 @@ ConversationsAdapter::onSearchResultUpdated()
 }
 
 void
-ConversationsAdapter::updateConversation(const QString& convId)
+ConversationsAdapter::onConversationReady(const QString& convId)
 {
-    // a conversation request has been accepted or a contact has
-    // been added, so select the conversation and notify the UI to:
-    // - switch tabs to the conversation filter tab
-    // - clear search bar
-    Q_EMIT conversationReady(convId);
-    lrcInstance_->selectConversation(convId);
+    auto convModel = lrcInstance_->getCurrentConversationModel();
+    auto& convInfo = lrcInstance_->getConversationFromConvUid(convId);
+    auto selectedConvId = lrcInstance_->get_selectedConvUid();
+
+    // for one to one conversations including legacy mode, we can prevent
+    // undesired selection by filtering for a conversation peer match,
+    // and for all other swarm convs, we can match the conv's id
+    if (convInfo.isCoreDialog()) {
+        auto peers = convModel->peersForConversation(convId);
+        auto selectedPeers = convModel->peersForConversation(selectedConvId);
+        if (peers != selectedPeers)
+            return;
+    } else if (convId != selectedConvId)
+        return;
+
+    updateConversation(convId);
+}
+
+void
+ConversationsAdapter::onNeedsSyncingSet(const QString& convId)
+{
+    updateConversation(convId);
 }
 
 void
@@ -332,6 +348,17 @@ ConversationsAdapter::onBannedStatusChanged(const QString& uri, bool banned)
     const auto index = convSrcModel_->index(row, 0);
     Q_EMIT convSrcModel_->dataChanged(index, index);
     lrcInstance_->set_selectedConvUid();
+}
+
+void
+ConversationsAdapter::updateConversation(const QString& convId)
+{
+    // a conversation request has been accepted or a contact has
+    // been added, so select the conversation and notify the UI to:
+    // - switch tabs to the conversation filter tab
+    // - clear search bar
+    Q_EMIT conversationReady(convId);
+    lrcInstance_->selectConversation(convId);
 }
 
 void
@@ -463,13 +490,13 @@ ConversationsAdapter::connectConversationModel()
     QObject::connect(currentConversationModel,
                      &ConversationModel::conversationReady,
                      this,
-                     &ConversationsAdapter::updateConversation,
+                     &ConversationsAdapter::onConversationReady,
                      Qt::UniqueConnection);
 
     QObject::connect(currentConversationModel,
                      &ConversationModel::needsSyncingSet,
                      this,
-                     &ConversationsAdapter::updateConversation,
+                     &ConversationsAdapter::onNeedsSyncingSet,
                      Qt::UniqueConnection);
 
     QObject::connect(lrcInstance_->getCurrentContactModel(),

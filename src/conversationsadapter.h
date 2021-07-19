@@ -81,9 +81,11 @@ private Q_SLOTS:
     void onConversationCleared(const QString&);
     void onSearchStatusChanged(const QString&);
     void onSearchResultUpdated();
-    void updateConversation(const QString&);
+    void onConversationReady(const QString&);
+    void onNeedsSyncingSet(const QString&);
     void onBannedStatusChanged(const QString&, bool);
 
+    void updateConversation(const QString&);
     void updateConversationFilterData();
 
 private:
