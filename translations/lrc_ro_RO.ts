@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="61"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation>Bine</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
@@ -470,7 +470,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation>Copiază în Descărcări</translation>
+        <translation>Copiază pentru a descărca</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
@@ -626,17 +626,17 @@
         <translation>Căutare...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="954"/>
+        <location filename="../src/contactmodel.cpp" line="955"/>
         <source>Invalid ID</source>
         <translation>ID greșit</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="957"/>
+        <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
         <translation>Numele de utilizator nu a fost găsit</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="960"/>
+        <location filename="../src/contactmodel.cpp" line="961"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Căutare imposibilă...</translation>
     </message>

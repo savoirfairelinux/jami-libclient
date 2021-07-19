@@ -475,7 +475,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
         <source>Write to {0}</source>
-        <translation>Írj a következőknek: {0}</translation>
+        <translation>Írj a következő(k)nek: {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
@@ -626,17 +626,17 @@
         <translation>Keresés…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="954"/>
+        <location filename="../src/contactmodel.cpp" line="955"/>
         <source>Invalid ID</source>
         <translation>Érvénytelen azonosító</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="957"/>
+        <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
         <translation>Felhasználónév nem található</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="960"/>
+        <location filename="../src/contactmodel.cpp" line="961"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Betekintés sikertelen…</translation>
     </message>

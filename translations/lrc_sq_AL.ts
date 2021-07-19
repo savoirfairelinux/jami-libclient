@@ -626,17 +626,17 @@
         <translation>Po kërkohet…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="954"/>
+        <location filename="../src/contactmodel.cpp" line="955"/>
         <source>Invalid ID</source>
         <translation>ID e pavlefshme</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="957"/>
+        <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
         <translation>S’u gjet emër përdoruesi</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="960"/>
+        <location filename="../src/contactmodel.cpp" line="961"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>S’u kërkua dot…</translation>
     </message>

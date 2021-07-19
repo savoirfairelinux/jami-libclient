@@ -470,7 +470,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>Copier pour télécharger</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
@@ -626,17 +626,17 @@
         <translation>Recherche en cours ...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="954"/>
+        <location filename="../src/contactmodel.cpp" line="955"/>
         <source>Invalid ID</source>
         <translation>ID invalide</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="957"/>
+        <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
         <translation>Nom d&apos;utilisateur non trouvé</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="960"/>
+        <location filename="../src/contactmodel.cpp" line="961"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Impossible de vérifier le nom d&apos;utilisateur</translation>
     </message>

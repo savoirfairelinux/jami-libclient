@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>مخاطب گفتگو را ترک کرد</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
@@ -455,7 +455,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Add emoji</source>
-        <translation type="unfinished"/>
+        <translation>شکلک اضافه کنید</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -470,7 +470,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>کپی در دانلودها</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
@@ -480,22 +480,22 @@
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>برای شما درخواست مکالمه ارسال کرده است.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>سلام، آیا مایل به شرکت در این گفتگو هستید؟</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>شما درخواست مکالمه را پذیرفته‌اید.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>ما منتظر دستگاه دیگری هستیم تا گفتگو را همگام‌سازی کند.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
@@ -626,17 +626,17 @@
         <translation>در حال جستجو...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="954"/>
+        <location filename="../src/contactmodel.cpp" line="955"/>
         <source>Invalid ID</source>
         <translation>شناسهٔ نامعتبر</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="957"/>
+        <location filename="../src/contactmodel.cpp" line="958"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>نام کاربری پیدا نشد</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="960"/>
+        <location filename="../src/contactmodel.cpp" line="961"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>ناتوانی در جستجو...</translation>
     </message>
