@@ -29,6 +29,7 @@
 #include <QJsonObject>
 
 #include "typedefs.h"
+#include "call.h"
 
 namespace lrc {
 
@@ -116,6 +117,22 @@ public:
     void update(const VectorMapStringString& infos);
 
     /**
+     * Update conference layout value
+     */
+    void verifyLayout();
+
+    /**
+     * @param uri participant
+     * @return True if participant is a moderator
+     */
+    bool checkModerator(const QString& uri) const;
+
+    /**
+     * @return the conference layout
+     */
+    call::Layout getLayout() const { return hostLayout_; }
+
+    /**
      * @param index participant index
      * @return informations of the participant in index
      */
@@ -141,6 +158,7 @@ private:
     const NewCallModel& linked;
     std::mutex streamMtx_ {};
     const QString callId_;
+    call::Layout hostLayout_ = call::Layout::GRID;
 };
 } // end namespace api
 } // end namespace lrc
