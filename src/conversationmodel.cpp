@@ -1923,17 +1923,6 @@ ConversationModelPimpl::initConversations()
             conv.push_back(storage::beginConversationWithPeer(db, c.second.profileInfo.uri));
         }
         addConversationWith(conv[0], c.first);
-        if (!c.second.conversationId.isEmpty()) {
-            // it is a swarm conversation.
-            try {
-                auto& conversation = getConversationForUid(conv[0]).get();
-                conversation.mode = conversation::Mode::ONE_TO_ONE;
-                conversation.needsSyncing = true;
-                Q_EMIT linked.needsSyncingSet(conversation.uid);
-            } catch (...) {
-                continue;
-            }
-        }
 
         auto convIdx = indexOf(conv[0]);
 
@@ -2719,6 +2708,10 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     const MapStringString& details = ConfigurationManager::instance()
                                          .conversationInfos(linked.owner.id, convId);
     auto mode = conversation::to_mode(details["mode"].toInt());
+    qWarning() << "@@@ Conv " << convId;
+    for (const auto& key : details.keys()) {
+        qWarning() << key << ": " << details[key];
+    }
     for (auto& member : members) {
         // this check should be removed once all usage of participants replaced by
         // peersForConversation. We should have ourself in participants list
@@ -2761,7 +2754,10 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
         } catch (...) {
         }
     }
-    conversation.needsSyncing = false;
+    if (details["syncing"] == "true") {
+        conversation.needsSyncing = true;
+        Q_EMIT linked.needsSyncingSet(conversation.uid);
+    }
     emplaceBackConversation(std::move(conversation));
     auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                         convId,
