@@ -65,6 +65,30 @@ CallParticipants::update(const VectorMapStringString& infos)
         addParticipant(candidates_[partUri]);
         idx_++;
     }
+
+    checkLayout();
+}
+
+void
+CallParticipants::checkLayout()
+{
+    auto it = std::find_if(participants_.begin(),
+                           participants_.end(),
+                           [](const lrc::api::ParticipantInfos& participant) -> bool {
+                               return participant.active;
+                           });
+
+    auto newLayout = call::Layout::GRID;
+    if (it != participants_.end())
+        if (participants_.size() == 1)
+            newLayout = call::Layout::ONE;
+        else
+            newLayout = call::Layout::ONE_WITH_SMALL;
+    else
+        newLayout = call::Layout::GRID;
+
+    if (newLayout != hostLayout_)
+        hostLayout_ = newLayout;
 }
 
 void
@@ -120,6 +144,14 @@ CallParticipants::filterCandidates(const VectorMapStringString& infos)
             }
         }
     }
+}
+
+bool
+CallParticipants::checkModerator(const QString& uri)
+{
+    return std::find_if(candidates_.begin(), candidates_.end(), [&](auto candidate) {
+        return candidate.uri == uri;
+    }) != candidates_.end();
 }
 
 QJsonObject
