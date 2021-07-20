@@ -299,7 +299,8 @@ NewCallModel::getParticipantsInfos(const QString& callId)
 {
     if (pimpl_->participantsModel.find(callId) == pimpl_->participantsModel.end()) {
         VectorMapStringString infos = {};
-        pimpl_->participantsModel.emplace(callId, std::make_shared<CallParticipants>(infos, callId, pimpl_->linked));
+        pimpl_->participantsModel
+            .emplace(callId, std::make_shared<CallParticipants>(infos, callId, pimpl_->linked));
     }
     return *pimpl_->participantsModel.at(callId);
 }
@@ -344,7 +345,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly, VectorMapStringSt
     }
 #ifdef ENABLE_LIBWRAP
     auto callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
-#else // dbus
+#else  // dbus
     // do not use auto here (QDBusPendingReply<QString>)
     QString callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
 #endif // ENABLE_LIBWRAP
@@ -772,7 +773,9 @@ NewCallModelPimpl::initCallFromDaemon()
             callInfo->type = call::Type::DIALOG;
 
             VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
-            participantsModel.emplace(callId, std::make_shared<CallParticipants>(infos, callId, linked));
+            auto participantsPtr = std::make_shared<CallParticipants>(infos, callId, linked);
+            callInfo->layout = participantsPtr->getLayout();
+            participantsModel.emplace(callId, std::move(participantsPtr));
             calls.emplace(callId, std::move(callInfo));
             // NOTE/BUG: the videorenderer can't know that the client has restarted
             // So, for now, a user will have to manually restart the medias until
@@ -820,7 +823,9 @@ NewCallModelPimpl::initConferencesFromDaemon()
         callInfo->type = call::Type::CONFERENCE;
 
         VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
-        participantsModel.emplace(callId, std::make_shared<CallParticipants>(infos, callId, linked));
+        auto participantsPtr = std::make_shared<CallParticipants>(infos, callId, linked);
+        callInfo->layout = participantsPtr->getLayout();
+        participantsModel.emplace(callId, std::move(participantsPtr));
 
         calls.emplace(callId, std::move(callInfo));
     }
@@ -926,7 +931,8 @@ NewCallModel::isModerator(const QString& confId, const QString& uri)
     if (call == pimpl_->calls.end() or not call->second)
         return false;
     auto participantsModel = pimpl_->participantsModel.find(confId);
-    if (participantsModel == pimpl_->participantsModel.end() or participantsModel->second->getParticipants().size() == 0)
+    if (participantsModel == pimpl_->participantsModel.end()
+        or participantsModel->second->getParticipants().size() == 0)
         return false;
     auto ownerUri = owner.profileInfo.uri;
     auto uriToCheck = uri;
@@ -937,12 +943,10 @@ NewCallModel::isModerator(const QString& confId, const QString& uri)
                            ? call->second->type == lrc::api::call::Type::CONFERENCE
                            : false;
     if (!isModerator && participantsModel->second->getParticipants().size() != 0) {
-        for (const auto& participant : participantsModel->second->getParticipants()) {
-            if (participant.uri == uriToCheck) {
-                isModerator = participant.isModerator;
-                break;
-            }
-        }
+        if (!uri.isEmpty())
+            isModerator = participantsModel->second->checkModerator(uri);
+        else
+            isModerator = participantsModel->second->checkModerator(owner.profileInfo.uri);
     }
     return isModerator;
 }
@@ -1247,13 +1251,18 @@ NewCallModelPimpl::slotOnConferenceInfosUpdated(const QString& confId,
     if (it == calls.end() or not it->second)
         return;
 
-    if (participantsModel.find(confId) == participantsModel.end())
-        participantsModel.emplace(confId, std::make_shared<CallParticipants>(infos, confId, linked));
+    auto participantIt = participantsModel.find(confId);
+    if (participantIt == participantsModel.end())
+        participantIt = participantsModel
+                            .emplace(confId,
+                                     std::make_shared<CallParticipants>(infos, confId, linked))
+                            .first;
     else
-        participantsModel[confId]->update(infos);
+        participantIt->second->update(infos);
+    it->second->layout = participantIt->second->getLayout();
 
     // if Jami, remove @ring.dht
-    for (auto& i : participantsModel[confId]->getParticipants()) {
+    for (auto& i : participantIt->second->getParticipants()) {
         i.uri.replace("@ring.dht", "");
         if (i.uri.isEmpty()) {
             if (it->second->type == call::Type::CONFERENCE) {
@@ -1264,6 +1273,7 @@ NewCallModelPimpl::slotOnConferenceInfosUpdated(const QString& confId,
         }
     }
 
+    Q_EMIT linked.callInfosChanged(linked.owner.id, confId);
     emit linked.onParticipantsChanged(confId);
 
     for (auto& info : infos) {
@@ -1310,7 +1320,9 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     callInfo->startTime = std::chrono::steady_clock::now();
 
     VectorMapStringString infos = CallManager::instance().getConferenceInfos(confId);
-    participantsModel[confId] = std::make_shared<CallParticipants>(infos, confId, linked);
+    auto participantsPtr = std::make_shared<CallParticipants>(infos, confId, linked);
+    callInfo->layout = participantsPtr->getLayout();
+    participantsModel[confId] = participantsPtr;
 
     calls[confId] = callInfo;
 

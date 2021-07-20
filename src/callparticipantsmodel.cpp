@@ -65,6 +65,30 @@ CallParticipants::update(const VectorMapStringString& infos)
         addParticipant(candidates_[partUri]);
         idx_++;
     }
+
+    checkLayout();
+}
+
+void
+CallParticipants::checkLayout()
+{
+    auto it = std::find_if(participants_.begin(),
+                           participants_.end(),
+                           [](const lrc::api::ParticipantInfos& participant) -> bool {
+                               return participant.active;
+                           });
+
+    auto newLayout = call::Layout::GRID;
+    if (it != participants_.end())
+        if (participants_.size() == 1)
+            newLayout = call::Layout::ONE;
+        else
+            newLayout = call::Layout::ONE_WITH_SMALL;
+    else
+        newLayout = call::Layout::GRID;
+
+    if (newLayout != hostLayout_)
+        hostLayout_ = newLayout;
 }
 
 void
@@ -93,7 +117,6 @@ CallParticipants::addParticipant(const ParticipantInfos& participant)
     }
 }
 
-
 void
 CallParticipants::filterCandidates(const VectorMapStringString& infos)
 {
@@ -112,8 +135,7 @@ CallParticipants::filterCandidates(const VectorMapStringString& infos)
             }
         }
         auto it = candidates_.find(peerId);
-        if (candidate["w"].toInt() != 0
-            && candidate["h"].toInt() != 0) {
+        if (candidate["w"].toInt() != 0 && candidate["h"].toInt() != 0) {
             validUris_.append(peerId);
             if (it == candidates_.end()) {
                 candidates_.insert(peerId, ParticipantInfos(candidate, callId_, peerId));
@@ -122,6 +144,17 @@ CallParticipants::filterCandidates(const VectorMapStringString& infos)
             }
         }
     }
+}
+
+bool
+CallParticipants::checkModerator(const QString& uri)
+{
+    for (const auto& candidate : candidates_) {
+        if (candidate.uri == uri) {
+            return true;
+        }
+    }
+    return false;
 }
 
 QJsonObject
