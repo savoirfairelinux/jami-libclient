@@ -277,6 +277,7 @@ SET( libringclient_LIB_SRCS
 
   #Models
   src/contactmodel.cpp
+  src/callparticipantsmodel.cpp
   src/newcallmodel.cpp
   src/newdevicemodel.cpp
   src/newcodecmodel.cpp
@@ -342,6 +343,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/member.h
   src/api/newaccountmodel.h
   src/api/newcallmodel.h
+  src/api/callparticipantsmodel.h
   src/api/newcodecmodel.h
   src/api/newdevicemodel.h
   src/api/pluginmodel.h
