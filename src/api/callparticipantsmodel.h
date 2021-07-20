@@ -1,4 +1,4 @@
-/*!
+/**
  *    Copyright (C) 2021 Savoir-faire Linux Inc.
  *   Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
@@ -29,6 +29,7 @@
 #include <mutex>
 
 #include "typedefs.h"
+#include "call.h"
 
 namespace lrc {
 
@@ -107,6 +108,9 @@ public:
 
     QList<ParticipantInfos> getParticipants() const;
     void update(const VectorMapStringString& infos);
+    void checkLayout();
+    bool checkModerator(const QString& uri);
+    call::Layout getLayout() { return hostLayout_; }
 
     QJsonObject toQJsonObject(uint index) const;
 
@@ -121,6 +125,7 @@ private:
     const NewCallModel& linked;
     std::mutex streamMtx_ {};
     const QString callId_;
+    call::Layout hostLayout_ = call::Layout::GRID;
 };
 } // end namespace api
 } // end namespace lrc

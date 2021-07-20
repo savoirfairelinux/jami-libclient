@@ -753,8 +753,6 @@ AVModelPimpl::getRecordingPath() const
 void
 AVModelPimpl::startedDecoding(const QString& id, const QString& shmPath, int width, int height)
 {
-    if (id != "" && id != "local" && !id.contains("://")) // Else managed by callmodel
-        return;
     video::Settings settings;
     settings.size = toQString(width) + "x" + toQString(height);
     addRenderer(id, settings, shmPath);
