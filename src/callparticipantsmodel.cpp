@@ -40,31 +40,57 @@ CallParticipants::CallParticipants(const VectorMapStringString& infos,
 QList<ParticipantInfos>
 CallParticipants::getParticipants() const
 {
+    std::lock_guard<std::mutex> lk(streamMtx_);
     return participants_.values();
 }
 
 void
 CallParticipants::update(const VectorMapStringString& infos)
 {
-    validUris_.clear();
+    validSinks_.clear();
     filterCandidates(infos);
-    validUris_.sort();
+    validSinks_.sort();
 
     idx_ = 0;
     auto keys = participants_.keys();
     for (const auto& key : keys) {
-        auto keyIdx = validUris_.indexOf(key);
-        if (keyIdx < 0 || keyIdx >= validUris_.size())
+        auto keyIdx = validSinks_.indexOf(key);
+        if (keyIdx < 0 || keyIdx >= validSinks_.size())
             removeParticipant(idx_);
         else
             idx_++;
     }
 
     idx_ = 0;
-    for (const auto& partUri : validUris_) {
-        addParticipant(candidates_[partUri]);
+    for (const auto& partSink : validSinks_) {
+        addParticipant(candidates_[partSink]);
         idx_++;
     }
+
+    verifyLayout();
+}
+
+void
+CallParticipants::verifyLayout()
+{
+    std::lock_guard<std::mutex> lk(streamMtx_);
+    auto it = std::find_if(participants_.begin(),
+                           participants_.end(),
+                           [](const lrc::api::ParticipantInfos& participant) -> bool {
+                               return participant.active;
+                           });
+
+    auto newLayout = call::Layout::GRID;
+    if (it != participants_.end())
+        if (participants_.size() == 1)
+            newLayout = call::Layout::ONE;
+        else
+            newLayout = call::Layout::ONE_WITH_SMALL;
+    else
+        newLayout = call::Layout::GRID;
+
+    if (newLayout != hostLayout_)
+        hostLayout_ = newLayout;
 }
 
 void
@@ -80,9 +106,9 @@ void
 CallParticipants::addParticipant(const ParticipantInfos& participant)
 {
     std::lock_guard<std::mutex> lk(streamMtx_);
-    auto it = participants_.find(participant.uri);
+    auto it = participants_.find(participant.sinkId);
     if (it == participants_.end()) {
-        participants_.insert(participants_.begin() + idx_, participant.uri, participant);
+        participants_.insert(participants_.begin() + idx_, participant.sinkId, participant);
         Q_EMIT linked.participantAdded(callId_, idx_);
     } else {
         if (participant == (*it))
@@ -95,9 +121,11 @@ CallParticipants::addParticipant(const ParticipantInfos& participant)
 void
 CallParticipants::filterCandidates(const VectorMapStringString& infos)
 {
+    std::lock_guard<std::mutex> lk(streamMtx_);
     candidates_.clear();
     for (const auto& candidate : infos) {
         auto peerId = candidate["uri"];
+        auto peerSink = candidate["sink"];
         peerId.truncate(peerId.lastIndexOf("@"));
         if (peerId.isEmpty()) {
             for (const auto& accId : linked.owner.accountModel->getAccountList()) {
@@ -111,15 +139,28 @@ CallParticipants::filterCandidates(const VectorMapStringString& infos)
             }
         }
         if (candidate["w"].toInt() != 0 && candidate["h"].toInt() != 0) {
-            validUris_.append(peerId);
-            candidates_.insert(peerId, ParticipantInfos(candidate, callId_, peerId));
+            validSinks_.append(peerSink);
+            candidates_.insert(peerSink, ParticipantInfos(candidate, callId_, peerId));
         }
     }
+}
+
+bool
+CallParticipants::checkModerator(const QString& uri) const
+{
+    std::lock_guard<std::mutex> lk(streamMtx_);
+    return std::find_if(participants_.cbegin(),
+                        participants_.cend(),
+                        [&](auto participant) {
+                            return participant.uri == uri && participant.isModerator;
+                        })
+           != participants_.cend();
 }
 
 QJsonObject
 CallParticipants::toQJsonObject(uint index) const
 {
+    std::lock_guard<std::mutex> lk(streamMtx_);
     if (index >= participants_.size())
         return {};
 
