@@ -29,11 +29,35 @@
 #include <QJsonObject>
 
 #include "typedefs.h"
+#include "call.h"
 
 namespace lrc {
 
 namespace api {
 class NewCallModel;
+
+namespace ParticipantsInfosStrings {
+const QString URI = "uri";
+const QString DEVICE = "device";
+const QString ACTIVE = "active";
+const QString AVATAR = "avatar";
+const QString X = "x";
+const QString Y = "y";
+const QString W = "w";
+const QString H = "h";
+const QString WIDTH = "widht";
+const QString HEIGHT = "height";
+const QString VIDEOMUTED = "videoMuted";
+const QString AUDIOLOCALMUTED = "audioLocalMuted";
+const QString AUDIOMODERATORMUTED = "audioModeratorMuted";
+const QString ISMODERATOR = "isModerator";
+const QString HANDRAISED = "handRaised";
+const QString SINKID = "sinkId";
+const QString BESTNAME = "bestName";
+const QString ISLOCAL = "isLocal";
+const QString ISCONTACT = "isContact";
+const QString CALLID = "callId";
+} // namespace ParticipantsInfosStrings
 
 struct ParticipantInfos
 {
@@ -41,27 +65,27 @@ struct ParticipantInfos
 
     ParticipantInfos(const MapStringString& infos, const QString& callId, const QString& peerId)
     {
-        uri = infos["uri"];
+        uri = infos[ParticipantsInfosStrings::URI];
         if (uri.lastIndexOf("@") > 0)
             uri.truncate(uri.lastIndexOf("@"));
         if (uri.isEmpty())
             uri = peerId;
-        device = infos["device"];
-        active = infos["active"] == "true";
-        x = infos["x"].toInt();
-        y = infos["y"].toInt();
-        width = infos["w"].toInt();
-        height = infos["h"].toInt();
-        videoMuted = infos["videoMuted"] == "true";
-        audioLocalMuted = infos["audioLocalMuted"] == "true";
-        audioModeratorMuted = infos["audioModeratorMuted"] == "true";
-        isModerator = infos["isModerator"] == "true";
-        handRaised = infos["handRaised"] == "true";
+        device = infos[ParticipantsInfosStrings::DEVICE];
+        active = infos[ParticipantsInfosStrings::ACTIVE] == "true";
+        x = infos[ParticipantsInfosStrings::X].toInt();
+        y = infos[ParticipantsInfosStrings::Y].toInt();
+        width = infos[ParticipantsInfosStrings::W].toInt();
+        height = infos[ParticipantsInfosStrings::H].toInt();
+        videoMuted = infos[ParticipantsInfosStrings::VIDEOMUTED] == "true";
+        audioLocalMuted = infos[ParticipantsInfosStrings::AUDIOLOCALMUTED] == "true";
+        audioModeratorMuted = infos[ParticipantsInfosStrings::AUDIOMODERATORMUTED] == "true";
+        isModerator = infos[ParticipantsInfosStrings::ISMODERATOR] == "true";
+        handRaised = infos[ParticipantsInfosStrings::HANDRAISED] == "true";
 
-        if (infos["sinkId"].isEmpty())
+        if (infos[ParticipantsInfosStrings::SINKID].isEmpty())
             sinkId = callId + uri + device;
         else
-            sinkId = infos["sinkId"];
+            sinkId = infos[ParticipantsInfosStrings::SINKID];
 
         bestName = "";
     }
@@ -116,6 +140,22 @@ public:
     void update(const VectorMapStringString& infos);
 
     /**
+     * Update conference layout value
+     */
+    void verifyLayout();
+
+    /**
+     * @param uri participant
+     * @return True if participant is a moderator
+     */
+    bool checkModerator(const QString& uri) const;
+
+    /**
+     * @return the conference layout
+     */
+    call::Layout getLayout() const { return hostLayout_; }
+
+    /**
      * @param index participant index
      * @return informations of the participant in index
      */
@@ -123,7 +163,7 @@ public:
 
 private:
     /**
-     * Filter the participants the might appear for the end user
+     * Filter the participants that might appear for the end user
      */
     void filterCandidates(const VectorMapStringString& infos);
 
@@ -136,11 +176,17 @@ private:
     // Participants ordered
     QMap<QString, ParticipantInfos> participants_;
     QList<QString> validUris_;
-    int idx_;
+    int idx_ = 0;
 
-    const NewCallModel& linked;
-    std::mutex streamMtx_ {};
+    const NewCallModel& linked_;
+
+    // Protects changes into the paticipants_ variable
+    mutable std::mutex participantsMtx_ {};
+    // Protects calls to the update function
+    std::mutex updateMtx_ {};
+
     const QString callId_;
+    call::Layout hostLayout_ = call::Layout::GRID;
 };
 } // end namespace api
 } // end namespace lrc
