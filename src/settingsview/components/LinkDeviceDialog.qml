@@ -242,7 +242,7 @@ BaseDialog {
                             AnimatedImage {
                                 id: spinnerMovie
                                 anchors.fill: parent
-                                source: "qrc:/images/jami_eclipse_spinner.gif"
+                                source: JamiResources.jami_eclipse_spinner_gif
                                 playing: exportingSpinner.visible
                                 paused: false
                                 fillMode: Image.PreserveAspectFit

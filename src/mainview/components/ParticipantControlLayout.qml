@@ -40,7 +40,7 @@ RowLayout {
         preferredSize: iconButtonPreferredSize
         Layout.preferredHeight: buttonPreferredSize
         Layout.preferredWidth: buttonPreferredSize
-        source: "qrc:/images/icons/moderator.svg"
+        source: JamiResources.moderator_svg
         onClicked: CallAdapter.setModerator(uri, showSetModerator)
         toolTipText: showSetModerator? JamiStrings.setModerator
                                      : JamiStrings.unsetModerator
@@ -53,8 +53,9 @@ RowLayout {
         preferredSize: iconButtonPreferredSize
         Layout.preferredHeight: buttonPreferredSize
         Layout.preferredWidth: buttonPreferredSize
-        source: showModeratorMute? "qrc:/images/icons/mic-24px.svg"
-                                 : "qrc:/images/icons/mic_off-24px.svg"
+        source: showModeratorMute ?
+                    JamiResources.mic_24dp_svg :
+                    JamiResources.mic_off_24dp_svg
         onClicked: CallAdapter.muteParticipant(uri, showModeratorMute)
         toolTipText: showModeratorMute? JamiStrings.muteParticipant
                                       : JamiStrings.unmuteParticipant
@@ -67,7 +68,7 @@ RowLayout {
         preferredSize: iconButtonPreferredSize
         Layout.preferredHeight: buttonPreferredSize
         Layout.preferredWidth: buttonPreferredSize
-        source: "qrc:/images/icons/open_in_full-24px.svg"
+        source: JamiResources.open_in_full_24dp_svg
         onClicked: CallAdapter.maximizeParticipant(uri)
         toolTipText: JamiStrings.maximizeParticipant
     }
@@ -79,7 +80,7 @@ RowLayout {
         preferredSize: iconButtonPreferredSize
         Layout.preferredHeight: buttonPreferredSize
         Layout.preferredWidth: buttonPreferredSize
-        source: "qrc:/images/icons/close_fullscreen-24px.svg"
+        source: JamiResources.close_fullscreen_24dp_svg
         onClicked: CallAdapter.minimizeParticipant(uri)
         toolTipText: JamiStrings.minimizeParticipant
     }
@@ -91,7 +92,7 @@ RowLayout {
         preferredSize: iconButtonPreferredSize
         Layout.preferredHeight: buttonPreferredSize
         Layout.preferredWidth: buttonPreferredSize
-        source: "qrc:/images/icons/ic_hangup_participant-24px.svg"
+        source: JamiResources.ic_hangup_participant_24dp_svg
         onClicked: CallAdapter.hangupParticipant(uri)
         toolTipText: JamiStrings.hangupParticipant
     }

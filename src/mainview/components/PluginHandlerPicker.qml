@@ -115,7 +115,7 @@ Popup {
                         Layout.rightMargin: 5
                         Layout.topMargin: 5
 
-                        source: "qrc:/images/icons/round-close-24px.svg"
+                        source: JamiResources.round_close_24dp_svg
                         imageColor: JamiTheme.textColor
 
                         onClicked: {
@@ -207,7 +207,7 @@ Popup {
                         Layout.topMargin: 5
 
                         imageColor: JamiTheme.textColor
-                        source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+                        source: JamiResources.ic_arrow_back_24dp_svg
                         toolTipText: qsTr("Go back to plugins list")
                         hoverEnabled: true
                         onClicked: {
@@ -235,7 +235,7 @@ Popup {
                         Layout.rightMargin: 5
                         Layout.topMargin: 5
 
-                        source: "qrc:/images/icons/round-close-24px.svg"
+                        source: JamiResources.round_close_24dp_svg
                         imageColor: JamiTheme.textColor
 
                         onClicked: {

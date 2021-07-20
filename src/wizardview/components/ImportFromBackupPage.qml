@@ -99,7 +99,7 @@ Rectangle {
 
             text: fileImportBtnText
             toolTipText: JamiStrings.importAccountArchive
-            source: "qrc:/images/icons/round-folder-24px.svg"
+            source: JamiResources.round_folder_24dp_svg
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed
@@ -200,7 +200,7 @@ Rectangle {
         normalColor: root.color
         imageColor: JamiTheme.primaryForegroundColor
 
-        source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+        source: JamiResources.ic_arrow_back_24dp_svg
         toolTipText: qsTr("Back to welcome page")
 
         onClicked: leavePage()

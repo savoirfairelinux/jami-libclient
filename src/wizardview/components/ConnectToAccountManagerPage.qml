@@ -210,7 +210,7 @@ Rectangle {
         normalColor: root.color
         imageColor: JamiTheme.primaryForegroundColor
 
-        source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+        source: JamiResources.ic_arrow_back_24dp_svg
         toolTipText: JamiStrings.backToWelcome
 
         onClicked: leavePage()

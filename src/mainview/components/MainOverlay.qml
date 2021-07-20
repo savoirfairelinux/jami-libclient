@@ -158,7 +158,7 @@ Item {
                 imageColor: JamiTheme.whiteColor
                 imageContainerHeight: 20
                 imageContainerWidth: 20
-                source: "qrc:/images/icons/mosaic_black_24dp.svg"
+                source: JamiResources.mosaic_black_24dp_svg
 
                 normalColor: JamiTheme.mosaicButtonNormalColor
                 onButtonTextWidthChanged: {

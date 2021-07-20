@@ -23,8 +23,7 @@ import QtQuick.Layouts 1.14
 import QtQuick.Controls.Universal 2.14
 import QtGraphicalEffects 1.14
 
-// Should not import anything other than this
-// to make sure that it is self-dependent
+import net.jami.Constants 1.0
 import net.jami.Models 1.0
 
 import "commoncomponents"
@@ -62,7 +61,7 @@ ApplicationWindow {
 
         anchors.fill: parent
 
-        source: "qrc:/images/logo-jami-standard-coul.svg"
+        source: JamiResources.logo_jami_standard_coul_svg
     }
 
     Popup {
@@ -115,7 +114,7 @@ ApplicationWindow {
 
                     visible: !connectionFailed
 
-                    source: "qrc:/images/jami_rolling_spinner.gif"
+                    source: JamiResources.jami_rolling_spinner_gif
 
                     playing: true
                     paused: false

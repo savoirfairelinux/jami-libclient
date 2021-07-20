@@ -55,8 +55,8 @@ Rectangle {
                 Layout.bottomMargin: 10
 
                 source: JamiTheme.darkTheme ?
-                            "qrc:/images/logo-jami-standard-coul-white.svg" :
-                            "qrc:/images/logo-jami-standard-coul.svg"
+                            JamiResources.logo_jami_standard_coul_white_svg :
+                            JamiResources.logo_jami_standard_coul_svg
             }
 
             Label {
@@ -142,7 +142,7 @@ Rectangle {
                         imagePadding: 4
                         imageColor: JamiTheme.textColor
 
-                        source: "qrc:/images/icons/content_copy-24px.svg"
+                        source: JamiResources.content_copy_24dp_svg
 
                         onClicked: {
                             UtilsAdapter.setClipboardText(

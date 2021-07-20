@@ -121,11 +121,11 @@ Control {
 
                 Component.onCompleted: {
                     shareModel.append({"Name": JamiStrings.shareScreen,
-                                       "IconSource": "qrc:/images/icons/share_screen_black_24dp.svg"})
+                                       "IconSource": JamiResources.share_screen_black_24dp_svg})
                     shareModel.append({"Name": JamiStrings.shareScreenArea,
-                                       "IconSource" :"qrc:/images/icons/share_screen_black_24dp.svg"})
+                                       "IconSource" : JamiResources.share_screen_black_24dp_svg})
                     shareModel.append({"Name": JamiStrings.shareFile,
-                                       "IconSource" :"qrc:/images/icons/insert_photo-24px.svg"})
+                                       "IconSource" : JamiResources.insert_photo_24dp_svg})
                 }
             }
             function accept(index) {
@@ -182,8 +182,8 @@ Control {
             onTriggered: CallAdapter.muteThisCallToggle()
             checkable: true
             icon.source: checked ?
-                             "qrc:/images/icons/mic_off-24px.svg" :
-                             "qrc:/images/icons/mic-24px.svg"
+                             JamiResources.mic_off_24dp_svg :
+                             JamiResources.mic_24dp_svg
             icon.color: checked ? "red" : "white"
             text: !checked ? JamiStrings.mute : JamiStrings.unmute
             property var menuAction: audioInputMenuAction
@@ -191,7 +191,7 @@ Control {
         Action {
             id: hangupAction
             onTriggered: CallAdapter.hangUpThisCall()
-            icon.source: "qrc:/images/icons/ic_call_end_white_24px.svg"
+            icon.source: JamiResources.ic_call_end_white_24dp_svg
             icon.color: "white"
             text: JamiStrings.hangup
             property bool hasBg: true
@@ -201,8 +201,8 @@ Control {
             onTriggered: CallAdapter.videoPauseThisCallToggle()
             checkable: true
             icon.source: checked ?
-                             "qrc:/images/icons/videocam_off-24px.svg" :
-                             "qrc:/images/icons/videocam-24px.svg"
+                             JamiResources.videocam_off_24dp_svg :
+                             JamiResources.videocam_24dp_svg
             icon.color: checked ? "red" : "white"
             text: !checked ? JamiStrings.pauseVideo : JamiStrings.resumeVideo
             property var menuAction: videoInputMenuAction
@@ -215,7 +215,7 @@ Control {
             // temp hack for missing back-end, just open device selection
             property bool openPopupWhenClicked: true
             checkable: !openPopupWhenClicked
-            icon.source: "qrc:/images/icons/spk_black_24dp.svg"
+            icon.source: JamiResources.spk_black_24dp_svg
             icon.color: "white"
             text: JamiStrings.selectAudioOutputDevice
             property var menuAction: audioOutputMenuAction
@@ -223,36 +223,37 @@ Control {
         Action {
             id: addPersonAction
             onTriggered: root.addToConferenceClicked()
-            icon.source: "qrc:/images/icons/add_people_black_24dp.svg"
+            icon.source: JamiResources.add_people_black_24dp_svg
             icon.color: "white"
             text: JamiStrings.addParticipants
         },
         Action {
             id: chatAction
             onTriggered: root.chatClicked()
-            icon.source: "qrc:/images/icons/chat_black_24dp.svg"
+            icon.source: JamiResources.chat_black_24dp_svg
             icon.color: "white"
             text: JamiStrings.chat
         },
         Action {
             id: resumePauseCallAction
             onTriggered: root.resumePauseCallClicked()
-            icon.source: isPaused ? "qrc:/images/icons/play_circle_outline-24px.svg" :
-                                    "qrc:/images/icons/pause_circle_outline-24px.svg"
+            icon.source: isPaused ?
+                             JamiResources.play_circle_outline_24dp_svg :
+                             JamiResources.pause_circle_outline_24dp_svg
             icon.color: "white"
             text: isPaused ? JamiStrings.resumeCall : JamiStrings.pauseCall
         },
         Action {
             id: inputPanelSIPAction
             onTriggered: root.showInputPanelClicked()
-            icon.source: "qrc:/images/icons/ic_keypad.svg"
+            icon.source: JamiResources.ic_keypad_svg
             icon.color: "white"
             text: JamiStrings.sipInputPanel
         },
         Action {
             id: callTransferAction
             onTriggered: root.transferClicked()
-            icon.source: "qrc:/images/icons/phone_forwarded-24px.svg"
+            icon.source: JamiResources.phone_forwarded_24dp_svg
             icon.color: "white"
             text: JamiStrings.transferCall
         },
@@ -265,8 +266,8 @@ Control {
                     root.shareScreenClicked()
             }
             icon.source: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
-                             "qrc:/images/icons/share_stop_black_24dp.svg" :
-                             "qrc:/images/icons/share_screen_black_24dp.svg"
+                             JamiResources.share_stop_black_24dp_svg :
+                             JamiResources.share_screen_black_24dp_svg
             icon.color: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
                             "red" : "white"
             text: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
@@ -279,7 +280,7 @@ Control {
             id: recordAction
             onTriggered: CallAdapter.recordThisCallToggle()
             checkable: true
-            icon.source: "qrc:/images/icons/record_black_24dp.svg"
+            icon.source: JamiResources.record_black_24dp_svg
             icon.color: checked ? "red" : "white"
             text: !checked ? JamiStrings.startRec : JamiStrings.stopRec
             property bool blinksWhenChecked: true
@@ -292,7 +293,7 @@ Control {
         Action {
             id: pluginsAction
             onTriggered: root.pluginsClicked()
-            icon.source: "qrc:/images/icons/plugins-24px.svg"
+            icon.source: JamiResources.plugins_24dp_svg
             icon.color: "white"
             text: JamiStrings.viewPlugin
             enabled: PluginAdapter.callMediaHandlersListCount
@@ -415,7 +416,7 @@ Control {
 
                 contentItem: ResponsiveImage {
                     color: "white"
-                    source: "qrc:/images/icons/more_vert-24dp.svg"
+                    source: JamiResources.more_vert_24dp_svg
                     anchors.fill: parent
                     anchors.margins: 17
                 }

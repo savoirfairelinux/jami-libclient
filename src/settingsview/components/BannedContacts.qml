@@ -99,8 +99,8 @@ ColumnLayout {
             imageColor: JamiTheme.textColor
 
             source: bannedListWidget.visible?
-                        "qrc:/images/icons/expand_less-24px.svg" :
-                        "qrc:/images/icons//expand_more-24px.svg"
+                        JamiResources.expand_less_24dp_svg :
+                        JamiResources.expand_more_24dp_svg
 
             onClicked: toggleBannedContacts()
         }
@@ -127,7 +127,7 @@ ColumnLayout {
             contactName: ContactName
             contactID: ContactID
 
-            btnImgSource: "qrc:/images/icons/round-remove_circle-24px.svg"
+            btnImgSource: JamiResources.round_remove_circle_24dp_svg
             btnToolTip: JamiStrings.reinstateContact
 
             onClicked: bannedListWidget.currentIndex = index

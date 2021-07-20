@@ -78,7 +78,7 @@ ColumnLayout {
 
             toolTipText: JamiStrings.sendFile
 
-            source: "qrc:/images/icons/link_black-24dp.svg"
+            source: JamiResources.link_black_24dp_svg
 
             normalColor: JamiTheme.primaryBackgroundColor
             imageColor: JamiTheme.messageWebViewFooterButtonImageColor
@@ -98,7 +98,7 @@ ColumnLayout {
 
             toolTipText: JamiStrings.leaveAudioMessage
 
-            source: "qrc:/images/icons/message_audio_black-24dp.svg"
+            source: JamiResources.message_audio_black_24dp_svg
 
             normalColor: JamiTheme.primaryBackgroundColor
             imageColor: JamiTheme.messageWebViewFooterButtonImageColor
@@ -120,7 +120,7 @@ ColumnLayout {
 
             toolTipText: JamiStrings.leaveVideoMessage
 
-            source: "qrc:/images/icons/message_video_black-24dp.svg"
+            source: JamiResources.message_video_black_24dp_svg
 
             normalColor: JamiTheme.primaryBackgroundColor
             imageColor: JamiTheme.messageWebViewFooterButtonImageColor
@@ -161,7 +161,7 @@ ColumnLayout {
 
             toolTipText: JamiStrings.addEmoji
 
-            source: "qrc:/images/icons/emoji_black-24dp.svg"
+            source: JamiResources.emoji_black_24dp_svg
 
             normalColor: JamiTheme.primaryBackgroundColor
             imageColor: JamiTheme.messageWebViewFooterButtonImageColor
@@ -186,7 +186,7 @@ ColumnLayout {
 
             toolTipText: JamiStrings.send
 
-            source: "qrc:/images/icons/send_black-24dp.svg"
+            source: JamiResources.send_black_24dp_svg
 
             normalColor: JamiTheme.primaryBackgroundColor
             imageColor: JamiTheme.messageWebViewFooterButtonImageColor

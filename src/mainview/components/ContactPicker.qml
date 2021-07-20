@@ -52,7 +52,7 @@ Popup {
             anchors.rightMargin: 5
             imageColor: JamiTheme.textColor
 
-            source: "qrc:/images/icons/round-close-24px.svg"
+            source: JamiResources.round_close_24dp_svg
 
             onClicked: {
                 contactPickerPopup.close()

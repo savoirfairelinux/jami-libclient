@@ -12,7 +12,7 @@ else()
               "${DRING_PATH}/contrib/build/openssl/libcrypto-1_1-x64.dll"
               "${DRING_PATH}/contrib/build/openssl/libssl-1_1-x64.dll"
               "${PROJECT_ROOT_DIR}/qt.conf"
-              "${PROJECT_ROOT_DIR}/images/jami.ico"
+              "${PROJECT_ROOT_DIR}/resources/images/jami.ico"
               "${PROJECT_ROOT_DIR}/License.rtf"
          DESTINATION ${COPY_TO_PATH})
 endif()

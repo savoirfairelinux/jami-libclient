@@ -45,13 +45,17 @@ Rectangle {
 
     ListModel {
         id: incomingControlsModel
-        ListElement { type: "refuse"; image: "qrc:/images/icons/round-close-24px.svg"}
-        ListElement { type: "mic"; image: "qrc:/images/icons/place_audiocall-24px.svg"}
-        ListElement { type: "cam"; image: "qrc:/images/icons/videocam-24px.svg"}
+        Component.onCompleted: {
+            append({"type": "refuse", "image": JamiResources.round_close_24dp_svg})
+            append({"type": "mic", "image" : JamiResources.place_audiocall_24dp_svg})
+            append({"type": "cam", "image" : JamiResources.videocam_24dp_svg})
+        }
     }
     ListModel {
         id: outgoingControlsModel
-        ListElement { type: "cancel"; image: "qrc:/images/icons/ic_call_end_white_24px.svg"}
+        Component.onCompleted: {
+            append({"type": "cancel", "image": JamiResources.ic_call_end_white_24dp_svg})
+        }
     }
 
     onAccountConvPairChanged: {

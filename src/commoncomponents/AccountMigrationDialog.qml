@@ -510,21 +510,20 @@ Window {
                                 switch (spinnerDisplyState) {
                                 case "spinnerLabel_Regular":
                                     background = Qt.createQmlObject("import QtQuick 2.14;
+                                                                        import \"qrc:/src/constant/\";
                                                                         AnimatedImage {
-                                                                        source: \"qrc:/images/jami_eclipse_spinner.gif\"
-
+                                                                        source: JamiResources.jami_eclipse_spinner_gif
                                                                         playing: true
                                                                         paused: false
                                                                         fillMode: Image.PreserveAspectFit
-                                                                        mipmap: true
-                                                                        }", spinnerLabel)
+                                                                        mipmap: true}", spinnerLabel)
                                     break
                                 case "spinnerLabel_Failure":
                                     background = Qt.createQmlObject("import QtQuick 2.14;
                                                                         import \"qrc:/src/constant/\";
                                                                         Image {
                                                                         anchors.fill: parent;
-                                                                        source:\"image://tintedPixmap/\" + (\"qrc:/images/icons/baseline-error_outline-24px.svg\").replace(\"qrc:/images/icons/\", \"\") + \"+\" + JamiTheme.urgentOrange_;
+                                                                        source: JamiResources.baseline_error_outline_24dp_svg;
                                                                         mipmap: true;}", spinnerLabel)
                                     break
                                 }

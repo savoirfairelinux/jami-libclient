@@ -108,7 +108,7 @@ Rectangle {
             outlined: true
             toolTipText: JamiStrings.addNewPlugin
 
-            source: "qrc:/images/icons/round-add-24px.svg"
+            source: JamiResources.round_add_24dp_svg
 
             text: JamiStrings.installPlugin
 

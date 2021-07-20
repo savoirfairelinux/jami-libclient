@@ -77,7 +77,7 @@ ItemDelegate {
                     color: JamiTheme.textColor
                 }
             }
-            source: "qrc:/images/icons/baseline-desktop_windows-24px.svg"
+            source: JamiResources.baseline_desktop_windows_24dp_svg
         }
 
         ColumnLayout {
@@ -130,33 +130,24 @@ ItemDelegate {
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
             imageColor: JamiTheme.textColor
-            normalColor: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
+            normalColor: highlighted ?
+                             JamiTheme.selectedColor :
+                             JamiTheme.editBackgroundColor
 
-            source: {
-                if(isCurrent) {
-                    var path = editable ?
-                        "qrc:/images/icons/round-save_alt-24px.svg" :
-                        "qrc:/images/icons/round-edit-24px.svg"
-                    return path
-                } else {
-                    return "qrc:/images/icons/round-remove_circle-24px.svg"
-                }
-            }
+            source: isCurrent ?
+                        (editable ?
+                             JamiResources.round_save_alt_24dp_svg :
+                             JamiResources.round_edit_24dp_svg) :
+                        JamiResources.round_remove_circle_24dp_svg
 
-            toolTipText: {
-                if(isCurrent) {
-                    if (editable) {
-                        return JamiStrings.saveNewDeviceName
-                    } else {
-                        return JamiStrings.editDeviceName
-                    }
-                } else {
-                    return JamiStrings.unlinkDevice
-                }
-            }
+            toolTipText: isCurrent ?
+                             (editable ?
+                                  JamiStrings.saveNewDeviceName :
+                                  JamiStrings.editDeviceName) :
+                             JamiStrings.unlinkDevice
 
             onClicked: {
-                if(isCurrent) {
+                if (isCurrent) {
                     toggleEditable()
                 } else {
                     btnRemoveDeviceClicked()

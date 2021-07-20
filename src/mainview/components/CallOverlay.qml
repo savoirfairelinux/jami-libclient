@@ -155,7 +155,7 @@ Item {
 
         visible: false
 
-        source: "qrc:/images/icons/ic_pause_white_100px.svg"
+        source: JamiResources.ic_pause_white_100px_svg
     }
 
     function openContactPicker(type) {

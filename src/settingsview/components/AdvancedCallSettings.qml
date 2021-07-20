@@ -146,7 +146,7 @@ ColumnLayout {
             Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
             titleField: JamiStrings.selectCustomRingtone
-            source: "qrc:/images/icons/round-folder-24px.svg"
+            source: JamiResources.round_folder_24dp_svg
             itemWidth: root.itemWidth
             onClick: ringtonePath_Dialog.open()
         }
@@ -201,7 +201,7 @@ ColumnLayout {
                 contactName: ContactName
                 contactID: ContactID
 
-                btnImgSource: "qrc:/images/icons/round-remove_circle-24px.svg"
+                btnImgSource: JamiResources.round_remove_circle_24dp_svg
                 btnToolTip: JamiStrings.removeDefaultModerator
 
                 onClicked: moderatorListWidget.currentIndex = index
@@ -226,7 +226,7 @@ ColumnLayout {
             outlined: true
             toolTipText: JamiStrings.addDefaultModerator
 
-            source: "qrc:/images/icons/round-add-24px.svg"
+            source: JamiResources.round_add_24dp_svg
 
             text: JamiStrings.addDefaultModerator
 

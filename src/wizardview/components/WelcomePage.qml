@@ -70,8 +70,8 @@ Rectangle {
             Layout.preferredHeight: 110
 
             source: JamiTheme.darkTheme ?
-                        "qrc:/images/logo-jami-standard-coul-white.svg" :
-                        "qrc:/images/logo-jami-standard-coul.svg"
+                        JamiResources.logo_jami_standard_coul_white_svg :
+                        JamiResources.logo_jami_standard_coul_svg
         }
 
         MaterialButton {
@@ -84,7 +84,7 @@ Rectangle {
             text: JamiStrings.createNewJA
             fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Create new Jami account")
-            source: "qrc:/images/default_avatar_overlay.svg"
+            source: JamiResources.default_avatar_overlay_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -104,7 +104,7 @@ Rectangle {
             text: JamiStrings.createRV
             fontCapitalization: Font.AllUppercase
             toolTipText: JamiStrings.createNewRV
-            source: "qrc:/images/icons/groups-24px.svg"
+            source: JamiResources.groups_24dp_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -124,7 +124,7 @@ Rectangle {
             text: JamiStrings.linkFromAnotherDevice
             fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Import account from other device")
-            source: "qrc:/images/icons/devices-24px.svg"
+            source: JamiResources.devices_24dp_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -144,7 +144,7 @@ Rectangle {
             text: JamiStrings.connectFromBackup
             fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Import account from backup file")
-            source: "qrc:/images/icons/backup-24px.svg"
+            source: JamiResources.backup_24dp_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -194,7 +194,7 @@ Rectangle {
             text: JamiStrings.connectJAMSServer
             fontCapitalization: Font.AllUppercase
             toolTipText: JamiStrings.createFromJAMS
-            source: "qrc:/images/icons/router-24px.svg"
+            source: JamiResources.router_24dp_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -217,7 +217,7 @@ Rectangle {
             text: JamiStrings.addSIPAccount
             fontCapitalization: Font.AllUppercase
             toolTipText: qsTr("Create new SIP account")
-            source: "qrc:/images/default_avatar_overlay.svg"
+            source: JamiResources.default_avatar_overlay_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -253,7 +253,7 @@ Rectangle {
         normalColor: root.color
         imageColor: JamiTheme.primaryForegroundColor
 
-        source: "qrc:/images/icons/ic_arrow_back_24px.svg"
+        source: JamiResources.ic_arrow_back_24dp_svg
         toolTipText: JamiStrings.back
 
         onClicked: leavePage()

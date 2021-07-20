@@ -66,9 +66,9 @@ ModalPopup {
                         Layout.preferredWidth: 250
                         Layout.preferredHeight: 88
 
-                        source: JamiTheme.darkTheme?
-                                    "qrc:/images/logo-jami-standard-coul-white.svg" :
-                                    "qrc:/images/logo-jami-standard-coul.svg"
+                        source: JamiTheme.darkTheme ?
+                                    JamiResources.logo_jami_standard_coul_white_svg :
+                                    JamiResources.logo_jami_standard_coul_svg
                     }
 
                     MaterialLineEdit {

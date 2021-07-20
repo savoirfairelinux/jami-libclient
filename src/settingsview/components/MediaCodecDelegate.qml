@@ -70,8 +70,8 @@ ItemDelegate {
                 width: checkBoxWidth
                 height: checkBoxWidth
                 source: checkBoxIsEnabled.checked ?
-                    "qrc:/images/icons/check_box-24px.svg" :
-                    "qrc:/images/icons/check_box_outline_blank-24px.svg"
+                            JamiResources.check_box_24dp_svg :
+                            JamiResources.check_box_outline_blank_24dp_svg
             }
 
             nextCheckState: function() {

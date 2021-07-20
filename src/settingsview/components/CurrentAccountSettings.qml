@@ -233,7 +233,7 @@ Rectangle {
                         JamiStrings.changeCurrentPassword : JamiStrings.setAPassword
             text: AccountAdapter.hasPassword() ? JamiStrings.changePassword : JamiStrings.setPassword
 
-            source: "qrc:/images/icons/round-edit-24px.svg"
+            source: JamiResources.round_edit_24dp_svg
 
             onClicked: {
                 passwordClicked()
@@ -256,7 +256,7 @@ Rectangle {
             toolTipText: JamiStrings.tipBackupAccount
             text: JamiStrings.backupAccountBtn
 
-            source: "qrc:/images/icons/round-save_alt-24px.svg"
+            source: JamiResources.round_save_alt_24dp_svg
 
             onClicked: {
                 exportAccountSlot()
@@ -276,7 +276,7 @@ Rectangle {
 
             text: JamiStrings.deleteAccount
 
-            source: "qrc:/images/icons/delete_forever-24px.svg"
+            source: JamiResources.delete_forever_24dp_svg
 
             onClicked: {
                 delAccountSlot()

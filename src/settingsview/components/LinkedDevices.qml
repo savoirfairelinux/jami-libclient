@@ -167,7 +167,7 @@ ColumnLayout {
         outlined: true
         toolTipText: JamiStrings.tipLinkNewDevice
 
-        source: "qrc:/images/icons/round-add-24px.svg"
+        source: JamiResources.round_add_24dp_svg
 
         text: JamiStrings.linkAnotherDevice
 

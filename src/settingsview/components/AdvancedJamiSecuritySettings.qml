@@ -139,7 +139,7 @@ ColumnLayout {
             Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
             titleField: JamiStrings.caCertificate
-            source: "qrc:/images/icons/round-folder-24px.svg"
+            source: JamiResources.round_folder_24dp_svg
             itemWidth: root.itemWidth
             onClick: caCert_Dialog.open()
         }
@@ -150,7 +150,7 @@ ColumnLayout {
             Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
             titleField: JamiStrings.userCertificate
-            source: "qrc:/images/icons/round-folder-24px.svg"
+            source: JamiResources.round_folder_24dp_svg
             itemWidth: root.itemWidth
             onClick: userCert_Dialog.open()
         }
@@ -161,7 +161,7 @@ ColumnLayout {
             Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
             titleField: JamiStrings.privateKey
-            source: "qrc:/images/icons/round-folder-24px.svg"
+            source: JamiResources.round_folder_24dp_svg
             itemWidth: root.itemWidth
             onClick: privateKey_Dialog.open()
         }

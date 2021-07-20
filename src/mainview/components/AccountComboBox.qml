@@ -190,8 +190,8 @@ Label {
                 color: JamiTheme.textColor
 
                 source: !root.popup.opened ?
-                            "qrc:/images/icons/expand_more-24px.svg" :
-                            "qrc:/images/icons/expand_less-24px.svg"
+                            JamiResources.expand_more_24dp_svg :
+                            JamiResources.expand_less_24dp_svg
             }
 
 
@@ -205,7 +205,7 @@ Label {
                 visible: LRCInstance.currentAccountType === Profile.Type.JAMI
                 toolTipText: JamiStrings.displayQRCode
 
-                source: "qrc:/images/icons/share-24px.svg"
+                source: JamiResources.share_24dp_svg
 
                 normalColor: JamiTheme.backgroundColor
                 imageColor: JamiTheme.textColor
@@ -221,8 +221,8 @@ Label {
 
                 anchors.verticalCenter: parent.verticalCenter
                 source: !mainView.inSettingsView ?
-                            "qrc:/images/icons/settings-24px.svg" :
-                            "qrc:/images/icons/round-close-24px.svg"
+                            JamiResources.settings_24dp_svg :
+                            JamiResources.round_close_24dp_svg
 
                 normalColor: JamiTheme.backgroundColor
                 imageColor: JamiTheme.textColor

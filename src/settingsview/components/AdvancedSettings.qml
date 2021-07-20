@@ -79,13 +79,9 @@ ColumnLayout {
             toolTipText: JamiStrings.tipAdvancedSettingsDisplay
 
             preferredSize: 32
-            source: {
-                if (advancedSettingsView.visible) {
-                    return "qrc:/images/icons/expand_less-24px.svg"
-                } else {
-                    return "qrc:/images/icons/expand_more-24px.svg"
-                }
-            }
+            source: advancedSettingsView.visible ?
+                        JamiResources.expand_less_24dp_svg :
+                        JamiResources.expand_more_24dp_svg
 
             onClicked: {
                 advancedSettingsView.visible = !advancedSettingsView.visible

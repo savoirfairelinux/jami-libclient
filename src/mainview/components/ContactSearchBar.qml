@@ -62,7 +62,7 @@ Rectangle {
         width: 20
         height: 20
 
-        source: "qrc:/images/icons/ic_baseline-search-24px.svg"
+        source: JamiResources.ic_baseline_search_24dp_svg
         color: JamiTheme.primaryForegroundColor
     }
 
@@ -117,7 +117,7 @@ Rectangle {
         normalColor: root.color
         imageColor: JamiTheme.primaryForegroundColor
 
-        source: "qrc:/images/icons/ic_clear_24px.svg"
+        source: JamiResources.ic_clear_24dp_svg
         toolTipText: JamiStrings.clearText
 
         onClicked: contactSearchBar.clear()

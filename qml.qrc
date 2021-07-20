@@ -10,13 +10,11 @@
         <file>src/commoncomponents/PasswordDialog.qml</file>
         <file>src/commoncomponents/MaterialLineEdit.qml</file>
         <file>src/commoncomponents/PhotoboothView.qml</file>
-        <file>src/commoncomponents/LookupStatusLabel.qml</file>
         <file>src/commoncomponents/ListViewJami.qml</file>
         <file>src/commoncomponents/DeleteAccountDialog.qml</file>
         <file>src/commoncomponents/CustomBorder.qml</file>
         <file>src/commoncomponents/PushButton.qml</file>
         <file>src/commoncomponents/JamiFileDialog.qml</file>
-        <file>src/commoncomponents/TintedButton.qml</file>
         <file>src/commoncomponents/AccountMigrationDialog.qml</file>
         <file>src/commoncomponents/MaterialButton.qml</file>
         <file>src/commoncomponents/ElidedTextLabel.qml</file>
@@ -89,7 +87,6 @@
         <file>src/wizardview/components/ImportFromDevicePage.qml</file>
         <file>src/wizardview/components/ConnectToAccountManagerPage.qml</file>
         <file>src/wizardview/components/ProfilePage.qml</file>
-        <file>src/wizardview/components/CollapsiblePasswordWidget.qml</file>
         <file>src/wizardview/components/AccountCreationStepIndicator.qml</file>
         <file>src/mainview/MainView.qml</file>
         <file>src/mainview/components/PluginHandlerItemDelegate.qml</file>
@@ -159,5 +156,6 @@
         <file>src/mainview/components/ConversationAvatar.qml</file>
         <file>src/mainview/components/InvitationView.qml</file>
         <file>src/commoncomponents/GeneralWebEngineView.qml</file>
+        <file>src/constant/JamiResources.qml</file>
     </qresource>
 </RCC>

@@ -31,7 +31,7 @@ Rectangle {
 
     property string userAliasLabelText
     property string userUserNameLabelText
-    property string backToWelcomeViewButtonSource: "qrc:/images/icons/back-24px.svg"
+    property string backToWelcomeViewButtonSource: JamiResources.back_24dp_svg
     property alias sendContactRequestButtonVisible: sendContactRequestButton.visible
 
     signal backClicked
@@ -39,8 +39,9 @@ Rectangle {
     signal pluginSelector
 
     function resetBackToWelcomeViewButtonSource(reset) {
-        backToWelcomeViewButtonSource = reset ? "qrc:/images/icons/back-24px.svg"
-                                              : "qrc:/images/icons/round-close-24px.svg"
+        backToWelcomeViewButtonSource = reset ?
+                    JamiResources.back_24dp_svg :
+                    JamiResources.round_close_24dp_svg
     }
 
     function toggleMessagingHeaderButtonsVisible(visible) {
@@ -70,7 +71,7 @@ Rectangle {
             imageColor: JamiTheme.chatviewButtonColor
 
             onClicked: {
-                if (backToWelcomeViewButtonSource === "qrc:/images/icons/back-24px.svg")
+                if (backToWelcomeViewButtonSource === JamiResources.back_24dp_svg)
                     messagingHeaderRect.backClicked()
                 else
                     messagingHeaderRect.needToHideConversationInCall()
@@ -147,7 +148,7 @@ Rectangle {
                 anchors.rightMargin: 8
                 anchors.verticalCenter: buttonGroup.verticalCenter
 
-                source: "qrc:/images/icons/place_audiocall-24px.svg"
+                source: JamiResources.place_audiocall_24dp_svg
                 toolTipText: JamiStrings.placeAudioCall
 
                 normalColor: JamiTheme.chatviewBgColor
@@ -170,7 +171,7 @@ Rectangle {
                 anchors.rightMargin: 8
                 anchors.verticalCenter: buttonGroup.verticalCenter
 
-                source: "qrc:/images/icons/videocam-24px.svg"
+                source: JamiResources.videocam_24dp_svg
                 toolTipText: JamiStrings.placeVideoCall
 
                 normalColor: JamiTheme.chatviewBgColor
@@ -194,7 +195,7 @@ Rectangle {
                 anchors.rightMargin: sendContactRequestButton.visible ? 8 : 16
                 anchors.verticalCenter: buttonGroup.verticalCenter
 
-                source: "qrc:/images/icons/plugins-24px.svg"
+                source: JamiResources.plugins_24dp_svg
                 toolTipText: JamiStrings.showPlugins
 
                 normalColor: JamiTheme.chatviewBgColor
@@ -210,7 +211,7 @@ Rectangle {
                 anchors.rightMargin: 8
                 anchors.verticalCenter: buttonGroup.verticalCenter
 
-                source: "qrc:/images/icons/add_people-24px.svg"
+                source: JamiResources.add_people_24dp_svg
                 toolTipText: JamiStrings.addToConversations
 
                 normalColor: JamiTheme.chatviewBgColor

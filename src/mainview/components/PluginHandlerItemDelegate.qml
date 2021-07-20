@@ -121,7 +121,7 @@ ItemDelegate {
             Layout.alignment: Qt.AlingVCenter | Qt.AlignRight
             Layout.rightMargin: 8
 
-            source: "qrc:/images/icons/round-settings-24px.svg"
+            source: JamiResources.round_settings_24dp_svg
             normalColor: JamiTheme.primaryBackgroundColor
             imageColor: JamiTheme.textColor
             toolTipText: qsTr(pluginId)

@@ -141,9 +141,9 @@ void
 SystemTray::setCount(int count)
 {
     if (count == 0) {
-        setIcon(QIcon(":images/jami.svg"));
+        setIcon(QIcon(":/images/jami.svg"));
     } else {
-        setIcon(QIcon(":images/jami-new.svg"));
+        setIcon(QIcon(":/images/jami-new.svg"));
     }
 }
 

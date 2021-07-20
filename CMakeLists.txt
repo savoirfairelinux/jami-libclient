@@ -94,7 +94,6 @@ set(COMMON_HEADERS
     ${SRC_DIR}/qrimageprovider.h
     ${SRC_DIR}/messagesadapter.h
     ${SRC_DIR}/accountadapter.h
-    ${SRC_DIR}/tintedbuttonimageprovider.h
     ${SRC_DIR}/calladapter.h
     ${SRC_DIR}/conversationsadapter.h
     ${SRC_DIR}/distantrenderer.h
@@ -436,14 +435,14 @@ else()
     target_compile_definitions(jami-qt PRIVATE JAMI_INSTALL_PREFIX="${JAMI_DATA_PREFIX}")
 
     # logos
-    install(FILES images/jami.svg
+    install(FILES resources/images/jami.svg
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
 
-    install(FILES images/jami-48px.png
+    install(FILES resources/images/jami-48px.png
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/48x48/apps
         RENAME jami.png)
 
-    install(FILES images/jami-32px.xpm
+    install(FILES resources/images/jami-32px.xpm
         DESTINATION ${CMAKE_INSTALL_PREFIX}/share/pixmaps
         RENAME jami.xpm)
 

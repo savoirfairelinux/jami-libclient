@@ -52,7 +52,7 @@ TextField {
 
         switch(borderColorMode){
         case MaterialLineEdit.SEARCHING:
-            iconSource = "qrc:/images/jami_rolling_spinner.gif"
+            iconSource = JamiResources.jami_rolling_spinner_gif
             borderColor = JamiTheme.greyBorderColor
             break
         case MaterialLineEdit.NORMAL:
@@ -60,11 +60,11 @@ TextField {
             borderColor = JamiTheme.greyBorderColor
             break
         case MaterialLineEdit.RIGHT:
-            iconSource = "qrc:/images/icons/round-check_circle-24px.svg"
+            iconSource = JamiResources.round_check_circle_24dp_svg
             borderColor = "green"
             break
         case MaterialLineEdit.ERROR:
-            iconSource = "qrc:/images/icons/round-error-24px.svg"
+            iconSource = JamiResources.round_error_24dp_svg
             borderColor = "red"
             break
         }

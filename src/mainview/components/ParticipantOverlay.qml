@@ -126,7 +126,7 @@ Item {
 
                 visible: participantIsHost
 
-                source: "qrc:/images/icons/star_outline-24px.svg"
+                source: JamiResources.star_outline_24dp_svg
                 color: JamiTheme.whiteColor
             }
 
@@ -141,7 +141,7 @@ Item {
 
                 visible: participantIsModerator
 
-                source: "qrc:/images/icons/moderator.svg"
+                source: JamiResources.moderator_svg
                 color: JamiTheme.whiteColor
             }
 
@@ -156,7 +156,7 @@ Item {
 
                 visible: participantIsMuted
 
-                source: "qrc:/images/icons/mic_off-24px.svg"
+                source: JamiResources.mic_off_24dp_svg
                 color: JamiTheme.whiteColor
             }
         }

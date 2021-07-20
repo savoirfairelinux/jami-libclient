@@ -165,7 +165,7 @@ MainApplication::~MainApplication()
 bool
 MainApplication::init()
 {
-    setWindowIcon(QIcon(":images/jami.ico"));
+    setWindowIcon(QIcon(":/images/jami.ico"));
 
     // Lrc web resources
     QResource::registerResource(QCoreApplication::applicationDirPath() + QDir::separator()
@@ -414,7 +414,7 @@ MainApplication::setApplicationFont()
     QFont font;
     font.setFamily("Segoe UI");
     setFont(font);
-    QFontDatabase::addApplicationFont(":/images/FontAwesome.otf");
+    QFontDatabase::addApplicationFont(":/fonts/FontAwesome.otf");
 }
 
 void
@@ -434,7 +434,7 @@ MainApplication::initQmlLayer()
 void
 MainApplication::initSystray()
 {
-    systemTray_->setIcon(QIcon(":images/jami.svg"));
+    systemTray_->setIcon(QIcon(":/images/jami.svg"));
 
     QMenu* systrayMenu = new QMenu();
 

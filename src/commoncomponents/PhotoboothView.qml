@@ -157,8 +157,8 @@ Item {
                 imageColor: JamiTheme.textColor
                 toolTipText: JamiStrings.takePhoto
                 source: isPreviewing ?
-                            "qrc:/images/icons/round-add_a_photo-24px.svg" :
-                            "qrc:/images/icons/baseline-camera_alt-24px.svg"
+                            JamiResources.round_add_a_photo_24dp_svg :
+                            JamiResources.baseline_camera_alt_24dp_svg
 
                 onClicked: {
                     if (isPreviewing) {
@@ -179,7 +179,7 @@ Item {
                 visible: LRCInstance.currentAccountAvatarSet
                 Layout.alignment: Qt.AlignHCenter
                 radius: JamiTheme.primaryRadius
-                source: "qrc:/images/icons/round-close-24px.svg"
+                source: JamiResources.round_close_24dp_svg
                 toolTipText: JamiStrings.clearAvatar
                 imageColor: JamiTheme.textColor
 
@@ -194,7 +194,7 @@ Item {
 
                 Layout.alignment: Qt.AlignHCenter
                 radius: JamiTheme.primaryRadius
-                source: "qrc:/images/icons/round-folder-24px.svg"
+                source: JamiResources.round_folder_24dp_svg
                 toolTipText: JamiStrings.importFromFile
                 imageColor: JamiTheme.textColor
 

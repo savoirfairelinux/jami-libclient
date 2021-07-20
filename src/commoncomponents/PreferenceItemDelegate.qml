@@ -128,7 +128,7 @@ ItemDelegate {
             Layout.preferredHeight: preferredSize
             imageColor: JamiTheme.textColor
 
-            source: "qrc:/images/icons/round-settings-24px.svg"
+            source: JamiResources.round_settings_24dp_svg
 
             toolTipText: qsTr("Edit preference")
             opacity: enabled ? 1.0 : 0.5
@@ -180,7 +180,7 @@ ItemDelegate {
 
             text: UtilsAdapter.fileName(preferenceCurrentValue)
             toolTipText: JamiStrings.chooseImageFile
-            source: "qrc:/images/icons/round-folder-24px.svg"
+            source: JamiResources.round_folder_24dp_svg
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed

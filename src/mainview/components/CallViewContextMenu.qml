@@ -49,8 +49,9 @@ ContextMenuAutoLoader {
 
             canTrigger: isSIP
             itemName: isPaused ? JamiStrings.resumeCall : JamiStrings.pauseCall
-            iconSource: isPaused ? "qrc:/images/icons/play_circle_outline-24px.svg" :
-                                   "qrc:/images/icons/pause_circle_outline-24px.svg"
+            iconSource: isPaused ?
+                            JamiResources.play_circle_outline_24dp_svg :
+                            JamiResources.pause_circle_outline_24dp_svg
             onClicked: {
                 CallAdapter.holdThisCallToggle()
             }
@@ -60,7 +61,7 @@ ContextMenuAutoLoader {
 
             canTrigger: isSIP
             itemName: JamiStrings.sipInputPanel
-            iconSource: "qrc:/images/icons/ic_keypad.svg"
+            iconSource: JamiResources.ic_keypad_svg
             onClicked: {
                 sipInputPanel.open()
             }
@@ -70,7 +71,7 @@ ContextMenuAutoLoader {
 
             canTrigger: isSIP
             itemName: JamiStrings.transferCall
-            iconSource: "qrc:/images/icons/phone_forwarded-24px.svg"
+            iconSource: JamiResources.phone_forwarded_24dp_svg
             addMenuSeparatorAfter: isSIP
             onClicked: {
                 root.transferCallButtonClicked()
@@ -80,7 +81,7 @@ ContextMenuAutoLoader {
             id: localRecord
 
             itemName: localIsRecording ? JamiStrings.stopRec : JamiStrings.startRec
-            iconSource: "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg"
+            iconSource: JamiResources.fiber_manual_record_24dp_svg
             iconColor: JamiTheme.recordIconColor
             onClicked: {
                 CallAdapter.recordThisCallToggle()
@@ -93,8 +94,8 @@ ContextMenuAutoLoader {
             itemName: JamiQmlUtils.callIsFullscreen ?
                           JamiStrings.exitFullScreen : JamiStrings.fullScreen
             iconSource: JamiQmlUtils.callIsFullscreen ?
-                            "qrc:/images/icons/close_fullscreen-24px.svg" :
-                            "qrc:/images/icons/open_in_full-24px.svg"
+                            JamiResources.close_fullscreen_24dp_svg :
+                            JamiResources.open_in_full_24dp_svg
             onClicked: {
                 callStackView.toggleFullScreen()
             }
@@ -106,7 +107,7 @@ ContextMenuAutoLoader {
                         && AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY
                         && !isSIP
             itemName: JamiStrings.stopSharing
-            iconSource: "qrc:/images/icons/share_stop_black_24dp.svg"
+            iconSource: JamiResources.share_stop_black_24dp_svg
             iconColor: JamiTheme.redColor
             onClicked: {
                 AvAdapter.stopSharing()
@@ -119,7 +120,7 @@ ContextMenuAutoLoader {
                         && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY
                         && !isSIP
             itemName: JamiStrings.shareScreen
-            iconSource: "qrc:/images/icons/share_screen_black_24dp.svg"
+            iconSource: JamiResources.share_screen_black_24dp_svg
             onClicked: {
                 if (Qt.application.screens.length === 1) {
                     AvAdapter.shareEntireScreen(0)
@@ -136,7 +137,7 @@ ContextMenuAutoLoader {
                         && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY
                         && !isSIP
             itemName: JamiStrings.shareScreenArea
-            iconSource: "qrc:/images/icons/share_screen_black_24dp.svg"
+            iconSource: JamiResources.share_screen_black_24dp_svg
             onClicked: {
                 if (Qt.platform.os !== "windows") {
                     AvAdapter.shareScreenArea(0, 0, 0, 0)
@@ -151,7 +152,7 @@ ContextMenuAutoLoader {
 
             canTrigger: !isAudioOnly && !isSIP
             itemName: JamiStrings.shareFile
-            iconSource: "qrc:/images/icons/insert_photo-24px.svg"
+            iconSource: JamiResources.insert_photo_24dp_svg
             onClicked: {
                 jamiFileDialog.open()
             }
@@ -161,7 +162,7 @@ ContextMenuAutoLoader {
 
             canTrigger: PluginAdapter.callMediaHandlersListCount
             itemName: JamiStrings.viewPlugin
-            iconSource: "qrc:/images/icons/extension_24dp.svg"
+            iconSource: JamiResources.extension_24dp_svg
             onClicked: {
                 root.pluginItemClicked()
             }

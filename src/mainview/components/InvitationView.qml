@@ -143,7 +143,7 @@ Rectangle {
 
                 toolTipText: JamiStrings.blockContact
 
-                source: "qrc:/images/icons/block_black-24dp.svg"
+                source: JamiResources.block_black_24dp_svg
                 imageColor: JamiTheme.primaryBackgroundColor
 
                 normalColor: JamiTheme.blockOrangeTransparency
@@ -165,7 +165,7 @@ Rectangle {
 
                 toolTipText: JamiStrings.declineContactRequest
 
-                source: "qrc:/images/icons/cross_black_24dp.svg"
+                source: JamiResources.cross_black_24dp_svg
                 imageColor: JamiTheme.primaryBackgroundColor
 
                 normalColor: JamiTheme.refuseRedTransparent
@@ -187,7 +187,7 @@ Rectangle {
 
                 toolTipText: JamiStrings.acceptContactRequest
 
-                source: "qrc:/images/icons/check_black-24dp.svg"
+                source: JamiResources.check_black_24dp_svg
                 imageColor: JamiTheme.primaryBackgroundColor
 
                 normalColor: JamiTheme.acceptGreenTransparency

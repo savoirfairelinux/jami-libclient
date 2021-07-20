@@ -130,7 +130,7 @@ SpinningAnimation {
             hoveredColor: JamiTheme.refuseRed
             normalColor: JamiTheme.refuseRedTransparent
 
-            source: "qrc:/images/icons/cross_black_24dp.svg"
+            source: JamiResources.cross_black_24dp_svg
             imageColor: JamiTheme.whiteColor
 
             toolTipText: JamiStrings.optionCancel

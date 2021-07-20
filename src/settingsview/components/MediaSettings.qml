@@ -97,13 +97,13 @@ ColumnLayout {
         }
 
         PushButton {
-            source: "qrc:/images/icons/arrow_drop_down-24px.svg"
+            source: JamiResources.arrow_drop_down_24dp_svg
             imageColor: JamiTheme.textColor
             onClicked: decreaseCodecPriority()
         }
 
         PushButton {
-            source: "qrc:/images/icons/arrow_drop_up-24px.svg"
+            source: JamiResources.arrow_drop_up_24dp_svg
             imageColor: JamiTheme.textColor
             onClicked: increaseCodecPriority()
         }

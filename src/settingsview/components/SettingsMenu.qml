@@ -34,13 +34,13 @@ Rectangle {
 
     Component.onCompleted: {
         listModel.append({ 'type': SettingsView.Account, 'name': qsTr("Account"),
-                         'iconSource': "qrc:/images/icons/account_black-24dp.svg"})
+                         'iconSource': JamiResources.account_24dp_svg})
         listModel.append({ 'type': SettingsView.General, 'name': qsTr("General"),
-                         'iconSource': "qrc:/images/icons/gear_black-24dp.svg"})
+                         'iconSource': JamiResources.gear_black_24dp_svg})
         listModel.append({ 'type': SettingsView.Media, 'name': qsTr("Audio/Video"),
-                         'iconSource': "qrc:/images/icons/media_black-24dp.svg"})
+                         'iconSource': JamiResources.media_black_24dp_svg})
         listModel.append({ 'type': SettingsView.Plugin, 'name': qsTr("Plugin"),
-                         'iconSource': "qrc:/images/icons/plugin_settings_black-24dp.svg"})
+                         'iconSource': JamiResources.plugin_settings_black_24dp_svg})
     }
 
     anchors.fill: parent

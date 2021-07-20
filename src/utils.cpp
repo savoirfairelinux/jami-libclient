@@ -493,7 +493,7 @@ QString
 Utils::getProjectCredits()
 {
     QString credits;
-    QFile projectCreditsFile(":/projectcredits.html");
+    QFile projectCreditsFile(":/misc/projectcredits.html");
     if (!projectCreditsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug().noquote() << " Project Credits failed to load";
         return {};

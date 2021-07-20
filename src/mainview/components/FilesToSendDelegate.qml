@@ -55,7 +55,7 @@ Rectangle {
 
             visible: !IsImage
 
-            source: "qrc:/images/icons/file_black-24dp.svg"
+            source: JamiResources.file_black_24dp_svg
         }
 
         Text {
@@ -132,7 +132,7 @@ Rectangle {
 
         toolTipText: JamiStrings.remove
 
-        source: "qrc:/images/icons/cross_black_24dp.svg"
+        source: JamiResources.cross_black_24dp_svg
 
         normalColor:  JamiTheme.removeFileButtonColor
         hoveredColor: JamiTheme.lightGrey_

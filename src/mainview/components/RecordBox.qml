@@ -308,7 +308,7 @@ Rectangle {
 
         normalColor: isVideo ? "transparent" : JamiTheme.backgroundColor
 
-        source: "qrc:/images/icons/av_icons/fiber_manual_record-24px.svg"
+        source: JamiResources.fiber_manual_record_24dp_svg
         imageColor: JamiTheme.recordIconColor
 
         onClicked: {
@@ -328,7 +328,7 @@ Rectangle {
 
         normalColor: isVideo ? "transparent" : JamiTheme.backgroundColor
 
-        source: "qrc:/images/icons/av_icons/stop-24px-red.svg"
+        source: JamiResources.stop_24dp_red_svg
         imageColor: isVideo ? JamiTheme.whiteColor : JamiTheme.textColor
 
         onClicked: {
@@ -349,7 +349,7 @@ Rectangle {
 
         normalColor: isVideo ? "transparent" : JamiTheme.backgroundColor
 
-        source: "qrc:/images/icons/av_icons/re-record-24px.svg"
+        source: JamiResources.re_record_24dp_svg
         imageColor: isVideo ? JamiTheme.whiteColor : JamiTheme.textColor
 
         onClicked: {
@@ -370,7 +370,7 @@ Rectangle {
 
         normalColor: isVideo ? "transparent" : JamiTheme.backgroundColor
 
-        source: "qrc:/images/icons/av_icons/send-24px.svg"
+        source: JamiResources.send_24dp_svg
         imageColor: isVideo ? JamiTheme.whiteColor : JamiTheme.textColor
 
         onClicked: {

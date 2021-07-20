@@ -41,7 +41,6 @@
 #include "filestosendlistmodel.h"
 
 #include "qrimageprovider.h"
-#include "tintedbuttonimageprovider.h"
 #include "avatarimageprovider.h"
 #include "avatarregistry.h"
 #include "appsettingsmanager.h"
@@ -175,6 +174,8 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERSINGLETONTYPE_URL(NS_CONSTANTS, "qrc:/src/constant/JamiTheme.qml", JamiTheme);
     QML_REGISTERSINGLETONTYPE_URL(NS_MODELS, "qrc:/src/constant/JamiQmlUtils.qml", JamiQmlUtils);
     QML_REGISTERSINGLETONTYPE_URL(NS_CONSTANTS, "qrc:/src/constant/JamiStrings.qml", JamiStrings);
+    QML_REGISTERSINGLETONTYPE_URL(NS_CONSTANTS, "qrc:/src/constant/JamiResources.qml", JamiResources);
+
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, screenInfo, "ScreenInfo")
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, lrcInstance, "LRCInstance")
 
@@ -208,8 +209,6 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERUNCREATABLE(NS_ENUMS, NetWorkManager);
 
     engine->addImageProvider(QLatin1String("qrImage"), new QrImageProvider(lrcInstance));
-    engine->addImageProvider(QLatin1String("tintedPixmap"),
-                              new TintedButtonImageProvider(lrcInstance));
     engine->addImageProvider(QLatin1String("avatarImage"),
                               new AvatarImageProvider(lrcInstance));
 

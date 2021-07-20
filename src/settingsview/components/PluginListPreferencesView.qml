@@ -380,7 +380,7 @@ Rectangle {
                 pressedColor: JamiTheme.buttonTintedBlackPressed
                 outlined: true
 
-                source: "qrc:/images/icons/settings_backup_restore-24px.svg"
+                source: JamiResources.settings_backup_restore_24dp_svg
 
                 text: JamiStrings.reset
 
@@ -398,7 +398,7 @@ Rectangle {
                 pressedColor: JamiTheme.buttonTintedBlackPressed
                 outlined: true
 
-                source: "qrc:/images/icons/delete-24px.svg"
+                source: JamiResources.delete_24dp_svg
 
                 text: qsTr("Uninstall")
 

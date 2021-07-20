@@ -40,19 +40,15 @@ RowLayout {
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
         radius: JamiTheme.preferredFieldHeight
-        source: "qrc:/images/icons/ic_arrow_back_24px.svg"
-
+        source: JamiResources.ic_arrow_back_24dp_svg
         normalColor: JamiTheme.backgroundColor
         imageColor: JamiTheme.textColor
-
         toolTipText: JamiStrings.back
         hoverEnabled: true
 
         visible: mainView.sidePanelOnly
 
-        onClicked: {
-            backArrowClicked()
-        }
+        onClicked: backArrowClicked()
     }
 
     Label {

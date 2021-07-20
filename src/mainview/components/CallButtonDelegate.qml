@@ -186,8 +186,9 @@ ItemDelegate {
         }
 
         contentItem: ResponsiveImage {
-            source: isVertical ? "qrc:/images/icons/chevron_left_black_24dp.svg" :
-                                 "qrc:/images/icons/expand_less-24px.svg"
+            source: isVertical ?
+                        JamiResources.chevron_left_black_24dp_svg :
+                        JamiResources.expand_less_24dp_svg
             color: "white"
         }
 
@@ -213,8 +214,8 @@ ItemDelegate {
                 ResponsiveImage {
                     source: menuAction.popupMode === CallActionBar.ActionPopupMode.ListElement ?
                                 IconSource : (menuItem.ListView.isCurrentItem ?
-                                                  "qrc:/images/icons/check_box-24px.svg" :
-                                                  "qrc:/images/icons/check_box_outline_blank-24px.svg")
+                                                  JamiResources.check_box_24dp_svg :
+                                                  JamiResources.check_box_outline_blank_24dp_svg)
                     color: "white"
                 }
                 Text {
