@@ -299,7 +299,8 @@ NewCallModel::getParticipantsInfos(const QString& callId)
 {
     if (pimpl_->participantsModel.find(callId) == pimpl_->participantsModel.end()) {
         VectorMapStringString infos = {};
-        pimpl_->participantsModel.emplace(callId, std::make_shared<CallParticipants>(infos, callId, pimpl_->linked));
+        pimpl_->participantsModel
+            .emplace(callId, std::make_shared<CallParticipants>(infos, callId, pimpl_->linked));
     }
     return *pimpl_->participantsModel.at(callId);
 }
@@ -772,7 +773,9 @@ NewCallModelPimpl::initCallFromDaemon()
             callInfo->type = call::Type::DIALOG;
 
             VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
-            participantsModel.emplace(callId, std::make_shared<CallParticipants>(infos, callId, linked));
+            auto participantsPtr = std::make_shared<CallParticipants>(infos, callId, linked);
+            callInfo->layout = participantsPtr->getLayout();
+            participantsModel.emplace(callId, std::move(participantsPtr));
             calls.emplace(callId, std::move(callInfo));
             // NOTE/BUG: the videorenderer can't know that the client has restarted
             // So, for now, a user will have to manually restart the medias until
@@ -820,7 +823,9 @@ NewCallModelPimpl::initConferencesFromDaemon()
         callInfo->type = call::Type::CONFERENCE;
 
         VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
-        participantsModel.emplace(callId, std::make_shared<CallParticipants>(infos, callId, linked));
+        auto participantsPtr = std::make_shared<CallParticipants>(infos, callId, linked);
+        callInfo->layout = participantsPtr->getLayout();
+        participantsModel.emplace(callId, std::move(participantsPtr));
 
         calls.emplace(callId, std::move(callInfo));
     }
@@ -926,7 +931,8 @@ NewCallModel::isModerator(const QString& confId, const QString& uri)
     if (call == pimpl_->calls.end() or not call->second)
         return false;
     auto participantsModel = pimpl_->participantsModel.find(confId);
-    if (participantsModel == pimpl_->participantsModel.end() or participantsModel->second->getParticipants().size() == 0)
+    if (participantsModel == pimpl_->participantsModel.end()
+        or participantsModel->second->getParticipants().size() == 0)
         return false;
     auto ownerUri = owner.profileInfo.uri;
     auto uriToCheck = uri;
@@ -1247,10 +1253,14 @@ NewCallModelPimpl::slotOnConferenceInfosUpdated(const QString& confId,
     if (it == calls.end() or not it->second)
         return;
 
-    if (participantsModel.find(confId) == participantsModel.end())
-        participantsModel.emplace(confId, std::make_shared<CallParticipants>(infos, confId, linked));
-    else
+    if (participantsModel.find(confId) == participantsModel.end()) {
+        auto participantsPtr = std::make_shared<CallParticipants>(infos, confId, linked);
+        it->second->layout = participantsPtr->getLayout();
+        participantsModel.emplace(confId, std::move(participantsPtr));
+    } else {
         participantsModel[confId]->update(infos);
+        it->second->layout = participantsModel[confId]->getLayout();
+    }
 
     // if Jami, remove @ring.dht
     for (auto& i : participantsModel[confId]->getParticipants()) {
@@ -1264,6 +1274,7 @@ NewCallModelPimpl::slotOnConferenceInfosUpdated(const QString& confId,
         }
     }
 
+    Q_EMIT linked.callInfosChanged(linked.owner.id, confId);
     emit linked.onParticipantsChanged(confId);
 
     for (auto& info : infos) {
@@ -1310,7 +1321,9 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     callInfo->startTime = std::chrono::steady_clock::now();
 
     VectorMapStringString infos = CallManager::instance().getConferenceInfos(confId);
-    participantsModel[confId] = std::make_shared<CallParticipants>(infos, confId, linked);
+    auto participantsPtr = std::make_shared<CallParticipants>(infos, confId, linked);
+    callInfo->layout = participantsPtr->getLayout();
+    participantsModel[confId] = participantsPtr;
 
     calls[confId] = callInfo;
 
