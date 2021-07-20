@@ -53,6 +53,7 @@ struct PendingConferenceeInfo
 };
 } // namespace call
 class NewAccountModel;
+class CallParticipants;
 
 /**
  *  @brief Class that manages call informations.
@@ -63,6 +64,7 @@ class LIB_EXPORT NewCallModel : public QObject
 
 public:
     using CallInfoMap = std::map<QString, std::shared_ptr<call::Info>>;
+    using CallParticipantsModelMap = std::map<QString, std::shared_ptr<CallParticipants>>;
 
     const account::Info& owner;
 
@@ -79,7 +81,9 @@ public:
      * @param  isAudioOnly, set to false by default
      * @return the call uid created. Empty string is returned if call couldn't be created.
      */
-    QString createCall(const QString& uri, bool isAudioOnly = false, VectorMapStringString mediaList = {});
+    QString createCall(const QString& uri,
+                       bool isAudioOnly = false,
+                       VectorMapStringString mediaList = {});
 
     /**
      * Request a media change in a ongoing call.
@@ -95,6 +99,14 @@ public:
      * @throw out_of_range exception if not found
      */
     const call::Info& getCall(const QString& uid) const;
+
+    /**
+     * Get the call participantsInfos from its call id
+     * @param  callId
+     * @return the call participantsInfos
+     * @throw out_of_range exception if not found
+     */
+    const CallParticipants& getParticipantsInfos(const QString& callId);
 
     /**
      * Get the call from the peer uri
@@ -307,6 +319,28 @@ public:
     const QList<call::PendingConferenceeInfo>& getPendingConferencees();
 
 Q_SIGNALS:
+
+    /**
+     * Emitted when a participant video is added to a conference
+     * @param callId
+     * @param index
+     */
+    void participantAdded(const QString& callId, int index) const;
+
+    /**
+     * Emitted when a participant video is removed from a conference
+     * @param callId
+     * @param index
+     */
+    void participantRemoved(const QString& callId, int index) const;
+
+    /**
+     * Emitted when, in a conference, participant parameters are changed
+     * @param callId
+     * @param index
+     */
+    void participantUpdated(const QString& callId, int index) const;
+
     /**
      * Emitted when a call state changes
      * @param callId
