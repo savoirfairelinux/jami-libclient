@@ -46,6 +46,7 @@ CallParticipants::getParticipants() const
 void
 CallParticipants::update(const VectorMapStringString& infos)
 {
+    std::lock_guard<std::mutex> lk(streamMtx_);
     validUris_.clear();
     filterCandidates(infos);
     validUris_.sort();
@@ -65,12 +66,35 @@ CallParticipants::update(const VectorMapStringString& infos)
         addParticipant(candidates_[partUri]);
         idx_++;
     }
+
+    verifyLayout();
+}
+
+void
+CallParticipants::verifyLayout()
+{
+    auto it = std::find_if(participants_.begin(),
+                           participants_.end(),
+                           [](const lrc::api::ParticipantInfos& participant) -> bool {
+                               return participant.active;
+                           });
+
+    auto newLayout = call::Layout::GRID;
+    if (it != participants_.end())
+        if (participants_.size() == 1)
+            newLayout = call::Layout::ONE;
+        else
+            newLayout = call::Layout::ONE_WITH_SMALL;
+    else
+        newLayout = call::Layout::GRID;
+
+    if (newLayout != hostLayout_)
+        hostLayout_ = newLayout;
 }
 
 void
 CallParticipants::removeParticipant(int index)
 {
-    std::lock_guard<std::mutex> lk(streamMtx_);
     auto it = participants_.begin() + index;
     participants_.erase(it);
     Q_EMIT linked.participantRemoved(callId_, idx_);
@@ -79,7 +103,6 @@ CallParticipants::removeParticipant(int index)
 void
 CallParticipants::addParticipant(const ParticipantInfos& participant)
 {
-    std::lock_guard<std::mutex> lk(streamMtx_);
     auto it = participants_.find(participant.uri);
     if (it == participants_.end()) {
         participants_.insert(participants_.begin() + idx_, participant.uri, participant);
@@ -115,6 +138,18 @@ CallParticipants::filterCandidates(const VectorMapStringString& infos)
             candidates_.insert(peerId, ParticipantInfos(candidate, callId_, peerId));
         }
     }
+}
+
+bool
+CallParticipants::checkModerator(const QString& uri) const
+{
+    std::lock_guard<std::mutex> lk(streamMtx_);
+    return std::find_if(participants_.cbegin(),
+                        participants_.cend(),
+                        [&](auto participant) {
+                            return participant.uri == uri && participant.isModerator;
+                        })
+           != participants_.cend();
 }
 
 QJsonObject
