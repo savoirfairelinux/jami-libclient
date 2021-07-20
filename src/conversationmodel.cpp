@@ -1923,17 +1923,6 @@ ConversationModelPimpl::initConversations()
             conv.push_back(storage::beginConversationWithPeer(db, c.second.profileInfo.uri));
         }
         addConversationWith(conv[0], c.first);
-        if (!c.second.conversationId.isEmpty()) {
-            // it is a swarm conversation.
-            try {
-                auto& conversation = getConversationForUid(conv[0]).get();
-                conversation.mode = conversation::Mode::ONE_TO_ONE;
-                conversation.needsSyncing = true;
-                Q_EMIT linked.needsSyncingSet(conversation.uid);
-            } catch (...) {
-                continue;
-            }
-        }
 
         auto convIdx = indexOf(conv[0]);
 
@@ -2761,7 +2750,10 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
         } catch (...) {
         }
     }
-    conversation.needsSyncing = false;
+    if (details["syncing"] == "true") {
+        conversation.needsSyncing = true;
+        Q_EMIT linked.needsSyncingSet(conversation.uid);
+    }
     emplaceBackConversation(std::move(conversation));
     auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                         convId,
