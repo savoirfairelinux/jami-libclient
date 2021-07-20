@@ -54,6 +54,7 @@ struct PendingConferenceeInfo
 };
 } // namespace call
 class NewAccountModel;
+class CallParticipants;
 
 /**
  *  @brief Class that manages call informations.
@@ -64,6 +65,7 @@ class LIB_EXPORT NewCallModel : public QObject
 
 public:
     using CallInfoMap = std::map<QString, std::shared_ptr<call::Info>>;
+    using CallParticipantsModelMap = std::map<QString, std::shared_ptr<CallParticipants>>;
 
     const account::Info& owner;
 
@@ -108,6 +110,14 @@ public:
      * @throw out_of_range exception if not found
      */
     const call::Info& getCall(const QString& uid) const;
+
+    /**
+     * Get the call participantsInfos from its call id
+     * @param  callId
+     * @return the call participantsInfos
+     * @throw out_of_range exception if not found
+     */
+    const CallParticipants& getParticipantsInfos(const QString& callId);
 
     /**
      * Get the call from the peer uri
@@ -387,6 +397,28 @@ public:
      */
     void setDisplay(int idx, int x, int y, int w, int h, const QString& callId = {});
 Q_SIGNALS:
+
+    /**
+     * Emitted when a participant video is added to a conference
+     * @param callId
+     * @param index
+     */
+    void participantAdded(const QString& callId, int index) const;
+
+    /**
+     * Emitted when a participant video is removed from a conference
+     * @param callId
+     * @param index
+     */
+    void participantRemoved(const QString& callId, int index) const;
+
+    /**
+     * Emitted when, in a conference, participant parameters are changed
+     * @param callId
+     * @param index
+     */
+    void participantUpdated(const QString& callId, int index) const;
+
     /**
      * Emitted when a call state changes
      * @param callId
