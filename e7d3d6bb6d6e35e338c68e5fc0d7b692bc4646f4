@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1abe1c26_632fc373",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 998,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-20T13:39:24Z",
+      "side": 1,
+      "message": "Why not the same condition of the other one below?\n\n            callInfo-\u003evideoMuted \u003d item[MediaAttributeKey::SOURCE_TYPE] \u003d\u003d MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE\n                                   \u0026\u0026 (item[MediaAttributeKey::MUTED] \u003d\u003d \"true\"\n                                    || item[MediaAttributeKey::ENABLED] \u003d\u003d \"false\")\n\nAlso maybe an helper, as it\u0027s done 3 times. like item.isMuted() where isMuted check\n\nitem[MediaAttributeKey::SOURCE_TYPE] \u003d\u003d MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE\n                                   \u0026\u0026 (item[MediaAttributeKey::MUTED] \u003d\u003d \"true\"\n                                    || item[MediaAttributeKey::ENABLED] \u003d\u003d \"false\"",
+      "range": {
+        "startLine": 995,
+        "startChar": 12,
+        "endLine": 998,
+        "endChar": 45
+      },
+      "revId": "e7d3d6bb6d6e35e338c68e5fc0d7b692bc4646f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c700db6_5bef025e",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1141,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-20T13:39:24Z",
+      "side": 1,
+      "message": "Missing clang format hook!",
+      "range": {
+        "startLine": 1141,
+        "startChar": 0,
+        "endLine": 1141,
+        "endChar": 17
+      },
+      "revId": "e7d3d6bb6d6e35e338c68e5fc0d7b692bc4646f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
