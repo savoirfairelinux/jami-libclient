@@ -28,9 +28,11 @@ namespace lrc {
 
 namespace api {
 
-CallParticipants::CallParticipants(const VectorMapStringString& infos, const QString& callId, const NewCallModel& linked)
-    : linked(linked),
-    callID(callId)
+CallParticipants::CallParticipants(const VectorMapStringString& infos,
+                                   const QString& callId,
+                                   const NewCallModel& linked)
+    : linked(linked)
+    , callID(callId)
 {
     update(infos);
 }
@@ -63,6 +65,31 @@ CallParticipants::update(const VectorMapStringString& infos)
         addParticipant(candidates_[partUri]);
         idx_++;
     }
+
+    checkLayout();
+}
+
+void
+CallParticipants::checkLayout()
+{
+    bool activePresent {false};
+    for (const auto participant : participants_) {
+        if (participant.active) {
+            activePresent = true;
+            break;
+        }
+    }
+    auto newLayout = call::Layout::GRID;
+    if (activePresent)
+        if (participants_.size() == 1)
+            newLayout = call::Layout::ONE;
+        else
+            newLayout = call::Layout::ONE_WITH_SMALL;
+    else
+        newLayout = call::Layout::GRID;
+
+    if (newLayout != hostLayout_)
+        hostLayout_ = newLayout;
 }
 
 void
@@ -84,19 +111,18 @@ CallParticipants::addParticipant(const ParticipantInfos& participant)
         Q_EMIT linked.participantAdded(callID, idx_);
     } else {
         it = participants_.begin() + idx_;
-        if (participant.uri == it->uri && participant.sinkId == it->sinkId &&
-            participant.active == it->active &&
-            participant.audioLocalMuted == it->audioLocalMuted
-            && participant.audioModeratorMuted == it->audioModeratorMuted &&
-            participant.avatar == it->avatar && participant.bestName == it->bestName
-                && participant.isContact == it->isContact && participant.islocal == it->islocal
-                && participant.videoMuted == it->videoMuted)
+        if (participant.uri == it->uri && participant.sinkId == it->sinkId
+            && participant.active == it->active
+            && participant.audioLocalMuted == it->audioLocalMuted
+            && participant.audioModeratorMuted == it->audioModeratorMuted
+            && participant.avatar == it->avatar && participant.bestName == it->bestName
+            && participant.isContact == it->isContact && participant.islocal == it->islocal
+            && participant.videoMuted == it->videoMuted)
             return;
         (*it) = participant;
         Q_EMIT linked.participantUpdated(callID, idx_);
     }
 }
-
 
 void
 CallParticipants::filterCandidates(const VectorMapStringString& infos)
@@ -116,8 +142,7 @@ CallParticipants::filterCandidates(const VectorMapStringString& infos)
             }
         }
         auto it = candidates_.find(peerId);
-        if (candidate["w"].toInt() != 0
-            && candidate["h"].toInt() != 0) {
+        if (candidate["w"].toInt() != 0 && candidate["h"].toInt() != 0) {
             validUris_.append(peerId);
             if (it == candidates_.end()) {
                 candidates_.insert(peerId, ParticipantInfos(candidate, callID, peerId));
