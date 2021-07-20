@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf012d0b_62e205b0",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1054,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-20T13:42:44Z",
+      "side": 1,
+      "message": "TRUE_STR/FALSE_STR should be used, but I\u0027ll not block the patch for this",
+      "range": {
+        "startLine": 1054,
+        "startChar": 45,
+        "endLine": 1054,
+        "endChar": 52
+      },
+      "revId": "ce9ecdf19b1701ff4acac7e9213c7e040b0593ed",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
