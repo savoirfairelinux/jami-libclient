@@ -24,6 +24,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b7cfd06_488c0bdb",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 998,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-07-21T13:22:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1abe1c26_632fc373",
+      "range": {
+        "startLine": 995,
+        "startChar": 12,
+        "endLine": 998,
+        "endChar": 45
+      },
+      "revId": "e7d3d6bb6d6e35e338c68e5fc0d7b692bc4646f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c700db6_5bef025e",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-20T13:39:24Z",
       "side": 1,
       "message": "Missing clang format hook!",
+      "range": {
+        "startLine": 1141,
+        "startChar": 0,
+        "endLine": 1141,
+        "endChar": 17
+      },
+      "revId": "e7d3d6bb6d6e35e338c68e5fc0d7b692bc4646f4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0be1bf67_47f2a7f6",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1141,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-07-21T13:22:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c700db6_5bef025e",
       "range": {
         "startLine": 1141,
         "startChar": 0,
