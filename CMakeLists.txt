@@ -23,6 +23,18 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
 set(QML_RESOURCES ${PROJECT_SOURCE_DIR}/resources.qrc)
 set(QML_RESOURCES_QML ${PROJECT_SOURCE_DIR}/qml.qrc)
 
+# Resource auto-gen
+# check files in the resource directory and force a reconfigure if it changes
+file(GLOB_RECURSE
+    RES_FILES CONFIGURE_DEPENDS
+    ${PROJECT_SOURCE_DIR}/resources/*
+)
+include(FindPythonInterp)
+execute_process(
+    COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/gen-resources.py
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
+
 # library compatibility (boost, libnotify, etc.)
 add_definitions(-DQT_NO_KEYWORDS)
 

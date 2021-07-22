@@ -6,6 +6,8 @@ resdir = 'resources'
 qmlfile = os.path.join('src', 'constant', 'JamiResources.qml')
 sep = '_'
 
+print("Generating resource files ...")
+
 # replace characters that aren't valid within QML property names
 formatProp = lambda str: (
     "".join([{".": sep, "-": sep, " ": sep}

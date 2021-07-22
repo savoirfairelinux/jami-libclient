@@ -25,3 +25,7 @@ build-local/
 *qmlcache.qrc
 
 .deploy.stamp
+
+# auto-gen files
+resources.qrc
+src/constant/JamiResources.qml
