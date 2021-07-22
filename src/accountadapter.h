@@ -95,7 +95,10 @@ Q_SIGNALS:
 
     // Send report failure to QML to make it show the right UI state .
     void reportFailure();
+    void accountCreationFailed();
     void accountAdded(QString accountId, int index);
+    void accountRemoved();
+    void accountConfigFinalized();
 
 private:
     // Implement what to do when account creation fails.

@@ -26,7 +26,6 @@ import net.jami.Models 1.0
 import net.jami.Constants 1.0
 
 import "qrc:/src/mainview/components"
-import"../../../src/mainview/components"
 
 ColumnLayout {
     id: root

@@ -38,7 +38,6 @@ Rectangle {
         sipPasswordEdit.clear()
         sipServernameEdit.clear()
         sipProxyEdit.clear()
-        sipUsernameEdit.clear()
     }
 
     Connections {
@@ -87,6 +86,8 @@ Rectangle {
         MaterialLineEdit {
             id: sipServernameEdit
 
+            objectName: "sipServernameEdit"
+
             Layout.alignment: Qt.AlignCenter
             Layout.preferredHeight: fieldLayoutHeight
             Layout.preferredWidth: createAccountButton.width
@@ -102,6 +103,8 @@ Rectangle {
         MaterialLineEdit {
             id: sipProxyEdit
 
+            objectName: "sipProxyEdit"
+
             Layout.alignment: Qt.AlignCenter
             Layout.preferredHeight: fieldLayoutHeight
             Layout.preferredWidth: createAccountButton.width
@@ -114,6 +117,8 @@ Rectangle {
 
         MaterialLineEdit {
             id: sipUsernameEdit
+
+            objectName: "sipUsernameEdit"
 
             Layout.alignment: Qt.AlignCenter
             Layout.preferredHeight: fieldLayoutHeight
@@ -128,6 +133,8 @@ Rectangle {
         MaterialLineEdit {
             id: sipPasswordEdit
 
+            objectName: "sipPasswordEdit"
+
             Layout.alignment: Qt.AlignCenter
             Layout.preferredHeight: fieldLayoutHeight
             Layout.preferredWidth: createAccountButton.width
@@ -141,6 +148,8 @@ Rectangle {
 
         MaterialButton {
             id: createAccountButton
+
+            objectName: "createAccountButton"
 
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins

@@ -36,11 +36,7 @@ AccountAdapter::AccountAdapter(AppSettingsManager* settingsManager,
 {
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_MODELS, accSrcModel_.get(), "AccountListModel");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_MODELS, accModel_.get(), "CurrentAccountFilterModel");
-}
 
-void
-AccountAdapter::safeInit()
-{
     connect(&lrcInstance_->accountModel(),
             &NewAccountModel::accountStatusChanged,
             this,
@@ -51,6 +47,10 @@ AccountAdapter::safeInit()
             this,
             &AccountAdapter::accountStatusChanged);
 }
+
+void
+AccountAdapter::safeInit()
+{}
 
 NewAccountModel*
 AccountAdapter::getModel()
@@ -76,19 +76,27 @@ AccountAdapter::changeAccount(int row)
 void
 AccountAdapter::connectFailure()
 {
-    Utils::oneShotConnect(&lrcInstance_->accountModel(),
-                          &lrc::api::NewAccountModel::accountRemoved,
-                          [this](const QString& accountId) {
-                              Q_UNUSED(accountId);
-                              Q_EMIT reportFailure();
-                          });
+    Utils::oneShotConnect(
+        &lrcInstance_->accountModel(),
+        &lrc::api::NewAccountModel::accountRemoved,
+        [this](const QString& accountId) {
+            Q_UNUSED(accountId);
+            Q_EMIT accountCreationFailed();
+            Q_EMIT reportFailure();
+        },
+        &lrcInstance_->accountModel(),
+        &lrc::api::NewAccountModel::accountAdded);
 
-    Utils::oneShotConnect(&lrcInstance_->accountModel(),
-                          &lrc::api::NewAccountModel::invalidAccountDetected,
-                          [this](const QString& accountId) {
-                              Q_UNUSED(accountId);
-                              Q_EMIT reportFailure();
-                          });
+    Utils::oneShotConnect(
+        &lrcInstance_->accountModel(),
+        &lrc::api::NewAccountModel::invalidAccountDetected,
+        [this](const QString& accountId) {
+            Q_UNUSED(accountId);
+            Q_EMIT accountCreationFailed();
+            Q_EMIT reportFailure();
+        },
+        &lrcInstance_->accountModel(),
+        &lrc::api::NewAccountModel::accountAdded);
 }
 
 void
@@ -100,6 +108,14 @@ AccountAdapter::createJamiAccount(QString registeredName,
         &lrcInstance_->accountModel(),
         &lrc::api::NewAccountModel::accountAdded,
         [this, registeredName, settings, isCreating](const QString& accountId) {
+            Utils::oneShotConnect(&lrcInstance_->accountModel(),
+                                  &lrc::api::NewAccountModel::accountDetailsChanged,
+                                  [this](const QString& accountId) {
+                                      Q_UNUSED(accountId);
+                                      // For testing purpose
+                                      Q_EMIT accountConfigFinalized();
+                                  });
+
             auto confProps = lrcInstance_->accountModel().getAccountConfig(accountId);
 #ifdef Q_OS_WIN
             confProps.Ringtone.ringtonePath = Utils::GetRingtonePath();
@@ -132,7 +148,9 @@ AccountAdapter::createJamiAccount(QString registeredName,
                                     lrcInstance_->accountModel().getAccountList().indexOf(
                                         accountId));
             }
-        });
+        },
+        this,
+        &AccountAdapter::accountCreationFailed);
 
     connectFailure();
 
@@ -149,27 +167,35 @@ AccountAdapter::createJamiAccount(QString registeredName,
 void
 AccountAdapter::createSIPAccount(const QVariantMap& settings)
 {
-    Utils::oneShotConnect(&lrcInstance_->accountModel(),
-                          &lrc::api::NewAccountModel::accountAdded,
-                          [this, settings](const QString& accountId) {
-                              auto confProps = lrcInstance_->accountModel().getAccountConfig(
-                                  accountId);
-                              // set SIP details
-                              confProps.hostname = settings["hostname"].toString();
-                              confProps.username = settings["username"].toString();
-                              confProps.password = settings["password"].toString();
-                              confProps.routeset = settings["proxy"].toString();
-#ifdef Q_OS_WIN
-                              confProps.Ringtone.ringtonePath = Utils::GetRingtonePath();
-#endif
-                              lrcInstance_->accountModel().setAccountConfig(accountId, confProps);
+    Utils::oneShotConnect(
+        &lrcInstance_->accountModel(),
+        &lrc::api::NewAccountModel::accountAdded,
+        [this, settings](const QString& accountId) {
+            Utils::oneShotConnect(&lrcInstance_->accountModel(),
+                                  &lrc::api::NewAccountModel::accountDetailsChanged,
+                                  [this](const QString& accountId) {
+                                      Q_UNUSED(accountId);
+                                      // For testing purpose
+                                      Q_EMIT accountConfigFinalized();
+                                  });
 
-                              Q_EMIT lrcInstance_->accountListChanged();
-                              Q_EMIT accountAdded(accountId,
-                                                  lrcInstance_->accountModel()
-                                                      .getAccountList()
-                                                      .indexOf(accountId));
-                          });
+            auto confProps = lrcInstance_->accountModel().getAccountConfig(accountId);
+            // set SIP details
+            confProps.hostname = settings["hostname"].toString();
+            confProps.username = settings["username"].toString();
+            confProps.password = settings["password"].toString();
+            confProps.routeset = settings["proxy"].toString();
+#ifdef Q_OS_WIN
+            confProps.Ringtone.ringtonePath = Utils::GetRingtonePath();
+#endif
+            lrcInstance_->accountModel().setAccountConfig(accountId, confProps);
+
+            Q_EMIT lrcInstance_->accountListChanged();
+            Q_EMIT accountAdded(accountId,
+                                lrcInstance_->accountModel().getAccountList().indexOf(accountId));
+        },
+        this,
+        &AccountAdapter::accountCreationFailed);
 
     connectFailure();
 
@@ -187,25 +213,33 @@ AccountAdapter::createSIPAccount(const QVariantMap& settings)
 void
 AccountAdapter::createJAMSAccount(const QVariantMap& settings)
 {
-    Utils::oneShotConnect(&lrcInstance_->accountModel(),
-                          &lrc::api::NewAccountModel::accountAdded,
-                          [this](const QString& accountId) {
-                              if (!lrcInstance_->accountModel().getAccountList().size())
-                                  return;
+    Utils::oneShotConnect(
+        &lrcInstance_->accountModel(),
+        &lrc::api::NewAccountModel::accountAdded,
+        [this](const QString& accountId) {
+            if (!lrcInstance_->accountModel().getAccountList().size())
+                return;
 
-                              auto confProps = lrcInstance_->accountModel().getAccountConfig(
-                                  accountId);
+            Utils::oneShotConnect(&lrcInstance_->accountModel(),
+                                  &lrc::api::NewAccountModel::accountDetailsChanged,
+                                  [this](const QString& accountId) {
+                                      Q_UNUSED(accountId);
+                                      // For testing purpose
+                                      Q_EMIT accountConfigFinalized();
+                                  });
+
+            auto confProps = lrcInstance_->accountModel().getAccountConfig(accountId);
 #ifdef Q_OS_WIN
-                              confProps.Ringtone.ringtonePath = Utils::GetRingtonePath();
+            confProps.Ringtone.ringtonePath = Utils::GetRingtonePath();
 #endif
-                              lrcInstance_->accountModel().setAccountConfig(accountId, confProps);
+            lrcInstance_->accountModel().setAccountConfig(accountId, confProps);
 
-                              Q_EMIT accountAdded(accountId,
-                                                  lrcInstance_->accountModel()
-                                                      .getAccountList()
-                                                      .indexOf(accountId));
-                              Q_EMIT lrcInstance_->accountListChanged();
-                          });
+            Q_EMIT accountAdded(accountId,
+                                lrcInstance_->accountModel().getAccountList().indexOf(accountId));
+            Q_EMIT lrcInstance_->accountListChanged();
+        },
+        this,
+        &AccountAdapter::accountCreationFailed);
 
     connectFailure();
 
@@ -219,6 +253,14 @@ AccountAdapter::createJAMSAccount(const QVariantMap& settings)
 void
 AccountAdapter::deleteCurrentAccount()
 {
+    Utils::oneShotConnect(&lrcInstance_->accountModel(),
+                          &lrc::api::NewAccountModel::accountRemoved,
+                          [this](const QString& accountId) {
+                              Q_UNUSED(accountId);
+                              // For testing purpose
+                              Q_EMIT accountRemoved();
+                          });
+
     lrcInstance_->accountModel().removeAccount(lrcInstance_->get_currentAccountId());
     Q_EMIT lrcInstance_->accountListChanged();
 }

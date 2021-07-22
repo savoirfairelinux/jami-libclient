@@ -7,5 +7,6 @@
         <file>src/resources/gz_test.gz</file>
         <file>src/resources/png_test.png</file>
         <file>src/tst_FilesToSendContainer.qml</file>
+        <file>src/tst_WizardView.qml</file>
     </qresource>
 </RCC>

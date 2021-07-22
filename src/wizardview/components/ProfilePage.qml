@@ -113,6 +113,8 @@ Rectangle {
         MaterialLineEdit {
             id: aliasEdit
 
+            objectName: "aliasEdit"
+
             property string lastFirstChar
 
             Layout.preferredHeight: fieldLayoutHeight
@@ -151,6 +153,8 @@ Rectangle {
 
         SpinnerButton {
             id: saveProfileBtn
+
+            objectName: "saveProfileBtn"
 
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: preferredWidth

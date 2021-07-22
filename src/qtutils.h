@@ -74,6 +74,37 @@ oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object* sender,
     });
 }
 
+template<typename Func1, typename Func2, typename Func3>
+void
+oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object* sender,
+               Func1 signal,
+               Func2 slot,
+               const typename QtPrivate::FunctionPointer<Func3>::Object* interrupter,
+               Func3 interrupterSignal)
+{
+    QMetaObject::Connection* const connection = new QMetaObject::Connection;
+    QMetaObject::Connection* const disconnectConnection = new QMetaObject::Connection;
+    QMetaObject::Connection* const interruptConnection = new QMetaObject::Connection;
+
+    auto disconnectFunc = [connection, disconnectConnection, interruptConnection] {
+        if (connection) {
+            QObject::disconnect(*connection);
+            delete connection;
+        }
+        if (disconnectConnection) {
+            QObject::disconnect(*disconnectConnection);
+            delete disconnectConnection;
+        }
+        if (interruptConnection) {
+            QObject::disconnect(*interruptConnection);
+            delete interruptConnection;
+        }
+    };
+    *connection = QObject::connect(sender, signal, slot);
+    *disconnectConnection = QObject::connect(sender, signal, disconnectFunc);
+    *interruptConnection = QObject::connect(interrupter, interrupterSignal, disconnectFunc);
+}
+
 template<typename Func1, typename Func2>
 void
 oneShotConnect(const typename QtPrivate::FunctionPointer<Func1>::Object* sender,

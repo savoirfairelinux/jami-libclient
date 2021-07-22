@@ -76,10 +76,14 @@ Rectangle {
     StackLayout {
         id: createAccountStack
 
+        objectName: "createAccountStack"
+
         anchors.fill: parent
 
         Rectangle {
             id: nameRegistrationPage
+
+            objectName: "nameRegistrationPage"
 
             property int stackIndex: 0
 
@@ -117,6 +121,8 @@ Rectangle {
 
                 UsernameLineEdit {
                     id: usernameEdit
+
+                    objectName: "usernameEdit"
 
                     Layout.topMargin: 15
                     Layout.preferredHeight: fieldLayoutHeight
@@ -205,6 +211,8 @@ Rectangle {
         Rectangle {
             id: passwordSetupPage
 
+            objectName: "passwordSetupPage"
+
             property int stackIndex: 1
 
             color: JamiTheme.backgroundColor
@@ -234,6 +242,8 @@ Rectangle {
                     Switch {
                         id: passwordSwitch
 
+                        objectName: "passwordSwitch"
+
                         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                         Layout.leftMargin: -JamiTheme.wizardViewPageLayoutSpacing
                         Layout.topMargin: 5
@@ -249,6 +259,8 @@ Rectangle {
 
                 MaterialLineEdit {
                     id: passwordEdit
+
+                    objectName: "passwordEdit"
 
                     Layout.preferredHeight: fieldLayoutHeight
                     Layout.preferredWidth: createAccountButton.width
@@ -266,6 +278,8 @@ Rectangle {
 
                 MaterialLineEdit {
                     id: passwordConfirmEdit
+
+                    objectName: "passwordConfirmEdit"
 
                     Layout.preferredHeight: fieldLayoutHeight
                     Layout.preferredWidth: createAccountButton.width
@@ -293,6 +307,8 @@ Rectangle {
 
                 MaterialButton {
                     id: createAccountButton
+
+                    objectName: "createAccountButton"
 
                     Layout.alignment: Qt.AlignCenter
                     Layout.preferredWidth: preferredWidth

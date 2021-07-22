@@ -47,16 +47,11 @@ Rectangle {
         function onReportFailure() {
             var errorMessage = JamiStrings.errorCreateAccount
 
-            switch(controlPanelStackView.currentIndex) {
-            case importFromDevicePage.stackLayoutIndex:
-                importFromDevicePage.errorOccured(errorMessage)
-                break
-            case importFromBackupPage.stackLayoutIndex:
-                importFromBackupPage.errorOccured(errorMessage)
-                break
-            case connectToAccountManagerPage.stackLayoutIndex:
-                connectToAccountManagerPage.errorOccured(errorMessage)
-                break
+            for (var i = 0; i < controlPanelStackView.children.length; i++) {
+                if (i === controlPanelStackView.currentIndex) {
+                    controlPanelStackView.children[i].errorOccured(errorMessage)
+                    return
+                }
             }
         }
     }
@@ -85,6 +80,8 @@ Rectangle {
         StackLayout {
             id: controlPanelStackView
 
+            objectName: "controlPanelStackView"
+
             function setPage(obj) {
                 for (var i in this.children) {
                     if (this.children[i] === obj) {
@@ -101,6 +98,8 @@ Rectangle {
             WelcomePage {
                 id: welcomePage
 
+                objectName: "welcomePage"
+
                 onShowThisPage: controlPanelStackView.setPage(this)
 
                 onScrollToBottom: {
@@ -112,11 +111,15 @@ Rectangle {
             CreateAccountPage {
                 id: createAccountPage
 
+                objectName: "createAccountPage"
+
                 onShowThisPage: controlPanelStackView.setPage(this)
             }
 
             ProfilePage {
                 id: profilePage
+
+                objectName: "profilePage"
 
                 onShowThisPage: controlPanelStackView.setPage(this)
             }
@@ -124,11 +127,15 @@ Rectangle {
             BackupKeyPage {
                 id: backupKeysPage
 
+                objectName: "backupKeysPage"
+
                 onShowThisPage: controlPanelStackView.setPage(this)
             }
 
             ImportFromDevicePage {
                 id: importFromDevicePage
+
+                objectName: "importFromDevicePage"
 
                 onShowThisPage: controlPanelStackView.setPage(this)
             }
@@ -136,17 +143,23 @@ Rectangle {
             ImportFromBackupPage {
                 id: importFromBackupPage
 
+                objectName: "importFromBackupPage"
+
                 onShowThisPage: controlPanelStackView.setPage(this)
             }
 
             ConnectToAccountManagerPage {
                 id: connectToAccountManagerPage
 
+                objectName: "connectToAccountManagerPage"
+
                 onShowThisPage: controlPanelStackView.setPage(this)
             }
 
             CreateSIPAccountPage {
                 id: createSIPAccountPage
+
+                objectName: "createSIPAccountPage"
 
                 onShowThisPage: controlPanelStackView.setPage(this)
             }
