@@ -1040,6 +1040,15 @@ public Q_SLOTS: // METHODS
                                        conversationId.toStdString(),
                                        convertMap(info));
     }
+
+    uint32_t countInteractionsSince(const QString& accountId,
+                                    const QString& conversationId,
+                                    const QString& interactionId)
+    {
+        return DRing::countInteractionsSince(accountId.toStdString(),
+                                             conversationId.toStdString(),
+                                             interactionId.toStdString());
+    }
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
     void accountsChanged();
