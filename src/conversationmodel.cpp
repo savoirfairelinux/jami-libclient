@@ -2708,6 +2708,10 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     const MapStringString& details = ConfigurationManager::instance()
                                          .conversationInfos(linked.owner.id, convId);
     auto mode = conversation::to_mode(details["mode"].toInt());
+    conversation::Info conversation;
+    conversation.uid = convId;
+    conversation.accountId = linked.owner.id;
+    QString lastRead;
     for (auto& member : members) {
         // this check should be removed once all usage of participants replaced by
         // peersForConversation. We should have ourself in participants list
@@ -2715,13 +2719,15 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
         participants.append(member["uri"]);
         if (mode == conversation::Mode::ONE_TO_ONE && member["uri"] != accountURI) {
             otherMember = member["uri"];
+        } else if (member["uri"] == accountURI) {
+            lastRead = member["lastDisplayed"];
         }
+        conversation.lastDisplayedMessageUid.emplace(member["uri"], member["lastDisplayed"]);
     }
-    conversation::Info conversation;
-    conversation.uid = convId;
-    conversation.accountId = linked.owner.id;
     conversation.participants = participants;
     conversation.mode = mode;
+    conversation.unreadMessages = ConfigurationManager::instance()
+                                      .countInteractions(linked.owner.id, convId, lastRead, "");
     if (mode == conversation::Mode::ONE_TO_ONE && !otherMember.isEmpty()) {
         try {
             conversation.confId = linked.owner.callModel->getConferenceFromURI(otherMember).id;
