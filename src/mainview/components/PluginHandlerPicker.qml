@@ -201,15 +201,14 @@ Popup {
                 RowLayout {
                     height: JamiTheme.preferredFieldHeight
 
-                    PushButton {
+                    BackButton {
                         id: backButton
+
                         Layout.leftMargin: 5
                         Layout.topMargin: 5
 
-                        imageColor: JamiTheme.textColor
-                        source: JamiResources.ic_arrow_back_24dp_svg
-                        toolTipText: qsTr("Go back to plugins list")
-                        hoverEnabled: true
+                        toolTipText: JamiStrings.goBackToPluginsList
+
                         onClicked: {
                             stack.pop(null, StackView.Immediate)
                         }

@@ -33,18 +33,11 @@ RowLayout {
     property string title: ""
     signal backArrowClicked
 
-    PushButton {
+    BackButton {
         id: backToSettingsMenuButton
 
         Layout.preferredWidth: JamiTheme.preferredFieldHeight
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
-
-        radius: JamiTheme.preferredFieldHeight
-        source: JamiResources.ic_arrow_back_24dp_svg
-        normalColor: JamiTheme.backgroundColor
-        imageColor: JamiTheme.textColor
-        toolTipText: JamiStrings.back
-        hoverEnabled: true
 
         visible: mainView.sidePanelOnly
 

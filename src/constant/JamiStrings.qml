@@ -430,6 +430,7 @@ Item {
 
     // PluginListSettingsView
     property string addNewPlugin: qsTr("Add new plugin")
+    property string goBackToPluginsList: qsTr("Go back to plugins list")
 
     // PreferenceItemDelegate
     property string selectFile: qsTr("Select a file")
