@@ -28,12 +28,11 @@ import "../../commoncomponents"
 BaseDialog {
     id: root
 
-    property string responsibleConvUid: ""
-    property string convId: ""
-    property string aliasText: ""
-    property string registeredNameText: ""
-    property string idText: ""
-    property bool isSwarm: false
+    property string convId
+    property string aliasText
+    property string registeredNameText
+    property string idText
+    property bool isSwarm
 
     property int preferredImgSize: 80
 
@@ -200,7 +199,12 @@ BaseDialog {
                 fillMode: Image.PreserveAspectFit
                 sourceSize.width: preferredImgSize
                 sourceSize.height: preferredImgSize
-                mipmap: true
+                mipmap: false
+                smooth: false
+
+                source: convId !== "" ?
+                            "image://qrImage/contact_" + convId :
+                            ""
             }
 
             Text {
@@ -237,10 +241,5 @@ BaseDialog {
                 }
             }
         }
-    }
-
-    onResponsibleConvUidChanged: {
-        if (responsibleConvUid !== "")
-            contactQrImage.source = "image://qrImage/contact_" + responsibleConvUid
     }
 }

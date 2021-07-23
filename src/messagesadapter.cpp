@@ -57,44 +57,31 @@ MessagesAdapter::safeInit()
 }
 
 void
-MessagesAdapter::setupChatView(const QString& convUid)
+MessagesAdapter::setupChatView(const QVariantMap& convInfo)
 {
-    auto* convModel = lrcInstance_->getCurrentConversationModel();
-    if (convModel == nullptr) {
-        return;
-    }
-
-    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid);
-    if (convInfo.uid.isEmpty() || convInfo.participants.isEmpty()) {
-        return;
-    }
-
-    QString contactURI = convInfo.participants.at(0);
-
-    auto selectedAccountId = lrcInstance_->get_currentAccountId();
-    auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(selectedAccountId);
+    bool isLegacy = !convInfo["isSwarm"].toBool();
+    bool isRequest = convInfo["isRequest"].toBool();
+    bool needsSyncing = convInfo["needsSyncing"].toBool();
 
     QMetaObject::invokeMethod(qmlObj_,
                               "setSendContactRequestButtonVisible",
-                              Q_ARG(QVariant, convInfo.isLegacy() && convInfo.isRequest));
+                              Q_ARG(QVariant, isLegacy && isRequest));
     QMetaObject::invokeMethod(qmlObj_,
                               "setMessagingHeaderButtonsVisible",
-                              Q_ARG(QVariant,
-                                    !(convInfo.isLegacy()
-                                      && (convInfo.isRequest || convInfo.needsSyncing))));
+                              Q_ARG(QVariant, !(isLegacy && (isRequest || needsSyncing))));
 
     setMessagesVisibility(false);
-    setIsSwarm(convInfo.isSwarm());
-    changeInvitationViewRequest(convInfo.isRequest or convInfo.needsSyncing,
-                                !convInfo.isSwarm(),
-                                convInfo.needsSyncing,
-                                convModel->title(convInfo.uid),
-                                contactURI);
+    setIsSwarm(!isLegacy);
+    Q_EMIT changeInvitationViewRequest(isRequest || needsSyncing,
+                                       isLegacy,
+                                       needsSyncing,
+                                       convInfo["title"].toString(),
+                                       convInfo["convId"].toString());
 
     Utils::oneShotConnect(qmlObj_, SIGNAL(messagesCleared()), this, SLOT(slotMessagesCleared()));
     clearChatView();
 
-    Q_EMIT newMessageBarPlaceholderText(accountInfo.contactModel->bestNameForContact(contactURI));
+    Q_EMIT newMessageBarPlaceholderText(convInfo["title"].toString());
 }
 
 void
@@ -385,13 +372,15 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
                                         !(convInfo.isSwarm()
                                           && (convInfo.isRequest || convInfo.needsSyncing))));
 
-        changeInvitationViewRequest(convInfo.isRequest or convInfo.needsSyncing,
-                                    convInfo.isSwarm(),
-                                    convInfo.needsSyncing,
-                                    title,
-                                    contactUri);
+        Q_EMIT changeInvitationViewRequest(convInfo.isRequest or convInfo.needsSyncing,
+                                           convInfo.isSwarm(),
+                                           convInfo.needsSyncing,
+                                           title,
+                                           convInfo.uid);
         if (convInfo.isSwarm())
             return;
+
+        // TODO: swarmify me
         auto& contact = accInfo->contactModel->getContact(contactUri);
         bool isPending = contact.profileInfo.type == profile::Type::TEMPORARY;
         QMetaObject::invokeMethod(qmlObj_,

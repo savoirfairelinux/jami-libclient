@@ -35,6 +35,7 @@
     X(LastInteraction) \
     X(ContactType) \
     X(IsSwarm) \
+    X(IsCoreDialog) \
     X(IsBanned) \
     X(UID) \
     X(InCall) \

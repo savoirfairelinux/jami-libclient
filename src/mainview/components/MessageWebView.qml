@@ -115,7 +115,7 @@ Rectangle {
         target: MessagesAdapter
 
         function onChangeInvitationViewRequest(show, isSwarm, needsSyncing,
-                                               contactTitle, contactUri) {
+                                               title, convId) {
             if (show)
                 root.mode = MessageWebView.Mode.Invitation
             else {
@@ -123,9 +123,9 @@ Rectangle {
                 return
             }
 
-            invitationView.invitationViewImageId = contactUri
-            invitationView.invitationViewContactTitle = contactTitle
-            invitationView.invitationViewNeedSyncing = needsSyncing
+            invitationView.imageId = convId
+            invitationView.title = title
+            invitationView.needSyncing = needsSyncing
         }
     }
 

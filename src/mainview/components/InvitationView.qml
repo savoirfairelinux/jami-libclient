@@ -30,9 +30,9 @@ import "../../commoncomponents"
 Rectangle {
     id: root
 
-    property string invitationViewImageId
-    property string invitationViewContactTitle
-    property bool invitationViewNeedSyncing: false
+    property alias imageId: avatar.imageId
+    property string title
+    property bool needSyncing
 
     property real marginSize: 20
     property real textMarginSize: 50
@@ -49,7 +49,7 @@ Rectangle {
         width: infoColumnLayout.width - textMarginSize
         height: visible ? contentHeight : 0
 
-        visible: !invitationViewNeedSyncing
+        visible: !needSyncing
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
@@ -58,7 +58,7 @@ Rectangle {
         color: JamiTheme.textColor
         wrapMode: Text.Wrap
 
-        text: JamiStrings.invitationViewSentRequest.arg(invitationViewContactTitle)
+        text: JamiStrings.invitationViewSentRequest.arg(title)
     }
 
     ColumnLayout {
@@ -69,7 +69,7 @@ Rectangle {
         width: root.width
 
         Avatar {
-            id: avatarImage
+            id: avatar
 
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: invitationViewSentRequestText.visible ? marginSize : 0
@@ -77,8 +77,7 @@ Rectangle {
             Layout.preferredWidth: JamiTheme.invitationViewAvatarSize
 
             showPresenceIndicator: false
-            mode: Avatar.Mode.Contact
-            imageId: invitationViewImageId
+            mode: Avatar.Mode.Conversation
         }
 
         Text {
@@ -96,7 +95,7 @@ Rectangle {
             color: JamiTheme.textColor
             wrapMode: Text.Wrap
 
-            text: root.invitationViewNeedSyncing ?
+            text: needSyncing ?
                       JamiStrings.invitationViewAcceptedConversation :
                       JamiStrings.invitationViewJoinConversation
         }
@@ -109,7 +108,7 @@ Rectangle {
             Layout.preferredWidth: infoColumnLayout.width - textMarginSize
             Layout.preferredHeight: visible ? contentHeight : 0
 
-            visible: invitationViewNeedSyncing
+            visible: needSyncing
 
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -118,7 +117,7 @@ Rectangle {
             color: JamiTheme.textColor
             wrapMode: Text.Wrap
 
-            text: JamiStrings.invitationViewWaitingForSync.arg(invitationViewContactTitle)
+            text: JamiStrings.invitationViewWaitingForSync.arg(title)
         }
 
         RowLayout {
@@ -129,7 +128,7 @@ Rectangle {
 
             spacing: JamiTheme.invitationViewButtonsSpacing
 
-            visible: !invitationViewNeedSyncing
+            visible: !needSyncing
 
             PushButton {
                 id: blockButton

@@ -397,15 +397,17 @@ ConversationsAdapter::getConvInfoMap(const QString& convId)
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(convId);
     if (convInfo.participants.empty())
         return {};
-    auto peerUri = convInfo.participants[0];
-    ContactModel* contactModel {nullptr};
-    contact::Info contact {};
-    try {
-        const auto& accountInfo = lrcInstance_->getAccountInfo(convInfo.accountId);
-        contactModel = accountInfo.contactModel.get();
-        contact = contactModel->getContact(peerUri);
-    } catch (...) {
+    QString peerUri {};
+    QString bestId {};
+    if (convInfo.isCoreDialog()) {
+        try {
+            const auto& accountInfo = lrcInstance_->getAccountInfo(convInfo.accountId);
+            peerUri = accountInfo.conversationModel->peersForConversation(convId).at(0);
+            bestId = accountInfo.contactModel->bestIdForContact(peerUri);
+        } catch (...) {
+        }
     }
+
     bool isAudioOnly {false};
     if (!convInfo.uid.isEmpty()) {
         auto* call = lrcInstance_->getCallInfoForConversation(convInfo);
@@ -426,14 +428,13 @@ ConversationsAdapter::getConvInfoMap(const QString& convId)
                                       || (call.isOutgoing && call.status != call::Status::ENDED));
         callState = call.status;
     }
-    // WARNING: not swarm ready
-    // titles should come from conversation, not contact model
     return {{"convId", convId},
-            {"bestId", contactModel->bestIdForContact(peerUri)},
+            {"bestId", bestId},
             {"title", lrcInstance_->getCurrentConversationModel()->title(convId)},
             {"uri", peerUri},
             {"isSwarm", convInfo.isSwarm()},
-            {"contactType", static_cast<int>(contact.profileInfo.type)},
+            {"isRequest", convInfo.isRequest},
+            {"needsSyncing", convInfo.needsSyncing},
             {"isAudioOnly", isAudioOnly},
             {"callState", static_cast<int>(callState)},
             {"callStackViewShouldShow", callStackViewShouldShow}};

@@ -131,23 +131,23 @@ ListView {
             var item = {
                 "convId": model.dataForRow(row, ConversationList.UID),
                 "displayId": model.dataForRow(row, ConversationList.BestId),
-                "displayName": model.dataForRow(row, ConversationList.Title),
+                "title": model.dataForRow(row, ConversationList.Title),
                 "uri": model.dataForRow(row, ConversationList.URI),
-                "contactType": model.dataForRow(row, ConversationList.ContactType),
-                "isSwarm": model.dataForRow(row, ConversationList.IsSwarm),
+                "isSwarm": model.dataForRow(row, ConversationList.IsSwarm)
             }
 
             responsibleAccountId = LRCInstance.currentAccountId
             responsibleConvUid = item.convId
             isSwarm = item.isSwarm
-            contactType = item.contactType
+            contactType = LRCInstance.currentAccountType
 
-            userProfile.responsibleConvUid = item.convId
-            userProfile.aliasText = item.displayName
-            userProfile.registeredNameText = item.displayId
-            userProfile.idText = item.uri
-            userProfile.convId = item.convId
-            userProfile.isSwarm = item.isSwarm
+            if (model.dataForRow(row, ConversationList.IsCoreDialog)) {
+                userProfile.aliasText = item.title
+                userProfile.registeredNameText = item.displayId
+                userProfile.idText = item.uri
+                userProfile.convId = item.convId
+                userProfile.isSwarm = item.isSwarm
+            }
 
             openMenu()
         }

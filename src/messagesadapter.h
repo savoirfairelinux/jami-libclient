@@ -41,7 +41,7 @@ public:
 protected:
     void safeInit() override;
 
-    Q_INVOKABLE void setupChatView(const QString& convUid);
+    Q_INVOKABLE void setupChatView(const QVariantMap& convInfo);
     Q_INVOKABLE void connectConversationModel();
     Q_INVOKABLE void sendConversationRequest();
     Q_INVOKABLE void removeConversation(const QString& accountId,

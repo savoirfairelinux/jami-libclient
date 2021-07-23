@@ -129,6 +129,8 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
     }
     case Role::IsSwarm:
         return QVariant(item.isSwarm());
+    case Role::IsCoreDialog:
+        return QVariant(item.isCoreDialog());
     case Role::Mode:
         return QVariant(static_cast<int>(item.mode));
     case Role::UID:
@@ -163,6 +165,7 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
             contactModel = lrcInstance_->getCurrentAccountInfo().contactModel.get();
             contact = contactModel->getContact(peerUri);
         } catch (const std::exception&) {
+            qWarning() << Q_FUNC_INFO << "Can't find contact" << peerUri;
             return {};
         }
 

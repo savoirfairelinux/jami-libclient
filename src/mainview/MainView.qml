@@ -184,7 +184,7 @@ Rectangle {
             if (inSettingsView) {
                 toggleSettingsView()
             }
-            MessagesAdapter.setupChatView(convId)
+            MessagesAdapter.setupChatView(item)
             callStackView.setLinkedWebview(communicationPageMessageWebView)
             callStackView.responsibleAccountId = LRCInstance.currentAccountId
             callStackView.responsibleConvUid = convId
@@ -203,7 +203,7 @@ Rectangle {
         } else if (!inSettingsView) {
             if (currentConvUID !== convId) {
                 callStackView.needToCloseInCallConversationAndPotentialWindow()
-                MessagesAdapter.setupChatView(convId)
+                MessagesAdapter.setupChatView(item)
                 pushCommunicationMessageWebView()
                 communicationPageMessageWebView.focusMessageWebView()
                 currentConvUID = convId
