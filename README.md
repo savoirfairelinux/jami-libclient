@@ -20,7 +20,7 @@ For more information about the jami project, see the following:
 # Getting involved
 
 + Browse our [current issues](https://git.jami.net/savoirfairelinux/jami-client-qt/issues), or file an issue.
-+ IRC: #jami on freenode
++ IRC: #jami on libera.chat
 + ML: jami@gnu.org
 + Documentation: https://docs.jami.net
 + Localization happens on [Transifex](https://www.transifex.com/savoirfairelinux/jami/dashboard/)
