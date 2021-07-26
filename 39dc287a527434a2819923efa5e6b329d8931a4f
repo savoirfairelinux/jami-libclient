@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "937e9041_3a0763e4",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 675,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-26T17:38:05Z",
+      "side": 1,
+      "message": "I\u0027m surprised it was not the case, looks like it removes all conversation with the same peer Oo",
+      "range": {
+        "startLine": 675,
+        "startChar": 28,
+        "endLine": 675,
+        "endChar": 40
+      },
+      "revId": "39dc287a527434a2819923efa5e6b329d8931a4f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ab94ec4_04168d7c",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2375,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-26T17:38:05Z",
+      "side": 1,
+      "message": "we should not remove the profile here as it\u0027s upgrading to a swarm",
+      "range": {
+        "startLine": 2375,
+        "startChar": 39,
+        "endLine": 2375,
+        "endChar": 79
+      },
+      "revId": "39dc287a527434a2819923efa5e6b329d8931a4f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25a3986f_9c699c45",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2607,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-26T17:38:05Z",
+      "side": 1,
+      "message": "same, it\u0027s upgrading, not really removing",
+      "range": {
+        "startLine": 2607,
+        "startChar": 35,
+        "endLine": 2607,
+        "endChar": 52
+      },
+      "revId": "39dc287a527434a2819923efa5e6b329d8931a4f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa14580_e5ee5a8f",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2759,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-26T17:38:05Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 2759,
+        "startChar": 39,
+        "endLine": 2759,
+        "endChar": 60
+      },
+      "revId": "39dc287a527434a2819923efa5e6b329d8931a4f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
