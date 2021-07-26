@@ -272,6 +272,11 @@ Q_SIGNALS:
      */
     void accountStatusChanged(const QString& accountID);
     /**
+     * Connect this signal to know when the details of an account has changed.
+     * @param accountID
+     */
+    void accountDetailsChanged(const QString& accountID);
+    /**
      * Connect this signal to know when an account was added.
      * @param accountID
      */
