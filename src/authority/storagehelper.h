@@ -300,10 +300,11 @@ void deleteObsoleteHistory(Database& db, long int date);
 /**
  * Remove all conversation with a contact. Remove corresponding entries in
  * the conversations table.
+ * @param accountId
  * @param db
  * @param contactUri
  */
-void removeContact(Database& db, const QString& contactUri);
+void removeContact(const QString& accountId, Database& db, const QString& contactUri);
 
 /**
  * count number of 'UNREAD' from 'interactions' table.

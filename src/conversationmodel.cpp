@@ -2372,7 +2372,7 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
                 // remove non swarm conversation
                 if (conversation.isLegacy()) {
                     eraseConversation(conversation.uid);
-                    storage::removeContact(db, member["uri"]);
+                    storage::removeContact(linked.owner.id, db, member["uri"]);
                     invalidateModel();
                     emit linked.conversationRemoved(conversation.uid);
                     emit linked.modelChanged();
@@ -2604,7 +2604,7 @@ ConversationModelPimpl::addConversationRequest(const MapStringString& convReques
             // update conversation and remoe conversation from db
             conv.mode = mode;
             conv.uid = convId;
-            storage::removeContact(db, peer);
+            storage::removeContact(linked.owner.id, db, peer);
             invalidateModel();
             emit linked.modelChanged();
             return;
@@ -2756,7 +2756,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
                 eraseConversation(conv.uid);
                 invalidateModel();
                 Q_EMIT linked.conversationRemoved(conv.uid);
-                storage::removeContact(db, participantId);
+                storage::removeContact(linked.owner.id, db, participantId);
             }
         } catch (...) {
         }

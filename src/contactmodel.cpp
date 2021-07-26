@@ -325,12 +325,12 @@ ContactModel::removeContact(const QString& contactUri, bool banned)
                 return;
             }
             pimpl_->contacts.remove(contactUri);
-            storage::removeContact(pimpl_->db, contactUri);
+            storage::removeContact(owner.id, pimpl_->db, contactUri);
             emitContactRemoved = true;
         } else if (owner.profileInfo.type == profile::Type::SIP) {
             // Remove contact from db
             pimpl_->contacts.remove(contactUri);
-            storage::removeContact(pimpl_->db, contactUri);
+            storage::removeContact(owner.id, pimpl_->db, contactUri);
             emitContactRemoved = true;
         }
     }
@@ -862,7 +862,7 @@ ContactModelPimpl::slotContactRemoved(const QString& accountId,
                     bannedContacts.erase(it);
                 }
             }
-            storage::removeContact(db, contactUri);
+            storage::removeContact(linked.owner.id, db, contactUri);
             contacts.remove(contactUri);
         }
     }

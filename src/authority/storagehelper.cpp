@@ -672,7 +672,7 @@ deleteObsoleteHistory(Database& db, long int date)
 }
 
 void
-removeContact(Database& db, const QString& contactUri)
+removeContact(const QString& accountId, Database& db, const QString& contactUri)
 {
     // Get common conversations
     auto conversations = getConversationsWithPeer(db, contactUri);
@@ -686,6 +686,13 @@ removeContact(Database& db, const QString& contactUri)
         }
     } catch (Database::QueryDeleteError& e) {
         qWarning() << "deleteFrom error: " << e.details();
+    }
+
+    auto accountLocalPath = getPath() + accountId + QDir::separator();
+    auto fileName = QString(contactUri.toUtf8().toBase64());
+    auto path = accountLocalPath + "profiles" + QDir::separator() + fileName + ".vcf";
+    if (!QFile::remove(path)) {
+        qWarning() << "Couldn't remove vcard for" << contactUri << "at" << path;
     }
 }
 
