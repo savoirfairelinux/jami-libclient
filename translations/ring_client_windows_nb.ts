@@ -154,19 +154,6 @@
     </message>
 </context>
 <context>
-    <name>CollapsiblePasswordWidget</name>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="66"/>
-        <source>Password</source>
-        <translation>Passord</translation>
-    </message>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="98"/>
-        <source>Confirm Password</source>
-        <translation>Bekreft passord</translation>
-    </message>
-</context>
-<context>
     <name>ContactPicker</name>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
@@ -294,18 +281,18 @@
 <context>
     <name>DaemonReconnectWindow</name>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="97"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="99"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="154"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="153"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
@@ -1572,17 +1559,17 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="326"/>
         <source>File transfer</source>
-        <translation type="unfinished"/>
+        <translation>Filoverføring</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="327"/>
         <source>Allow incoming files from unknown contacts</source>
-        <translation type="unfinished"/>
+        <translation>Tillat innkommende filer fra ukjente kontakter</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="328"/>
         <source>Automatically accept incoming files</source>
-        <translation type="unfinished"/>
+        <translation>Godta automatisk innkommende filer</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="329"/>
@@ -2278,17 +2265,17 @@ Vennligst forsøk igjen senere.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="500"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="502"/>
+        <location filename="../src/mainapplication.cpp" line="445"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="508"/>
+        <location filename="../src/mainapplication.cpp" line="451"/>
         <source>&amp;Show Jami</source>
         <translation type="unfinished"/>
     </message>

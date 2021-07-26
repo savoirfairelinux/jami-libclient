@@ -154,19 +154,6 @@
     </message>
 </context>
 <context>
-    <name>CollapsiblePasswordWidget</name>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="66"/>
-        <source>Password</source>
-        <translation>密碼</translation>
-    </message>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="98"/>
-        <source>Confirm Password</source>
-        <translation>確認密碼</translation>
-    </message>
-</context>
-<context>
     <name>ContactPicker</name>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
@@ -294,19 +281,19 @@
 <context>
     <name>DaemonReconnectWindow</name>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="97"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
         <translation>無法重新連線至 Jami 幕後程式 (jamid)。
 Jami 將會結束。</translation>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="99"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
         <translation>正在嘗試重新連線至 Jami 幕後程式 (jamid)……</translation>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="154"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="153"/>
         <source>Ok</source>
         <translation>確定</translation>
     </message>
@@ -935,7 +922,7 @@ Jami 將會結束。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="118"/>
         <source>Allow IP Auto Rewrite</source>
-        <translation type="unfinished"/>
+        <translation>允許 IP 自動重寫</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="119"/>
@@ -1588,12 +1575,12 @@ Jami 將會結束。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>Accept transfer limit</source>
-        <translation type="unfinished"/>
+        <translation>接受傳輸限制</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="330"/>
         <source>in MB, 0 = unlimited</source>
-        <translation type="unfinished"/>
+        <translation>以 MB 為單位，0 = 無限制</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="333"/>
@@ -1705,17 +1692,17 @@ Jami 將會結束。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <source>Clear avatar image</source>
-        <translation type="unfinished"/>
+        <translation>清除大頭貼圖片</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="471"/>
         <source>Upgrade</source>
-        <translation type="unfinished"/>
+        <translation>升級</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="472"/>
         <source>Later</source>
-        <translation type="unfinished"/>
+        <translation>稍後</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="493"/>
@@ -1782,25 +1769,28 @@ Jami 將會結束。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="511"/>
         <source>%1 has sent you a request for a conversation.</source>
-        <translation type="unfinished"/>
+        <translation>%1 已向您傳送對話要求。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="512"/>
         <source>Hello,
 Would you like to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>您好，
+您想要加入對話嗎？</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="513"/>
         <source>You have accepted
 the conversation request</source>
-        <translation type="unfinished"/>
+        <translation>您已接受
+對話請求。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="514"/>
         <source>Waiting until %1
 connects to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>等待 %1
+連線以同步對話。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="208"/>
@@ -2280,17 +2270,17 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="500"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>E&amp;xit</source>
         <translation>離開(&amp;X)</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="502"/>
+        <location filename="../src/mainapplication.cpp" line="445"/>
         <source>&amp;Quit</source>
         <translation>結束(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="508"/>
+        <location filename="../src/mainapplication.cpp" line="451"/>
         <source>&amp;Show Jami</source>
         <translation>顯示 Jami(&amp;S)</translation>
     </message>

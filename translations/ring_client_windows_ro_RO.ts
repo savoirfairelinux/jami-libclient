@@ -154,19 +154,6 @@
     </message>
 </context>
 <context>
-    <name>CollapsiblePasswordWidget</name>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="66"/>
-        <source>Password</source>
-        <translation>Parola</translation>
-    </message>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="98"/>
-        <source>Confirm Password</source>
-        <translation>Confirmă parola</translation>
-    </message>
-</context>
-<context>
     <name>ContactPicker</name>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
@@ -294,19 +281,19 @@
 <context>
     <name>DaemonReconnectWindow</name>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="97"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
         <translation>Reconectare imposibilă la serviciul Jami (jamid).
 Jami se va închide acum.</translation>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="99"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
         <translation>Reconectare la serviciul Jami (jamid)…</translation>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="154"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="153"/>
         <source>Ok</source>
         <translation>Bine</translation>
     </message>
@@ -321,7 +308,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/commoncomponents/DeleteAccountDialog.qml" line="176"/>
         <source>Cancel</source>
-        <translation>Anulează</translation>
+        <translation>Renunță</translation>
     </message>
 </context>
 <context>
@@ -860,7 +847,7 @@ Jami se va închide acum.</translation>
         <location filename="../src/constant/JamiStrings.qml" line="366"/>
         <location filename="../src/constant/JamiStrings.qml" line="470"/>
         <source>Cancel</source>
-        <translation>Anulează</translation>
+        <translation>Renunță</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="33"/>
@@ -935,7 +922,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="118"/>
         <source>Allow IP Auto Rewrite</source>
-        <translation type="unfinished"/>
+        <translation>Permite rescrierea automată a IP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="119"/>
@@ -1573,27 +1560,27 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="326"/>
         <source>File transfer</source>
-        <translation type="unfinished"/>
+        <translation>Transfer de fișiere</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="327"/>
         <source>Allow incoming files from unknown contacts</source>
-        <translation type="unfinished"/>
+        <translation>Primește fișiere de la persoane necunoscute</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="328"/>
         <source>Automatically accept incoming files</source>
-        <translation type="unfinished"/>
+        <translation>Acceptă automat fișierele primite</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>Accept transfer limit</source>
-        <translation type="unfinished"/>
+        <translation>Limita transferului acceptat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="330"/>
         <source>in MB, 0 = unlimited</source>
-        <translation type="unfinished"/>
+        <translation>în MB, 0 = nelimitat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="333"/>
@@ -1705,17 +1692,17 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <source>Clear avatar image</source>
-        <translation type="unfinished"/>
+        <translation>Șterge poza de profil</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="471"/>
         <source>Upgrade</source>
-        <translation type="unfinished"/>
+        <translation>Actualizare</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="472"/>
         <source>Later</source>
-        <translation type="unfinished"/>
+        <translation>Mai tîrziu</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="493"/>
@@ -1782,25 +1769,27 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="511"/>
         <source>%1 has sent you a request for a conversation.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ți-a trimis o invitație la conversație.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="512"/>
         <source>Hello,
 Would you like to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Vrei să participi la conversație?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="513"/>
         <source>You have accepted
 the conversation request</source>
-        <translation type="unfinished"/>
+        <translation>Ai acceptat
+invitația la conversație.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="514"/>
         <source>Waiting until %1
 connects to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Se așteaptă ca %1
+să se conecteze pentru a sincroniza conversația.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="208"/>
@@ -1921,12 +1910,12 @@ connects to synchronize the conversation.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="401"/>
         <source>Choose a picture as avatar</source>
-        <translation>Alege o imagine de profil</translation>
+        <translation>Alege o poză de profil</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="402"/>
         <source>Import avatar from image file</source>
-        <translation>Importă imaginea de profil</translation>
+        <translation>Importă poza de profil</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="404"/>
@@ -2207,7 +2196,7 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="202"/>
         <source>Cancel</source>
-        <translation>Anulează</translation>
+        <translation>Renunță</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkDeviceDialog.qml" line="87"/>
@@ -2268,7 +2257,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="114"/>
         <source>Cancel</source>
-        <translation>Anulează</translation>
+        <translation>Renunță</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/LinkedDevices.qml" line="123"/>
@@ -2279,17 +2268,17 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="500"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>E&amp;xit</source>
         <translation>I&amp;eșire</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="502"/>
+        <location filename="../src/mainapplication.cpp" line="445"/>
         <source>&amp;Quit</source>
         <translation>Î&amp;nchide</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="508"/>
+        <location filename="../src/mainapplication.cpp" line="451"/>
         <source>&amp;Show Jami</source>
         <translation>&amp;Arată Jami</translation>
     </message>
@@ -2309,7 +2298,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="185"/>
         <source>Cancel</source>
-        <translation>Anulează</translation>
+        <translation>Renunță</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/NameRegistrationDialog.qml" line="39"/>
@@ -2333,7 +2322,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/commoncomponents/PasswordDialog.qml" line="223"/>
         <source>Cancel</source>
-        <translation>Anulează</translation>
+        <translation>Renunță</translation>
     </message>
 </context>
 <context>
@@ -2403,7 +2392,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="151"/>
         <source>Cancel</source>
-        <translation>Anulează</translation>
+        <translation>Renunță</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/PluginListPreferencesView.qml" line="403"/>
@@ -2529,7 +2518,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="126"/>
         <source>Cancel</source>
-        <translation>Anulează</translation>
+        <translation>Renunță</translation>
     </message>
 </context>
 <context>

@@ -154,19 +154,6 @@
     </message>
 </context>
 <context>
-    <name>CollapsiblePasswordWidget</name>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="66"/>
-        <source>Password</source>
-        <translation>Password</translation>
-    </message>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="98"/>
-        <source>Confirm Password</source>
-        <translation>Conferma password</translation>
-    </message>
-</context>
-<context>
     <name>ContactPicker</name>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
@@ -294,19 +281,19 @@
 <context>
     <name>DaemonReconnectWindow</name>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="97"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
         <translation>Impossibile riconnettersi al demone Jami (jamid).
 Jami ora si chiuderà.</translation>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="99"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
         <translation>Tentativo di riconnessione al demone Jami (jamid)…</translation>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="154"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="153"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
@@ -578,7 +565,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="86"/>
         <source>Allow fallback on RTP</source>
-        <translation>Consentire il ritorno su RTP</translation>
+        <translation>Consenti il ritorno su RTP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="87"/>
@@ -935,7 +922,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="118"/>
         <source>Allow IP Auto Rewrite</source>
-        <translation type="unfinished"/>
+        <translation>Permetti la riscrittura automatica dell&apos;IP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="119"/>
@@ -1573,27 +1560,27 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="326"/>
         <source>File transfer</source>
-        <translation type="unfinished"/>
+        <translation>Trasferimento file</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="327"/>
         <source>Allow incoming files from unknown contacts</source>
-        <translation type="unfinished"/>
+        <translation>Consenti file in arrivo da utenti sconosciuti</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="328"/>
         <source>Automatically accept incoming files</source>
-        <translation type="unfinished"/>
+        <translation>Accetta automaticamente i file in arrivo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>Accept transfer limit</source>
-        <translation type="unfinished"/>
+        <translation>Limite del trasferimento accettato</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="330"/>
         <source>in MB, 0 = unlimited</source>
-        <translation type="unfinished"/>
+        <translation>in MB, 0 = illimitato</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="333"/>
@@ -1705,17 +1692,17 @@ Vuoi aggiornare ora?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <source>Clear avatar image</source>
-        <translation type="unfinished"/>
+        <translation>Cancella la foto profilo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="471"/>
         <source>Upgrade</source>
-        <translation type="unfinished"/>
+        <translation>Aggiorna</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="472"/>
         <source>Later</source>
-        <translation type="unfinished"/>
+        <translation>Più tardi</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="493"/>
@@ -1782,25 +1769,28 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="511"/>
         <source>%1 has sent you a request for a conversation.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ti ha inviato una richiesta di conversazione.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="512"/>
         <source>Hello,
 Would you like to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Ciao, 
+Vuoi partecipare alla conversazione?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="513"/>
         <source>You have accepted
 the conversation request</source>
-        <translation type="unfinished"/>
+        <translation>Hai accettato
+la richiesta di conversazione.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="514"/>
         <source>Waiting until %1
 connects to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>In attesa che %1
+si connetta per sincronizzare la conversazione.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="208"/>
@@ -2279,17 +2269,17 @@ Per favore riprova più tardi.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="500"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>E&amp;xit</source>
         <translation>E&amp;sci</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="502"/>
+        <location filename="../src/mainapplication.cpp" line="445"/>
         <source>&amp;Quit</source>
         <translation>&amp;Esci</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="508"/>
+        <location filename="../src/mainapplication.cpp" line="451"/>
         <source>&amp;Show Jami</source>
         <translation>&amp;Mostra Jami</translation>
     </message>

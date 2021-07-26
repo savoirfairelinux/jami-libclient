@@ -154,19 +154,6 @@
     </message>
 </context>
 <context>
-    <name>CollapsiblePasswordWidget</name>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="66"/>
-        <source>Password</source>
-        <translation>Jelszó</translation>
-    </message>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="98"/>
-        <source>Confirm Password</source>
-        <translation>Jelszó megerősítése</translation>
-    </message>
-</context>
-<context>
     <name>ContactPicker</name>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
@@ -294,19 +281,19 @@
 <context>
     <name>DaemonReconnectWindow</name>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="97"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
         <translation>Nem sikerült újrakapcsolódni a Jami rendszerfolyamathoz (jamid).
 A Jami most kilép.</translation>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="99"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
         <translation>Újrakapcsolódás a Jami rendszerfolyamathoz (jamid)…</translation>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="154"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="153"/>
         <source>Ok</source>
         <translation>Rendben</translation>
     </message>
@@ -935,7 +922,7 @@ A Jami most kilép.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="118"/>
         <source>Allow IP Auto Rewrite</source>
-        <translation type="unfinished"/>
+        <translation>Önműködő IP-átírás engedélyezése</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="119"/>
@@ -1573,27 +1560,27 @@ A Jami most kilép.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="326"/>
         <source>File transfer</source>
-        <translation type="unfinished"/>
+        <translation>Fájlküldés</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="327"/>
         <source>Allow incoming files from unknown contacts</source>
-        <translation type="unfinished"/>
+        <translation>Az ismeretlen kapcsolatoktól érkező bejövő fájlok engedélyezése</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="328"/>
         <source>Automatically accept incoming files</source>
-        <translation type="unfinished"/>
+        <translation>A bejövő fájlok önműködő elfogadása</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>Accept transfer limit</source>
-        <translation type="unfinished"/>
+        <translation>Fájlküldési korlátozás elfogadása</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="330"/>
         <source>in MB, 0 = unlimited</source>
-        <translation type="unfinished"/>
+        <translation>MB, 0 = korlátlan</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="333"/>
@@ -1704,17 +1691,17 @@ A Jami most kilép.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <source>Clear avatar image</source>
-        <translation type="unfinished"/>
+        <translation>Megtestesüléskép törlése</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="471"/>
         <source>Upgrade</source>
-        <translation type="unfinished"/>
+        <translation>Frissítés</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="472"/>
         <source>Later</source>
-        <translation type="unfinished"/>
+        <translation>Később</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="493"/>
@@ -1731,7 +1718,7 @@ A Jami most kilép.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="497"/>
         <source>Is swarm:</source>
-        <translation>Rajcsoport:</translation>
+        <translation>Rajcsoport</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="498"/>
@@ -1781,25 +1768,28 @@ A Jami most kilép.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="511"/>
         <source>%1 has sent you a request for a conversation.</source>
-        <translation type="unfinished"/>
+        <translation>%1 kérelmet küldött Önnek egy beszélgetésre.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="512"/>
         <source>Hello,
 Would you like to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Üdv!
+Szeretne csatlakozni a beszélgetéshez?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="513"/>
         <source>You have accepted
 the conversation request</source>
-        <translation type="unfinished"/>
+        <translation>Elfogadta
+a beszélgetési kérelmet</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="514"/>
         <source>Waiting until %1
 connects to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Várjuk, hogy a(z) %1
+csatlakozzon a beszélgetés összehangolásához.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="208"/>
@@ -2278,17 +2268,17 @@ Kérjük, hogy próbálja újra később.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="500"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>E&amp;xit</source>
         <translation>&amp;Kilépés</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="502"/>
+        <location filename="../src/mainapplication.cpp" line="445"/>
         <source>&amp;Quit</source>
         <translation>&amp;Kilépés</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="508"/>
+        <location filename="../src/mainapplication.cpp" line="451"/>
         <source>&amp;Show Jami</source>
         <translation>Jami &amp;megjelenítése</translation>
     </message>

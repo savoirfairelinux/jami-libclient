@@ -154,19 +154,6 @@
     </message>
 </context>
 <context>
-    <name>CollapsiblePasswordWidget</name>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="66"/>
-        <source>Password</source>
-        <translation>Fjalëkalim</translation>
-    </message>
-    <message>
-        <location filename="../src/wizardview/components/CollapsiblePasswordWidget.qml" line="98"/>
-        <source>Confirm Password</source>
-        <translation>Ripohoni Fjalëkalimin</translation>
-    </message>
-</context>
-<context>
     <name>ContactPicker</name>
     <message>
         <location filename="../src/mainview/components/ContactPicker.qml" line="85"/>
@@ -294,19 +281,19 @@
 <context>
     <name>DaemonReconnectWindow</name>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="97"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
         <translation>S’u rilidh dot me demonin Jami (jamid).
 Jami tani do të mbyllet.</translation>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="99"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="98"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
         <translation>Po provohet të rilidhet me demonin Jami (jamid)…</translation>
     </message>
     <message>
-        <location filename="../src/DaemonReconnectWindow.qml" line="154"/>
+        <location filename="../src/DaemonReconnectWindow.qml" line="153"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
@@ -1588,12 +1575,12 @@ Jami tani do të mbyllet.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>Accept transfer limit</source>
-        <translation type="unfinished"/>
+        <translation>Prano kufi shpërnguljesh</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="330"/>
         <source>in MB, 0 = unlimited</source>
-        <translation type="unfinished"/>
+        <translation>në MB, 0 = e pakufizuar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="333"/>
@@ -1705,17 +1692,17 @@ Jami tani do të mbyllet.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <source>Clear avatar image</source>
-        <translation type="unfinished"/>
+        <translation>Spastro figurë avatari</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="471"/>
         <source>Upgrade</source>
-        <translation type="unfinished"/>
+        <translation>Përmirësoje</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="472"/>
         <source>Later</source>
-        <translation type="unfinished"/>
+        <translation>Më vonë</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="493"/>
@@ -1737,12 +1724,12 @@ Jami tani do të mbyllet.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="498"/>
         <source>True</source>
-        <translation type="unfinished"/>
+        <translation>True</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="499"/>
         <source>False</source>
-        <translation type="unfinished"/>
+        <translation>False</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="502"/>
@@ -1782,25 +1769,28 @@ Jami tani do të mbyllet.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="511"/>
         <source>%1 has sent you a request for a conversation.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ju ka dërguar një kërkesë për bisedë.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="512"/>
         <source>Hello,
 Would you like to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Tungjatjeta,
+Do të donit të merrnit pjesë në bisedë?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="513"/>
         <source>You have accepted
 the conversation request</source>
-        <translation type="unfinished"/>
+        <translation>E keni pranuar
+kërkesën për bisedë</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="514"/>
         <source>Waiting until %1
 connects to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Po priter deri sa %1
+të lidhet, për njëkohësim të bisedës.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="208"/>
@@ -2280,17 +2270,17 @@ Ju lutemi, riprovoni më vonë.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="500"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>E&amp;xit</source>
         <translation>&amp;Dalje</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="502"/>
+        <location filename="../src/mainapplication.cpp" line="445"/>
         <source>&amp;Quit</source>
         <translation>&amp;Mbylle</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="508"/>
+        <location filename="../src/mainapplication.cpp" line="451"/>
         <source>&amp;Show Jami</source>
         <translation>&amp;Shfaq Jami-n</translation>
     </message>
