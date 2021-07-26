@@ -520,7 +520,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="77"/>
         <source>Incoming transfer</source>
-        <translation>Bejövő fájlátvitel</translation>
+        <translation>Bejövő fájlküldés</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="78"/>
