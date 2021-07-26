@@ -567,7 +567,9 @@ NewAccountModelPimpl::slotAccountDetailsChanged(const QString& accountId,
         accountInfo.registeredName = new_username;
         emit linked.profileUpdated(accountId);
     }
+    // TODO: Remove accountStatusChanged here.
     emit linked.accountStatusChanged(accountId);
+    emit linked.accountDetailsChanged(accountId);
 }
 
 void
