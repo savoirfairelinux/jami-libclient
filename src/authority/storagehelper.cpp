@@ -268,6 +268,17 @@ createOrUpdateProfile(const QString& accountId,
     vcard::setProfile(accountId, profileInfo, isPeer);
 }
 
+void
+removeProfile(const QString& accountId, const QString& peerUri)
+{
+    auto accountLocalPath = getPath() + accountId + QDir::separator();
+    auto fileName = QString(peerUri.toUtf8().toBase64());
+    auto path = accountLocalPath + "profiles" + QDir::separator() + fileName + ".vcf";
+    if (!QFile::remove(path)) {
+        qWarning() << "Couldn't remove vcard for" << peerUri << "at" << path;
+    }
+}
+
 QString
 getAccountAvatar(const QString& accountId)
 {
@@ -672,7 +683,7 @@ deleteObsoleteHistory(Database& db, long int date)
 }
 
 void
-removeContact(Database& db, const QString& contactUri)
+removeContactConversations(Database& db, const QString& contactUri)
 {
     // Get common conversations
     auto conversations = getConversationsWithPeer(db, contactUri);
