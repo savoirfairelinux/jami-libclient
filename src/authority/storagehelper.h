@@ -114,6 +114,13 @@ void createOrUpdateProfile(const QString& accountId,
                            const bool isPeer = false);
 
 /**
+ * Remove a profile vCard
+ * @param accountId
+ * @param peerUri
+ */
+void removeProfile(const QString& accountId, const QString& peerUri);
+
+/**
  * Gets the account's avatar from the profile.vcf file
  * @param  accountId
  * @return the account's base64 avatar
@@ -241,7 +248,9 @@ QString getInteractionExtraDataById(Database& db, const QString& id, const QStri
  * @param daemon id
  * @param interaction
  */
-void updateDataTransferInteractionForDaemonId(Database& db, const QString& daemonId, api::interaction::Info& interaction);
+void updateDataTransferInteractionForDaemonId(Database& db,
+                                              const QString& daemonId,
+                                              api::interaction::Info& interaction);
 
 /**
  * Change the body of an interaction
@@ -300,10 +309,11 @@ void deleteObsoleteHistory(Database& db, long int date);
 /**
  * Remove all conversation with a contact. Remove corresponding entries in
  * the conversations table.
+ * @param accountId
  * @param db
  * @param contactUri
  */
-void removeContact(Database& db, const QString& contactUri);
+void removeContactConversations(Database& db, const QString& contactUri);
 
 /**
  * count number of 'UNREAD' from 'interactions' table.
