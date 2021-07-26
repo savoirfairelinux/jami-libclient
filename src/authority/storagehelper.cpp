@@ -48,6 +48,11 @@ namespace storage {
 QString
 getPath()
 {
+#ifdef Q_OS_WIN64
+    auto definedDataDir = qEnvironmentVariable("JAMI_DATA_HOME");
+    if (!definedDataDir.isEmpty())
+        return QDir(definedDataDir).absolutePath() + "/";
+#endif
     QDir dataDir(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
     // Avoid to depends on the client name.
     dataDir.cdUp();
