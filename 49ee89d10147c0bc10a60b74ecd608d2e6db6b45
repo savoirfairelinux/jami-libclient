@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55703a07_8aed5b1f",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-26T17:40:09Z",
+      "side": 1,
+      "message": "profile should be removed here I think, it\u0027s removeContact",
+      "range": {
+        "startLine": 328,
+        "startChar": 25,
+        "endLine": 329,
+        "endChar": 38
+      },
+      "revId": "49ee89d10147c0bc10a60b74ecd608d2e6db6b45",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}

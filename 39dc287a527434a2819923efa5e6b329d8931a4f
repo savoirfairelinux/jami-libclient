@@ -47,6 +47,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f481569_86a8527b",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2375,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-26T17:40:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ab94ec4_04168d7c",
+      "range": {
+        "startLine": 2375,
+        "startChar": 39,
+        "endLine": 2375,
+        "endChar": 79
+      },
+      "revId": "39dc287a527434a2819923efa5e6b329d8931a4f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25a3986f_9c699c45",
@@ -70,6 +94,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "296bdf2d_51824d35",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2607,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-26T17:40:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25a3986f_9c699c45",
+      "range": {
+        "startLine": 2607,
+        "startChar": 35,
+        "endLine": 2607,
+        "endChar": 52
+      },
+      "revId": "39dc287a527434a2819923efa5e6b329d8931a4f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8aa14580_e5ee5a8f",
@@ -83,6 +131,30 @@
       "writtenOn": "2021-07-26T17:38:05Z",
       "side": 1,
       "message": "same",
+      "range": {
+        "startLine": 2759,
+        "startChar": 39,
+        "endLine": 2759,
+        "endChar": 60
+      },
+      "revId": "39dc287a527434a2819923efa5e6b329d8931a4f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3c83530_1a4b67b4",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2759,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-26T17:40:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8aa14580_e5ee5a8f",
       "range": {
         "startLine": 2759,
         "startChar": 39,
