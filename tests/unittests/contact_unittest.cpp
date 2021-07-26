@@ -48,11 +48,11 @@ TEST_F(ContactFixture, AddSIPContactTest)
     // Create SIP Acc
     globalEnv.accountAdapter->createSIPAccount(QVariantMap());
 
-    QVERIFY(accountAddedSpy.wait());
-    QCOMPARE(accountAddedSpy.count(), 1);
+    accountAddedSpy.wait();
+    EXPECT_EQ(accountAddedSpy.count(), 1);
 
     QList<QVariant> accountAddedArguments = accountAddedSpy.takeFirst();
-    QVERIFY(accountAddedArguments.at(0).type() == QVariant::String);
+    EXPECT_TRUE(accountAddedArguments.at(0).type() == QVariant::String);
 
     // Select the created account
     globalEnv.lrcInstance->set_currentAccountId(accountAddedArguments.at(0).toString());
@@ -61,8 +61,8 @@ TEST_F(ContactFixture, AddSIPContactTest)
     QSignalSpy accountStatusChangedSpy(&globalEnv.lrcInstance->accountModel(),
                                        &lrc::api::NewAccountModel::accountStatusChanged);
 
-    QVERIFY(accountStatusChangedSpy.wait());
-    QCOMPARE(accountStatusChangedSpy.count(), 1);
+    accountStatusChangedSpy.wait();
+    EXPECT_GE(accountStatusChangedSpy.count(), 1);
 
     // ModelUpdated signal spy
     QSignalSpy modelUpdatedSpy(globalEnv.lrcInstance->getCurrentContactModel(),
@@ -71,11 +71,11 @@ TEST_F(ContactFixture, AddSIPContactTest)
     // Add temp contact test
     globalEnv.lrcInstance->getCurrentConversationModel()->setFilter("test");
 
-    QVERIFY(modelUpdatedSpy.wait());
-    QCOMPARE(modelUpdatedSpy.count(), 1);
+    modelUpdatedSpy.wait();
+    EXPECT_EQ(modelUpdatedSpy.count(), 1);
 
     QList<QVariant> modelUpdatedArguments = modelUpdatedSpy.takeFirst();
-    QVERIFY(modelUpdatedArguments.at(0).type() == QVariant::String);
+    EXPECT_TRUE(modelUpdatedArguments.at(0).type() == QVariant::String);
 
     // Get conversation id
     auto convId = globalEnv.lrcInstance
@@ -89,16 +89,19 @@ TEST_F(ContactFixture, AddSIPContactTest)
 
     globalEnv.lrcInstance->getCurrentConversationModel()->makePermanent(convId);
 
-    QVERIFY(contactAddedSpy.wait());
-    QCOMPARE(contactAddedSpy.count(), 1);
+    contactAddedSpy.wait();
+    EXPECT_EQ(contactAddedSpy.count(), 1);
 
     // Remove the account
-    globalEnv.lrcInstance->accountModel().removeAccount(
-        globalEnv.lrcInstance->get_currentAccountId());
-
     QSignalSpy accountRemovedSpy(&globalEnv.lrcInstance->accountModel(),
                                  &lrc::api::NewAccountModel::accountRemoved);
 
-    QVERIFY(accountRemovedSpy.wait());
-    QCOMPARE(accountRemovedSpy.count(), 1);
+    globalEnv.lrcInstance->accountModel().removeAccount(
+        globalEnv.lrcInstance->get_currentAccountId());
+
+    accountRemovedSpy.wait();
+    EXPECT_EQ(accountRemovedSpy.count(), 1);
+
+    auto accountListSize = globalEnv.lrcInstance->accountModel().getAccountList().size();
+    ASSERT_EQ(accountListSize, 0);
 }

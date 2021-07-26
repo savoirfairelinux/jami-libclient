@@ -124,6 +124,18 @@ private:
 int
 main(int argc, char** argv)
 {
+    QDir tempDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+
+    auto jamiDataDir = tempDir.absolutePath() + "\\jami_test\\jami";
+    auto jamiConfigDir = tempDir.absolutePath() + "\\jami_test\\.config";
+    auto jamiCacheDir = tempDir.absolutePath() + "\\jami_test\\.cache";
+
+    bool envSet = qputenv("JAMI_DATA_HOME", jamiDataDir.toLocal8Bit());
+    envSet &= qputenv("JAMI_CONFIG_HOME", jamiConfigDir.toLocal8Bit());
+    envSet &= qputenv("JAMI_CACHE_HOME", jamiCacheDir.toLocal8Bit());
+    if (!envSet)
+        return 1;
+
     bool muteDring {false};
 
     // Remove "-mutejamid" from argv, as quick_test_main_with_setup() will
@@ -139,7 +151,6 @@ main(int argc, char** argv)
         argc = std::distance(argv, end);
     }
 
-    QStandardPaths::setTestModeEnabled(true);
     QtWebEngine::initialize();
 
     QTEST_SET_MAIN_SOURCE_PATH

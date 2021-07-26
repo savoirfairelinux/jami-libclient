@@ -27,6 +27,18 @@ TestEnvironment globalEnv;
 int
 main(int argc, char* argv[])
 {
+    QDir tempDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation));
+
+    auto jamiDataDir = tempDir.absolutePath() + "\\jami_test\\jami";
+    auto jamiConfigDir = tempDir.absolutePath() + "\\jami_test\\.config";
+    auto jamiCacheDir = tempDir.absolutePath() + "\\jami_test\\.cache";
+
+    bool envSet = qputenv("JAMI_DATA_HOME", jamiDataDir.toLocal8Bit());
+    envSet &= qputenv("JAMI_CONFIG_HOME", jamiConfigDir.toLocal8Bit());
+    envSet &= qputenv("JAMI_CACHE_HOME", jamiCacheDir.toLocal8Bit());
+    if (!envSet)
+        return 1;
+
     // Remove "-mutejamid" from argv, as quick_test_main_with_setup() will
     // fail if given an invalid command-line argument.
     auto end = std::remove_if(argv + 1, argv + argc, [](char* argv) {
@@ -39,8 +51,6 @@ main(int argc, char* argv[])
         // Adjust the argument count.
         argc = std::distance(argv, end);
     }
-
-    QStandardPaths::setTestModeEnabled(true);
 
     QApplication a(argc, argv);
     a.processEvents();
