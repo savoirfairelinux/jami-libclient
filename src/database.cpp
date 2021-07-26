@@ -68,15 +68,11 @@ Database::Database(const QString& name, const QString& basePath)
     QString databaseFileName = databaseFile.fileName();
     auto absoluteDir = databaseFile.absoluteDir();
 
-#ifdef ENABLE_TEST
-    databaseFullPath_ = QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation))
-                            .filePath(databaseFileName);
-#else
     // make sure the directory exists
     if (!absoluteDir.exists())
         absoluteDir.mkpath(".");
     databaseFullPath_ = absoluteDir.filePath(databaseFileName);
-#endif
+
     db_.setDatabaseName(databaseFullPath_);
 }
 
