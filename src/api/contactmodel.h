@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2017-2021 Savoir-faire Linux Inc.                             *
+ *    Copyright (C) 2017-2021 Savoir-faire Linux Inc.                       *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
  *                                                                          *
@@ -67,6 +67,11 @@ public:
      * @param contactInfo
      */
     void addContact(contact::Info contactInfo);
+    /**
+     * Add a pending item into the contact list
+     * @param contactUri
+     */
+    void addToContacts(const QString& contactUri);
     /**
      * Ask the daemon to remove a contact.
      * @param contactUri
