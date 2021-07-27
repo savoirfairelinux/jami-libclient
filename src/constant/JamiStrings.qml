@@ -464,6 +464,7 @@ Item {
     property string importAccountFromBackup: qsTr("Import account from backup file")
     property string advancedFeatures: qsTr("Advanced features")
     property string showAdvancedFeatures: qsTr("Show advanced features")
+    property string hideAdvancedFeatures: qsTr("Hide advanced features")
     property string connectJAMSServer: qsTr("Connect to a JAMS server")
     property string createFromJAMS: qsTr("Create account from Jami Account Management Server (JAMS)")
     property string addSIPAccount: qsTr("Add a SIP account")

@@ -162,6 +162,8 @@ Rectangle {
         MaterialButton {
             id: showAdvancedButton
 
+            property bool showAdvanced: false
+
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: newSIPAccountButton.visible ?
                                      0 : JamiTheme.wizardViewPageBackButtonMargins
@@ -170,7 +172,8 @@ Rectangle {
 
             text: JamiStrings.advancedFeatures
             fontCapitalization: Font.AllUppercase
-            toolTipText: JamiStrings.showAdvancedFeatures
+            toolTipText: showAdvanced ? JamiStrings.hideAdvancedFeatures :
+                                        JamiStrings.showAdvancedFeatures
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -179,8 +182,9 @@ Rectangle {
             hoverEnabled: true
 
             onClicked: {
-                connectAccountManagerButton.visible = !connectAccountManagerButton.visible
-                newSIPAccountButton.visible = !newSIPAccountButton.visible
+                showAdvanced =  !showAdvanced
+                connectAccountManagerButton.visible = showAdvanced
+                newSIPAccountButton.visible = showAdvanced
             }
         }
 
