@@ -250,7 +250,7 @@ ContactModel::addContact(contact::Info contactInfo)
 
     if ((owner.profileInfo.type != profile.type)
         and (profile.type == profile::Type::JAMI or profile.type == profile::Type::SIP)) {
-        qDebug() << "ContactModel::addContact, types invalids.";
+        qDebug() << "ContactModel::addContact, types invalid.";
         return;
     }
 
@@ -265,14 +265,19 @@ ContactModel::addContact(contact::Info contactInfo)
         profile.type = owner.profileInfo.type;
 
     switch (profile.type) {
-    case profile::Type::TEMPORARY:
-        // we can save to contacts after receiving contact added
+    case profile::Type::TEMPORARY: {
+        // make a temporary contact available for UI elements, it will be upgraded to
+        // its corresponding type after receiving contact added signal
+        std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
+        contactInfo.profileInfo.type = profile::Type::PENDING;
+        pimpl_->contacts.insert(contactInfo.profileInfo.uri, contactInfo);
         ConfigurationManager::instance().addContact(owner.id, profile.uri);
         ConfigurationManager::instance()
             .sendTrustRequest(owner.id,
                               profile.uri,
                               owner.accountModel->accountVCard(owner.id).toUtf8());
         return;
+    }
     case profile::Type::PENDING:
         if (daemon::addContactFromPending(owner, profile.uri)) {
             emit pendingContactAccepted(profile.uri);
