@@ -81,6 +81,16 @@ namespace vcard {
  */
 QString profileToVcard(const api::profile::Info& profileInfo, bool compressImage = false);
 
+/**
+ * Set a profile vCard
+ * @param accountId
+ * @param profileInfo
+ * @param isPeer
+ */
+void setProfile(const QString& accountId,
+                const api::profile::Info& profileInfo,
+                const bool isPeer = false);
+
 } // namespace vcard
 
 /**
@@ -341,6 +351,15 @@ uint64_t getLastTimestamp(Database& db);
  * extra_data columns(conversations and interactions)
  */
 namespace {
+/**
+ * Transforms a URI so it can be used as a filename across platforms
+ * and constructs the vCard filepath
+ * @param uri
+ * @return the account's vCard path if uri is left empty,
+ * otherwise uri's vCard filepath
+ */
+QString profileVcardPath(const QString& accountId, const QString& uri = {});
+
 /**
  * Build a string from a QJsonObject
  * @param  json
