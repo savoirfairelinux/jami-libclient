@@ -23,13 +23,6 @@
 
 #include "api/contactmodel.h"
 
-// Std
-#include <algorithm>
-#include <mutex>
-
-// Daemon
-#include <account_const.h>
-
 // LRC
 #include "api/account.h"
 #include "api/contact.h"
@@ -49,6 +42,12 @@
 // Dbus
 #include "dbus/configurationmanager.h"
 #include "dbus/presencemanager.h"
+
+#include "account_const.h"
+
+// Std
+#include <algorithm>
+#include <mutex>
 
 namespace lrc {
 
@@ -265,13 +264,16 @@ ContactModel::addContact(contact::Info contactInfo)
             && owner.profileInfo.type == profile::Type::SIP))
         profile.type = owner.profileInfo.type;
 
-    QByteArray vCard = owner.accountModel->accountVCard(owner.id).toUtf8();
     switch (profile.type) {
-    case profile::Type::TEMPORARY:
+    case profile::Type::TEMPORARY: {
         ConfigurationManager::instance().addContact(owner.id, profile.uri);
-        ConfigurationManager::instance().sendTrustRequest(owner.id, profile.uri, vCard);
-        // will be saved after receiving contact added signal
+        ConfigurationManager::instance()
+            .sendTrustRequest(owner.id,
+                              profile.uri,
+                              owner.accountModel->accountVCard(owner.id).toUtf8());
+        // will be saved after receiving contact added
         return;
+    }
     case profile::Type::PENDING:
         if (daemon::addContactFromPending(owner, profile.uri)) {
             emit pendingContactAccepted(profile.uri);
@@ -307,6 +309,21 @@ ContactModel::addContact(contact::Info contactInfo)
     emit profileUpdated(profile.uri);
     if (profile.type == profile::Type::SIP)
         emit contactAdded(profile.uri);
+}
+
+void
+ContactModel::addToContacts(const QString& contactUri)
+{
+    std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
+    auto iter = pimpl_->contacts.find(contactUri);
+    if (iter != pimpl_->contacts.end())
+        return;
+
+    auto contactInfo = storage::buildContactFromProfile(owner.id,
+                                                        contactUri,
+                                                        profile::Type::PENDING);
+    pimpl_->contacts.insert(iter, contactUri, contactInfo);
+    ConfigurationManager::instance().lookupAddress(owner.id, "", contactUri);
 }
 
 void
@@ -888,9 +905,13 @@ ContactModelPimpl::addToContacts(const QString& contactUri,
 {
     // create a vcard if necessary
     profile::Info profileInfo {contactUri, {}, displayName, linked.owner.profileInfo.type};
-    storage::createOrUpdateProfile(linked.owner.id, profileInfo, true);
-
     auto contactInfo = storage::buildContactFromProfile(linked.owner.id, contactUri, type);
+    if (!profileInfo.alias.isEmpty())
+        contactInfo.profileInfo.alias = profileInfo.alias;
+    if (!profileInfo.avatar.isEmpty())
+        contactInfo.profileInfo.avatar = profileInfo.avatar;
+    storage::vcard::setProfile(linked.owner.id, contactInfo.profileInfo, true);
+
     contactInfo.isBanned = banned;
     contactInfo.conversationId = conversationId;
 
@@ -995,6 +1016,7 @@ ContactModelPimpl::slotIncomingContactRequest(const QString& accountId,
             contacts.insert(contactUri, contactInfo);
             emitTrust = true;
             storage::createOrUpdateProfile(accountId, profileInfo, true);
+            ConfigurationManager::instance().lookupAddress(linked.owner.id, "", contactUri);
         }
     }
     emit linked.incomingContactRequest(contactUri);

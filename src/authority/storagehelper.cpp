@@ -137,7 +137,6 @@ getContactInteractionString(const QString& authorUri, const api::interaction::St
 
 namespace vcard {
 QString compressedAvatar(const QString& image);
-void setProfile(const QString& accountId, const api::profile::Info& profileInfo, const bool isPeer);
 
 QString
 compressedAvatar(const QString& image)
@@ -211,19 +210,9 @@ void
 setProfile(const QString& accountId, const api::profile::Info& profileInfo, const bool isPeer)
 {
     auto vcard = vcard::profileToVcard(profileInfo);
-    auto accountLocalPath = getPath() + accountId + "/";
-    QString filePath;
-    QFile file;
-    if (isPeer) {
-        filePath = accountLocalPath + "profiles/" + QString(profileInfo.uri.toUtf8().toBase64())
-                   + ".vcf";
-        file.setFileName(filePath);
-    } else {
-        filePath = accountLocalPath + "profile" + ".vcf";
-        file.setFileName(filePath);
-    }
+    QFile file(profileVcardPath(accountId, isPeer ? profileInfo.uri : ""));
     if (!file.open(QIODevice::WriteOnly)) {
-        qWarning().noquote() << "Can't open file for writing: " << filePath;
+        qWarning().noquote() << "Can't open file for writing: " << file.fileName();
         return;
     }
     QTextStream in(&file);
@@ -271,9 +260,7 @@ createOrUpdateProfile(const QString& accountId,
 void
 removeProfile(const QString& accountId, const QString& peerUri)
 {
-    auto accountLocalPath = getPath() + accountId + QDir::separator();
-    auto fileName = QString(peerUri.toUtf8().toBase64());
-    auto path = accountLocalPath + "profiles" + QDir::separator() + fileName + ".vcf";
+    auto path = profileVcardPath(accountId, peerUri);
     if (!QFile::remove(path)) {
         qWarning() << "Couldn't remove vcard for" << peerUri << "at" << path;
     }
@@ -309,7 +296,7 @@ buildContactFromProfile(const QString& accountId,
     profileInfo.type = type;
     auto accountLocalPath = getPath() + accountId + "/";
     QString b64filePath;
-    b64filePath = accountLocalPath + "profiles/" + QString(peer_uri.toUtf8().toBase64()) + ".vcf";
+    b64filePath = profileVcardPath(accountId, peer_uri);
     QFile file(b64filePath);
     if (!file.open(QIODevice::ReadOnly)) {
         // try non-base64 path
@@ -338,7 +325,7 @@ buildContactFromProfile(const QString& accountId,
             profileInfo.avatar = vCard[key];
     }
     profileInfo.alias = alias;
-    return {profileInfo, "", true, false};
+    return {profileInfo, "", type == api::profile::Type::JAMI, false};
 }
 
 VectorString
@@ -729,6 +716,17 @@ getLastTimestamp(Database& db)
 }
 
 namespace {
+QString
+profileVcardPath(const QString& accountId, const QString& uri)
+{
+    auto accountLocalPath = getPath() + accountId + QDir::separator();
+    if (uri.isEmpty())
+        return accountLocalPath + "profile.vcf";
+
+    auto fileName = QString(uri.toUtf8().toBase64());
+    return accountLocalPath + "profiles" + QDir::separator() + fileName + ".vcf";
+}
+
 QString
 stringFromJSON(const QJsonObject& json)
 {

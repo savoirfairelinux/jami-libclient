@@ -2596,31 +2596,39 @@ ConversationModelPimpl::addConversationRequest(const MapStringString& convReques
     if (convIdx != -1)
         return;
 
-    auto peer = convRequest["from"];
+    auto peerUri = convRequest["from"];
     auto mode = conversation::to_mode(convRequest["mode"].toInt());
-    try {
-        // check if we have contact request for peer
-        auto& conv = getConversationForPeerUri(peer).get();
-        if (conv.mode == conversation::Mode::NON_SWARM) {
-            // update conversation and remoe conversation from db
-            conv.mode = mode;
-            conv.uid = convId;
-            storage::removeContactConversations(db, peer);
-            invalidateModel();
-            emit linked.modelChanged();
-            return;
+    if (mode == conversation::Mode::ONE_TO_ONE) {
+        try {
+            // check if we have contact request for peer
+            auto& conv = getConversationForPeerUri(peerUri).get();
+            if (conv.mode == conversation::Mode::NON_SWARM) {
+                // update conversation and remove the invite conversation from db
+                conv.mode = mode;
+                conv.uid = convId;
+                storage::removeContactConversations(db, peerUri);
+                invalidateModel();
+                emit linked.modelChanged();
+                return;
+            }
+        } catch (std::out_of_range&) {
+            qWarning() << "Couldn't find contact request conversation for" << peerUri;
         }
-    } catch (std::out_of_range&) {
     }
+
+    // add the author to the contact model's contact list as a PENDING
+    // if they aren't already a contact
+    linked.owner.contactModel->addToContacts(peerUri);
+
     conversation::Info conversation;
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
-    conversation.participants = {linked.owner.profileInfo.uri, peer};
+    conversation.participants = {linked.owner.profileInfo.uri, peerUri};
     conversation.mode = mode;
     conversation.isRequest = true;
     emplaceBackConversation(std::move(conversation));
     invalidateModel();
-    emit linked.newConversation(peer);
+    emit linked.newConversation(peerUri);
     emit linked.modelChanged();
 }
 
