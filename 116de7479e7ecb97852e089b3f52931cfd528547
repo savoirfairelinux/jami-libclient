@@ -16,6 +16,24 @@
       "message": "Why this change? Issue?",
       "revId": "116de7479e7ecb97852e089b3f52931cfd528547",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba1e9d5f_ad663958",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-07-27T14:16:50Z",
+      "side": 1,
+      "message": "JAMI_DATA_HOME is an env variable that is used in client-qt tests,\n\nHere it is to change the folder position for testing,\n\notherwise the testing files are all over the place",
+      "parentUuid": "5a6092f0_37b16861",
+      "revId": "116de7479e7ecb97852e089b3f52931cfd528547",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
