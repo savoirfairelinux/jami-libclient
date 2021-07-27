@@ -785,6 +785,7 @@ ContactModelPimpl::slotContactAdded(const QString& accountId,
     }
 
     bool isBanned = false;
+    QString convId;
 
     {
         // Always get contactsMtx_ lock before bannedContactsMtx_.
@@ -804,11 +805,8 @@ ContactModelPimpl::slotContactAdded(const QString& accountId,
 
             MapStringString details = ConfigurationManager::instance()
                                           .getContactDetails(linked.owner.id, contactUri);
-            addToContacts(contactUri,
-                          linked.owner.profileInfo.type,
-                          "",
-                          false,
-                          details["conversationId"]);
+            convId = details["conversationId"];
+            addToContacts(contactUri, linked.owner.profileInfo.type, "", false, convId);
         }
     }
     if (isBanned) {
@@ -817,6 +815,7 @@ ContactModelPimpl::slotContactAdded(const QString& accountId,
         emit linked.bannedStatusChanged(contactUri, false);
     } else {
         emit linked.contactAdded(contactUri);
+        Q_EMIT linked.owner.conversationModel->conversationUpdated(convId);
     }
 }
 
