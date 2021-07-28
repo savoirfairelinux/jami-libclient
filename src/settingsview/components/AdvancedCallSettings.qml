@@ -77,12 +77,10 @@ ColumnLayout {
     JamiFileDialog {
         id: ringtonePath_Dialog
 
-        property string oldPath : SettingsAdapter.getAccountConfig_Ringtone_RingtonePath()
-        property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
-
         mode: JamiFileDialog.OpenFile
         title: JamiStrings.selectNewRingtone
-        folder: openPath
+        folder: JamiQmlUtils.qmlFilePrefix + UtilsAdapter.toFileAbsolutepath(
+                    SettingsAdapter.getAccountConfig_Ringtone_RingtonePath())
 
         nameFilters: [qsTr("Audio Files") + " (*.wav *.ogg *.opus *.mp3 *.aiff *.wma)", qsTr(
                 "All files") + " (*)"]
