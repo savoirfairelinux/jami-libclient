@@ -15,4 +15,14 @@ else()
               "${PROJECT_ROOT_DIR}/resources/images/jami.ico"
               "${PROJECT_ROOT_DIR}/License.rtf"
          DESTINATION ${COPY_TO_PATH})
+    # Cannot copy symbolic link using file COPY, create insread.
+    file(GLOB_RECURSE RingTones "${DRING_PATH}/ringtones/*.ul"
+                                "${DRING_PATH}/ringtones/*.ogg"
+                                "${DRING_PATH}/ringtones/*.wav"
+                                "${DRING_PATH}/ringtones/*.opus")
+    list(REMOVE_ITEM RingTones "${DRING_PATH}/ringtones/default.opus")
+    file(COPY ${RingTones}
+         DESTINATION ${COPY_TO_PATH}/ringtones)
+    file(CREATE_LINK "${COPY_TO_PATH}/ringtones/01_AfroNigeria.opus"
+                     "${COPY_TO_PATH}/ringtones/default.opus")
 endif()
