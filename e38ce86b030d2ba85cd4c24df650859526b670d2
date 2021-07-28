@@ -22,6 +22,30 @@
       },
       "revId": "e38ce86b030d2ba85cd4c24df650859526b670d2",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbbe720c_ad3d7841",
+        "filename": "src/authority/storagehelper.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-07-28T17:10:47Z",
+      "side": 1,
+      "message": "Not really, Q_OS_WIN is better",
+      "parentUuid": "a299cdee_598ed8a2",
+      "range": {
+        "startLine": 51,
+        "startChar": 7,
+        "endLine": 51,
+        "endChar": 17
+      },
+      "revId": "e38ce86b030d2ba85cd4c24df650859526b670d2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
