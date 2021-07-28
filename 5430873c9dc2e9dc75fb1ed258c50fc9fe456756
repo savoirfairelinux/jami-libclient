@@ -16,6 +16,24 @@
       "message": "should describe somewhere that accountStatusChanged is emitted in onAccountDetailsChanged and that client code that actually depends on accountDetails and connects to accountStatusChanged should switch the connection to listen for accountDetailsChanged",
       "revId": "5430873c9dc2e9dc75fb1ed258c50fc9fe456756",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afc0db5f_6ddedbb1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-07-28T17:16:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "438b4467_8a53986d",
+      "revId": "5430873c9dc2e9dc75fb1ed258c50fc9fe456756",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
