@@ -29,6 +29,14 @@ import "qrc:/src/wizardview"
 WizardView {
     id: uut
 
+    function clearSignalSpy() {
+        spyAccountIsReady.clear()
+        spyAccountIsRemoved.clear()
+        spyAccountConfigFinalized.clear()
+        spyReportFailure.clear()
+        spyCloseWizardView.clear()
+    }
+
     SignalSpy {
         id: spyAccountIsReady
 
@@ -62,6 +70,13 @@ WizardView {
 
         target: AccountAdapter
         signalName: "reportFailure"
+    }
+
+    SignalSpy {
+        id: spyCloseWizardView
+
+        target: WizardViewStepModel
+        signalName: "closeWizardView"
     }
 
     TestCase {
@@ -195,10 +210,7 @@ WizardView {
         when: windowShown
 
         function test_createJamiAccountUiFlow() {
-            spyAccountIsReady.clear()
-            spyAccountIsRemoved.clear()
-            spyAccountStatusChanged.clear()
-            spyAccountConfigFinalized.clear()
+            uut.clearSignalSpy()
 
             var controlPanelStackView = findChild(uut, "controlPanelStackView")
 
@@ -265,6 +277,9 @@ WizardView {
                 WizardViewStepModel.nextStep()
             }
 
+            spyCloseWizardView.wait()
+            compare(spyCloseWizardView.count, 1)
+
             // Check alias text
             compare(SettingsAdapter.getCurrentAccount_Profile_Info_Alias(), aliasText)
 
@@ -286,10 +301,7 @@ WizardView {
         }
 
         function test_createRendezVousAccountUiFlow() {
-            spyAccountIsReady.clear()
-            spyAccountIsRemoved.clear()
-            spyAccountStatusChanged.clear()
-            spyAccountConfigFinalized.clear()
+            uut.clearSignalSpy()
 
             var controlPanelStackView = findChild(uut, "controlPanelStackView")
 
@@ -359,6 +371,9 @@ WizardView {
                 WizardViewStepModel.nextStep()
             }
 
+            spyCloseWizardView.wait()
+            compare(spyCloseWizardView.count, 1)
+
             // Check alias text
             compare(SettingsAdapter.getCurrentAccount_Profile_Info_Alias(), aliasText)
 
@@ -385,10 +400,7 @@ WizardView {
         when: windowShown
 
         function test_createSipAccountUiFlow() {
-            spyAccountIsReady.clear()
-            spyAccountIsRemoved.clear()
-            spyAccountStatusChanged.clear()
-            spyAccountConfigFinalized.clear()
+            uut.clearSignalSpy()
 
             var controlPanelStackView = findChild(uut, "controlPanelStackView")
 
@@ -445,6 +457,9 @@ WizardView {
 
             WizardViewStepModel.nextStep()
 
+            spyCloseWizardView.wait()
+            compare(spyCloseWizardView.count, 1)
+
             AccountAdapter.deleteCurrentAccount()
 
             // Wait until the account removal is finished
@@ -458,10 +473,7 @@ WizardView {
         when: windowShown
 
         function test_createJamiAccountFromBackupUiFlow() {
-            spyAccountIsReady.clear()
-            spyAccountIsRemoved.clear()
-            spyAccountConfigFinalized.clear()
-            spyReportFailure.clear()
+            uut.clearSignalSpy()
 
             var controlPanelStackView = findChild(uut, "controlPanelStackView")
 
@@ -506,8 +518,8 @@ WizardView {
             compare(spyAccountIsReady.count, 1)
             spyAccountConfigFinalized.wait()
             compare(spyAccountConfigFinalized.count, 1)
-
-            WizardViewStepModel.nextStep()
+            spyCloseWizardView.wait()
+            compare(spyCloseWizardView.count, 1)
 
             AccountAdapter.deleteCurrentAccount()
 

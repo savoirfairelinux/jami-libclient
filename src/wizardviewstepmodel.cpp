@@ -36,10 +36,13 @@ WizardViewStepModel::WizardViewStepModel(LRCInstance* lrcInstance,
         accountAdapter_->changeAccount(index);
 
         auto accountCreationOption = get_accountCreationOption();
-        if (accountCreationOption == AccountCreationOption::ConnectToAccountManager
-            || accountCreationOption == AccountCreationOption::ImportFromBackup
-            || accountCreationOption == AccountCreationOption::ImportFromDevice)
+        if (accountCreationOption == AccountCreationOption::ConnectToAccountManager)
             set_mainStep(MainSteps::Profile);
+        else if (accountCreationOption == AccountCreationOption::ImportFromBackup
+                 || accountCreationOption == AccountCreationOption::ImportFromDevice) {
+            Q_EMIT closeWizardView();
+            reset();
+        }
 
         Q_EMIT accountIsReady(accountId);
     });
