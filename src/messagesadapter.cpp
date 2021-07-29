@@ -62,21 +62,24 @@ MessagesAdapter::setupChatView(const QVariantMap& convInfo)
     bool isLegacy = !convInfo["isSwarm"].toBool();
     bool isRequest = convInfo["isRequest"].toBool();
     bool needsSyncing = convInfo["needsSyncing"].toBool();
+    bool readOnly = convInfo["readOnly"].toBool();
 
     QMetaObject::invokeMethod(qmlObj_,
                               "setSendContactRequestButtonVisible",
                               Q_ARG(QVariant, isLegacy && isRequest));
     QMetaObject::invokeMethod(qmlObj_,
                               "setMessagingHeaderButtonsVisible",
-                              Q_ARG(QVariant, !(isLegacy && (isRequest || needsSyncing))));
+                              Q_ARG(QVariant,
+                                    !readOnly && !(isLegacy && (isRequest || needsSyncing))));
 
     setMessagesVisibility(false);
     setIsSwarm(!isLegacy);
-    Q_EMIT changeInvitationViewRequest(isRequest || needsSyncing,
-                                       isLegacy,
-                                       needsSyncing,
-                                       convInfo["title"].toString(),
-                                       convInfo["convId"].toString());
+    Q_EMIT setChatViewMode(isRequest || needsSyncing,
+                           isLegacy,
+                           needsSyncing,
+                           convInfo["title"].toString(),
+                           convInfo["convId"].toString(),
+                           readOnly);
 
     Utils::oneShotConnect(qmlObj_, SIGNAL(messagesCleared()), this, SLOT(slotMessagesCleared()));
     clearChatView();
@@ -369,14 +372,16 @@ MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& 
         QMetaObject::invokeMethod(qmlObj_,
                                   "setMessagingHeaderButtonsVisible",
                                   Q_ARG(QVariant,
-                                        !(convInfo.isSwarm()
-                                          && (convInfo.isRequest || convInfo.needsSyncing))));
+                                        !convInfo.readOnly
+                                            && !(convInfo.isSwarm()
+                                                 && (convInfo.isRequest || convInfo.needsSyncing))));
 
-        Q_EMIT changeInvitationViewRequest(convInfo.isRequest or convInfo.needsSyncing,
-                                           convInfo.isSwarm(),
-                                           convInfo.needsSyncing,
-                                           title,
-                                           convInfo.uid);
+        Q_EMIT setChatViewMode(convInfo.isRequest || convInfo.needsSyncing,
+                               convInfo.isSwarm(),
+                               convInfo.needsSyncing,
+                               title,
+                               convInfo.uid,
+                               convInfo.readOnly);
         if (convInfo.isSwarm())
             return;
 
@@ -593,7 +598,7 @@ MessagesAdapter::refuseInvitation(const QString& convUid)
 {
     const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, false);
-    changeInvitationViewRequest(false);
+    Q_EMIT setChatViewMode(false);
 }
 
 void
@@ -601,7 +606,7 @@ MessagesAdapter::blockConversation(const QString& convUid)
 {
     const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, true);
-    changeInvitationViewRequest(false);
+    Q_EMIT setChatViewMode(false);
 }
 
 void

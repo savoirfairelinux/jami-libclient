@@ -36,6 +36,7 @@ class ConversationsAdapter final : public QmlAdapterBase
     QML_PROPERTY(bool, filterRequests)
     QML_PROPERTY(int, totalUnreadMessageCount)
     QML_PROPERTY(int, pendingRequestCount)
+    QML_PROPERTY(bool, currentConvIsReadOnly)
 
 public:
     explicit ConversationsAdapter(SystemTray* systemTray,
@@ -56,7 +57,6 @@ Q_SIGNALS:
     void showSearchStatus(const QString& status);
 
     void navigateToWelcomePageRequested();
-    void indexRepositionRequested();
     void conversationReady(const QString& convId);
 
 private Q_SLOTS:

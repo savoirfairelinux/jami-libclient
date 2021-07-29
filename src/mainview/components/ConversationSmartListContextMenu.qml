@@ -45,7 +45,7 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: startVideoCallItem
 
-            canTrigger: !hasCall
+            canTrigger: !hasCall && !ConversationsAdapter.currentConvIsReadOnly
             itemName: JamiStrings.startVideoCall
             iconSource: JamiResources.videocam_24dp_svg
             onClicked: {
@@ -59,7 +59,7 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: startAudioCall
 
-            canTrigger: !hasCall
+            canTrigger: !hasCall && !ConversationsAdapter.currentConvIsReadOnly
             itemName: JamiStrings.startAudioCall
             iconSource: JamiResources.place_audiocall_24dp_svg
             onClicked: {

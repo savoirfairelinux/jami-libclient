@@ -27,7 +27,7 @@ import net.jami.Adapters 1.0
 import "../../commoncomponents"
 
 Rectangle {
-    id: messagingHeaderRect
+    id: root
 
     property string userAliasLabelText
     property string userUserNameLabelText
@@ -72,9 +72,9 @@ Rectangle {
 
             onClicked: {
                 if (backToWelcomeViewButtonSource === JamiResources.back_24dp_svg)
-                    messagingHeaderRect.backClicked()
+                    root.backClicked()
                 else
-                    messagingHeaderRect.needToHideConversationInCall()
+                    root.needToHideConversationInCall()
             }
         }
 
@@ -84,7 +84,7 @@ Rectangle {
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
 
             // Width + margin.
-            Layout.preferredWidth: messagingHeaderRect.width
+            Layout.preferredWidth: root.width
                                    - backToWelcomeViewButton.width - buttonGroup.width - 45
             Layout.fillHeight: true
             Layout.topMargin: 7

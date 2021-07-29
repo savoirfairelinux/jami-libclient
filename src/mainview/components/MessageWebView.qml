@@ -114,9 +114,10 @@ Rectangle {
     Connections {
         target: MessagesAdapter
 
-        function onChangeInvitationViewRequest(show, isSwarm, needsSyncing,
-                                               title, convId) {
-            if (show)
+        function onSetChatViewMode(showInvitationPage,
+                                   isSwarm, needsSyncing,
+                                   title, convId) {
+            if (showInvitationPage)
                 root.mode = MessageWebView.Mode.Invitation
             else {
                 root.mode = MessageWebView.Mode.Chat
@@ -126,6 +127,16 @@ Rectangle {
             invitationView.imageId = convId
             invitationView.title = title
             invitationView.needSyncing = needsSyncing
+        }
+    }
+
+    Connections {
+        target: ConversationsAdapter
+
+        function onCurrentConvIsReadOnlyChanged() {
+            var isVisible = !ConversationsAdapter.currentConvIsReadOnly
+            setMessagingHeaderButtonsVisible(isVisible)
+            messageWebViewFooter.visible = isVisible
         }
     }
 

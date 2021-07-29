@@ -48,7 +48,8 @@
     X(IsRequest) \
     X(Mode) \
     X(Uris) \
-    X(Monikers)
+    X(Monikers) \
+    X(ReadOnly)
 
 namespace ConversationList {
 Q_NAMESPACE

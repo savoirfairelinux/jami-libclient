@@ -149,6 +149,8 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
             }
         return ret;
     }
+    case Role::ReadOnly:
+        return QVariant(item.readOnly);
     default:
         break;
     }

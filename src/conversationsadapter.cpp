@@ -274,8 +274,14 @@ ConversationsAdapter::onProfileUpdated(const QString& contactUri)
 }
 
 void
-ConversationsAdapter::onConversationUpdated(const QString&)
+ConversationsAdapter::onConversationUpdated(const QString& convId)
 {
+    // this could be the result of a member event
+    auto& convInfo = lrcInstance_->getConversationFromConvUid(convId);
+    if (convInfo.uid.isEmpty())
+        return;
+    set_currentConvIsReadOnly(convInfo.readOnly);
+
     updateConversationFilterData();
 }
 
@@ -283,8 +289,6 @@ void
 ConversationsAdapter::onFilterChanged()
 {
     updateConversationFilterData();
-    if (!lrcInstance_->get_selectedConvUid().isEmpty())
-        Q_EMIT indexRepositionRequested();
 }
 
 void
@@ -437,7 +441,8 @@ ConversationsAdapter::getConvInfoMap(const QString& convId)
             {"needsSyncing", convInfo.needsSyncing},
             {"isAudioOnly", isAudioOnly},
             {"callState", static_cast<int>(callState)},
-            {"callStackViewShouldShow", callStackViewShouldShow}};
+            {"callStackViewShouldShow", callStackViewShouldShow},
+            {"readOnly", convInfo.readOnly}};
 }
 
 bool
