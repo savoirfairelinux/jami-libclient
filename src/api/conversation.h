@@ -86,6 +86,7 @@ struct Info
     Mode mode = Mode::NON_SWARM;
     bool needsSyncing = false;
     bool isRequest = false;
+    bool readOnly = false;
 };
 
 } // namespace conversation
