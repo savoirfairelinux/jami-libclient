@@ -206,9 +206,13 @@ Rectangle {
     BackButton {
         id: backButton
 
+        objectName: "connectToAccountManagerPageBackButton"
+
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.margins: 20
+
+        visible: !connectBtn.spinnerTriggered
 
         preferredSize: JamiTheme.wizardViewPageBackButtonSize
 
