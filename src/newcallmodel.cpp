@@ -318,22 +318,21 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly, VectorMapStringSt
 {
     if (mediaList.isEmpty()) {
         MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE,
-                                        MediaAttributeValue::AUDIO},
-                                        {MediaAttributeKey::ENABLED, "true"},
-                                        {MediaAttributeKey::MUTED, "false"},
-                                        {MediaAttributeKey::SOURCE, ""},
-                                        {MediaAttributeKey::LABEL, "audio_0"}};
+                                           MediaAttributeValue::AUDIO},
+                                          {MediaAttributeKey::ENABLED, "true"},
+                                          {MediaAttributeKey::MUTED, "false"},
+                                          {MediaAttributeKey::SOURCE, ""},
+                                          {MediaAttributeKey::LABEL, "audio_0"}};
         mediaList.push_back(mediaAttribute);
         if (!isAudioOnly) {
-            mediaAttribute[MediaAttributeKey::MEDIA_TYPE]
-                = MediaAttributeValue::VIDEO;
+            mediaAttribute[MediaAttributeKey::MEDIA_TYPE] = MediaAttributeValue::VIDEO;
             mediaAttribute[MediaAttributeKey::LABEL] = "video_0";
             mediaList.push_back(mediaAttribute);
         }
     }
 #ifdef ENABLE_LIBWRAP
     auto callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
-#else  // dbus
+#else // dbus
     // do not use auto here (QDBusPendingReply<QString>)
     QString callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
 #endif // ENABLE_LIBWRAP
@@ -413,8 +412,7 @@ NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabe
     // mediaNegotiationStatus
     if (found < callInfo->mediaList.size()) {
         callInfo->mediaList[found][MediaAttributeKey::MUTED]
-            = callInfo->mediaList[found][MediaAttributeKey::MUTED] == "true" ? "false"
-                                                                                           : "true";
+            = callInfo->mediaList[found][MediaAttributeKey::MUTED] == "true" ? "false" : "true";
         if (mediaLabel.contains("audio_0")) {
             callInfo->audioMuted = !callInfo->audioMuted;
         } else if (mediaLabel.contains("video_0")) {
@@ -1029,12 +1027,7 @@ NewCallModelPimpl::slotIncomingCallWithMedia(const QString& accountId,
     }
 
     emit linked.newIncomingCall(fromId, callId, displayname);
-
-    // HACK. BECAUSE THE DAEMON DOESN'T HANDLE THIS CASE!
-    if (!linked.owner.confProperties.isRendezVous && linked.owner.confProperties.autoAnswer) {
-        linked.accept(callId);
-    }
-} // namespace lrc
+}
 
 void
 NewCallModelPimpl::slotMediaChangeRequested(const QString& accountId,
