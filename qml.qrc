@@ -65,6 +65,7 @@
         <file>src/settingsview/components/AdvancedPublicAddressSettings.qml</file>
         <file>src/settingsview/components/AdvancedConnectivitySettings.qml</file>
         <file>src/settingsview/components/AdvancedCallSettings.qml</file>
+        <file>src/settingsview/components/AdvancedChatSettings.qml</file>
         <file>src/settingsview/components/SettingMaterialButton.qml</file>
         <file>src/settingsview/components/ToggleSwitch.qml</file>
         <file>src/settingsview/components/SettingSpinBox.qml</file>

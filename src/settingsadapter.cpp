@@ -325,6 +325,12 @@ SettingsAdapter::getAccountConfig_DHT_PublicInCalls()
 }
 
 bool
+SettingsAdapter::getAccountConfig_ReadReceipt()
+{
+    return getAccountConfig().sendReadReceipt;
+}
+
+bool
 SettingsAdapter::getAccountConfig_RendezVous()
 {
     return getAccountConfig().isRendezVous;
@@ -629,6 +635,15 @@ SettingsAdapter::setAutoAnswerCalls(bool state)
     auto confProps = lrcInstance_->accountModel().getAccountConfig(
         lrcInstance_->get_currentAccountId());
     confProps.autoAnswer = state;
+    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->get_currentAccountId(), confProps);
+}
+
+void
+SettingsAdapter::setSendReadReceipt(bool state)
+{
+    auto confProps = lrcInstance_->accountModel().getAccountConfig(
+        lrcInstance_->get_currentAccountId());
+    confProps.sendReadReceipt = state;
     lrcInstance_->accountModel().setAccountConfig(lrcInstance_->get_currentAccountId(), confProps);
 }
 

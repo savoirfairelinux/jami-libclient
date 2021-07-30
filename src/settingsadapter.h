@@ -104,6 +104,7 @@ public:
 
     Q_INVOKABLE bool getAccountConfig_PeerDiscovery();
     Q_INVOKABLE bool getAccountConfig_DHT_PublicInCalls();
+    Q_INVOKABLE bool getAccountConfig_ReadReceipt();
     Q_INVOKABLE bool getAccountConfig_RendezVous();
     Q_INVOKABLE bool getAccountConfig_AutoAnswer();
 
@@ -164,6 +165,7 @@ public:
     Q_INVOKABLE void setCallsUntrusted(bool state);
     Q_INVOKABLE void setIsRendezVous(bool state);
     Q_INVOKABLE void setAutoAnswerCalls(bool state);
+    Q_INVOKABLE void setSendReadReceipt(bool state);
     Q_INVOKABLE void setEnableRingtone(bool state);
     Q_INVOKABLE void setEnableProxy(bool state);
     Q_INVOKABLE void setKeepAliveEnabled(bool state);

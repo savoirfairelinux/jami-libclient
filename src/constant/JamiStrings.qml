@@ -75,6 +75,11 @@ Item {
     property string addCustomRingtone: qsTr("Add a custom ringtone")
     property string selectNewRingtone: qsTr("Select a new ringtone")
 
+    // AdvancedChatSettings
+    property string chatSettings: qsTr("Chat Settings")
+    property string enableReadReceipts: qsTr("Enable read receipts")
+    property string enableReadReceiptsTooltip: qsTr("Send and receive receipts indicating that a message have been displayed")
+
     // AdvancedVoiceMailSettings
     property string voiceMail: qsTr("Voicemail")
     property string voiceMailDialCode: qsTr("Voicemail dial code")

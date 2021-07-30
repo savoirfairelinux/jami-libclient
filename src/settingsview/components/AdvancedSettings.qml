@@ -39,6 +39,7 @@ ColumnLayout {
 
     function updateAdvancedAccountInfos() {
         advancedCallSettings.updateCallSettingsInfos()
+        advancedChatSettings.updateSettings()
         advancedVoiceMailSettings.updateVoiceMailSettingsInfos()
         advancedSIPSecuritySettings.updateSecurityAccountInfos()
         advancedNameServerSettings.updateNameServerInfos()
@@ -104,7 +105,16 @@ ColumnLayout {
 
             Layout.fillWidth: true
 
-            isSIP: root.isSIP
+            isSIP: LRCInstance.currentAccountType === Profile.Type.SIP
+            itemWidth: root.itemWidth
+        }
+
+        AdvancedChatSettings {
+            id: advancedChatSettings
+
+            Layout.fillWidth: true
+
+            visible: LRCInstance.currentAccountType === Profile.Type.JAMI
             itemWidth: root.itemWidth
         }
 
@@ -113,7 +123,7 @@ ColumnLayout {
 
             Layout.fillWidth: true
 
-            visible: root.isSIP
+            visible: LRCInstance.currentAccountType === Profile.Type.SIP
             itemWidth: root.itemWidth
         }
 
@@ -122,7 +132,7 @@ ColumnLayout {
 
             Layout.fillWidth: true
 
-            visible: root.isSIP
+            visible: LRCInstance.currentAccountType === Profile.Type.SIP
             itemWidth: root.itemWidth
         }
 
@@ -131,7 +141,7 @@ ColumnLayout {
 
             Layout.fillWidth: true
 
-            visible: !root.isSIP
+            visible: LRCInstance.currentAccountType === Profile.Type.JAMI
             itemWidth: root.itemWidth
         }
 
@@ -140,7 +150,7 @@ ColumnLayout {
 
             Layout.fillWidth: true
 
-            visible: !root.isSIP
+            visible: LRCInstance.currentAccountType === Profile.Type.JAMI
             itemWidth: root.itemWidth
         }
 
@@ -149,7 +159,7 @@ ColumnLayout {
 
             Layout.fillWidth: true
 
-            visible: !root.isSIP
+            visible: LRCInstance.currentAccountType === Profile.Type.JAMI
             itemWidth: root.itemWidth
         }
 
@@ -159,7 +169,7 @@ ColumnLayout {
             Layout.fillWidth: true
 
             itemWidth: root.itemWidth
-            isSIP: root.isSIP
+            isSIP: LRCInstance.currentAccountType === Profile.Type.SIP
         }
 
         AdvancedPublicAddressSettings {
