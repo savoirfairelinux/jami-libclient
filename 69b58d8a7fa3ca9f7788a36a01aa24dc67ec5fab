@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8dabb4b6_54ce0b3e",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2741,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-07-30T17:43:19Z",
+      "side": 1,
+      "message": "technically, it will be better to check if remainingMemebrs \u003d [selfUri] instead of counting members",
+      "range": {
+        "startLine": 2741,
+        "startChar": 15,
+        "endLine": 2741,
+        "endChar": 50
+      },
+      "revId": "69b58d8a7fa3ca9f7788a36a01aa24dc67ec5fab",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
