@@ -814,6 +814,7 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.mailbox = details[ConfProperties::MAILBOX];
     confProperties.dtmfType = details[ConfProperties::DTMF_TYPE];
     confProperties.autoAnswer = toBool(details[ConfProperties::AUTOANSWER]);
+    confProperties.sendMessageDisplayed = toBool(details[ConfProperties::SENDDISPLAYED]);
     confProperties.isRendezVous = toBool(details[ConfProperties::ISRENDEZVOUS]);
     confProperties.activeCallLimit = toInt(details[ConfProperties::ACTIVE_CALL_LIMIT]);
     confProperties.hostname = details[ConfProperties::HOSTNAME];
@@ -937,6 +938,7 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::MAILBOX] = this->mailbox;
     details[ConfProperties::DTMF_TYPE] = this->dtmfType;
     details[ConfProperties::AUTOANSWER] = toQString(this->autoAnswer);
+    details[ConfProperties::SENDDISPLAYED] = toQString(this->sendMessageDisplayed);
     details[ConfProperties::ISRENDEZVOUS] = toQString(this->isRendezVous);
     details[ConfProperties::ACTIVE_CALL_LIMIT] = toQString(this->activeCallLimit);
     details[ConfProperties::HOSTNAME] = this->hostname;

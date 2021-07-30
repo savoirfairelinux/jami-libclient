@@ -82,6 +82,7 @@ struct ConfProperties_t
     QString mailbox;
     QString dtmfType;
     bool autoAnswer;
+    bool sendMessageDisplayed;
     bool isRendezVous;
     int activeCallLimit;
     QString hostname;
