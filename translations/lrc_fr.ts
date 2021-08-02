@@ -71,8 +71,8 @@
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="218"/>
-        <location filename="../src/authority/storagehelper.cpp" line="130"/>
-        <location filename="../src/authority/storagehelper.cpp" line="918"/>
+        <location filename="../src/authority/storagehelper.cpp" line="135"/>
+        <location filename="../src/authority/storagehelper.cpp" line="932"/>
         <source>Invitation received</source>
         <translation>Invitation reçue</translation>
     </message>
@@ -83,39 +83,39 @@
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
-        <location filename="../src/authority/storagehelper.cpp" line="127"/>
-        <location filename="../src/authority/storagehelper.cpp" line="916"/>
+        <location filename="../src/authority/storagehelper.cpp" line="132"/>
+        <location filename="../src/authority/storagehelper.cpp" line="930"/>
         <source>Contact added</source>
         <translation>Contact ajouté</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="104"/>
-        <location filename="../src/authority/storagehelper.cpp" line="110"/>
-        <location filename="../src/authority/storagehelper.cpp" line="914"/>
+        <location filename="../src/authority/storagehelper.cpp" line="109"/>
+        <location filename="../src/authority/storagehelper.cpp" line="115"/>
+        <location filename="../src/authority/storagehelper.cpp" line="928"/>
         <source>Outgoing call</source>
         <translation>Appel sortant</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="106"/>
-        <location filename="../src/authority/storagehelper.cpp" line="116"/>
+        <location filename="../src/authority/storagehelper.cpp" line="111"/>
+        <location filename="../src/authority/storagehelper.cpp" line="121"/>
         <source>Incoming call</source>
         <translation>Appel entrant</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="912"/>
+        <location filename="../src/authority/storagehelper.cpp" line="117"/>
+        <location filename="../src/authority/storagehelper.cpp" line="926"/>
         <source>Missed outgoing call</source>
         <translation>Appel sortant manqué</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="118"/>
+        <location filename="../src/authority/storagehelper.cpp" line="123"/>
         <source>Missed incoming call</source>
         <translation>Appel entrant manqué</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="220"/>
-        <location filename="../src/authority/storagehelper.cpp" line="132"/>
-        <location filename="../src/authority/storagehelper.cpp" line="920"/>
+        <location filename="../src/authority/storagehelper.cpp" line="137"/>
+        <location filename="../src/authority/storagehelper.cpp" line="934"/>
         <source>Invitation accepted</source>
         <translation>Invitation acceptée</translation>
     </message>
@@ -621,22 +621,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="440"/>
+        <location filename="../src/contactmodel.cpp" line="463"/>
         <source>Searching…</source>
         <translation>Recherche en cours ...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="955"/>
+        <location filename="../src/contactmodel.cpp" line="983"/>
         <source>Invalid ID</source>
         <translation>ID invalide</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="958"/>
+        <location filename="../src/contactmodel.cpp" line="986"/>
         <source>Username not found</source>
         <translation>Nom d&apos;utilisateur non trouvé</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="961"/>
+        <location filename="../src/contactmodel.cpp" line="989"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Impossible de vérifier le nom d&apos;utilisateur</translation>
     </message>
@@ -644,7 +644,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="401"/>
+        <location filename="../src/contactmodel.cpp" line="424"/>
         <source>Bad URI scheme</source>
         <translation>Schéma d&apos;URI non supporté</translation>
     </message>
