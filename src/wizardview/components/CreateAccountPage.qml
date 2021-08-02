@@ -166,6 +166,8 @@ Rectangle {
                 MaterialButton {
                     id: chooseUsernameButton
 
+                    objectName: "chooseUsernameButton"
+
                     Layout.alignment: Qt.AlignCenter
                     Layout.preferredWidth: preferredWidth
                     Layout.preferredHeight: preferredHeight
@@ -188,6 +190,8 @@ Rectangle {
 
                 MaterialButton {
                     id: skipButton
+
+                    objectName: "nameRegistrationPageSkipButton"
 
                     Layout.alignment: Qt.AlignCenter
                     Layout.preferredWidth: preferredWidth
@@ -391,6 +395,8 @@ Rectangle {
 
     BackButton {
         id: backButton
+
+        objectName: "createAccountPageBackButton"
 
         anchors.left: parent.left
         anchors.top: parent.top

@@ -25,6 +25,7 @@ import net.jami.Constants 1.0
 import net.jami.Enums 1.0
 
 import "qrc:/src/wizardview"
+import "qrc:/src/commoncomponents"
 
 WizardView {
     id: uut
@@ -420,7 +421,7 @@ WizardView {
             var sipPasswordEdit = findChild(createSIPAccountPage, "sipPasswordEdit")
             var sipServernameEdit = findChild(createSIPAccountPage, "sipServernameEdit")
             var sipProxyEdit = findChild(createSIPAccountPage, "sipProxyEdit")
-            var createAccountButton = findChild(createSIPAccountPage, "createAccountButton")
+            var createAccountButton = findChild(createSIPAccountPage, "createSIPAccountButton")
 
             var saveProfileBtn = findChild(profilePage, "saveProfileBtn")
 
@@ -490,7 +491,7 @@ WizardView {
             var profilePage = findChild(uut, "profilePage")
 
             var passwordFromBackupEdit = findChild(importFromBackupPage, "passwordFromBackupEdit")
-            var connectBtn = findChild(importFromBackupPage, "connectBtn")
+            var connectBtn = findChild(importFromBackupPage, "importFromBackupPageConnectBtn")
             var errorLabel = findChild(importFromBackupPage, "errorLabel")
             var backButton = findChild(importFromBackupPage, "importFromBackupPageBackButton")
 
@@ -533,6 +534,1092 @@ WizardView {
             compare(spyAccountIsReady.count, 1)
             spyAccountConfigFinalized.wait()
             compare(spyAccountConfigFinalized.count, 1)
+            spyCloseWizardView.wait()
+            compare(spyCloseWizardView.count, 1)
+
+            AccountAdapter.deleteCurrentAccount()
+
+            // Wait until the account removal is finished
+            spyAccountIsRemoved.wait()
+            compare(spyAccountIsRemoved.count, 1)
+        }
+    }
+
+    TestCase {
+        name: "Wizardview key navigation"
+        when: windowShown
+
+        function test_welcomePageKeyNavigation() {
+            var welcomePage = findChild(uut, "welcomePage")
+
+            var newAccountButton = findChild(welcomePage, "newAccountButton")
+            var newRdvButton = findChild(welcomePage, "newRdvButton")
+            var fromDeviceButton = findChild(welcomePage, "fromDeviceButton")
+            var fromBackupButton = findChild(welcomePage, "fromBackupButton")
+            var showAdvancedButton = findChild(welcomePage, "showAdvancedButton")
+            var connectAccountManagerButton = findChild(welcomePage, "connectAccountManagerButton")
+            var newSIPAccountButton = findChild(welcomePage, "newSIPAccountButton")
+            var welcomePageBackButton = findChild(welcomePage, "welcomePageBackButton")
+
+            welcomePageBackButton.visible = true
+
+            // ShowAdvanced is false
+            keyClick(Qt.Key_Tab)
+            compare(newAccountButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(newRdvButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(fromDeviceButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(fromBackupButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(showAdvancedButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(welcomePageBackButton.focus, true)
+
+            // Set showAdvanced to true
+            keyClick(Qt.Key_Up)
+            compare(showAdvancedButton.focus, true)
+
+            keyClick(Qt.Key_Enter)
+            compare(showAdvancedButton.showAdvanced, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(connectAccountManagerButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(newSIPAccountButton.focus, true)
+
+            // Use down button
+            keyClick(Qt.Key_Down)
+            compare(welcomePageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(newAccountButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(newRdvButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(fromDeviceButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(fromBackupButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(showAdvancedButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(connectAccountManagerButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(newSIPAccountButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(welcomePageBackButton.focus, true)
+
+            // Use up button
+            keyClick(Qt.Key_Up)
+            compare(newSIPAccountButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(connectAccountManagerButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(showAdvancedButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(fromBackupButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(fromDeviceButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(newRdvButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(newAccountButton.focus, true)
+        }
+
+        function test_createAccountPageKeyNavigation() {
+            var welcomePage = findChild(uut, "welcomePage")
+            var createAccountPage = findChild(uut, "createAccountPage")
+
+            var newAccountButton = findChild(welcomePage, "newAccountButton")
+
+            var usernameEdit = findChild(createAccountPage, "usernameEdit")
+            var chooseUsernameButton = findChild(createAccountPage,
+                                                 "chooseUsernameButton")
+            var nameRegistrationPageSkipButton = findChild(createAccountPage,
+                                                           "nameRegistrationPageSkipButton")
+            var passwordEdit = findChild(createAccountPage, "passwordEdit")
+            var passwordSwitch = findChild(createAccountPage, "passwordSwitch")
+            var passwordConfirmEdit = findChild(createAccountPage, "passwordConfirmEdit")
+            var createAccountButton = findChild(createAccountPage,
+                                                "createAccountButton")
+            var createAccountPageBackButton = findChild(createAccountPage,
+                                                        "createAccountPageBackButton")
+
+            // To createAccountPage - nameRegistrationPage
+            keyClick(Qt.Key_Tab)
+            compare(newAccountButton.focus, true)
+
+            keyClick(Qt.Key_Enter)
+            compare(usernameEdit.focus, true)
+
+            // No username
+            keyClick(Qt.Key_Tab)
+            compare(nameRegistrationPageSkipButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(usernameEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(nameRegistrationPageSkipButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(usernameEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(nameRegistrationPageSkipButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(usernameEdit.focus, true)
+
+            // With username
+            usernameEdit.nameRegistrationState =
+                    UsernameLineEdit.NameRegistrationState.FREE
+
+            keyClick(Qt.Key_Tab)
+            compare(chooseUsernameButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(nameRegistrationPageSkipButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(usernameEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(chooseUsernameButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(nameRegistrationPageSkipButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(usernameEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(nameRegistrationPageSkipButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(chooseUsernameButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(usernameEdit.focus, true)
+
+            // To createAccountPage - passwordSetupPage
+            keyClick(Qt.Key_Down)
+            keyClick(Qt.Key_Down)
+            keyClick(Qt.Key_Enter)
+            keyClick(Qt.Key_Tab)
+            compare(passwordSwitch.focus, true)
+
+            // No password
+            keyClick(Qt.Key_Tab)
+            compare(createAccountButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordSwitch.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(createAccountButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordSwitch.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(createAccountButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordSwitch.focus, true)
+
+            // With password - no text entered
+            keyClick(Qt.Key_Enter)
+            compare(passwordEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordConfirmEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordSwitch.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordConfirmEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordSwitch.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordConfirmEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordSwitch.focus, true)
+
+            // With password - with text entered
+            passwordEdit.text = "test"
+            passwordConfirmEdit.text = "test"
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordConfirmEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(createAccountButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordSwitch.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordConfirmEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(createAccountButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordSwitch.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(createAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(createAccountButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordConfirmEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordSwitch.focus, true)
+
+            // Go back to welcomePage
+            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Enter)
+            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Enter)
+        }
+
+        function test_importFromDevicePageKeyNavigation() {
+            var welcomePage = findChild(uut, "welcomePage")
+            var importFromDevicePage = findChild(uut, "importFromDevicePage")
+
+            var fromDeviceButton = findChild(welcomePage, "fromDeviceButton")
+
+            var pinFromDevice = findChild(importFromDevicePage, "pinFromDevice")
+            var importFromDevicePageConnectBtn = findChild(importFromDevicePage,
+                                                           "importFromDevicePageConnectBtn")
+            var passwordFromDevice = findChild(importFromDevicePage, "passwordFromDevice")
+            var importFromDevicePageBackButton = findChild(importFromDevicePage,
+                                                           "importFromDevicePageBackButton")
+
+            // To importFromDevicePage
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Tab)
+            compare(fromDeviceButton.focus, true)
+
+            keyClick(Qt.Key_Enter)
+            compare(pinFromDevice.focus, true)
+
+            // No device pin
+            keyClick(Qt.Key_Tab)
+            compare(importFromDevicePageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordFromDevice.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(pinFromDevice.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(importFromDevicePageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordFromDevice.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(pinFromDevice.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordFromDevice.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(importFromDevicePageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(pinFromDevice.focus, true)
+
+            // With device pin
+            pinFromDevice.text = "test"
+
+            keyClick(Qt.Key_Tab)
+            compare(importFromDevicePageConnectBtn.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(importFromDevicePageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordFromDevice.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(pinFromDevice.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(importFromDevicePageConnectBtn.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(importFromDevicePageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordFromDevice.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(pinFromDevice.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordFromDevice.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(importFromDevicePageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(importFromDevicePageConnectBtn.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(pinFromDevice.focus, true)
+
+            // Account creation in process
+            importFromDevicePageConnectBtn.spinnerTriggered = true
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordFromDevice.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(pinFromDevice.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordFromDevice.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(pinFromDevice.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordFromDevice.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(pinFromDevice.focus, true)
+
+            importFromDevicePageConnectBtn.spinnerTriggered = false
+
+            // Go back to welcomePage
+            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Enter)
+        }
+
+        function test_importFromBackupPageKeyNavigation() {
+            var welcomePage = findChild(uut, "welcomePage")
+            var importFromBackupPage = findChild(uut, "importFromBackupPage")
+
+            var fromBackupButton = findChild(welcomePage, "fromBackupButton")
+
+            var passwordFromBackupEdit = findChild(importFromBackupPage, "passwordFromBackupEdit")
+            var importFromBackupPageBackButton = findChild(importFromBackupPage,
+                                                           "importFromBackupPageBackButton")
+            var importFromBackupPageConnectBtn = findChild(importFromBackupPage,
+                                                           "importFromBackupPageConnectBtn")
+            var fileImportBtn = findChild(importFromBackupPage, "fileImportBtn")
+
+            // To importFromBackupPage
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Tab)
+            compare(fromBackupButton.focus, true)
+
+            keyClick(Qt.Key_Enter)
+            compare(passwordFromBackupEdit.focus, true)
+
+            // No filePath loaded
+            keyClick(Qt.Key_Tab)
+            compare(importFromBackupPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(fileImportBtn.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordFromBackupEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(importFromBackupPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(fileImportBtn.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordFromBackupEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(fileImportBtn.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(importFromBackupPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordFromBackupEdit.focus, true)
+
+            // With filePath loaded
+            importFromBackupPage.filePath = "test"
+
+            keyClick(Qt.Key_Tab)
+            compare(importFromBackupPageConnectBtn.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(importFromBackupPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(fileImportBtn.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordFromBackupEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(importFromBackupPageConnectBtn.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(importFromBackupPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(fileImportBtn.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordFromBackupEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(fileImportBtn.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(importFromBackupPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(importFromBackupPageConnectBtn.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordFromBackupEdit.focus, true)
+
+            // Account creation in process
+            importFromBackupPageConnectBtn.spinnerTriggered = true
+
+            keyClick(Qt.Key_Tab)
+            compare(fileImportBtn.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordFromBackupEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(fileImportBtn.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordFromBackupEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(fileImportBtn.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordFromBackupEdit.focus, true)
+
+            importFromBackupPageConnectBtn.spinnerTriggered = false
+
+            // Go back to welcomePage
+            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Enter)
+        }
+
+        function test_connectToAccountManagerPageKeyNavigation() {
+            var welcomePage = findChild(uut, "welcomePage")
+            var connectToAccountManagerPage = findChild(uut, "connectToAccountManagerPage")
+
+            var showAdvancedButton = findChild(welcomePage, "showAdvancedButton")
+
+            var connectAccountManagerButton = findChild(welcomePage, "connectAccountManagerButton")
+
+            var accountManagerEdit = findChild(connectToAccountManagerPage, "accountManagerEdit")
+            var usernameManagerEdit = findChild(connectToAccountManagerPage, "usernameManagerEdit")
+            var passwordManagerEdit = findChild(connectToAccountManagerPage, "passwordManagerEdit")
+            var connectToAccountManagerPageConnectBtn = findChild(connectToAccountManagerPage,
+                                                                  "connectToAccountManagerPageConnectBtn")
+            var connectToAccountManagerPageBackButton = findChild(connectToAccountManagerPage,
+                                                                  "connectToAccountManagerPageBackButton")
+
+            // To connectToAccountManagerPage
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Enter)
+            keyClick(Qt.Key_Tab)
+            compare(connectAccountManagerButton.focus, true)
+
+            keyClick(Qt.Key_Enter)
+            compare(accountManagerEdit.focus, true)
+
+            // No info loaded
+            keyClick(Qt.Key_Tab)
+            compare(usernameManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(connectToAccountManagerPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(accountManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(usernameManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(connectToAccountManagerPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(accountManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(connectToAccountManagerPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(usernameManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(accountManagerEdit.focus, true)
+
+            // With info loaded
+            accountManagerEdit.text = "test"
+            usernameManagerEdit.text = "test"
+            passwordManagerEdit.text = "test"
+
+            keyClick(Qt.Key_Tab)
+            compare(usernameManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(connectToAccountManagerPageConnectBtn.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(connectToAccountManagerPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(accountManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(usernameManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(connectToAccountManagerPageConnectBtn.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(connectToAccountManagerPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(accountManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(connectToAccountManagerPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(connectToAccountManagerPageConnectBtn.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(usernameManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(accountManagerEdit.focus, true)
+
+            // Account creation in process
+            connectToAccountManagerPageConnectBtn.spinnerTriggered = true
+
+            keyClick(Qt.Key_Tab)
+            compare(usernameManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(passwordManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(accountManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(usernameManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(passwordManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(accountManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(passwordManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(usernameManagerEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(accountManagerEdit.focus, true)
+
+            connectToAccountManagerPageConnectBtn.spinnerTriggered = false
+
+            // Go back to welcomePage
+            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Enter)
+
+            // Hide advanced options
+            showAdvancedButton.clicked()
+        }
+
+        function test_createSIPAccountPageKeyNavigation() {
+            var welcomePage = findChild(uut, "welcomePage")
+            var createSIPAccountPage = findChild(uut, "createSIPAccountPage")
+
+            var showAdvancedButton = findChild(welcomePage, "showAdvancedButton")
+
+            var newSIPAccountButton = findChild(welcomePage, "newSIPAccountButton")
+
+            var sipServernameEdit = findChild(createSIPAccountPage, "sipServernameEdit")
+            var sipProxyEdit = findChild(createSIPAccountPage, "sipProxyEdit")
+            var sipUsernameEdit = findChild(createSIPAccountPage, "sipUsernameEdit")
+            var sipPasswordEdit = findChild(createSIPAccountPage, "sipPasswordEdit")
+            var createSIPAccountButton = findChild(createSIPAccountPage, "createSIPAccountButton")
+            var createSIPAccountPageBackButton = findChild(createSIPAccountPage,
+                                                           "createSIPAccountPageBackButton")
+
+            // To connectToAccountManagerPage
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Enter)
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Tab)
+            compare(newSIPAccountButton.focus, true)
+
+            keyClick(Qt.Key_Enter)
+            compare(sipServernameEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(sipProxyEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(sipUsernameEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(sipPasswordEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(createSIPAccountButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(createSIPAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(sipServernameEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(sipProxyEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(sipUsernameEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(sipPasswordEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(createSIPAccountButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(createSIPAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(sipServernameEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(createSIPAccountPageBackButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(createSIPAccountButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(sipPasswordEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(sipUsernameEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(sipProxyEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(sipServernameEdit.focus, true)
+
+            // Go back to welcomePage
+            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Enter)
+
+            // Hide advanced options
+            showAdvancedButton.clicked()
+        }
+
+        function test_profilePageKeyNavigation() {
+            uut.clearSignalSpy()
+
+            var controlPanelStackView = findChild(uut, "controlPanelStackView")
+
+            var welcomePage = findChild(uut, "welcomePage")
+            var createAccountPage = findChild(uut, "createAccountPage")
+            var profilePage = findChild(uut, "profilePage")
+            var backupKeysPage = findChild(uut, "backupKeysPage")
+
+            var createAccountButton = findChild(createAccountPage, "createAccountButton")
+
+            var aliasEdit = findChild(profilePage, "aliasEdit")
+            var saveProfileBtn = findChild(profilePage, "saveProfileBtn")
+            var setAvatarWidget = findChild(profilePage, "setAvatarWidget")
+            var skipProfileSavingButton = findChild(profilePage, "skipProfileSavingButton")
+
+            var photoboothImportFromFileDialog = findChild(setAvatarWidget,
+                                                           "photoboothImportFromFileDialog")
+            var takePhotoButton = findChild(setAvatarWidget, "takePhotoButton")
+            var photoboothViewClearButton = findChild(setAvatarWidget,
+                                                      "photoboothViewClearButton")
+            var photoboothViewImportButton = findChild(setAvatarWidget,
+                                                       "photoboothViewImportButton")
+
+            // WelcomePage initially
+            compare(controlPanelStackView.children[controlPanelStackView.currentIndex],
+                    welcomePage)
+
+            // Go to createAccount page
+            WizardViewStepModel.startAccountCreationFlow(
+                        WizardViewStepModel.AccountCreationOption.CreateJamiAccount)
+
+            // Go to set up password page
+            WizardViewStepModel.nextStep()
+            createAccountButton.clicked()
+
+            // Wait until the account creation is finished
+            spyAccountIsReady.wait()
+            compare(spyAccountIsReady.count, 1)
+
+            // Now we are in profile page
+            compare(controlPanelStackView.children[controlPanelStackView.currentIndex],
+                    profilePage)
+            compare(aliasEdit.focus, true)
+
+            spyAccountConfigFinalized.wait()
+            compare(spyAccountConfigFinalized.count, 1)
+
+            // Navigation test
+            keyClick(Qt.Key_Tab)
+            compare(saveProfileBtn.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(skipProfileSavingButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(takePhotoButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(photoboothViewImportButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(aliasEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(saveProfileBtn.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(skipProfileSavingButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(takePhotoButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(photoboothViewImportButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(aliasEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(photoboothViewImportButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(takePhotoButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(skipProfileSavingButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(saveProfileBtn.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(aliasEdit.focus, true)
+
+            // Set up photo from fake JamiFileDialog imported file
+            spyAccountStatusChanged.clear()
+            photoboothViewImportButton.focusAfterFileDialogClosed = true
+            photoboothImportFromFileDialog.file = UtilsAdapter.toFileAbsolutepath(
+                        "tests/qml/src/resources/png_test.png") + "/" + "png_test.png"
+            photoboothImportFromFileDialog.accepted()
+
+            spyAccountStatusChanged.wait()
+            verify(spyAccountStatusChanged.count >= 1)
+            compare(photoboothViewImportButton.focus, true)
+            compare(photoboothViewClearButton.visible, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(aliasEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(saveProfileBtn.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(skipProfileSavingButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(takePhotoButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(photoboothViewClearButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(photoboothViewImportButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(aliasEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(saveProfileBtn.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(skipProfileSavingButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(takePhotoButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(photoboothViewClearButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(photoboothViewImportButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(photoboothViewClearButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(takePhotoButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(skipProfileSavingButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(saveProfileBtn.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(aliasEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(photoboothViewImportButton.focus, true)
+
+            // Clear photo
+            keyClick(Qt.Key_Up)
+            compare(photoboothViewClearButton.focus, true)
+            keyClick(Qt.Key_Enter)
+            compare(takePhotoButton.focus, true)
+
+            WizardViewStepModel.nextStep()
+
+            var showBackup = (WizardViewStepModel.accountCreationOption ===
+                              WizardViewStepModel.AccountCreationOption.CreateJamiAccount
+                              || WizardViewStepModel.accountCreationOption ===
+                              WizardViewStepModel.AccountCreationOption.CreateRendezVous)
+                              && !AppSettingsManager.getValue(Settings.NeverShowMeAgain)
+            if (showBackup) {
+                compare(controlPanelStackView.children[controlPanelStackView.currentIndex],
+                        backupKeysPage)
+                WizardViewStepModel.nextStep()
+            }
+
+            spyCloseWizardView.wait()
+            compare(spyCloseWizardView.count, 1)
+
+            AccountAdapter.deleteCurrentAccount()
+
+            // Wait until the account removal is finished
+            spyAccountIsRemoved.wait()
+            compare(spyAccountIsRemoved.count, 1)
+        }
+
+        function test_backupKeysPageNavigation() {
+            uut.clearSignalSpy()
+
+            var controlPanelStackView = findChild(uut, "controlPanelStackView")
+
+            var welcomePage = findChild(uut, "welcomePage")
+            var createAccountPage = findChild(uut, "createAccountPage")
+            var profilePage = findChild(uut, "profilePage")
+            var backupKeysPage = findChild(uut, "backupKeysPage")
+
+            var createAccountButton = findChild(createAccountPage, "createAccountButton")
+            var skipProfileSavingButton = findChild(profilePage, "skipProfileSavingButton")
+
+            var neverShowMeAgainSwitch = findChild(backupKeysPage, "neverShowMeAgainSwitch")
+            var backupKeyPageBackupBtn = findChild(backupKeysPage, "backupKeyPageBackupBtn")
+            var backupKeyPageSkipBackupBtn = findChild(backupKeysPage, "backupKeyPageSkipBackupBtn")
+
+            // WelcomePage initially
+            compare(controlPanelStackView.children[controlPanelStackView.currentIndex],
+                    welcomePage)
+
+            // Go to createAccount page
+            WizardViewStepModel.startAccountCreationFlow(
+                        WizardViewStepModel.AccountCreationOption.CreateJamiAccount)
+
+            // Go to set up password page
+            WizardViewStepModel.nextStep()
+            createAccountButton.clicked()
+
+            // Wait until the account creation is finished
+            spyAccountIsReady.wait()
+            compare(spyAccountIsReady.count, 1)
+
+            // Now we are in profile page
+            compare(controlPanelStackView.children[controlPanelStackView.currentIndex],
+                    profilePage)
+            spyAccountConfigFinalized.wait()
+            compare(spyAccountConfigFinalized.count, 1)
+
+            skipProfileSavingButton.clicked()
+
+            var showBackup = (WizardViewStepModel.accountCreationOption ===
+                              WizardViewStepModel.AccountCreationOption.CreateJamiAccount
+                              || WizardViewStepModel.accountCreationOption ===
+                              WizardViewStepModel.AccountCreationOption.CreateRendezVous)
+                              && !AppSettingsManager.getValue(Settings.NeverShowMeAgain)
+            if (showBackup) {
+                compare(controlPanelStackView.children[controlPanelStackView.currentIndex],
+                        backupKeysPage)
+
+                // Navigation test
+                compare(neverShowMeAgainSwitch.focus, true)
+
+                keyClick(Qt.Key_Tab)
+                compare(backupKeyPageBackupBtn.focus, true)
+
+                keyClick(Qt.Key_Tab)
+                compare(backupKeyPageSkipBackupBtn.focus, true)
+
+                keyClick(Qt.Key_Tab)
+                compare(neverShowMeAgainSwitch.focus, true)
+
+                keyClick(Qt.Key_Down)
+                compare(backupKeyPageBackupBtn.focus, true)
+
+                keyClick(Qt.Key_Down)
+                compare(backupKeyPageSkipBackupBtn.focus, true)
+
+                keyClick(Qt.Key_Down)
+                compare(neverShowMeAgainSwitch.focus, true)
+
+                keyClick(Qt.Key_Up)
+                compare(backupKeyPageSkipBackupBtn.focus, true)
+
+                keyClick(Qt.Key_Up)
+                compare(backupKeyPageBackupBtn.focus, true)
+
+                keyClick(Qt.Key_Up)
+                compare(neverShowMeAgainSwitch.focus, true)
+
+                WizardViewStepModel.nextStep()
+            }
+
             spyCloseWizardView.wait()
             compare(spyCloseWizardView.count, 1)
 

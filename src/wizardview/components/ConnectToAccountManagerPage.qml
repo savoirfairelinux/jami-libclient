@@ -95,6 +95,8 @@ Rectangle {
         MaterialLineEdit {
             id: accountManagerEdit
 
+            objectName: "accountManagerEdit"
+
             Layout.preferredHeight: fieldLayoutHeight
             Layout.preferredWidth: connectBtn.width
             Layout.alignment: Qt.AlignCenter
@@ -136,6 +138,8 @@ Rectangle {
         MaterialLineEdit {
             id: usernameManagerEdit
 
+            objectName: "usernameManagerEdit"
+
             Layout.preferredHeight: fieldLayoutHeight
             Layout.preferredWidth: connectBtn.width
             Layout.alignment: Qt.AlignCenter
@@ -156,6 +160,8 @@ Rectangle {
 
         MaterialLineEdit {
             id: passwordManagerEdit
+
+            objectName: "passwordManagerEdit"
 
             Layout.preferredHeight: fieldLayoutHeight
             Layout.preferredWidth: connectBtn.width
@@ -184,6 +190,8 @@ Rectangle {
 
         SpinnerButton {
             id: connectBtn
+
+            objectName: "connectToAccountManagerPageConnectBtn"
 
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: errorLabel.visible ? 0 : JamiTheme.wizardViewPageBackButtonMargins

@@ -68,6 +68,8 @@ Item {
     JamiFileDialog {
         id: importFromFileDialog
 
+        objectName: "photoboothImportFromFileDialog"
+
         mode: JamiFileDialog.OpenFile
         title: JamiStrings.chooseAvatarImage
         folder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
@@ -181,6 +183,8 @@ Item {
             PushButton {
                 id: takePhotoButton
 
+                objectName: "takePhotoButton"
+
                 Layout.alignment: Qt.AlignHCenter
 
                 radius: JamiTheme.primaryRadius
@@ -223,6 +227,8 @@ Item {
             PushButton {
                 id: clearButton
 
+                objectName: "photoboothViewClearButton"
+
                 Layout.alignment: Qt.AlignHCenter
 
                 visible: LRCInstance.currentAccountAvatarSet
@@ -252,6 +258,8 @@ Item {
 
             PushButton {
                 id: importButton
+
+                objectName: "photoboothViewImportButton"
 
                 property bool focusAfterFileDialogClosed: false
 

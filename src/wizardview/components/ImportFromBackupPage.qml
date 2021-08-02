@@ -116,6 +116,8 @@ Rectangle {
         MaterialButton {
             id: fileImportBtn
 
+            objectName: "fileImportBtn"
+
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
@@ -198,7 +200,7 @@ Rectangle {
         SpinnerButton {
             id: connectBtn
 
-            objectName: "connectBtn"
+            objectName: "importFromBackupPageConnectBtn"
 
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: errorLabel.visible ? 0 : JamiTheme.wizardViewPageBackButtonMargins

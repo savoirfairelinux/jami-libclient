@@ -83,6 +83,8 @@ Rectangle {
         MaterialLineEdit {
             id: passwordFromDevice
 
+            objectName: "passwordFromDevice"
+
             Layout.preferredHeight: fieldLayoutHeight
             Layout.preferredWidth: connectBtn.width
             Layout.alignment: Qt.AlignCenter
@@ -128,6 +130,8 @@ Rectangle {
         MaterialLineEdit {
             id: pinFromDevice
 
+            objectName: "pinFromDevice"
+
             Layout.preferredHeight: fieldLayoutHeight
             Layout.preferredWidth: connectBtn.width
             Layout.alignment: Qt.AlignCenter
@@ -156,6 +160,8 @@ Rectangle {
 
         SpinnerButton {
             id: connectBtn
+
+            objectName: "importFromDevicePageConnectBtn"
 
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: errorLabel.visible ? 0 : JamiTheme.wizardViewPageBackButtonMargins

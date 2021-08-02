@@ -162,7 +162,9 @@ Rectangle {
             }
 
             JamiSwitch {
-                id: passwordSwitch
+                id: neverShowMeAgainSwitch
+
+                objectName: "neverShowMeAgainSwitch"
 
                 Layout.alignment: Qt.AlignRight
 
@@ -179,6 +181,8 @@ Rectangle {
         MaterialButton {
             id: backupBtn
 
+            objectName: "backupKeyPageBackupBtn"
+
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
@@ -189,7 +193,7 @@ Rectangle {
             pressedColor: JamiTheme.buttonTintedGreyPressed
 
             KeyNavigation.tab: skipBackupBtn
-            KeyNavigation.up: passwordSwitch
+            KeyNavigation.up: neverShowMeAgainSwitch
             KeyNavigation.down: KeyNavigation.tab
 
             onClicked: exportDialog.open()
@@ -197,6 +201,8 @@ Rectangle {
 
         MaterialButton {
             id: skipBackupBtn
+
+            objectName: "backupKeyPageSkipBackupBtn"
 
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
@@ -209,7 +215,7 @@ Rectangle {
             pressedColor: JamiTheme.buttonTintedGreyPressed
             outlined: true
 
-            KeyNavigation.tab: passwordSwitch
+            KeyNavigation.tab: neverShowMeAgainSwitch
             KeyNavigation.up: backupBtn
             KeyNavigation.down: KeyNavigation.tab
 

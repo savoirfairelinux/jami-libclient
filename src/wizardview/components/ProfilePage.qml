@@ -99,6 +99,8 @@ Rectangle {
         PhotoboothView {
             id: setAvatarWidget
 
+            objectName: "setAvatarWidget"
+
             Layout.alignment: Qt.AlignCenter
 
             imageId: createdAccountId

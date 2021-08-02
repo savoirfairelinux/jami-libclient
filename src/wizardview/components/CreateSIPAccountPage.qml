@@ -165,7 +165,7 @@ Rectangle {
         MaterialButton {
             id: createAccountButton
 
-            objectName: "createAccountButton"
+            objectName: "createSIPAccountButton"
 
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
@@ -195,6 +195,8 @@ Rectangle {
 
     BackButton {
         id: backButton
+
+        objectName: "createSIPAccountPageBackButton"
 
         anchors.left: parent.left
         anchors.top: parent.top
