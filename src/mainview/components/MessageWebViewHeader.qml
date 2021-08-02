@@ -119,7 +119,8 @@ Rectangle {
 
                     Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
 
-                    visible: text !== ""
+                    visible: text.length &&
+                             userAliasLabelText != userUserNameLabelText
                     font.pointSize: JamiTheme.textFontSize
                     color: JamiTheme.faddedLastInteractionFontColor
 
