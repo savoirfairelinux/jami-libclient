@@ -296,6 +296,11 @@ public:
                                                           QString(conversationId.c_str()),
                                                           convertMap(metadata));
                    }),
+               exportable_callback<ConversationSignal::ConversationRequestDeclined>(
+                   [this](const std::string& accountId, const std::string& conversationId) {
+                       Q_EMIT conversationRequestDeclined(QString(accountId.c_str()),
+                                                          QString(conversationId.c_str()));
+                   }),
                exportable_callback<ConversationSignal::ConversationReady>(
                    [this](const std::string& accountId, const std::string& conversationId) {
                        Q_EMIT conversationReady(QString(accountId.c_str()),
@@ -1127,6 +1132,7 @@ Q_SIGNALS: // SIGNALS
     void conversationRequestReceived(const QString& accountId,
                                      const QString& conversationId,
                                      const MapStringString& metadatas);
+    void conversationRequestDeclined(const QString& accountId, const QString& conversationId);
     void conversationReady(const QString& accountId, const QString& conversationId);
     void conversationRemoved(const QString& accountId, const QString& conversationId);
     void conversationMemberEvent(const QString& accountId,
