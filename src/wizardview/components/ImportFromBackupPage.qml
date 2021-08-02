@@ -42,6 +42,7 @@ Rectangle {
     function clearAllTextFields() {
         connectBtn.spinnerTriggered = false
         passwordFromBackupEdit.clear()
+        filePath = ""
         errorText = ""
         fileImportBtnText = JamiStrings.archive
     }
@@ -74,6 +75,16 @@ Rectangle {
         folder: StandardPaths.writableLocation(StandardPaths.HomeLocation) + "/Desktop"
 
         nameFilters: [JamiStrings.jamiArchiveFiles + " (*.gz)", JamiStrings.allFiles + " (*)"]
+
+        onVisibleChanged: {
+            if (!visible) {
+                rejected()
+            }
+        }
+
+        onRejected: {
+            fileImportBtn.forceActiveFocus()
+        }
 
         onAccepted: {
             filePath = file
@@ -115,6 +126,16 @@ Rectangle {
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed
+
+            KeyNavigation.tab: passwordFromBackupEdit
+            KeyNavigation.up: {
+                if (backButton.visible)
+                    return backButton
+                else if (connectBtn.enabled)
+                    return connectBtn
+                return passwordFromBackupEdit
+            }
+            KeyNavigation.down: KeyNavigation.tab
 
             onClicked: {
                 errorText = ""
@@ -161,6 +182,16 @@ Rectangle {
             echoMode: TextInput.Password
             borderColorMode: MaterialLineEdit.NORMAL
 
+            KeyNavigation.tab: {
+                if (connectBtn.enabled)
+                    return connectBtn
+                else if (backButton.visible)
+                    return backButton
+                return fileImportBtn
+            }
+            KeyNavigation.up: fileImportBtn
+            KeyNavigation.down: KeyNavigation.tab
+
             onTextChanged: errorText = ""
         }
 
@@ -185,7 +216,17 @@ Rectangle {
                 return false
             }
 
+            KeyNavigation.tab: {
+                if (backButton.visible)
+                    return backButton
+                return fileImportBtn
+            }
+            KeyNavigation.up: passwordFromBackupEdit
+            KeyNavigation.down: KeyNavigation.tab
+
             onClicked: {
+                if (connectBtn.focus)
+                    fileImportBtn.forceActiveFocus()
                 spinnerTriggered = true
 
                 WizardViewStepModel.accountCreationInfo =
@@ -224,6 +265,14 @@ Rectangle {
         visible: !connectBtn.spinnerTriggered
 
         preferredSize: JamiTheme.wizardViewPageBackButtonSize
+
+        KeyNavigation.tab: fileImportBtn
+        KeyNavigation.up: {
+            if (connectBtn.enabled)
+                return connectBtn
+            return passwordFromBackupEdit
+        }
+        KeyNavigation.down: KeyNavigation.tab
 
         onClicked: WizardViewStepModel.previousStep()
     }

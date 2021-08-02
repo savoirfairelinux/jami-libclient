@@ -62,11 +62,6 @@ Rectangle {
 
     color: JamiTheme.backgroundColor
 
-    onVisibleChanged: {
-        if (visible)
-            accountManagerEdit.focus = true
-    }
-
     ColumnLayout {
         id: connectToAccountManagerPageColumnLayout
 
@@ -104,12 +99,24 @@ Rectangle {
             Layout.preferredWidth: connectBtn.width
             Layout.alignment: Qt.AlignCenter
 
+            focus: visible
+
             selectByMouse: true
             placeholderText: JamiStrings.jamiManagementServerURL
             font.pointSize: JamiTheme.textFontSize
             font.kerning: true
 
             borderColorMode: MaterialLineEdit.NORMAL
+
+            KeyNavigation.tab: usernameManagerEdit
+            KeyNavigation.up: {
+                if (backButton.visible)
+                    return backButton
+                else if (connectBtn.enabled)
+                    return connectBtn
+                return passwordManagerEdit
+            }
+            KeyNavigation.down: KeyNavigation.tab
 
             onTextChanged: errorText = ""
         }
@@ -140,6 +147,10 @@ Rectangle {
 
             borderColorMode: MaterialLineEdit.NORMAL
 
+            KeyNavigation.tab: passwordManagerEdit
+            KeyNavigation.up: accountManagerEdit
+            KeyNavigation.down: KeyNavigation.tab
+
             onTextChanged: errorText = ""
         }
 
@@ -157,6 +168,16 @@ Rectangle {
 
             echoMode: TextInput.Password
             borderColorMode: MaterialLineEdit.NORMAL
+
+            KeyNavigation.tab: {
+                if (connectBtn.enabled)
+                    return connectBtn
+                else if (backButton.visible)
+                    return backButton
+                return accountManagerEdit
+            }
+            KeyNavigation.up: usernameManagerEdit
+            KeyNavigation.down: KeyNavigation.tab
 
             onTextChanged: errorText = ""
         }
@@ -177,7 +198,17 @@ Rectangle {
                      && passwordManagerEdit.text.length !== 0
                      && !spinnerTriggered
 
+            KeyNavigation.tab: {
+                if (backButton.visible)
+                    return backButton
+                return accountManagerEdit
+            }
+            KeyNavigation.up: passwordManagerEdit
+            KeyNavigation.down: KeyNavigation.tab
+
             onClicked: {
+                if (connectBtn.focus)
+                    accountManagerEdit.forceActiveFocus()
                 spinnerTriggered = true
 
                 WizardViewStepModel.accountCreationInfo =
@@ -215,6 +246,14 @@ Rectangle {
         visible: !connectBtn.spinnerTriggered
 
         preferredSize: JamiTheme.wizardViewPageBackButtonSize
+
+        KeyNavigation.tab: accountManagerEdit
+        KeyNavigation.up: {
+            if (connectBtn.enabled)
+                return connectBtn
+            return passwordManagerEdit
+        }
+        KeyNavigation.down: KeyNavigation.tab
 
         onClicked: WizardViewStepModel.previousStep()
     }

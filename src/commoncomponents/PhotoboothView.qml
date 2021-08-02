@@ -33,6 +33,9 @@ Item {
     property alias imageId: avatar.imageId
     required property real avatarSize
 
+    signal focusOnPreviousItem
+    signal focusOnNextItem
+
     width: avatarSize
     height: boothLayout.height
 
@@ -46,6 +49,14 @@ Item {
             AccountAdapter.stopPreviewing()
         }
         isPreviewing = false
+    }
+
+    function focusOnNextPhotoBoothItem () {
+        takePhotoButton.forceActiveFocus()
+    }
+
+    function focusOnPreviousPhotoBoothItem () {
+        importButton.forceActiveFocus()
     }
 
     onVisibleChanged: {
@@ -66,9 +77,27 @@ Item {
             qsTr("All files") + " (*)"
         ]
 
+        onVisibleChanged: {
+            if (!visible) {
+                rejected()
+            }
+        }
+
         onAccepted: {
+            if (importButton.focusAfterFileDialogClosed) {
+                importButton.focusAfterFileDialogClosed = false
+                importButton.forceActiveFocus()
+            }
+
             var filePath = UtilsAdapter.getAbsPath(file)
             AccountAdapter.setCurrentAccountAvatarFile(filePath)
+        }
+
+        onRejected: {
+            if (importButton.focusAfterFileDialogClosed) {
+                importButton.focusAfterFileDialogClosed = false
+                importButton.forceActiveFocus()
+            }
         }
     }
 
@@ -153,12 +182,30 @@ Item {
                 id: takePhotoButton
 
                 Layout.alignment: Qt.AlignHCenter
+
                 radius: JamiTheme.primaryRadius
                 imageColor: JamiTheme.textColor
                 toolTipText: JamiStrings.takePhoto
                 source: isPreviewing ?
                             JamiResources.round_add_a_photo_24dp_svg :
                             JamiResources.baseline_camera_alt_24dp_svg
+
+                Keys.onPressed: function (keyEvent) {
+                    if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
+                        clicked()
+                        keyEvent.accepted = true
+                    } else if (keyEvent.matches(StandardKey.MoveToPreviousLine)) {
+                        root.focusOnPreviousItem()
+                        keyEvent.accepted = true
+                    }
+                }
+
+                KeyNavigation.tab: {
+                    if (clearButton.visible)
+                        return clearButton
+                    return importButton
+                }
+                KeyNavigation.down: KeyNavigation.tab
 
                 onClicked: {
                     if (isPreviewing) {
@@ -176,12 +223,26 @@ Item {
             PushButton {
                 id: clearButton
 
-                visible: LRCInstance.currentAccountAvatarSet
                 Layout.alignment: Qt.AlignHCenter
+
+                visible: LRCInstance.currentAccountAvatarSet
+
                 radius: JamiTheme.primaryRadius
                 source: JamiResources.round_close_24dp_svg
                 toolTipText: JamiStrings.clearAvatar
                 imageColor: JamiTheme.textColor
+
+                KeyNavigation.tab: importButton
+                KeyNavigation.up: takePhotoButton
+                KeyNavigation.down: KeyNavigation.tab
+
+                Keys.onPressed: function (keyEvent) {
+                    if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
+                        clicked()
+                        takePhotoButton.forceActiveFocus()
+                        keyEvent.accepted = true
+                    }
+                }
 
                 onClicked: {
                     stopBooth()
@@ -192,11 +253,32 @@ Item {
             PushButton {
                 id: importButton
 
+                property bool focusAfterFileDialogClosed: false
+
                 Layout.alignment: Qt.AlignHCenter
+
                 radius: JamiTheme.primaryRadius
                 source: JamiResources.round_folder_24dp_svg
                 toolTipText: JamiStrings.importFromFile
                 imageColor: JamiTheme.textColor
+
+                Keys.onPressed: function (keyEvent) {
+                    if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
+                        focusAfterFileDialogClosed = true
+                        clicked()
+                        keyEvent.accepted = true
+                    } else if (keyEvent.matches(StandardKey.MoveToNextLine) ||
+                               keyEvent.key === Qt.Key_Tab) {
+                        root.focusOnNextItem()
+                        keyEvent.accepted = true
+                    }
+                }
+
+                KeyNavigation.up: {
+                    if (clearButton.visible)
+                        return clearButton
+                    return takePhotoButton
+                }
 
                 onClicked: {
                     stopBooth()

@@ -29,4 +29,11 @@ PushButton {
 
     source: JamiResources.ic_arrow_back_24dp_svg
     toolTipText: JamiStrings.back
+
+    Keys.onPressed: function (keyEvent) {
+        if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
+            clicked()
+            keyEvent.accepted = true
+        }
+    }
 }

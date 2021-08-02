@@ -98,6 +98,10 @@ Rectangle {
             placeholderText: JamiStrings.server
             font.pointSize: JamiTheme.textFontSize
             font.kerning: true
+
+            KeyNavigation.tab: sipProxyEdit
+            KeyNavigation.up: backButton
+            KeyNavigation.down: KeyNavigation.tab
         }
 
         MaterialLineEdit {
@@ -113,6 +117,10 @@ Rectangle {
             placeholderText: JamiStrings.proxy
             font.pointSize: JamiTheme.textFontSize
             font.kerning: true
+
+            KeyNavigation.tab: sipUsernameEdit
+            KeyNavigation.up: sipServernameEdit
+            KeyNavigation.down: KeyNavigation.tab
         }
 
         MaterialLineEdit {
@@ -128,6 +136,10 @@ Rectangle {
             placeholderText: JamiStrings.username
             font.pointSize: JamiTheme.textFontSize
             font.kerning: true
+
+            KeyNavigation.tab: sipPasswordEdit
+            KeyNavigation.up: sipProxyEdit
+            KeyNavigation.down: KeyNavigation.tab
         }
 
         MaterialLineEdit {
@@ -144,6 +156,10 @@ Rectangle {
             placeholderText: JamiStrings.password
             font.pointSize: JamiTheme.textFontSize
             font.kerning: true
+
+            KeyNavigation.tab: createAccountButton
+            KeyNavigation.up: sipUsernameEdit
+            KeyNavigation.down: KeyNavigation.tab
         }
 
         MaterialButton {
@@ -160,6 +176,10 @@ Rectangle {
             color: JamiTheme.wizardBlueButtons
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
+
+            KeyNavigation.tab: backButton
+            KeyNavigation.up: sipPasswordEdit
+            KeyNavigation.down: KeyNavigation.tab
 
             onClicked: {
                 WizardViewStepModel.accountCreationInfo =
@@ -181,6 +201,10 @@ Rectangle {
         anchors.margins: 20
 
         preferredSize: JamiTheme.wizardViewPageBackButtonSize
+
+        KeyNavigation.tab: sipServernameEdit
+        KeyNavigation.up: createAccountButton
+        KeyNavigation.down: KeyNavigation.tab
 
         onClicked: WizardViewStepModel.previousStep()
     }

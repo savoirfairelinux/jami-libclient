@@ -104,6 +104,14 @@ Rectangle {
             imageId: createdAccountId
             avatarSize: 200
 
+            onFocusOnPreviousItem: {
+                skipProfileSavingButton.forceActiveFocus()
+            }
+
+            onFocusOnNextItem: {
+                aliasEdit.forceActiveFocus()
+            }
+
             onVisibleChanged: {
                 if (visible)
                     LRCInstance.currentAccountAvatarSet = false
@@ -138,6 +146,16 @@ Rectangle {
 
             fieldLayoutWidth: saveProfileBtn.width
 
+            KeyNavigation.tab: saveProfileBtn
+            KeyNavigation.down: KeyNavigation.tab
+
+            Keys.onPressed: function (keyEvent) {
+                if (keyEvent.matches(StandardKey.MoveToPreviousLine)) {
+                    setAvatarWidget.focusOnPreviousPhotoBoothItem()
+                    keyEvent.accepted = true
+                }
+            }
+
             onTextEdited: {
                 if (LRCInstance.currentAccountAvatarSet)
                     return
@@ -170,6 +188,10 @@ Rectangle {
                     return JamiStrings.creatingAccount
             }
 
+            KeyNavigation.tab: skipProfileSavingButton
+            KeyNavigation.up: aliasEdit
+            KeyNavigation.down: KeyNavigation.tab
+
             onClicked: {
                 AccountAdapter.setCurrAccDisplayName(aliasEdit.text)
                 WizardViewStepModel.nextStep()
@@ -177,6 +199,10 @@ Rectangle {
         }
 
         MaterialButton {
+            id: skipProfileSavingButton
+
+            objectName: "skipProfileSavingButton"
+
             Layout.alignment: Qt.AlignCenter
             Layout.preferredWidth: preferredWidth
             Layout.preferredHeight: preferredHeight
@@ -187,6 +213,16 @@ Rectangle {
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed
             outlined: true
+
+            KeyNavigation.up: saveProfileBtn
+
+            Keys.onPressed: function (keyEvent) {
+                if (keyEvent.matches(StandardKey.MoveToNextLine) ||
+                        keyEvent.key === Qt.Key_Tab) {
+                    setAvatarWidget.focusOnNextPhotoBoothItem()
+                    keyEvent.accepted = true
+                }
+            }
 
             onClicked: {
                 AccountAdapter.setCurrentAccountAvatarBase64()

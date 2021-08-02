@@ -48,6 +48,16 @@ Rectangle {
         }
     }
 
+    // Make sure that welcomePage grab activeFocus initially (when there is no account)
+    onVisibleChanged: {
+        if (visible)
+            forceActiveFocus()
+    }
+
+    KeyNavigation.tab: newAccountButton
+    KeyNavigation.up: newAccountButton
+    KeyNavigation.down: KeyNavigation.tab
+
     ColumnLayout {
         id: welcomePageColumnLayout
 
@@ -98,6 +108,13 @@ Rectangle {
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
 
+            KeyNavigation.tab: newRdvButton
+            KeyNavigation.up: backButton.visible ? backButton :
+                                                   (showAdvancedButton.showAdvanced ?
+                                                        newSIPAccountButton :
+                                                        showAdvancedButton)
+            KeyNavigation.down: KeyNavigation.tab
+
             onClicked: WizardViewStepModel.startAccountCreationFlow(
                            WizardViewStepModel.AccountCreationOption.CreateJamiAccount)
         }
@@ -116,6 +133,10 @@ Rectangle {
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
+
+            KeyNavigation.tab: fromDeviceButton
+            KeyNavigation.up: newAccountButton
+            KeyNavigation.down: KeyNavigation.tab
 
             onClicked: WizardViewStepModel.startAccountCreationFlow(
                            WizardViewStepModel.AccountCreationOption.CreateRendezVous)
@@ -136,6 +157,10 @@ Rectangle {
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
 
+            KeyNavigation.tab: fromBackupButton
+            KeyNavigation.up: newRdvButton
+            KeyNavigation.down: KeyNavigation.tab
+
             onClicked: WizardViewStepModel.startAccountCreationFlow(
                            WizardViewStepModel.AccountCreationOption.ImportFromDevice)
         }
@@ -154,6 +179,10 @@ Rectangle {
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
+
+            KeyNavigation.tab: showAdvancedButton
+            KeyNavigation.up: fromDeviceButton
+            KeyNavigation.down: KeyNavigation.tab
 
             onClicked: WizardViewStepModel.startAccountCreationFlow(
                            WizardViewStepModel.AccountCreationOption.ImportFromBackup)
@@ -181,8 +210,13 @@ Rectangle {
 
             hoverEnabled: true
 
+            KeyNavigation.tab: showAdvanced ? connectAccountManagerButton :
+                                              (backButton.visible ? backButton : newAccountButton)
+            KeyNavigation.up: fromBackupButton
+            KeyNavigation.down: KeyNavigation.tab
+
             onClicked: {
-                showAdvanced =  !showAdvanced
+                showAdvanced = !showAdvanced
                 connectAccountManagerButton.visible = showAdvanced
                 newSIPAccountButton.visible = showAdvanced
             }
@@ -205,6 +239,10 @@ Rectangle {
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
 
+            KeyNavigation.tab: newSIPAccountButton
+            KeyNavigation.up: showAdvancedButton
+            KeyNavigation.down: KeyNavigation.tab
+
             onClicked: WizardViewStepModel.startAccountCreationFlow(
                            WizardViewStepModel.AccountCreationOption.ConnectToAccountManager)
         }
@@ -226,6 +264,10 @@ Rectangle {
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
+
+            KeyNavigation.tab: backButton.visible ? backButton : newAccountButton
+            KeyNavigation.up: connectAccountManagerButton
+            KeyNavigation.down: KeyNavigation.tab
 
             onClicked: WizardViewStepModel.startAccountCreationFlow(
                            WizardViewStepModel.AccountCreationOption.CreateSipAccount)
@@ -252,6 +294,10 @@ Rectangle {
         preferredSize: JamiTheme.wizardViewPageBackButtonSize
 
         visible: UtilsAdapter.getAccountListSize()
+
+        KeyNavigation.tab: newAccountButton
+        KeyNavigation.up: newSIPAccountButton
+        KeyNavigation.down: KeyNavigation.tab
 
         onClicked: WizardViewStepModel.previousStep()
     }

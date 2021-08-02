@@ -133,12 +133,11 @@ Rectangle {
         onActivated: contactSearchBar.forceActiveFocus()
     }
 
-    Shortcut {
-        sequence: "Return"
-        context: Qt.ApplicationShortcut
-        onActivated: {
+    Keys.onPressed: function (keyEvent) {
+        if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
             if (contactSearchBar.text !== "") {
                 returnPressedWhileSearching()
+                keyEvent.accepted = true
             }
         }
     }

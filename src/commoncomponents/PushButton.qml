@@ -153,7 +153,7 @@ AbstractButton {
                 PropertyChanges { target: background; color: pressedColor }
             },
             State {
-                name: "hovered"; when: hovered
+                name: "hovered"; when: hovered || root.focus
                 PropertyChanges { target: background; color: hoveredColor }
             },
             State {

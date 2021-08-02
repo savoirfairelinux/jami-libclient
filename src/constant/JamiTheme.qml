@@ -97,6 +97,11 @@ Item {
 
     property color closeButtonLighterBlack: "#4c4c4c"
 
+    // Jami switch
+    property color switchBackgroundBorderColor: "#cccccc"
+    property color switchBackgroundCheckedColor: primaryBackgroundColor
+    property color switchIndicatorBorderColor: "#999999"
+
     // Call buttons
     property color acceptButtonGreen: "#4caf50"
     property color acceptButtonHoverGreen: "#5db761"
@@ -253,6 +258,13 @@ Item {
     property real lineEditContextMenuItemsHeight: 15
     property real lineEditContextMenuItemsWidth: 100
     property real lineEditContextMenuSeparatorsHeight: 2
+
+    // Jami switch
+    property real switchIndicatorRadius: 13
+    property real switchPreferredHeight: 18
+    property real switchPreferredWidth: 48
+    property real switchIndicatorPreferredHeight: 26
+    property real switchIndicatorPreferredWidth: 26
 
     // Modal Popup
     property real modalPopupRadius: 4

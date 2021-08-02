@@ -32,6 +32,7 @@ Button {
     property var color: "transparent"
     property var hoveredColor: undefined
     property var pressedColor: undefined
+    property var keysNavigationFocusColor: Qt.darker(hoveredColor, 2)
     property var outlined: false
     property string animatedImageSource: ""
 
@@ -149,7 +150,7 @@ Button {
                 return root.hoveredColor
             if (checked && root.pressedColor)
                 return root.pressedColor
-            return root.color
+            return root.focus ? root.keysNavigationFocusColor : root.color
         }
         border.color: {
             if (!outlined)
@@ -158,8 +159,15 @@ Button {
                 return root.hoveredColor
             if (checked && root.pressedColor)
                 return root.pressedColor
-            return root.color
+            return root.focus ? root.keysNavigationFocusColor : root.color
         }
         radius: 4
+    }
+
+    Keys.onPressed: function (keyEvent) {
+        if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
+            clicked()
+            keyEvent.accepted = true
+        }
     }
 }

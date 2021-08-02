@@ -95,6 +95,10 @@ Rectangle {
                 rejected()
             }
         }
+
+        onRejected: {
+            backupBtn.forceActiveFocus()
+        }
     }
 
     color: JamiTheme.backgroundColor
@@ -157,9 +161,16 @@ Rectangle {
                 font.pointSize: JamiTheme.textFontSize
             }
 
-            Switch {
+            JamiSwitch {
                 id: passwordSwitch
+
                 Layout.alignment: Qt.AlignRight
+
+                focus: visible
+
+                KeyNavigation.tab: backupBtn
+                KeyNavigation.up: skipBackupBtn
+                KeyNavigation.down: KeyNavigation.tab
 
                 onToggled: AppSettingsManager.setValue(Settings.NeverShowMeAgain, checked)
             }
@@ -177,10 +188,16 @@ Rectangle {
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed
 
+            KeyNavigation.tab: skipBackupBtn
+            KeyNavigation.up: passwordSwitch
+            KeyNavigation.down: KeyNavigation.tab
+
             onClicked: exportDialog.open()
         }
 
         MaterialButton {
+            id: skipBackupBtn
+
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
             Layout.preferredWidth: preferredWidth
@@ -191,6 +208,10 @@ Rectangle {
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed
             outlined: true
+
+            KeyNavigation.tab: passwordSwitch
+            KeyNavigation.up: backupBtn
+            KeyNavigation.down: KeyNavigation.tab
 
             onClicked: WizardViewStepModel.nextStep()
         }
