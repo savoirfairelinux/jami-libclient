@@ -313,6 +313,11 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             &CallbacksHandler::slotConversationRequestReceived,
             Qt::QueuedConnection);
     connect(&ConfigurationManager::instance(),
+            &ConfigurationManagerInterface::conversationRequestDeclined,
+            this,
+            &CallbacksHandler::slotConversationRequestDeclined,
+            Qt::QueuedConnection);
+    connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::conversationReady,
             this,
             &CallbacksHandler::slotConversationReady,
@@ -730,6 +735,7 @@ CallbacksHandler::slotConversationLoaded(uint32_t requestId,
 {
     emit conversationLoaded(requestId, accountId, conversationId, messages);
 }
+
 void
 CallbacksHandler::slotMessageReceived(const QString& accountId,
                                       const QString& conversationId,
@@ -737,6 +743,7 @@ CallbacksHandler::slotMessageReceived(const QString& accountId,
 {
     emit messageReceived(accountId, conversationId, message);
 }
+
 void
 CallbacksHandler::slotConversationRequestReceived(const QString& accountId,
                                                   const QString& conversationId,
@@ -744,6 +751,14 @@ CallbacksHandler::slotConversationRequestReceived(const QString& accountId,
 {
     emit conversationRequestReceived(accountId, conversationId, metadatas);
 }
+
+void
+CallbacksHandler::slotConversationRequestDeclined(const QString& accountId,
+                                                  const QString& conversationId)
+{
+    emit conversationRequestDeclined(accountId, conversationId);
+}
+
 void
 CallbacksHandler::slotConversationReady(const QString& accountId, const QString& conversationId)
 {
