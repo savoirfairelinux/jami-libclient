@@ -44,12 +44,12 @@ ToolTip {
     ParallelAnimation {
         id: animation
         NumberAnimation {
-             target: root; properties: "opacity"
+             target: background; properties: "opacity"
              from: 0; to: 1.0
              duration: JamiTheme.shortFadeDuration
         }
         NumberAnimation {
-             target: root; properties: "scale"
+             target: background; properties: "scale"
              from: 0.5; to: 1.0
              duration: JamiTheme.shortFadeDuration * 0.5
         }
