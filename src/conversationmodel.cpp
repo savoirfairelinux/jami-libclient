@@ -361,6 +361,7 @@ public Q_SLOTS:
     void slotConversationRequestReceived(const QString& accountId,
                                          const QString& conversationId,
                                          const MapStringString& metadatas);
+    void slotConversationRequestDeclined(const QString& accountId, const QString& conversationId);
     void slotConversationMemberEvent(const QString& accountId,
                                      const QString& conversationId,
                                      const QString& memberUri,
@@ -1743,6 +1744,10 @@ ConversationModelPimpl::ConversationModelPimpl(const ConversationModel& linked,
             this,
             &ConversationModelPimpl::slotConversationRequestReceived);
     connect(&callbacksHandler,
+            &CallbacksHandler::conversationRequestDeclined,
+            this,
+            &ConversationModelPimpl::slotConversationRequestDeclined);
+    connect(&callbacksHandler,
             &CallbacksHandler::conversationReady,
             this,
             &ConversationModelPimpl::slotConversationReady);
@@ -1874,6 +1879,10 @@ ConversationModelPimpl::~ConversationModelPimpl()
                &CallbacksHandler::conversationRequestReceived,
                this,
                &ConversationModelPimpl::slotConversationRequestReceived);
+    disconnect(&callbacksHandler,
+               &CallbacksHandler::conversationRequestDeclined,
+               this,
+               &ConversationModelPimpl::slotConversationRequestDeclined);
     disconnect(&callbacksHandler,
                &CallbacksHandler::conversationReady,
                this,
@@ -2340,6 +2349,17 @@ ConversationModelPimpl::slotConversationRequestReceived(const QString& accountId
 }
 
 void
+ConversationModelPimpl::slotConversationRequestDeclined(const QString& accountId,
+                                                        const QString& convId)
+{
+    auto conversationIndex = indexOf(convId);
+    if (accountId != linked.owner.id || conversationIndex < 0)
+        return;
+    eraseConversation(conversationIndex);
+    Q_EMIT linked.conversationRemoved(convId);
+}
+
+void
 ConversationModelPimpl::slotConversationReady(const QString& accountId,
                                               const QString& conversationId)
 {
@@ -2403,9 +2423,8 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
     // we use conversationReady callback only for conversation with one participant. We could use
     // participants.front()
     auto& peers = peersForConversation(conversation);
-    if (peers.size() == 1) {
+    if (peers.size() == 1)
         emit linked.conversationReady(conversationId, peers.front());
-    }
     emit linked.newConversation(conversationId);
     emit linked.modelChanged();
 }

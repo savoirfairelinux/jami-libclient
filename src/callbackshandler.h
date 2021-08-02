@@ -345,6 +345,7 @@ Q_SIGNALS:
     void conversationRequestReceived(const QString& accountId,
                                      const QString& conversationId,
                                      const MapStringString& metadatas);
+    void conversationRequestDeclined(const QString& accountId, const QString& conversationId);
     void conversationReady(const QString& accountId, const QString& conversationId);
     void conversationRemoved(const QString& accountId, const QString& conversationId);
     void conversationMemberEvent(const QString& accountId,
@@ -662,6 +663,7 @@ private Q_SLOTS:
     void slotConversationRequestReceived(const QString& accountId,
                                          const QString& conversationId,
                                          const MapStringString& metadatas);
+    void slotConversationRequestDeclined(const QString& accountId, const QString& conversationId);
     void slotConversationReady(const QString& accountId, const QString& conversationId);
     void slotConversationRemoved(const QString& accountId, const QString& conversationId);
     void slotConversationMemberEvent(const QString& accountId,
