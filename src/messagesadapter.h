@@ -71,7 +71,6 @@ protected:
     void setMessagesVisibility(bool visible);
     void setIsSwarm(bool isSwarm);
     void clearChatView();
-    void printHistory(ConversationModel& conversationModel, MessagesList interactions);
     void updateHistory(ConversationModel& conversationModel,
                        MessagesList interactions,
                        bool allLoaded);

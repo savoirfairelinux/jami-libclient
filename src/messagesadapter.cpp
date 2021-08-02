@@ -102,7 +102,6 @@ MessagesAdapter::onInteractionStatusUpdated(const QString& convUid,
                                             const lrc::api::interaction::Info& interaction)
 {
     auto currentConversationModel = lrcInstance_->getCurrentConversationModel();
-    currentConversationModel->clearUnreadInteractions(convUid);
     updateInteraction(*currentConversationModel, interactionId, interaction);
 }
 
@@ -206,16 +205,16 @@ MessagesAdapter::slotMessagesCleared()
 {
     auto* convModel = lrcInstance_->getCurrentConversationModel();
 
-    auto convOpt = convModel->getConversationForUid(lrcInstance_->get_selectedConvUid());
-    if (!convOpt)
+    auto optConv = convModel->getConversationForUid(lrcInstance_->get_selectedConvUid());
+    if (!optConv)
         return;
-    if (convOpt->get().isSwarm() && !convOpt->get().allMessagesLoaded) {
-        convModel->loadConversationMessages(convOpt->get().uid, 20);
+    if (optConv->get().isSwarm() && !optConv->get().allMessagesLoaded) {
+        convModel->loadConversationMessages(optConv->get().uid, 20);
     } else {
-        printHistory(*convModel, convOpt->get().interactions);
+        updateHistory(*convModel, optConv->get().interactions, optConv->get().allMessagesLoaded);
         Utils::oneShotConnect(qmlObj_, SIGNAL(messagesLoaded()), this, SLOT(slotMessagesLoaded()));
     }
-    setConversationProfileData(convOpt->get());
+    setConversationProfileData(optConv->get());
 }
 
 void
@@ -458,30 +457,21 @@ MessagesAdapter::setDisplayLinks()
 }
 
 void
-MessagesAdapter::printHistory(lrc::api::ConversationModel& conversationModel,
-                              MessagesList interactions)
-{
-    auto interactionsStr = interactionsToJsonArrayObject(conversationModel,
-                                                         lrcInstance_->get_selectedConvUid(),
-                                                         interactions)
-                               .toUtf8();
-    QString s = QString::fromLatin1("printHistory(%1);").arg(interactionsStr.constData());
-    QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
-}
-
-void
 MessagesAdapter::updateHistory(lrc::api::ConversationModel& conversationModel,
                                MessagesList interactions,
                                bool allLoaded)
 {
+    auto conversationId = lrcInstance_->get_selectedConvUid();
     auto interactionsStr = interactionsToJsonArrayObject(conversationModel,
-                                                         lrcInstance_->get_selectedConvUid(),
+                                                         conversationId,
                                                          interactions)
                                .toUtf8();
     QString s = QString::fromLatin1("updateHistory(%1, %2);")
                     .arg(interactionsStr.constData())
                     .arg(allLoaded);
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
+    auto* convModel = lrcInstance_->getCurrentConversationModel();
+    conversationModel.clearUnreadInteractions(conversationId);
 }
 
 void
