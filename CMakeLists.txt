@@ -87,7 +87,8 @@ set(COMMON_SOURCES
     ${SRC_DIR}/calloverlaymodel.cpp
     ${SRC_DIR}/filestosendlistmodel.cpp
     ${SRC_DIR}/wizardviewstepmodel.cpp
-    ${SRC_DIR}/avatarregistry.cpp)
+    ${SRC_DIR}/avatarregistry.cpp
+    ${SRC_DIR}/currentconversation.cpp)
 
 set(COMMON_HEADERS
     ${SRC_DIR}/avatarimageprovider.h
@@ -145,7 +146,8 @@ set(COMMON_HEADERS
     ${SRC_DIR}/calloverlaymodel.h
     ${SRC_DIR}/filestosendlistmodel.h
     ${SRC_DIR}/wizardviewstepmodel.h
-    ${SRC_DIR}/avatarregistry.h)
+    ${SRC_DIR}/avatarregistry.h
+    ${SRC_DIR}/currentconversation.h)
 
 set(QML_LIBS
     Qt5::Quick

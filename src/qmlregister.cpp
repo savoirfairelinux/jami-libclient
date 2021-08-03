@@ -27,6 +27,7 @@
 #include "settingsadapter.h"
 #include "utilsadapter.h"
 #include "conversationsadapter.h"
+#include "currentconversation.h"
 
 #include "accountlistmodel.h"
 #include "accountstomigratelistmodel.h"
@@ -114,6 +115,7 @@ registerTypes(QQmlEngine* engine,
     auto utilsAdapter = new UtilsAdapter(systemTray, lrcInstance, parent);
     auto settingsAdapter = new SettingsAdapter(appSettingsManager, lrcInstance, parent);
     auto pluginAdapter = new PluginAdapter(lrcInstance, parent);
+    auto currentConversation = new CurrentConversation(lrcInstance, parent);
 
     // qml adapter registration
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, callAdapter, "CallAdapter");
@@ -125,6 +127,7 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, utilsAdapter, "UtilsAdapter");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, settingsAdapter, "SettingsAdapter");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, pluginAdapter, "PluginAdapter");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, currentConversation, "CurrentConversation");
 
     // TODO: remove these
     QML_REGISTERSINGLETONTYPE_CUSTOM(NS_MODELS, AVModel, &lrcInstance->avModel())
