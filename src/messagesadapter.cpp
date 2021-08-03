@@ -59,29 +59,8 @@ MessagesAdapter::safeInit()
 void
 MessagesAdapter::setupChatView(const QVariantMap& convInfo)
 {
-    bool isLegacy = !convInfo["isSwarm"].toBool();
-    bool isRequest = convInfo["isRequest"].toBool();
-    bool needsSyncing = convInfo["needsSyncing"].toBool();
-    bool readOnly = convInfo["readOnly"].toBool();
-
-    QMetaObject::invokeMethod(qmlObj_,
-                              "setSendContactRequestButtonVisible",
-                              Q_ARG(QVariant, isLegacy && isRequest));
-    QMetaObject::invokeMethod(qmlObj_,
-                              "setMessagingHeaderButtonsVisible",
-                              Q_ARG(QVariant,
-                                    !readOnly && !(isLegacy && (isRequest || needsSyncing))));
-
-    setMessagesVisibility(false);
-    setIsSwarm(!isLegacy);
-    Q_EMIT setChatViewMode(isRequest || needsSyncing,
-                           isLegacy,
-                           needsSyncing,
-                           convInfo["title"].toString(),
-                           convInfo["convId"].toString(),
-                           readOnly);
-
     Utils::oneShotConnect(qmlObj_, SIGNAL(messagesCleared()), this, SLOT(slotMessagesCleared()));
+    setMessagesVisibility(false);
     clearChatView();
 
     Q_EMIT newMessageBarPlaceholderText(convInfo["title"].toString());
@@ -177,12 +156,6 @@ MessagesAdapter::connectConversationModel()
 
     QObject::connect(currentConversationModel,
                      &ConversationModel::conversationReady,
-                     this,
-                     &MessagesAdapter::updateConversation,
-                     Qt::UniqueConnection);
-
-    QObject::connect(currentConversationModel,
-                     &ConversationModel::needsSyncingSet,
                      this,
                      &MessagesAdapter::updateConversation,
                      Qt::UniqueConnection);
@@ -354,53 +327,21 @@ MessagesAdapter::userIsComposing(bool isComposing)
 }
 
 void
-MessagesAdapter::setConversationProfileData(const lrc::api::conversation::Info& convInfo)
+MessagesAdapter::setConversationProfileData(const conversation::Info& convInfo)
 {
-    auto accInfo = &lrcInstance_->getCurrentAccountInfo();
-
+    auto& accInfo = lrcInstance_->getCurrentAccountInfo();
     if (convInfo.participants.isEmpty()) {
         return;
     }
 
-    auto contactUri = convInfo.participants.front();
-    if (contactUri.isEmpty()) {
-        return;
-    }
-    try {
-        auto title = accInfo->conversationModel->title(convInfo.uid);
-        QMetaObject::invokeMethod(qmlObj_,
-                                  "setMessagingHeaderButtonsVisible",
-                                  Q_ARG(QVariant,
-                                        !convInfo.readOnly
-                                            && !(convInfo.isSwarm()
-                                                 && (convInfo.isRequest || convInfo.needsSyncing))));
+    auto title = accInfo.conversationModel->title(convInfo.uid);
 
-        Q_EMIT setChatViewMode(convInfo.isRequest || convInfo.needsSyncing,
-                               convInfo.isSwarm(),
-                               convInfo.needsSyncing,
-                               title,
-                               convInfo.uid,
-                               convInfo.readOnly);
-        if (convInfo.isSwarm())
-            return;
-
-        // TODO: swarmify me
-        auto& contact = accInfo->contactModel->getContact(contactUri);
-        bool isPending = contact.profileInfo.type == profile::Type::TEMPORARY;
-        QMetaObject::invokeMethod(qmlObj_,
-                                  "setSendContactRequestButtonVisible",
-                                  Q_ARG(QVariant, isPending));
-        if (!contact.profileInfo.avatar.isEmpty()) {
-            setSenderImage(contactUri, contact.profileInfo.avatar);
-        } else {
-            auto avatar = Utils::contactPhoto(lrcInstance_, convInfo.participants[0]);
-            QByteArray ba;
-            QBuffer bu(&ba);
-            avatar.save(&bu, "PNG");
-            setSenderImage(contactUri, QString::fromLocal8Bit(ba.toBase64()));
-        }
-    } catch (...) {
-    }
+    // make the conversation avatar available within the web view
+    auto avatar = Utils::conversationAvatar(lrcInstance_, convInfo.uid);
+    QByteArray ba;
+    QBuffer bu(&ba);
+    avatar.save(&bu, "PNG");
+    setSenderImage(title, QString::fromLocal8Bit(ba.toBase64()));
 }
 
 void
@@ -434,13 +375,6 @@ MessagesAdapter::setMessagesVisibility(bool visible)
 }
 
 void
-MessagesAdapter::setIsSwarm(bool isSwarm)
-{
-    QString s = QString::fromLatin1("set_is_swarm(%1)").arg(isSwarm);
-    QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
-}
-
-void
 MessagesAdapter::clearChatView()
 {
     QString s = QString::fromLatin1("clearMessages();");
@@ -462,15 +396,12 @@ MessagesAdapter::updateHistory(lrc::api::ConversationModel& conversationModel,
                                bool allLoaded)
 {
     auto conversationId = lrcInstance_->get_selectedConvUid();
-    auto interactionsStr = interactionsToJsonArrayObject(conversationModel,
-                                                         conversationId,
-                                                         interactions)
-                               .toUtf8();
+    auto interactionsStr
+        = interactionsToJsonArrayObject(conversationModel, conversationId, interactions).toUtf8();
     QString s = QString::fromLatin1("updateHistory(%1, %2);")
                     .arg(interactionsStr.constData())
                     .arg(allLoaded);
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
-    auto* convModel = lrcInstance_->getCurrentConversationModel();
     conversationModel.clearUnreadInteractions(conversationId);
 }
 
@@ -588,7 +519,6 @@ MessagesAdapter::refuseInvitation(const QString& convUid)
 {
     const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, false);
-    Q_EMIT setChatViewMode(false);
 }
 
 void
@@ -596,7 +526,6 @@ MessagesAdapter::blockConversation(const QString& convUid)
 {
     const auto currentConvUid = convUid.isEmpty() ? lrcInstance_->get_selectedConvUid() : convUid;
     lrcInstance_->getCurrentConversationModel()->removeConversation(currentConvUid, true);
-    Q_EMIT setChatViewMode(false);
 }
 
 void

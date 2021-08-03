@@ -276,12 +276,6 @@ ConversationsAdapter::onProfileUpdated(const QString& contactUri)
 void
 ConversationsAdapter::onConversationUpdated(const QString& convId)
 {
-    // this could be the result of a member event
-    auto& convInfo = lrcInstance_->getConversationFromConvUid(convId);
-    if (convInfo.uid.isEmpty())
-        return;
-    set_currentConvIsReadOnly(convInfo.readOnly);
-
     updateConversationFilterData();
 }
 
@@ -332,12 +326,6 @@ ConversationsAdapter::onConversationReady(const QString& convId)
     } else if (convId != selectedConvId)
         return;
 
-    updateConversation(convId);
-}
-
-void
-ConversationsAdapter::onNeedsSyncingSet(const QString& convId)
-{
     updateConversation(convId);
 }
 
@@ -497,12 +485,6 @@ ConversationsAdapter::connectConversationModel()
                      &ConversationModel::conversationReady,
                      this,
                      &ConversationsAdapter::onConversationReady,
-                     Qt::UniqueConnection);
-
-    QObject::connect(currentConversationModel,
-                     &ConversationModel::needsSyncingSet,
-                     this,
-                     &ConversationsAdapter::onNeedsSyncingSet,
                      Qt::UniqueConnection);
 
     QObject::connect(lrcInstance_->getCurrentContactModel(),

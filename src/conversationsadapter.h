@@ -36,7 +36,6 @@ class ConversationsAdapter final : public QmlAdapterBase
     QML_PROPERTY(bool, filterRequests)
     QML_PROPERTY(int, totalUnreadMessageCount)
     QML_PROPERTY(int, pendingRequestCount)
-    QML_PROPERTY(bool, currentConvIsReadOnly)
 
 public:
     explicit ConversationsAdapter(SystemTray* systemTray,
@@ -82,14 +81,11 @@ private Q_SLOTS:
     void onSearchStatusChanged(const QString&);
     void onSearchResultUpdated();
     void onConversationReady(const QString&);
-    void onNeedsSyncingSet(const QString&);
     void onBannedStatusChanged(const QString&, bool);
 
+private:
     void updateConversation(const QString&);
     void updateConversationFilterData();
-
-private:
-    void updateConversationForNewContact(const QString& convUid);
 
     SystemTray* systemTray_;
 

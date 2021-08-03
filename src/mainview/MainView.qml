@@ -560,10 +560,7 @@ Rectangle {
     Shortcut {
         sequence: "Ctrl+Shift+A"
         context: Qt.ApplicationShortcut
-        onActivated: {
-            LRCInstance.makeConversationPermanent()
-            communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
-        }
+        onActivated: LRCInstance.makeConversationPermanent()
     }
 
     Shortcut {

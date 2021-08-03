@@ -69,7 +69,6 @@ protected:
 
     // Run corrsponding js functions, c++ to qml.
     void setMessagesVisibility(bool visible);
-    void setIsSwarm(bool isSwarm);
     void clearChatView();
     void updateHistory(ConversationModel& conversationModel,
                        MessagesList interactions,
@@ -92,12 +91,6 @@ Q_SIGNALS:
     void newMessageBarPlaceholderText(QString placeholderText);
     void newFilePasted(QString filePath);
     void newTextPasted();
-    void setChatViewMode(bool showInvitationPage,
-                         bool isSwarm = false,
-                         bool needsSyncing = false,
-                         QString contactTitle = {},
-                         QString contactUri = {},
-                         bool readOnly = false);
 
 private Q_SLOTS:
     void slotMessagesCleared();

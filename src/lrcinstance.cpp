@@ -407,7 +407,7 @@ LRCInstance::makeConversationPermanent(const QString& convId, const QString& acc
     const auto& accInfo = accountModel().getAccountInfo(aId);
     auto cId = convId.isEmpty() ? selectedConvUid_ : convId;
     if (cId.isEmpty()) {
-        qWarning() << Q_FUNC_INFO << "no conversation to make permanent";
+        qInfo() << Q_FUNC_INFO << "no conversation to make permanent";
         return;
     }
     accInfo.conversationModel.get()->makePermanent(cId);

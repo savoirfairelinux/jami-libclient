@@ -212,11 +212,8 @@ Rectangle {
     Shortcut {
         sequence: "Ctrl+Y"
         context: Qt.ApplicationShortcut
-        onActivated: {
-            CallAdapter.acceptACall(root.accountConvPair[0],
-                                    root.accountConvPair[1])
-            communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
-        }
+        onActivated: CallAdapter.acceptACall(root.accountConvPair[0],
+                                             root.accountConvPair[1])
     }
 
     Shortcut {

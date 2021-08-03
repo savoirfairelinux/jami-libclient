@@ -32,15 +32,9 @@ import "../js/pluginhandlerpickercreation.js" as PluginHandlerPickerCreation
 Rectangle {
     id: root
 
-    enum Mode {
-        Chat = 0,
-        Invitation
-    }
-
     property string headerUserAliasLabelText: ""
     property string headerUserUserNameLabelText: ""
     property bool jsLoaded: false
-    property var mode: MessageWebView.Mode.Chat
 
     signal needToHideConversationInCall
     signal messagesCleared
@@ -56,18 +50,6 @@ Rectangle {
 
     function webViewRunJavaScript(arg) {
         messageWebView.runJavaScript(arg)
-    }
-
-    function setSendContactRequestButtonVisible(visible) {
-        messageWebViewHeader.sendContactRequestButtonVisible = visible
-    }
-
-    function setMessagingHeaderButtonsVisible(visible) {
-        messageWebViewHeader.toggleMessagingHeaderButtonsVisible(visible)
-    }
-
-    function resetMessagingHeaderBackButtonSource(reset) {
-        messageWebViewHeader.resetBackToWelcomeViewButtonSource(reset)
     }
 
     function updateChatviewTheme() {
@@ -108,35 +90,6 @@ Rectangle {
 
         function onDarkThemeChanged() {
             updateChatviewTheme()
-        }
-    }
-
-    Connections {
-        target: MessagesAdapter
-
-        function onSetChatViewMode(showInvitationPage,
-                                   isSwarm, needsSyncing,
-                                   title, convId) {
-            if (showInvitationPage)
-                root.mode = MessageWebView.Mode.Invitation
-            else {
-                root.mode = MessageWebView.Mode.Chat
-                return
-            }
-
-            invitationView.imageId = convId
-            invitationView.title = title
-            invitationView.needSyncing = needsSyncing
-        }
-    }
-
-    Connections {
-        target: ConversationsAdapter
-
-        function onCurrentConvIsReadOnlyChanged() {
-            var isVisible = !ConversationsAdapter.currentConvIsReadOnly
-            setMessagingHeaderButtonsVisible(isVisible)
-            messageWebViewFooter.visible = isVisible
         }
     }
 
@@ -241,7 +194,7 @@ Rectangle {
             Layout.topMargin: JamiTheme.messageWebViewHairLineSize
             Layout.bottomMargin: JamiTheme.messageWebViewHairLineSize
 
-            currentIndex: root.mode
+            currentIndex: CurrentConversation.isRequest || CurrentConversation.needsSyncing
 
             GeneralWebEngineView {
                 id: messageWebView
@@ -306,6 +259,14 @@ Rectangle {
 
         MessageWebViewFooter {
             id: messageWebViewFooter
+
+            visible: {
+                if (CurrentConversation.needsSyncing || CurrentConversation.readOnly)
+                    return false
+                else if (CurrentConversation.isSwarm && CurrentConversation.isRequest)
+                    return false
+                return true
+            }
 
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true

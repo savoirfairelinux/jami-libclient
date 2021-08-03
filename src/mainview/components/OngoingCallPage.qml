@@ -72,19 +72,11 @@ Rectangle {
     }
 
     function openInCallConversation() {
-        if (linkedWebview) {
-            linkedWebview.resetMessagingHeaderBackButtonSource(false)
-            linkedWebview.setMessagingHeaderButtonsVisible(false)
-        }
         inCallMessageWebViewStack.visible = true
         inCallMessageWebViewStack.push(linkedWebview)
     }
 
     function closeInCallConversation() {
-        if (linkedWebview) {
-            linkedWebview.resetMessagingHeaderBackButtonSource(true)
-            linkedWebview.setMessagingHeaderButtonsVisible(true)
-        }
         inCallMessageWebViewStack.visible = false
         inCallMessageWebViewStack.clear()
     }

@@ -133,13 +133,15 @@ ListView {
                 "displayId": model.dataForRow(row, ConversationList.BestId),
                 "title": model.dataForRow(row, ConversationList.Title),
                 "uri": model.dataForRow(row, ConversationList.URI),
-                "isSwarm": model.dataForRow(row, ConversationList.IsSwarm)
+                "isSwarm": model.dataForRow(row, ConversationList.IsSwarm),
+                "readOnly": model.dataForRow(row, ConversationList.ReadOnly)
             }
 
             responsibleAccountId = LRCInstance.currentAccountId
             responsibleConvUid = item.convId
             isSwarm = item.isSwarm
             contactType = LRCInstance.currentAccountType
+            readOnly = item.readOnly
 
             if (model.dataForRow(row, ConversationList.IsCoreDialog)) {
                 userProfile.aliasText = item.title
@@ -157,20 +159,14 @@ ListView {
         sequence: "Ctrl+Shift+X"
         context: Qt.ApplicationShortcut
         enabled: root.visible
-        onActivated: {
-            CallAdapter.placeCall()
-            communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
-        }
+        onActivated: CallAdapter.placeCall()
     }
 
     Shortcut {
         sequence: "Ctrl+Shift+C"
         context: Qt.ApplicationShortcut
         enabled: root.visible
-        onActivated: {
-            CallAdapter.placeAudioOnlyCall()
-            communicationPageMessageWebView.setSendContactRequestButtonVisible(false)
-        }
+        onActivated: CallAdapter.placeAudioOnlyCall()
     }
 
     Shortcut {

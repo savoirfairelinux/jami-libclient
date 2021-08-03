@@ -49,21 +49,42 @@ CurrentConversation::updateData()
         auto accountId = lrcInstance_->get_currentAccountId();
         const auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
         if (auto optConv = accInfo.conversationModel->getConversationForUid(convId)) {
+            auto& convInfo = optConv->get();
             set_title(accInfo.conversationModel->title(convId));
             set_uris(accInfo.conversationModel->peersForConversation(convId).toList());
-            set_isSwarm(optConv->get().isSwarm());
-            set_isLegacy(optConv->get().isLegacy());
-            set_isCoreDialog(optConv->get().isCoreDialog());
-            set_isRequest(optConv->get().isRequest);
-            set_readOnly(optConv->get().readOnly);
-            set_needsSyncing(optConv->get().needsSyncing);
+            set_isSwarm(convInfo.isSwarm());
+            set_isLegacy(convInfo.isLegacy());
+            set_isCoreDialog(convInfo.isCoreDialog());
+            set_isRequest(convInfo.isRequest);
+            set_readOnly(convInfo.readOnly);
+            set_needsSyncing(convInfo.needsSyncing);
             set_isSip(accInfo.profileInfo.type == profile::Type::SIP);
-            set_callId(optConv->get().getCallId());
+            set_callId(convInfo.getCallId());
             if (accInfo.callModel->hasCall(callId_)) {
-                set_callState(accInfo.callModel->getCall(callId_).status);
+                auto call = accInfo.callModel->getCall(callId_);
+                set_callState(call.status);
             } else {
                 set_callState(call::Status::INVALID);
             }
+            set_inCall(callState_ == call::Status::CONNECTED
+                       || callState_ == call::Status::IN_PROGRESS
+                       || callState_ == call::Status::PAUSED);
+
+            // The temporary status is only for dialogs.
+            // It can be used to display add contact/conversation UI and
+            // is consistently determined by the peer's uri being equal to
+            // the conversation id.
+            set_isTemporary(isCoreDialog_ ? convId == uris_.at(0) : false);
+
+            auto isContact {false};
+            if (isCoreDialog_)
+                try {
+                    auto& contact = accInfo.contactModel->getContact(uris_.at(0));
+                    isContact = contact.profileInfo.type != profile::Type::TEMPORARY;
+                } catch (...) {
+                    qInfo() << "Contact not found";
+                }
+            set_isContact(isContact);
         }
     } catch (...) {
         qWarning() << "Can't update current conversation data for" << convId;

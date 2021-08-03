@@ -82,18 +82,6 @@ Rectangle {
         function onNewTextPasted() {
             messageBar.textAreaObj.pasteText()
         }
-
-        function onSetChatViewMode(showInvitationPage,
-                                   isSwarm, needsSyncing,
-                                   title, convId, readOnly) {
-            var footerVisibility = showInvitationPage ?
-                        !isSwarm :
-                        !showInvitationPage
-            footerVisibility &= !readOnly
-            messageBar.visible = footerVisibility
-            dataTransferSendContainer.visible = footerVisibility
-            root.visible = footerVisibility
-        }
     }
 
     RecordBox{
