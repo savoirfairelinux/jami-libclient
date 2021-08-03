@@ -437,11 +437,11 @@ ContactModelPimpl::updateTemporaryMessage(const QString& mes)
 void
 ContactModelPimpl::searchContact(const URI& query)
 {
-    QString uriID = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME
-                                 | URI::Section::PORT);
+    QString uri = query.format(URI::Section::USER_INFO | URI::Section::HOSTNAME
+                               | URI::Section::PORT);
     if (query.isEmpty()) {
         // This will remove the temporary item
-        emit linked.modelUpdated(uriID);
+        emit linked.modelUpdated(uri);
         updateTemporaryMessage("");
         return;
     }
@@ -450,24 +450,27 @@ ContactModelPimpl::searchContact(const URI& query)
         updateTemporaryMessage("");
         // no lookup, this is a ring infoHash
         for (auto& i : contacts) {
-            if (i.profileInfo.uri == uriID) {
+            if (i.profileInfo.uri == uri) {
+                searchResult[uri] = i;
+                searchResult[uri].profileInfo.type = profile::Type::TEMPORARY;
+                emit linked.modelUpdated(uri);
                 return;
             }
         }
-        auto& temporaryContact = searchResult[uriID];
-        temporaryContact.profileInfo.uri = uriID;
-        temporaryContact.profileInfo.alias = uriID;
+        auto& temporaryContact = searchResult[uri];
+        temporaryContact.profileInfo.uri = uri;
+        temporaryContact.profileInfo.alias = uri;
         temporaryContact.profileInfo.type = profile::Type::TEMPORARY;
-        emit linked.modelUpdated(uriID);
+        emit linked.modelUpdated(uri);
     } else {
         updateTemporaryMessage(tr("Searching…"));
 
         // If the username contains an @ it's an exact match
         bool isJamsAccount = !linked.owner.confProperties.managerUri.isEmpty();
         if (isJamsAccount and not query.hasHostname())
-            ConfigurationManager::instance().searchUser(linked.owner.id, uriID);
+            ConfigurationManager::instance().searchUser(linked.owner.id, uri);
         else
-            ConfigurationManager::instance().lookupName(linked.owner.id, "", uriID);
+            ConfigurationManager::instance().lookupName(linked.owner.id, "", uri);
     }
 }
 
@@ -954,9 +957,11 @@ ContactModelPimpl::slotRegisteredNameFound(const QString& accountId,
         std::lock_guard<std::mutex> lk(contactsMtx_);
 
         if (contacts.find(uri) != contacts.end()) {
-            // update contact and remove temporary item
+            // update contact and provide a temp item allowing a new conversation
+            // to be added
             contacts[uri].registeredName = registeredName;
-            searchResult.clear();
+            searchResult[uri] = {contacts[uri].profileInfo, registeredName, false, false};
+            searchResult[uri].profileInfo.type = profile::Type::TEMPORARY;
         } else {
             if ((searchQuery != uri && searchQuery != registeredName) || searchQuery.isEmpty()) {
                 // we are notified that a previous lookup ended

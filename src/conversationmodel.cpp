@@ -2882,8 +2882,8 @@ ConversationModelPimpl::getConversationForPeerUri(const QString& uri,
                                                   const bool searchResultIncluded) const
 {
     return getConversation(
-        [this, uri](const conversation::Info& conv) -> bool {
-            if (!conv.isCoreDialog()) {
+        [this, uri, searchResultIncluded](const conversation::Info& conv) -> bool {
+            if (!conv.isCoreDialog() || (searchResultIncluded && conv.readOnly)) {
                 return false;
             }
             auto members = peersForConversation(conv);
