@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "963d4038_07dfbf43",
+        "filename": "src/callparticipantsmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-08-03T13:11:22Z",
+      "side": 1,
+      "message": "std::find_if",
+      "range": {
+        "startLine": 75,
+        "startChar": 10,
+        "endLine": 81,
+        "endChar": 5
+      },
+      "revId": "3752ec5f1624d8d45a74faa1a0c0539410e4a370",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfaaad70_bffe3f0e",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1261,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-08-03T13:11:22Z",
+      "side": 1,
+      "message": "not that you should use the result of participantsModel.find(confId) to avoid to get it again 3 times",
+      "range": {
+        "startLine": 1261,
+        "startChar": 15,
+        "endLine": 1261,
+        "endChar": 34
+      },
+      "revId": "3752ec5f1624d8d45a74faa1a0c0539410e4a370",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e59add18_d8940005",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-08-03T13:11:22Z",
+      "side": 1,
+      "message": "you can just do this after the if/else, as it will be added to confId in the if",
+      "range": {
+        "startLine": 1262,
+        "startChar": 22,
+        "endLine": 1262,
+        "endChar": 47
+      },
+      "revId": "3752ec5f1624d8d45a74faa1a0c0539410e4a370",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
