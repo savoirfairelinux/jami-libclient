@@ -131,8 +131,10 @@ public:
     /**
      * Call contactModel.addContact if necessary
      * @param contactUri
+     * @return true if a contact request was sent, false if the contact is already
+     * permanent
      */
-    void sendContactRequest(const QString& contactUri);
+    bool sendContactRequest(const QString& contactUri);
     /**
      * Add a conversation with contactUri
      * @param convId
@@ -702,12 +704,13 @@ ConversationModel::makePermanent(const QString& uid)
             return;
         }
 
-        // Send contact request if non used
-        auto& peers = pimpl_->peersForConversation(conversation);
-        if (peers.size() != 1) {
+        if (!conversation.isCoreDialog())
             return;
+
+        auto& peers = pimpl_->peersForConversation(conversation);
+        if (!pimpl_->sendContactRequest(peers.front())) {
+            createConversation({peers.front()});
         }
-        pimpl_->sendContactRequest(peers.front());
     } catch (const std::out_of_range& e) {
         qDebug() << "make permanent failed. conversation not found";
     }
@@ -2128,14 +2131,16 @@ ConversationModelPimpl::sort(const conversation::Info& convA, const conversation
     }
 }
 
-void
+bool
 ConversationModelPimpl::sendContactRequest(const QString& contactUri)
 {
     auto contact = linked.owner.contactModel->getContact(contactUri);
-    auto isNotUsed = contact.profileInfo.type == profile::Type::TEMPORARY
-                     || contact.profileInfo.type == profile::Type::PENDING;
-    if (isNotUsed)
+    if (contact.profileInfo.type == profile::Type::TEMPORARY
+        || contact.profileInfo.type == profile::Type::PENDING) {
         linked.owner.contactModel->addContact(contact);
+        return true;
+    }
+    return false;
 }
 void
 ConversationModelPimpl::slotConversationLoaded(uint32_t,
@@ -2882,8 +2887,8 @@ ConversationModelPimpl::getConversationForPeerUri(const QString& uri,
                                                   const bool searchResultIncluded) const
 {
     return getConversation(
-        [this, uri](const conversation::Info& conv) -> bool {
-            if (!conv.isCoreDialog()) {
+        [this, uri, searchResultIncluded](const conversation::Info& conv) -> bool {
+            if (!conv.isCoreDialog() || (searchResultIncluded && conv.readOnly)) {
                 return false;
             }
             auto members = peersForConversation(conv);
