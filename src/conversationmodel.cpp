@@ -1475,22 +1475,24 @@ ConversationModel::clearUnreadInteractions(const QString& convId)
     {
         std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
         auto& interactions = conversation.interactions;
-        std::for_each(interactions.begin(),
-                      interactions.end(),
-                      [&](decltype(*interactions.begin())& it) {
-                          if (!it.second.isRead) {
-                              emitUpdated = true;
-                              it.second.isRead = true;
-                              if (conversation.isSwarm()) {
-                                  lastDisplayed = it.first;
-                                  return;
+        if (conversation.isSwarm()) {
+            emitUpdated = true;
+            if (!interactions.empty())
+                lastDisplayed = interactions.rbegin()->first;
+        } else {
+            std::for_each(interactions.begin(),
+                          interactions.end(),
+                          [&](decltype(*interactions.begin())& it) {
+                              if (!it.second.isRead) {
+                                  emitUpdated = true;
+                                  it.second.isRead = true;
+                                  if (owner.profileInfo.type != profile::Type::SIP)
+                                      lastDisplayed = storage::getDaemonIdByInteractionId(pimpl_->db,
+                                                                                          it.first);
+                                  storage::setInteractionRead(pimpl_->db, it.first);
                               }
-                              if (owner.profileInfo.type != profile::Type::SIP)
-                                  lastDisplayed = storage::getDaemonIdByInteractionId(pimpl_->db,
-                                                                                      it.first);
-                              storage::setInteractionRead(pimpl_->db, it.first);
-                          }
-                      });
+                          });
+        }
     }
     if (!lastDisplayed.isEmpty()) {
         auto to = conversation.isSwarm()
