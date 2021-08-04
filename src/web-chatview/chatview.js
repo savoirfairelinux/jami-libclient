@@ -420,12 +420,12 @@ function showInvitation(contactAlias, contactId, isSwarm, isSyncing) {
         }
         invitationText.innerHTML = contactAlias + " " + (use_qt ?
             i18nStringData["has sent you a conversation request."] :
-            i18n.sprintf(i18n.gettext("%s has sent you a conversation request."), contactAlias))
+            i18n.gettext("has sent you a conversation request."))
             + "<br/>"
 
         var joinTextValue = (isSyncing ?
             "You have accepted the conversation request." :
-            "Hello, do you want to join the conversation?")
+            "Hello, would you like to join the conversation?")
         joinText.innerHTML = (use_qt ?
             i18nStringData[joinTextValue] :
             i18n.gettext(joinTextValue))
@@ -460,11 +460,13 @@ function showInvitation(contactAlias, contactId, isSwarm, isSyncing) {
         if (isSyncing) {
             actions.style.visibility = "collapse"
             invitationText.style.visibility = "hidden"
+            invitationNoteText.style.visibility = "hidden"
             quote_img.style.visibility = "collapse"
             noteText.style.visibility = "visible"
         } else {
             actions.style.visibility = "visible"
             invitationText.style.visibility = "visible"
+            invitationNoteText.style.visibility = "visible"
             quote_img.style.visibility = "visible"
             noteText.style.visibility = "collapse"
         }

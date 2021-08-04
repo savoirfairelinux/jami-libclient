@@ -228,11 +228,11 @@ body {
 
 
 #invitation_text_container {
-    top: 5%;
+    top: 10%;
 }
 
 #invitation_note_container {
-    bottom: 20%;
+    bottom: 15%;
 }
 
 #invitation_text {
@@ -262,7 +262,7 @@ body {
 
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 55%;
     transform: translate(-50%, -75%);
     transition: transform 0.8s;
 
@@ -314,11 +314,11 @@ body {
     position: absolute;
     margin: 0 auto;
 
-    bottom: -40px;
+    bottom: 15%;
     width: 240px;
-    height: 20px;
-    max-height: 20px;
-    min-height: 20px;
+    height: 25px;
+    max-height: 25px;
+    min-height: 25px;
 
     display: flex;
     justify-content: space-between;
@@ -958,6 +958,7 @@ input[type=checkbox] {
     font-size: 13px;
     text-transform: uppercase;
     font-weight: bold;
+    cursor: pointer;
 }
 
 
