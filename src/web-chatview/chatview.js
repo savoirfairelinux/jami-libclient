@@ -425,7 +425,7 @@ function showInvitation(contactAlias, contactId, isSwarm, isSyncing) {
 
         var joinTextValue = (isSyncing ?
             "You have accepted the conversation request." :
-            "Hello, do you want to join the conversation?")
+            "Hello, would you like to join the conversation?")
         joinText.innerHTML = (use_qt ?
             i18nStringData[joinTextValue] :
             i18n.gettext(joinTextValue))
