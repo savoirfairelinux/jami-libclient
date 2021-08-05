@@ -1514,6 +1514,56 @@ WizardView {
             keyClick(Qt.Key_Enter)
             compare(takePhotoButton.focus, true)
 
+            // Taking photo focus test
+            setAvatarWidget.isPreviewing = true
+
+            keyClick(Qt.Key_Tab)
+            compare(photoboothViewClearButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(aliasEdit.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(saveProfileBtn.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(skipProfileSavingButton.focus, true)
+
+            keyClick(Qt.Key_Tab)
+            compare(takePhotoButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(photoboothViewClearButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(aliasEdit.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(saveProfileBtn.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(skipProfileSavingButton.focus, true)
+
+            keyClick(Qt.Key_Down)
+            compare(takePhotoButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(skipProfileSavingButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(saveProfileBtn.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(aliasEdit.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(photoboothViewClearButton.focus, true)
+
+            keyClick(Qt.Key_Up)
+            compare(takePhotoButton.focus, true)
+
+            setAvatarWidget.isPreviewing = false
+
             WizardViewStepModel.nextStep()
 
             var showBackup = (WizardViewStepModel.accountCreationOption ===

@@ -56,7 +56,10 @@ Item {
     }
 
     function focusOnPreviousPhotoBoothItem () {
-        importButton.forceActiveFocus()
+        if (isPreviewing)
+            clearButton.forceActiveFocus()
+        else
+            importButton.forceActiveFocus()
     }
 
     onVisibleChanged: {
@@ -231,28 +234,35 @@ Item {
 
                 Layout.alignment: Qt.AlignHCenter
 
-                visible: LRCInstance.currentAccountAvatarSet
+                visible: isPreviewing || LRCInstance.currentAccountAvatarSet
 
                 radius: JamiTheme.primaryRadius
                 source: JamiResources.round_close_24dp_svg
-                toolTipText: JamiStrings.clearAvatar
+                toolTipText: isPreviewing ? JamiStrings.stopTakingPhoto :
+                                            JamiStrings.clearAvatar
                 imageColor: JamiTheme.textColor
 
-                KeyNavigation.tab: importButton
                 KeyNavigation.up: takePhotoButton
-                KeyNavigation.down: KeyNavigation.tab
 
                 Keys.onPressed: function (keyEvent) {
                     if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
                         clicked()
                         takePhotoButton.forceActiveFocus()
                         keyEvent.accepted = true
+                    } else if (keyEvent.matches(StandardKey.MoveToNextLine) ||
+                               keyEvent.key === Qt.Key_Tab) {
+                        if (isPreviewing) {
+                            root.focusOnNextItem()
+                        } else
+                            importButton.forceActiveFocus()
+                        keyEvent.accepted = true
                     }
                 }
 
                 onClicked: {
                     stopBooth()
-                    AccountAdapter.setCurrentAccountAvatarBase64()
+                    if (!isPreviewing)
+                        AccountAdapter.setCurrentAccountAvatarBase64()
                 }
             }
 
@@ -264,6 +274,8 @@ Item {
                 property bool focusAfterFileDialogClosed: false
 
                 Layout.alignment: Qt.AlignHCenter
+
+                visible: !isPreviewing
 
                 radius: JamiTheme.primaryRadius
                 source: JamiResources.round_folder_24dp_svg

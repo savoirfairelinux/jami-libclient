@@ -103,6 +103,7 @@ Rectangle {
 
             Layout.alignment: Qt.AlignCenter
 
+            enabled: !saveProfileBtn.spinnerTriggered
             imageId: createdAccountId
             avatarSize: 200
 
@@ -134,6 +135,7 @@ Rectangle {
             focus: visible
 
             selectByMouse: true
+            enabled: !saveProfileBtn.spinnerTriggered
             placeholderText: {
                 if (WizardViewStepModel.accountCreationOption !==
                         WizardViewStepModel.AccountCreationOption.CreateRendezVous)
