@@ -1562,7 +1562,7 @@ ConversationModel::acceptConversationRequest(const QString& conversationId)
         break;
     }
     conversation.needsSyncing = true;
-    Q_EMIT needsSyncingSet(conversation.uid);
+    Q_EMIT conversationUpdated(conversation.uid);
     pimpl_->invalidateModel();
     emit modelChanged();
     ConfigurationManager::instance().acceptConversationRequest(owner.id, conversationId);
@@ -2386,10 +2386,9 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
                                              .conversationInfos(accountId, conversationId);
         conversation.mode = conversation::to_mode(details["mode"].toInt());
         conversation.isRequest = false;
-        Q_EMIT linked.dataChanged(conversationIdx);
         conversation.needsSyncing = false;
         Q_EMIT linked.conversationUpdated(conversationId);
-        Q_EMIT linked.dataChanged(indexOf(conversationId));
+        Q_EMIT linked.dataChanged(conversationIdx);
         auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                             conversationId,
                                                                             "",
@@ -2519,10 +2518,9 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
             bool needsSyncing = details["syncing"] == "true";
             if (conversation.needsSyncing != needsSyncing) {
                 conversation.isRequest = false;
-                Q_EMIT linked.dataChanged(indexOf(conversation.uid));
                 conversation.needsSyncing = needsSyncing;
-                if (needsSyncing)
-                    Q_EMIT linked.needsSyncingSet(conversation.uid);
+                Q_EMIT linked.dataChanged(indexOf(conversation.uid));
+                Q_EMIT linked.conversationUpdated(conversation.uid);
                 invalidateModel();
                 emit linked.modelChanged();
             }
@@ -2776,7 +2774,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     }
     if (details["syncing"] == "true") {
         conversation.needsSyncing = true;
-        Q_EMIT linked.needsSyncingSet(conversation.uid);
+        Q_EMIT linked.conversationUpdated(conversation.uid);
     }
     emplaceBackConversation(std::move(conversation));
     auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
