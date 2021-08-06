@@ -138,7 +138,8 @@ Flickable {
             if (keyEvent.matches(StandardKey.Paste)) {
                 MessagesAdapter.pasteKeyDetected()
                 keyEvent.accepted = true
-            } else if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
+            } else if (keyEvent.key === Qt.Key_Enter ||
+                       keyEvent.key === Qt.Key_Return) {
                 if (!(keyEvent.modifiers & Qt.ShiftModifier)) {
                     root.sendMessagesRequired()
                     keyEvent.accepted = true

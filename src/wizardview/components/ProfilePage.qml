@@ -154,7 +154,7 @@ Rectangle {
             KeyNavigation.down: KeyNavigation.tab
 
             Keys.onPressed: function (keyEvent) {
-                if (keyEvent.matches(StandardKey.MoveToPreviousLine)) {
+                if (keyEvent.key === Qt.Key_Up) {
                     setAvatarWidget.focusOnPreviousPhotoBoothItem()
                     keyEvent.accepted = true
                 }
@@ -221,7 +221,7 @@ Rectangle {
             KeyNavigation.up: saveProfileBtn
 
             Keys.onPressed: function (keyEvent) {
-                if (keyEvent.matches(StandardKey.MoveToNextLine) ||
+                if (keyEvent.key === Qt.Key_Down ||
                         keyEvent.key === Qt.Key_Tab) {
                     setAvatarWidget.focusOnNextPhotoBoothItem()
                     keyEvent.accepted = true

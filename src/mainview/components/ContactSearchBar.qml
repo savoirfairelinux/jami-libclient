@@ -134,7 +134,8 @@ Rectangle {
     }
 
     Keys.onPressed: function (keyEvent) {
-        if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
+        if (keyEvent.key === Qt.Key_Enter ||
+                keyEvent.key === Qt.Key_Return) {
             if (contactSearchBar.text !== "") {
                 returnPressedWhileSearching()
                 keyEvent.accepted = true

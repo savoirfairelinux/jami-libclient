@@ -198,10 +198,11 @@ Item {
                             JamiResources.baseline_camera_alt_24dp_svg
 
                 Keys.onPressed: function (keyEvent) {
-                    if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
+                    if (keyEvent.key === Qt.Key_Enter ||
+                            keyEvent.key === Qt.Key_Return) {
                         clicked()
                         keyEvent.accepted = true
-                    } else if (keyEvent.matches(StandardKey.MoveToPreviousLine)) {
+                    } else if (keyEvent.key === Qt.Key_Up) {
                         root.focusOnPreviousItem()
                         keyEvent.accepted = true
                     }
@@ -245,11 +246,12 @@ Item {
                 KeyNavigation.up: takePhotoButton
 
                 Keys.onPressed: function (keyEvent) {
-                    if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
+                    if (keyEvent.key === Qt.Key_Enter ||
+                            keyEvent.key === Qt.Key_Return) {
                         clicked()
                         takePhotoButton.forceActiveFocus()
                         keyEvent.accepted = true
-                    } else if (keyEvent.matches(StandardKey.MoveToNextLine) ||
+                    } else if (keyEvent.key === Qt.Key_Down ||
                                keyEvent.key === Qt.Key_Tab) {
                         if (isPreviewing) {
                             root.focusOnNextItem()
@@ -283,11 +285,12 @@ Item {
                 imageColor: JamiTheme.textColor
 
                 Keys.onPressed: function (keyEvent) {
-                    if (keyEvent.matches(StandardKey.InsertParagraphSeparator)) {
+                    if (keyEvent.key === Qt.Key_Enter ||
+                            keyEvent.key === Qt.Key_Return) {
                         focusAfterFileDialogClosed = true
                         clicked()
                         keyEvent.accepted = true
-                    } else if (keyEvent.matches(StandardKey.MoveToNextLine) ||
+                    } else if (keyEvent.key === Qt.Key_Down ||
                                keyEvent.key === Qt.Key_Tab) {
                         root.focusOnNextItem()
                         keyEvent.accepted = true
