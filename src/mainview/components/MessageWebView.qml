@@ -257,6 +257,11 @@ Rectangle {
             }
         }
 
+        ReadOnlyFooter {
+            visible: CurrentConversation.readOnly
+            Layout.fillWidth: true
+        }
+
         MessageWebViewFooter {
             id: messageWebViewFooter
 

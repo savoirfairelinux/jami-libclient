@@ -433,6 +433,53 @@ ConversationsAdapter::getConvInfoMap(const QString& convId)
             {"readOnly", convInfo.readOnly}};
 }
 
+void
+ConversationsAdapter::restartConversation(const QString& convId)
+{
+    // make sure this conversation meets the criteria of a "restartable" conv
+    // 'readOnly' implies 'isSwarm'
+    auto& accInfo = lrcInstance_->getCurrentAccountInfo();
+    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convId);
+    if (convInfo.uid.isEmpty() || !convInfo.isCoreDialog() || !convInfo.readOnly) {
+        return;
+    }
+
+    // get the ONE_TO_ONE conv's peer uri
+    auto peerUri = accInfo.conversationModel->peersForConversation(convId).at(0);
+
+    // store a copy of the original contact so we can re-add them
+    // Note: we set the profile::Type to TEMPORARY to invoke a full add
+    // when calling ContactModel::addContact
+    auto contactInfo = accInfo.contactModel->getContact(peerUri);
+    contactInfo.profileInfo.type = profile::Type::TEMPORARY;
+
+    Utils::oneShotConnect(
+        accInfo.contactModel.get(),
+        &ContactModel::contactRemoved,
+        [this, &accInfo, contactInfo](const QString& peerUri) {
+            // setup a callback to select another ONE_TO_ONE conversation for this peer
+            // once the new conversation becomes ready
+            Utils::oneShotConnect(
+                accInfo.conversationModel.get(),
+                &ConversationModel::conversationReady,
+                [this, peerUri, &accInfo](const QString& convId) {
+                    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convId);
+                    // 3. filter for the correct contact-conversation and select it
+                    if (!convInfo.uid.isEmpty() && convInfo.isCoreDialog() && !convInfo.readOnly
+                        && peerUri
+                               == accInfo.conversationModel->peersForConversation(convId).at(0)) {
+                        lrcInstance_->selectConversation(convId);
+                    }
+                });
+
+            // 2. add the contact and await the conversationReady signal
+            accInfo.contactModel->addContact(contactInfo);
+        });
+
+    // 1. remove the contact and await the contactRemoved signal
+    accInfo.contactModel->removeContact(peerUri);
+}
+
 bool
 ConversationsAdapter::connectConversationModel()
 {

@@ -543,20 +543,27 @@ MessagesAdapter::clearConversationHistory(const QString& accountId, const QStrin
 }
 
 void
-MessagesAdapter::removeConversation(const QString& accountId,
-                                    const QString& convUid,
-                                    bool banContact)
+MessagesAdapter::removeConversation(const QString& convUid)
 {
-    QStringList list = lrcInstance_->accountModel().getDefaultModerators(accountId);
-    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid, accountId);
-    const auto contactURI = convInfo.participants.front();
+    auto& accInfo = lrcInstance_->getCurrentAccountInfo();
+    accInfo.conversationModel->removeConversation(convUid);
+}
 
-    if (!contactURI.isEmpty() && list.contains(contactURI)) {
-        lrcInstance_->accountModel().setDefaultModerator(accountId, contactURI, false);
+void
+MessagesAdapter::removeContact(const QString& convUid, bool banContact)
+{
+    auto& accInfo = lrcInstance_->getCurrentAccountInfo();
+
+    // remove the uri from the default moderators list
+    // TODO: seems like this should be done in libringclient
+    QStringList list = lrcInstance_->accountModel().getDefaultModerators(accInfo.id);
+    const auto contactUri = accInfo.conversationModel->peersForConversation(convUid).at(0);
+    if (!contactUri.isEmpty() && list.contains(contactUri)) {
+        lrcInstance_->accountModel().setDefaultModerator(accInfo.id, contactUri, false);
     }
 
-    lrcInstance_->getAccountInfo(accountId).conversationModel->removeConversation(convUid,
-                                                                                  banContact);
+    // actually remove the contact
+    accInfo.contactModel->removeContact(contactUri, banContact);
 }
 
 void

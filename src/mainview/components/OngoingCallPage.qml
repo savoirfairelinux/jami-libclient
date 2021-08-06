@@ -88,7 +88,7 @@ Rectangle {
     function handleParticipantsInfo(infos) {
         if (infos.length === 0) {
             bestName = UtilsAdapter.getBestName(LRCInstance.currentAccountId,
-                                                UtilsAdapter.getCurrConvId())
+                                                LRCInstance.selectedConvUid)
         } else {
             bestName = ""
         }

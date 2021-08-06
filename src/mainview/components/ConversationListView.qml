@@ -175,7 +175,7 @@ ListView {
         enabled: root.visible
         onActivated: MessagesAdapter.clearConversationHistory(
                          LRCInstance.currentAccountId,
-                         UtilsAdapter.getCurrConvId())
+                         LRCInstance.selectedConvUid)
     }
 
     Shortcut {
@@ -183,7 +183,8 @@ ListView {
         context: Qt.ApplicationShortcut
         enabled: root.visible
         onActivated: {
-            MessagesAdapter.blockConversation(UtilsAdapter.getCurrConvId())
+            MessagesAdapter.blockConversation(
+                        LRCInstance.selectedConvUid)
         }
     }
 
@@ -192,9 +193,7 @@ ListView {
         context: Qt.ApplicationShortcut
         enabled: root.visible
         onActivated: MessagesAdapter.removeConversation(
-                         LRCInstance.currentAccountId,
-                         UtilsAdapter.getCurrConvId(),
-                         false)
+                         LRCInstance.selectedConvUid)
     }
 
     Shortcut {

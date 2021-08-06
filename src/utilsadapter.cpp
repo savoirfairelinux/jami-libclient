@@ -150,12 +150,6 @@ UtilsAdapter::setConversationFilter(const QString& filter)
     lrcInstance_->getCurrentConversationModel()->setFilter(filter);
 }
 
-const QString
-UtilsAdapter::getCurrConvId()
-{
-    return lrcInstance_->get_selectedConvUid();
-}
-
 const QStringList
 UtilsAdapter::getCurrAccList()
 {

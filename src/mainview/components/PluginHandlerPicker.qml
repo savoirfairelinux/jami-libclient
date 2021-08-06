@@ -66,7 +66,7 @@ Popup {
                     } else {
                         // Reset the model on each show.
                         var accountId = LRCInstance.currentAccountId
-                        var peerId = UtilsAdapter.getPeerUri(accountId, UtilsAdapter.getCurrConvId())
+                        var peerId = UtilsAdapter.getPeerUri(accountId, LRCInstance.selectedConvUid)
                         pluginhandlerPickerListView.model = PluginAdapter.getChatHandlerSelectableModel(accountId, peerId)
                     }
                 }
@@ -80,7 +80,7 @@ Popup {
                     pluginhandlerPickerListView.model = PluginAdapter.getMediaHandlerSelectableModel(callId)
                 } else {
                     var accountId = LRCInstance.currentAccountId
-                    var peerId = UtilsAdapter.getPeerUri(accountId, UtilsAdapter.getCurrConvId())
+                    var peerId = UtilsAdapter.getPeerUri(accountId, LRCInstance.selectedConvUid)
                     PluginModel.toggleChatHandler(handlerId, accountId, peerId, !isLoaded)
                     pluginhandlerPickerListView.model = PluginAdapter.getChatHandlerSelectableModel(accountId, peerId)
                 }
@@ -139,7 +139,7 @@ Popup {
                             return PluginAdapter.getMediaHandlerSelectableModel(callId)
                         } else {
                             var accountId = LRCInstance.currentAccountId
-                            var peerId = UtilsAdapter.getPeerUri(accountId, UtilsAdapter.getCurrConvId())
+                            var peerId = UtilsAdapter.getPeerUri(accountId, LRCInstance.selectedConvUid)
                             return PluginAdapter.getChatHandlerSelectableModel(accountId, peerId)
                         }
                     }

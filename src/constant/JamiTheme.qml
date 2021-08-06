@@ -311,7 +311,7 @@ Item {
     property real wizardButtonWidth: 400
 
     // Main application spec
-    property real mainViewMinWidth: 300
+    property real mainViewMinWidth: 332
     property real mainViewMinHeight: 500
 
     property real wizardViewMinWidth: 500
