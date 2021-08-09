@@ -93,8 +93,9 @@ BaseDialog {
                     id: btnRemove
 
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
-                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                    preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                    preferredHeight: JamiTheme.preferredFieldHeight
 
                     color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
                     hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -114,8 +115,9 @@ BaseDialog {
                     id: btnCancel
 
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
-                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                    preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                    preferredHeight: JamiTheme.preferredFieldHeight
 
                     color: JamiTheme.buttonTintedBlack
                     hoveredColor: JamiTheme.buttonTintedBlackHovered

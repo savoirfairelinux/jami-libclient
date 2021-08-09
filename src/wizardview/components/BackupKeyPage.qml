@@ -184,8 +184,8 @@ Rectangle {
             objectName: "backupKeyPageBackupBtn"
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             text: JamiStrings.backupAccountBtn
             color: JamiTheme.buttonTintedGrey
@@ -206,8 +206,8 @@ Rectangle {
 
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             text: JamiStrings.skip
             color: JamiTheme.buttonTintedGrey

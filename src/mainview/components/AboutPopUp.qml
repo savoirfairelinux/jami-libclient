@@ -234,9 +234,10 @@ ModalPopup {
                         id: btnClose
 
                         Layout.alignment: Qt.AlignHCenter
-                        Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
-                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
                         Layout.bottomMargin: JamiTheme.preferredMarginSize
+
+                        preferredWidth: JamiTheme.preferredFieldWidth / 2
+                        preferredHeight: JamiTheme.preferredFieldHeight
 
                         text: qsTr("Close")
                         color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey

@@ -150,10 +150,11 @@ Dialog {
                     id: clearButton
 
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.preferredWidth: itemWidth / widthDivisor
                     Layout.topMargin: JamiTheme.preferredMarginSize
                     Layout.bottomMargin: JamiTheme.preferredMarginSize
+
+                    preferredWidth: itemWidth / widthDivisor
+                    preferredHeight: JamiTheme.preferredFieldHeight
 
                     outlined: true
                     color: JamiTheme.buttonTintedBlack
@@ -175,8 +176,9 @@ Dialog {
                     id: copyButton
 
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                    Layout.preferredWidth: itemWidth/widthDivisor
+
+                    preferredWidth: itemWidth / widthDivisor
+                    preferredHeight: JamiTheme.preferredFieldHeight
 
                     color: JamiTheme.buttonTintedBlack
                     hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -210,11 +212,12 @@ Dialog {
                     id: reportButton
 
                     Layout.alignment: Qt.AlignHCenter
-                    Layout.preferredWidth: itemWidth/widthDivisor
-                    Layout.preferredHeight: JamiTheme.preferredFieldHeight
                     Layout.topMargin: JamiTheme.preferredMarginSize
                     Layout.bottomMargin: JamiTheme.preferredMarginSize
                     Layout.rightMargin: JamiTheme.preferredMarginSize
+
+                    preferredWidth: itemWidth / widthDivisor
+                    preferredHeight: JamiTheme.preferredFieldHeight
 
                     color: JamiTheme.buttonTintedBlack
                     hoveredColor: JamiTheme.buttonTintedBlackHovered

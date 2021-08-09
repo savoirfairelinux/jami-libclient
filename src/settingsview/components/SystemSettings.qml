@@ -147,12 +147,13 @@ ColumnLayout {
             id: downloadButton
 
             Layout.alignment: Qt.AlignRight
-            Layout.preferredWidth: itemWidth
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            preferredWidth: itemWidth
+            preferredHeight: JamiTheme.preferredFieldHeight
 
             toolTipText: JamiStrings.tipChooseDownloadFolder
             text: downloadPath
-            source: JamiResources.round_folder_24dp_svg
+            iconSource: JamiResources.round_folder_24dp_svg
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed

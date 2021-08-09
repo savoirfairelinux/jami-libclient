@@ -172,15 +172,16 @@ ItemDelegate {
             id: pathPreferenceButton
 
             visible: preferenceType === PreferenceItemDelegate.PATH
-            width: root.width / 2 - 8
-            Layout.preferredWidth: width
-            Layout.preferredHeight: 30
+
+            preferredWidth: root.width / 2 - 8
+            preferredHeight: 30
+
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.rightMargin: 4
 
             text: UtilsAdapter.fileName(preferenceCurrentValue)
             toolTipText: JamiStrings.chooseImageFile
-            source: JamiResources.round_folder_24dp_svg
+            iconSource: JamiResources.round_folder_24dp_svg
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed

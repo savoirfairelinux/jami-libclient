@@ -169,8 +169,8 @@ Rectangle {
 
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             text: JamiStrings.createSIPAccount
             color: JamiTheme.wizardBlueButtons

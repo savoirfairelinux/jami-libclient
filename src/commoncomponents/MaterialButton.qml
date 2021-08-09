@@ -18,38 +18,45 @@
 
 import QtQuick 2.14
 import QtQuick.Controls 2.14
-import QtGraphicalEffects 1.14
-import QtQuick.Window 2.14
+import QtQuick.Layouts 1.14
 
 import net.jami.Constants 1.0
 
+// TODO: this component suffers from excessive responsibility
+// and should have fixed width and content width defined variations
+// as well as better handling for the animated icon
 Button {
     id: root
 
-    property alias fontCapitalization: buttonText.font.capitalization
-    property alias source: buttonImage.source
+    property bool outlined: false
     property alias toolTipText: toolTip.text
-    property var color: "transparent"
-    property var hoveredColor: undefined
-    property var pressedColor: undefined
+    property alias iconSource: icon.source_
+    property alias animatedIconSource: icon.animatedSource_
+    property real iconSize: 18
+    property var color: JamiTheme.buttonTintedBlue
+    property var hoveredColor: JamiTheme.buttonTintedBlueHovered
+    property var pressedColor: JamiTheme.buttonTintedBluePressed
     property var keysNavigationFocusColor: Qt.darker(hoveredColor, 2)
-    property var outlined: false
-    property string animatedImageSource: ""
+    property bool hasIcon: animatedIconSource.length !== 0 ||
+                           iconSource.length !== 0
 
-    property var preferredWidth: 400
-    property var preferredHeight: 36
-    property var minimumIconTextSpacing: 10
-    property var iconPreferredHeight: 18
-    property var iconPreferredWidth: 18
+    property var preferredWidth
+    Binding on width {
+        when: root.preferredWidth !== undefined ||
+              root.Layout.fillWidth
+        value: root.preferredWidth
+    }
+    Binding on Layout.preferredWidth {
+        when: root.preferredWidth !== undefined ||
+              root.Layout.fillWidth
+        value: width
+    }
 
-    property bool enableElide: true
-    property int elide: Text.ElideRight
-    property int textActualWidth: buttonTextMetrics.boundingRect.width
+    property real preferredHeight: 36
+    height: preferredHeight
+    Layout.preferredHeight: height
 
-    font.kerning: true
-    font.pointSize: JamiTheme.textFontSize
-
-    hoverEnabled: hoveredColor !== undefined
+    focusPolicy: Qt.TabFocus
 
     MaterialToolTip {
         id: toolTip
@@ -59,109 +66,128 @@ Button {
         delay: Qt.styleHints.mousePressAndHoldInterval
     }
 
+    property string contentColorProvider: {
+        if (!root.outlined)
+            return "white"
+        if (root.hovered)
+            return root.hoveredColor
+        if (root.down)
+            return root.pressedColor
+        return root.color
+    }
+
     contentItem: Item {
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
+        id: item
 
-            AnimatedImage {
-                id: buttonAnimatedImage
+        Binding on implicitWidth {
+            when: root.preferredWidth === undefined ||
+                  !root.Layout.fillWidth
+            value: item.childrenRect.width
+        }
+        implicitHeight: childrenRect.height
+        RowLayout {
+            anchors.verticalCenter: parent.verticalCenter
+            Binding on width {
+                when: root.preferredWidth !== undefined ||
+                      root.Layout.fillWidth
+                value: root.availableWidth
+            }
+            spacing: hasIcon ?
+                         JamiTheme.preferredMarginSize :
+                         0
 
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: JamiTheme.preferredMarginSize / 2
+            Component {
+                id: iconComponent
 
-                height: iconPreferredHeight
-                width: iconPreferredWidth
-
-                source: animatedImageSource
-                playing: true
-                paused: false
-                fillMode: Image.PreserveAspectFit
-                mipmap: true
-                visible: animatedImageSource.length !== 0
+                ResponsiveImage {
+                    source: source_
+                    Layout.preferredWidth: iconSize
+                    Layout.preferredHeight: iconSize
+                    color: contentColorProvider
+                }
             }
 
-            ResponsiveImage {
-                id: buttonImage
+            Component {
+                id: animatedIconComponent
 
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: JamiTheme.preferredMarginSize / 2
-
-                height: iconPreferredHeight
-                width: iconPreferredWidth
-
-                visible: source.toString().length !== 0
-                color: {
-                    if (!outlined)
-                        return "white"
-                    if (hovered && root.hoveredColor)
-                        return root.hoveredColor
-                    if (checked && root.pressedColor)
-                        return root.pressedColor
-                    return root.color
+                AnimatedImage {
+                    source: animatedSource_
+                    Layout.preferredWidth: iconSize
+                    Layout.preferredHeight: iconSize
+                    width: iconSize
+                    height: iconSize
+                    playing: true
+                    fillMode: Image.PreserveAspectFit
+                    mipmap: true
                 }
+            }
+
+            Loader {
+                id: icon
+
+                property string source_
+                property string animatedSource_
+
+                active: hasIcon
+
+                Layout.preferredWidth: active * width
+
+                Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: hasIcon ?
+                                       JamiTheme.preferredMarginSize / 2 :
+                                       undefined
+                sourceComponent: animatedSource_.length !== 0 ?
+                                     animatedIconComponent :
+                                     iconComponent
             }
 
             Text {
-                id: buttonText
-
-                anchors.centerIn: parent
-
-                width: {
-                    var iconWidth = (buttonAnimatedImage.visible || buttonImage.visible) ?
-                                iconPreferredWidth : 0
-                    return (parent.width / 2 - iconWidth -
-                            JamiTheme.preferredMarginSize / 2 - minimumIconTextSpacing) * 2
+                // this right margin will make the text visually
+                // centered within button
+                Layout.rightMargin: {
+                    if ((!hasIcon || root.preferredWidth === undefined) &&
+                            !root.Layout.fillWidth)
+                        return undefined
+                    return icon.width + JamiTheme.preferredMarginSize / 2 +
+                            parent.spacing
                 }
-
-                TextMetrics {
-                    id: buttonTextMetrics
-
-                    font: buttonText.font
-                    text: buttonText.text
-                }
-
+                Layout.fillWidth: true
+                Layout.alignment: Qt.AlignHCenter
                 text: root.text
-                elide: enableElide ? root.elide : Text.ElideNone
-                color: {
-                    if (!outlined)
-                        return "white"
-                    if (hovered && root.hoveredColor)
-                        return root.hoveredColor
-                    if (checked && root.pressedColor)
-                        return root.pressedColor
-                    return root.color
-                }
                 font: root.font
+                elide: Text.ElideRight
+                verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
+                color: contentColorProvider
             }
         }
     }
 
     background: Rectangle {
-        id: backgroundRect
         anchors.fill: parent
         color: {
-            if (outlined)
+            if (root.outlined)
                 return "transparent"
-            if (hovered && root.hoveredColor)
+            if (root.hovered)
                 return root.hoveredColor
-            if (checked && root.pressedColor)
+            if (root.down)
                 return root.pressedColor
-            return root.focus ? root.keysNavigationFocusColor : root.color
+            return root.focus ?
+                        root.keysNavigationFocusColor :
+                        root.color
         }
         border.color: {
-            if (!outlined)
+            if (!root.outlined)
                 return "transparent"
-            if (hovered && root.hoveredColor)
+            if (root.hovered)
                 return root.hoveredColor
-            if (checked && root.pressedColor)
+            if (root.down)
                 return root.pressedColor
-            return root.focus ? root.keysNavigationFocusColor : root.color
+            return root.focus ?
+                        root.keysNavigationFocusColor :
+                        root.color
         }
-        radius: 4
+        radius: JamiTheme.primaryRadius
     }
 
     Keys.onPressed: function (keyEvent) {

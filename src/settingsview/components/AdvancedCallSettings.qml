@@ -215,8 +215,9 @@ ColumnLayout {
             id: addDefaultModeratorPushButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: JamiTheme.preferredFieldWidth
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            preferredWidth: JamiTheme.preferredFieldWidth
+            preferredHeight: JamiTheme.preferredFieldHeight
 
             color: JamiTheme.buttonTintedBlack
             hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -224,7 +225,7 @@ ColumnLayout {
             outlined: true
             toolTipText: JamiStrings.addDefaultModerator
 
-            source: JamiResources.round_add_24dp_svg
+            iconSource: JamiResources.round_add_24dp_svg
 
             text: JamiStrings.addDefaultModerator
 

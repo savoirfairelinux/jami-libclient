@@ -308,6 +308,7 @@ Item {
     property real welcomeLabelPointSize: 30
     property real welcomeLogoWidth: 330
     property real welcomeLogoHeight: 110
+    property real wizardButtonWidth: 400
 
     // Main application spec
     property real mainViewMinWidth: 300

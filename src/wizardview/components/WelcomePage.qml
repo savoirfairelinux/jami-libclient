@@ -99,16 +99,13 @@ Rectangle {
             objectName: "newAccountButton"
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             text: JamiStrings.createAJamiAccount
-            fontCapitalization: Font.AllUppercase
+            font.capitalization: Font.AllUppercase
             toolTipText: JamiStrings.createNewJamiAccount
-            source: JamiResources.default_avatar_overlay_svg
-            color: JamiTheme.buttonTintedBlue
-            hoveredColor: JamiTheme.buttonTintedBlueHovered
-            pressedColor: JamiTheme.buttonTintedBluePressed
+            iconSource: JamiResources.default_avatar_overlay_svg
 
             KeyNavigation.tab: newRdvButton
             KeyNavigation.up: backButton.visible ? backButton :
@@ -127,16 +124,13 @@ Rectangle {
             objectName: "newRdvButton"
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             text: JamiStrings.createRV
-            fontCapitalization: Font.AllUppercase
+            font.capitalization: Font.AllUppercase
             toolTipText: JamiStrings.createNewRV
-            source: JamiResources.groups_24dp_svg
-            color: JamiTheme.buttonTintedBlue
-            hoveredColor: JamiTheme.buttonTintedBlueHovered
-            pressedColor: JamiTheme.buttonTintedBluePressed
+            iconSource: JamiResources.groups_24dp_svg
 
             KeyNavigation.tab: fromDeviceButton
             KeyNavigation.up: newAccountButton
@@ -152,13 +146,13 @@ Rectangle {
             objectName: "fromDeviceButton"
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             text: JamiStrings.linkFromAnotherDevice
-            fontCapitalization: Font.AllUppercase
+            font.capitalization: Font.AllUppercase
             toolTipText: JamiStrings.importAccountFromOtherDevice
-            source: JamiResources.devices_24dp_svg
+            iconSource: JamiResources.devices_24dp_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -177,13 +171,13 @@ Rectangle {
             objectName: "fromBackupButton"
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             text: JamiStrings.connectFromBackup
-            fontCapitalization: Font.AllUppercase
+            font.capitalization: Font.AllUppercase
             toolTipText: JamiStrings.importAccountFromBackup
-            source: JamiResources.backup_24dp_svg
+            iconSource: JamiResources.backup_24dp_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -206,11 +200,11 @@ Rectangle {
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: newSIPAccountButton.visible ?
                                      0 : JamiTheme.wizardViewPageBackButtonMargins
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             text: JamiStrings.advancedFeatures
-            fontCapitalization: Font.AllUppercase
+            font.capitalization: Font.AllUppercase
             toolTipText: showAdvanced ? JamiStrings.hideAdvancedFeatures :
                                         JamiStrings.showAdvancedFeatures
             color: JamiTheme.buttonTintedBlue
@@ -238,15 +232,15 @@ Rectangle {
             objectName: "connectAccountManagerButton"
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             visible: false
 
             text: JamiStrings.connectJAMSServer
-            fontCapitalization: Font.AllUppercase
+            font.capitalization: Font.AllUppercase
             toolTipText: JamiStrings.createFromJAMS
-            source: JamiResources.router_24dp_svg
+            iconSource: JamiResources.router_24dp_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed
@@ -266,15 +260,15 @@ Rectangle {
 
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: JamiTheme.wizardViewPageBackButtonMargins
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             visible: false
 
             text: JamiStrings.addSIPAccount
-            fontCapitalization: Font.AllUppercase
+            font.capitalization: Font.AllUppercase
             toolTipText: JamiStrings.createNewSipAccount
-            source: JamiResources.default_avatar_overlay_svg
+            iconSource: JamiResources.default_avatar_overlay_svg
             color: JamiTheme.buttonTintedBlue
             hoveredColor: JamiTheme.buttonTintedBlueHovered
             pressedColor: JamiTheme.buttonTintedBluePressed

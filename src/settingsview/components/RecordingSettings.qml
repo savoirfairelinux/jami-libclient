@@ -178,12 +178,13 @@ ColumnLayout {
             id: recordPathButton
 
             Layout.alignment: Qt.AlignRight
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
-            Layout.preferredWidth: itemWidth
+
+            preferredWidth: itemWidth
+            preferredHeight: JamiTheme.preferredFieldHeight
 
             toolTipText: JamiStrings.tipRecordFolder
             text: recordPath
-            source: JamiResources.round_folder_24dp_svg
+            iconSource: JamiResources.round_folder_24dp_svg
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed

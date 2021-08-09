@@ -172,8 +172,9 @@ ColumnLayout {
 
         Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
         Layout.rightMargin: currentRegisteredID.width / 2 - width / 2
-        Layout.preferredWidth: 120
-        Layout.preferredHeight: 30
+
+        preferredWidth: 120
+        preferredHeight: 30
 
         visible: registeredIdNeedsSet &&
                     currentRegisteredID.nameRegistrationState ===

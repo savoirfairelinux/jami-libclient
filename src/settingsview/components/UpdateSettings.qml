@@ -67,8 +67,9 @@ ColumnLayout {
         id: checkUpdateButton
 
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: JamiTheme.preferredFieldWidth
-        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+        preferredWidth: JamiTheme.preferredFieldWidth
+        preferredHeight: JamiTheme.preferredFieldHeight
 
         color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
         hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -87,8 +88,9 @@ ColumnLayout {
         visible: !UpdateManager.isCurrentVersionBeta()
 
         Layout.alignment: Qt.AlignHCenter
-        Layout.preferredWidth: JamiTheme.preferredFieldWidth
-        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+        preferredWidth: JamiTheme.preferredFieldWidth
+        preferredHeight: JamiTheme.preferredFieldHeight
 
         color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
         hoveredColor: JamiTheme.buttonTintedBlackHovered

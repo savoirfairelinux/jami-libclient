@@ -347,8 +347,7 @@ Window {
         anchors.bottomMargin: JamiTheme.preferredMarginSize
         anchors.horizontalCenter: selectScreenWindowRect.horizontalCenter
 
-        width: 200
-        height: 36
+        preferredWidth: 200
 
         visible: selectedScreenNumber != -1 || selectAllScreens
 

@@ -119,12 +119,12 @@ Rectangle {
             objectName: "fileImportBtn"
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             text: fileImportBtnText
             toolTipText: JamiStrings.importAccountArchive
-            source: JamiResources.round_folder_24dp_svg
+            iconSource: JamiResources.round_folder_24dp_svg
             color: JamiTheme.buttonTintedGrey
             hoveredColor: JamiTheme.buttonTintedGreyHovered
             pressedColor: JamiTheme.buttonTintedGreyPressed
@@ -204,8 +204,8 @@ Rectangle {
 
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: errorLabel.visible ? 0 : JamiTheme.wizardViewPageBackButtonMargins
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             spinnerTriggeredtext: JamiStrings.generatingAccount
             normalText: JamiStrings.connectFromBackup

@@ -607,8 +607,8 @@ BaseDialog {
             anchors.bottomMargin: JamiTheme.preferredMarginSize
             anchors.horizontalCenter: parent.horizontalCenter
 
-            width: JamiTheme.preferredFieldWidth / 2
-            height: JamiTheme.preferredFieldHeight
+            preferredWidth: JamiTheme.preferredFieldWidth / 2
+            preferredHeight: JamiTheme.preferredFieldHeight
 
             color: JamiTheme.buttonTintedBlack
             hoveredColor: JamiTheme.buttonTintedBlackHovered

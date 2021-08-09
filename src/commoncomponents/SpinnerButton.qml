@@ -28,7 +28,7 @@ MaterialButton {
     property string spinnerTriggeredtext: value
     property string normalText: value
 
-    animatedImageSource: spinnerTriggered ?
+    animatedIconSource: spinnerTriggered ?
                              JamiResources.jami_rolling_spinner_gif :
                              ""
     text: spinnerTriggered ? spinnerTriggeredtext : normalText

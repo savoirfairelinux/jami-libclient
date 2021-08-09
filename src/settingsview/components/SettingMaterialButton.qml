@@ -64,11 +64,12 @@ RowLayout {
 
     MaterialButton {
         id: button
-        Layout.preferredWidth: root.itemWidth
+
         Layout.fillHeight: true
+        preferredWidth: root.itemWidth
 
         text: root.textField
-        source: root.source
+        iconSource: root.source
         color: JamiTheme.buttonTintedGrey
         hoveredColor: JamiTheme.buttonTintedGreyHovered
         pressedColor: JamiTheme.buttonTintedGreyPressed

@@ -440,8 +440,8 @@ Window {
                             id: migrationPushButton
 
                             Layout.alignment: Qt.AlignLeft
-                            Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
-                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                            preferredWidth: JamiTheme.preferredFieldWidth / 2
 
                             color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
                             hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -459,8 +459,8 @@ Window {
                             id: deleteAccountPushButton
 
                             Layout.alignment: Qt.AlignRight
-                            Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
-                            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                            preferredWidth: JamiTheme.preferredFieldWidth / 2
 
                             color: JamiTheme.buttonTintedRed
                             hoveredColor: JamiTheme.buttonTintedRedHovered

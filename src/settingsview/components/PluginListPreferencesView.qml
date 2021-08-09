@@ -367,20 +367,21 @@ Rectangle {
         RowLayout {
             Layout.topMargin: 10
             Layout.bottomMargin: 10
-            height: 30
+            Layout.preferredHeight: 30
+            Layout.fillWidth: true
 
             MaterialButton {
                 id: resetButton
 
                 Layout.fillWidth: true
-                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                preferredHeight: JamiTheme.preferredFieldHeight
 
                 color: JamiTheme.buttonTintedBlack
                 hoveredColor: JamiTheme.buttonTintedBlackHovered
                 pressedColor: JamiTheme.buttonTintedBlackPressed
                 outlined: true
 
-                source: JamiResources.settings_backup_restore_24dp_svg
+                iconSource: JamiResources.settings_backup_restore_24dp_svg
 
                 text: JamiStrings.reset
 
@@ -391,14 +392,14 @@ Rectangle {
                 id: uninstallButton
 
                 Layout.fillWidth: true
-                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+                preferredHeight: JamiTheme.preferredFieldHeight
 
                 color: JamiTheme.buttonTintedBlack
                 hoveredColor: JamiTheme.buttonTintedBlackHovered
                 pressedColor: JamiTheme.buttonTintedBlackPressed
                 outlined: true
 
-                source: JamiResources.delete_24dp_svg
+                iconSource: JamiResources.delete_24dp_svg
 
                 text: qsTr("Uninstall")
 

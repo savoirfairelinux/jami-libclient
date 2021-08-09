@@ -177,8 +177,8 @@ Rectangle {
             objectName: "saveProfileBtn"
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             enabled: !spinnerTriggered
             normalText: JamiStrings.saveProfile
@@ -206,8 +206,8 @@ Rectangle {
             objectName: "skipProfileSavingButton"
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             text: JamiStrings.skip
             enabled: saveProfileBtn.enabled

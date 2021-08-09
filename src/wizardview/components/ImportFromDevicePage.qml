@@ -167,8 +167,8 @@ Rectangle {
 
             Layout.alignment: Qt.AlignCenter
             Layout.bottomMargin: errorLabel.visible ? 0 : JamiTheme.wizardViewPageBackButtonMargins
-            Layout.preferredWidth: preferredWidth
-            Layout.preferredHeight: preferredHeight
+
+            preferredWidth: JamiTheme.wizardButtonWidth
 
             spinnerTriggeredtext: JamiStrings.generatingAccount
             normalText: JamiStrings.connectFromAnotherDevice

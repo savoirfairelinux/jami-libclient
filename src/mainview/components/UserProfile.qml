@@ -213,7 +213,7 @@ BaseDialog {
                 text: JamiStrings.isSwarm
                 color: JamiTheme.faddedFontColor
             }
-	
+
             Text {
                 Layout.alignment: Qt.AlignLeft
                 font.pointSize: JamiTheme.textFontSize
@@ -226,8 +226,9 @@ BaseDialog {
 
                 Layout.columnSpan: 2
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
-                Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                preferredWidth: JamiTheme.preferredFieldWidth / 2
+                preferredHeight: JamiTheme.preferredFieldHeight
 
                 color: JamiTheme.buttonTintedBlack
                 hoveredColor: JamiTheme.buttonTintedBlackHovered

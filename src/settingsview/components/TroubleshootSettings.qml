@@ -47,8 +47,7 @@ ColumnLayout{
         verticalAlignment: Text.AlignVCenter
     }
 
-    RowLayout{
-
+    RowLayout {
         Text{
             Layout.fillWidth: true
             Layout.preferredHeight: 30
@@ -62,15 +61,15 @@ ColumnLayout{
             verticalAlignment: Text.AlignVCenter
 
             color: JamiTheme.textColor
-
         }
 
         MaterialButton {
             id: enableTroubleshootingButton
 
             Layout.alignment: Qt.AlignRight
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
-            Layout.preferredWidth: itemWidth/1.5
+
+            preferredWidth: itemWidth / 1.5
+            preferredHeight: JamiTheme.preferredFieldHeight
 
             color: JamiTheme.buttonTintedBlack
             hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -79,11 +78,8 @@ ColumnLayout{
 
             text: JamiStrings.troubleshootButton
 
-            onClicked: {
-                logsView.open()
-            }
+            onClicked: logsView.open()
         }
-
     }
 }
 

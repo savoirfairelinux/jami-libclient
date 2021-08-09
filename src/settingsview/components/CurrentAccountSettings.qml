@@ -221,8 +221,9 @@ Rectangle {
             visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: JamiTheme.preferredMarginSize
-            Layout.preferredWidth: JamiTheme.preferredFieldWidth
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            preferredWidth: JamiTheme.preferredFieldWidth
+            preferredHeight: JamiTheme.preferredFieldHeight
 
             color: JamiTheme.buttonTintedBlack
             hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -230,14 +231,15 @@ Rectangle {
             outlined: true
 
             toolTipText: AccountAdapter.hasPassword() ?
-                        JamiStrings.changeCurrentPassword : JamiStrings.setAPassword
-            text: AccountAdapter.hasPassword() ? JamiStrings.changePassword : JamiStrings.setPassword
+                             JamiStrings.changeCurrentPassword :
+                             JamiStrings.setAPassword
+            text: AccountAdapter.hasPassword() ?
+                      JamiStrings.changePassword :
+                      JamiStrings.setPassword
 
-            source: JamiResources.round_edit_24dp_svg
+            iconSource: JamiResources.round_edit_24dp_svg
 
-            onClicked: {
-                passwordClicked()
-            }
+            onClicked: passwordClicked()
         }
 
         MaterialButton {
@@ -245,8 +247,9 @@ Rectangle {
 
             visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: JamiTheme.preferredFieldWidth
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            preferredWidth: JamiTheme.preferredFieldWidth
+            preferredHeight: JamiTheme.preferredFieldHeight
 
             color: JamiTheme.buttonTintedBlack
             hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -256,19 +259,18 @@ Rectangle {
             toolTipText: JamiStrings.tipBackupAccount
             text: JamiStrings.backupAccountBtn
 
-            source: JamiResources.round_save_alt_24dp_svg
+            iconSource: JamiResources.round_save_alt_24dp_svg
 
-            onClicked: {
-                exportAccountSlot()
-            }
+            onClicked: exportAccountSlot()
         }
 
         MaterialButton {
             Layout.alignment: Qt.AlignHCenter
-            Layout.preferredWidth: JamiTheme.preferredFieldWidth
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
             Layout.leftMargin: JamiTheme.preferredMarginSize
             Layout.rightMargin: JamiTheme.preferredMarginSize
+
+            preferredWidth: JamiTheme.preferredFieldWidth
+            preferredHeight: JamiTheme.preferredFieldHeight
 
             color: JamiTheme.buttonTintedRed
             hoveredColor: JamiTheme.buttonTintedRedHovered
@@ -276,11 +278,9 @@ Rectangle {
 
             text: JamiStrings.deleteAccount
 
-            source: JamiResources.delete_forever_24dp_svg
+            iconSource: JamiResources.delete_forever_24dp_svg
 
-            onClicked: {
-                delAccountSlot()
-            }
+            onClicked: delAccountSlot()
         }
 
         LinkedDevices {

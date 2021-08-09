@@ -91,8 +91,9 @@ BaseDialog {
                     model: buttonTitles.length
                     MaterialButton {
                         Layout.alignment: Qt.AlignVCenter
-                        Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
-                        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+                        preferredWidth: JamiTheme.preferredFieldWidth / 2
+                        preferredHeight: JamiTheme.preferredFieldHeight
 
                         color: {
                             switch(buttonStyles[modelData]) {

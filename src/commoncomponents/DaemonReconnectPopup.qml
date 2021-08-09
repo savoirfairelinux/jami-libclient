@@ -85,9 +85,9 @@ ModalPopup {
                 id: btnOk
 
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
-                Layout.preferredWidth: JamiTheme.preferredFieldWidth / 2
-                Layout.preferredHeight: JamiTheme.preferredFieldHeight
-                Layout.bottomMargin: preferredMargin
+
+                preferredWidth: JamiTheme.preferredFieldWidth / 2
+
                 visible: connectionFailed
 
                 text: qsTr("Ok")

@@ -98,9 +98,10 @@ Rectangle {
             id: installButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: JamiTheme.preferredFieldWidth
-            Layout.preferredHeight: JamiTheme.preferredFieldHeight
             Layout.topMargin: JamiTheme.preferredMarginSize / 2
+
+            preferredWidth: JamiTheme.preferredFieldWidth
+            preferredHeight: JamiTheme.preferredFieldHeight
 
             color: JamiTheme.buttonTintedBlack
             hoveredColor: JamiTheme.buttonTintedBlackHovered
@@ -108,7 +109,7 @@ Rectangle {
             outlined: true
             toolTipText: JamiStrings.addNewPlugin
 
-            source: JamiResources.round_add_24dp_svg
+            iconSource: JamiResources.round_add_24dp_svg
 
             text: JamiStrings.installPlugin
 

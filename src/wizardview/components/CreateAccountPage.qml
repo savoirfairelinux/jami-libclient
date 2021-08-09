@@ -169,10 +169,10 @@ Rectangle {
                     objectName: "chooseUsernameButton"
 
                     Layout.alignment: Qt.AlignCenter
-                    Layout.preferredWidth: preferredWidth
-                    Layout.preferredHeight: preferredHeight
 
-                    fontCapitalization: Font.AllUppercase
+                    preferredWidth: JamiTheme.wizardButtonWidth
+
+                    font.capitalization: Font.AllUppercase
                     text: isRendezVous ? JamiStrings.chooseName : JamiStrings.chooseUsername
                     enabled: usernameEdit.nameRegistrationState === UsernameLineEdit.NameRegistrationState.FREE
                     color: usernameEdit.nameRegistrationState === UsernameLineEdit.NameRegistrationState.FREE ?
@@ -194,8 +194,8 @@ Rectangle {
                     objectName: "nameRegistrationPageSkipButton"
 
                     Layout.alignment: Qt.AlignCenter
-                    Layout.preferredWidth: preferredWidth
-                    Layout.preferredHeight: preferredHeight
+
+                    preferredWidth: JamiTheme.wizardButtonWidth
 
                     text: JamiStrings.skip
                     color: JamiTheme.buttonTintedGrey
@@ -348,8 +348,8 @@ Rectangle {
                     objectName: "createAccountButton"
 
                     Layout.alignment: Qt.AlignCenter
-                    Layout.preferredWidth: preferredWidth
-                    Layout.preferredHeight: preferredHeight
+
+                    preferredWidth: JamiTheme.wizardButtonWidth
 
                     function checkEnable() {
                         return !passwordSwitch.checked ||
@@ -357,7 +357,7 @@ Rectangle {
                                  && passwordEdit.text.length !== 0)
                     }
 
-                    fontCapitalization: Font.AllUppercase
+                    font.capitalization: Font.AllUppercase
                     text: isRendezVous ? JamiStrings.createRV : JamiStrings.createAccount
                     enabled: checkEnable()
                     color: checkEnable() ? JamiTheme.wizardBlueButtons :
