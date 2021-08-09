@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b82afc9_5b1b8136",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-08-09T13:30:11Z",
+      "side": 1,
+      "message": "ok for me, just a question before merging",
+      "revId": "60fedef305a71711598f7ad2d0b8b4baf0941ef8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc8ef761_14d6569b",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2777,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-08-09T13:30:11Z",
+      "side": 1,
+      "message": "datachanged un-needed there?",
+      "range": {
+        "startLine": 2777,
+        "startChar": 36,
+        "endLine": 2777,
+        "endChar": 38
+      },
+      "revId": "60fedef305a71711598f7ad2d0b8b4baf0941ef8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
