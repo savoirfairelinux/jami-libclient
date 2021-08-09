@@ -154,8 +154,6 @@ BaseDialog {
 
                         placeholderText: JamiStrings.enterCurrentPassword
 
-                        borderColorMode: MaterialLineEdit.NORMAL
-
                         onTextChanged: {
                             btnConfirm.enabled = text.length > 0
                         }

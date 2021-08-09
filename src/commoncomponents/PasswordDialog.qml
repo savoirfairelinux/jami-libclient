@@ -42,8 +42,6 @@ BaseDialog {
         purpose = purposeIn
         path = exportPathIn
         currentPasswordEdit.clear()
-        passwordEdit.borderColorMode = MaterialLineEdit.NORMAL
-        confirmPasswordEdit.borderColorMode = MaterialLineEdit.NORMAL
         passwordEdit.clear()
         confirmPasswordEdit.clear()
         validatePassword()

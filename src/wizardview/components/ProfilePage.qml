@@ -146,8 +146,6 @@ Rectangle {
             font.pointSize: JamiTheme.textFontSize
             font.kerning: true
 
-            borderColorMode: MaterialLineEdit.NORMAL
-
             fieldLayoutWidth: saveProfileBtn.width
 
             KeyNavigation.tab: saveProfileBtn

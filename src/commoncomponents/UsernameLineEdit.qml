@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,8 +18,10 @@
 
 import QtQuick 2.14
 import QtQuick.Controls 2.14
+import QtGraphicalEffects 1.14
 
 import net.jami.Models 1.0
+import net.jami.Constants 1.0
 
 MaterialLineEdit {
     id: root
@@ -33,6 +35,11 @@ MaterialLineEdit {
     }
 
     property int nameRegistrationState: UsernameLineEdit.NameRegistrationState.BLANK
+    property var __iconSource: ""
+
+    selectByMouse: true
+    font.pointSize: JamiTheme.usernameLineEditPointSize
+    font.kerning: true
 
     Connections {
         id: registeredNameFoundConnection
@@ -63,7 +70,7 @@ MaterialLineEdit {
         id: lookupTimer
 
         repeat: false
-        interval: 200
+        interval: JamiTheme.usernameLineEditlookupInterval
 
         onTriggered: {
             if (text.length !== 0 && readOnly === false) {
@@ -75,21 +82,66 @@ MaterialLineEdit {
         }
     }
 
-    selectByMouse: true
-    font.pointSize: 9
-    font.kerning: true
+    Image {
+        id: lineEditImage
 
-    borderColorMode: {
-        switch (nameRegistrationState){
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: parent.right
+        anchors.rightMargin: 16
+
+        width: 24
+        height: 24
+
+        visible: nameRegistrationState !== UsernameLineEdit.NameRegistrationState.SEARCHING
+        source: nameRegistrationState === UsernameLineEdit.NameRegistrationState.SEARCHING ?
+                    "" : __iconSource
+        layer {
+            enabled: true
+            effect: ColorOverlay {
+                id: overlay
+                color: borderColor
+            }
+        }
+    }
+
+    AnimatedImage {
+        anchors.left: lineEditImage.left
+        anchors.verticalCenter: parent.verticalCenter
+
+        width: 24
+        height: 24
+
+        source: nameRegistrationState !== UsernameLineEdit.NameRegistrationState.SEARCHING ?
+                    "" : __iconSource
+        playing: true
+        paused: false
+        fillMode: Image.PreserveAspectFit
+        mipmap: true
+        visible: nameRegistrationState === UsernameLineEdit.NameRegistrationState.SEARCHING
+    }
+
+    onNameRegistrationStateChanged: {
+        if (!enabled)
+            borderColor = "transparent"
+
+        switch(nameRegistrationState){
+        case UsernameLineEdit.NameRegistrationState.SEARCHING:
+            __iconSource = JamiResources.jami_rolling_spinner_gif
+            borderColor = JamiTheme.greyBorderColor
+            break
         case UsernameLineEdit.NameRegistrationState.BLANK:
-            return MaterialLineEdit.NORMAL
+            __iconSource = ""
+            borderColor = JamiTheme.greyBorderColor
+            break
+        case UsernameLineEdit.NameRegistrationState.FREE:
+            __iconSource = JamiResources.round_check_circle_24dp_svg
+            borderColor = "green"
+            break
         case UsernameLineEdit.NameRegistrationState.INVALID:
         case UsernameLineEdit.NameRegistrationState.TAKEN:
-            return MaterialLineEdit.ERROR
-        case UsernameLineEdit.NameRegistrationState.FREE:
-            return MaterialLineEdit.RIGHT
-        case UsernameLineEdit.NameRegistrationState.SEARCHING:
-            return MaterialLineEdit.SEARCHING
+            __iconSource = JamiResources.round_error_24dp_svg
+            borderColor = "red"
+            break
         }
     }
 

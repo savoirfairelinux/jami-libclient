@@ -108,8 +108,6 @@ Rectangle {
             font.pointSize: JamiTheme.textFontSize
             font.kerning: true
 
-            borderColorMode: MaterialLineEdit.NORMAL
-
             KeyNavigation.tab: usernameManagerEdit
             KeyNavigation.up: {
                 if (backButton.visible)
@@ -150,8 +148,6 @@ Rectangle {
             font.pointSize: JamiTheme.textFontSize
             font.kerning: true
 
-            borderColorMode: MaterialLineEdit.NORMAL
-
             KeyNavigation.tab: passwordManagerEdit
             KeyNavigation.up: accountManagerEdit
             KeyNavigation.down: KeyNavigation.tab
@@ -175,7 +171,6 @@ Rectangle {
             font.kerning: true
 
             echoMode: TextInput.Password
-            borderColorMode: MaterialLineEdit.NORMAL
 
             KeyNavigation.tab: {
                 if (connectBtn.enabled)

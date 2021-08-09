@@ -182,7 +182,6 @@ Rectangle {
             font.kerning: true
 
             echoMode: TextInput.Password
-            borderColorMode: MaterialLineEdit.NORMAL
 
             KeyNavigation.tab: {
                 if (connectBtn.enabled)
