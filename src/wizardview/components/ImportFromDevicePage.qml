@@ -108,6 +108,7 @@ Rectangle {
             KeyNavigation.down: KeyNavigation.tab
 
             onTextChanged: errorText = ""
+            onAccepted: pinFromDevice.forceActiveFocus()
         }
 
         Text {
@@ -158,6 +159,10 @@ Rectangle {
             KeyNavigation.down: KeyNavigation.tab
 
             onTextChanged: errorText = ""
+            onAccepted: {
+                if (connectBtn.enabled)
+                    connectBtn.clicked()
+            }
         }
 
         SpinnerButton {

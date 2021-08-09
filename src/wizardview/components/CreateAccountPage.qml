@@ -138,6 +138,13 @@ Rectangle {
 
                     placeholderText: isRendezVous ? JamiStrings.chooseAName :
                                                     JamiStrings.chooseYourUserName
+
+                    onAccepted: {
+                        if (chooseUsernameButton.enabled)
+                            chooseUsernameButton.clicked()
+                        else
+                            skipButton.clicked()
+                    }
                 }
 
                 Label {
@@ -306,6 +313,8 @@ Rectangle {
                     KeyNavigation.tab: passwordConfirmEdit
                     KeyNavigation.up: passwordSwitch
                     KeyNavigation.down: KeyNavigation.tab
+
+                    onAccepted: passwordConfirmEdit.forceActiveFocus()
                 }
 
                 MaterialLineEdit {
@@ -329,6 +338,11 @@ Rectangle {
                                                                      backButton
                     KeyNavigation.up: passwordEdit
                     KeyNavigation.down: KeyNavigation.tab
+
+                    onAccepted: {
+                        if (createAccountButton.enabled)
+                            createAccountButton.clicked()
+                    }
                 }
 
                 Label {

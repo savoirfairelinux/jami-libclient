@@ -42,6 +42,8 @@ TextField {
     property var backgroundColor: JamiTheme.editBackgroundColor
     property var borderColor: JamiTheme.greyBorderColor
 
+    property bool loseFocusWhenEnterPressed: false
+
     signal imageClicked
 
     onBorderColorModeChanged: {
@@ -146,5 +148,21 @@ TextField {
     onReleased: {
         if (event.button == Qt.RightButton)
             lineEditContextMenu.openMenuAt(event)
+    }
+
+    // Enter/Return keys intervention
+    // Now, both editingFinished and accepted
+    // signals will be emitted with focus set to false
+    // Use editingFinished when the info is saved by focus lost
+    // (since losing focus will also emit editingFinished)
+    // Use accepted when the info is not saved by focus lost
+    Keys.onPressed: {
+        if (event.key === Qt.Key_Enter ||
+                event.key === Qt.Key_Return) {
+            if (loseFocusWhenEnterPressed)
+                root.focus = false
+            root.accepted()
+            event.accepted = true;
+        }
     }
 }

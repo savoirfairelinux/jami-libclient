@@ -647,6 +647,8 @@ WizardView {
         }
 
         function test_createAccountPageKeyNavigation() {
+            uut.clearSignalSpy()
+
             var welcomePage = findChild(uut, "welcomePage")
             var createAccountPage = findChild(uut, "createAccountPage")
 
@@ -741,8 +743,6 @@ WizardView {
             compare(usernameEdit.focus, true)
 
             // To createAccountPage - passwordSetupPage
-            keyClick(Qt.Key_Down)
-            keyClick(Qt.Key_Down)
             keyClick(Qt.Key_Enter)
             keyClick(Qt.Key_Tab)
             compare(passwordSwitch.focus, true)
@@ -861,14 +861,52 @@ WizardView {
             keyClick(Qt.Key_Up)
             compare(passwordSwitch.focus, true)
 
+            passwordEdit.text = ""
+            passwordConfirmEdit.text = ""
+
+            // Check lineEdit enter key press corrspond correctly
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Enter)
+            keyClick(Qt.Key_Enter)
+            compare(passwordConfirmEdit.focus, true)
+
+            passwordEdit.text = "test"
+            passwordConfirmEdit.text = "test"
+
+            keyClick(Qt.Key_Enter)
+
+            // Wait until the account creation is finished
+            spyAccountIsReady.wait()
+            compare(spyAccountIsReady.count, 1)
+
             // Go back to welcomePage
-            keyClick(Qt.Key_Up)
-            keyClick(Qt.Key_Enter)
-            keyClick(Qt.Key_Up)
-            keyClick(Qt.Key_Enter)
+            WizardViewStepModel.nextStep()
+
+            var showBackup = (WizardViewStepModel.accountCreationOption ===
+                              WizardViewStepModel.AccountCreationOption.CreateJamiAccount
+                              || WizardViewStepModel.accountCreationOption ===
+                              WizardViewStepModel.AccountCreationOption.CreateRendezVous)
+                              && !AppSettingsManager.getValue(Settings.NeverShowMeAgain)
+            if (showBackup) {
+                WizardViewStepModel.nextStep()
+            }
+
+            spyAccountConfigFinalized.wait()
+            compare(spyAccountConfigFinalized.count, 1)
+
+            spyCloseWizardView.wait()
+            compare(spyCloseWizardView.count, 1)
+
+            AccountAdapter.deleteCurrentAccount()
+
+            // Wait until the account removal is finished
+            spyAccountIsRemoved.wait()
+            compare(spyAccountIsRemoved.count, 1)
         }
 
         function test_importFromDevicePageKeyNavigation() {
+            uut.clearSignalSpy()
+
             var welcomePage = findChild(uut, "welcomePage")
             var importFromDevicePage = findChild(uut, "importFromDevicePage")
 
@@ -980,6 +1018,20 @@ WizardView {
 
             importFromDevicePageConnectBtn.spinnerTriggered = false
 
+            // Check lineEdit enter key press corrspond correctly
+            keyClick(Qt.Key_Enter)
+            compare(pinFromDevice.focus, true)
+
+            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Enter)
+            compare(pinFromDevice.focus, true)
+
+            pinFromDevice.text = "test"
+            keyClick(Qt.Key_Enter)
+
+            spyReportFailure.wait(15000)
+            verify(spyReportFailure.count >= 1)
+
             // Go back to welcomePage
             keyClick(Qt.Key_Up)
             keyClick(Qt.Key_Up)
@@ -987,6 +1039,8 @@ WizardView {
         }
 
         function test_importFromBackupPageKeyNavigation() {
+            uut.clearSignalSpy()
+
             var welcomePage = findChild(uut, "welcomePage")
             var importFromBackupPage = findChild(uut, "importFromBackupPage")
 
@@ -1099,6 +1153,18 @@ WizardView {
 
             importFromBackupPageConnectBtn.spinnerTriggered = false
 
+            // Check lineEdit enter key press corrspond correctly
+            var fileName = "gz_test.gz"
+            var wrongPassword = "ccc"
+            importFromBackupPage.filePath = UtilsAdapter.toFileAbsolutepath(
+                        "tests/qml/src/resources/gz_test.gz") + "/" + fileName
+            passwordFromBackupEdit.text = wrongPassword
+
+            keyClick(Qt.Key_Enter)
+
+            spyReportFailure.wait(15000)
+            verify(spyReportFailure.count >= 1)
+
             // Go back to welcomePage
             keyClick(Qt.Key_Up)
             keyClick(Qt.Key_Up)
@@ -1106,6 +1172,8 @@ WizardView {
         }
 
         function test_connectToAccountManagerPageKeyNavigation() {
+            uut.clearSignalSpy()
+
             var welcomePage = findChild(uut, "welcomePage")
             var connectToAccountManagerPage = findChild(uut, "connectToAccountManagerPage")
 
@@ -1250,8 +1318,21 @@ WizardView {
 
             connectToAccountManagerPageConnectBtn.spinnerTriggered = false
 
+            // Check lineEdit enter key press corrspond correctly
+            accountManagerEdit.text = "test"
+            usernameManagerEdit.text = "test"
+            passwordManagerEdit.text = "test"
+
+            keyClick(Qt.Key_Enter)
+            keyClick(Qt.Key_Enter)
+            keyClick(Qt.Key_Enter)
+
+            spyReportFailure.wait(15000)
+            verify(spyReportFailure.count >= 1)
+
             // Go back to welcomePage
-            keyClick(Qt.Key_Up)
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Tab)
             keyClick(Qt.Key_Enter)
 
             // Hide advanced options
@@ -1259,6 +1340,8 @@ WizardView {
         }
 
         function test_createSIPAccountPageKeyNavigation() {
+            uut.clearSignalSpy()
+
             var welcomePage = findChild(uut, "welcomePage")
             var createSIPAccountPage = findChild(uut, "createSIPAccountPage")
 
@@ -1339,9 +1422,32 @@ WizardView {
             keyClick(Qt.Key_Up)
             compare(sipServernameEdit.focus, true)
 
-            // Go back to welcomePage
-            keyClick(Qt.Key_Up)
+            // Check lineEdit enter key press corrspond correctly
             keyClick(Qt.Key_Enter)
+            keyClick(Qt.Key_Enter)
+            keyClick(Qt.Key_Enter)
+            keyClick(Qt.Key_Enter)
+
+            // Wait until the account creation is finished
+            spyAccountIsReady.wait()
+            compare(spyAccountIsReady.count, 1)
+
+            spyAccountStatusChanged.wait()
+            verify(spyAccountStatusChanged.count >= 1)
+
+            WizardViewStepModel.nextStep()
+
+            spyAccountConfigFinalized.wait()
+            compare(spyAccountConfigFinalized.count, 1)
+
+            spyCloseWizardView.wait()
+            compare(spyCloseWizardView.count, 1)
+
+            AccountAdapter.deleteCurrentAccount()
+
+            // Wait until the account removal is finished
+            spyAccountIsRemoved.wait()
+            compare(spyAccountIsRemoved.count, 1)
 
             // Hide advanced options
             showAdvancedButton.clicked()
@@ -1564,7 +1670,15 @@ WizardView {
 
             setAvatarWidget.isPreviewing = false
 
-            WizardViewStepModel.nextStep()
+            // Check lineEdit enter key press corrspond correctly
+            var aliasName = "test"
+            aliasEdit.text = aliasName
+            spyAccountStatusChanged.clear()
+
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Tab)
+            keyClick(Qt.Key_Enter)
 
             var showBackup = (WizardViewStepModel.accountCreationOption ===
                               WizardViewStepModel.AccountCreationOption.CreateJamiAccount
@@ -1577,8 +1691,14 @@ WizardView {
                 WizardViewStepModel.nextStep()
             }
 
+            spyAccountStatusChanged.wait()
+            verify(spyAccountStatusChanged.count >= 1)
+
             spyCloseWizardView.wait()
             compare(spyCloseWizardView.count, 1)
+
+            // Check alias text
+            compare(SettingsAdapter.getCurrentAccount_Profile_Info_Alias(), aliasName)
 
             AccountAdapter.deleteCurrentAccount()
 

@@ -102,6 +102,8 @@ Rectangle {
             KeyNavigation.tab: sipProxyEdit
             KeyNavigation.up: backButton
             KeyNavigation.down: KeyNavigation.tab
+
+            onAccepted: sipProxyEdit.forceActiveFocus()
         }
 
         MaterialLineEdit {
@@ -121,6 +123,8 @@ Rectangle {
             KeyNavigation.tab: sipUsernameEdit
             KeyNavigation.up: sipServernameEdit
             KeyNavigation.down: KeyNavigation.tab
+
+            onAccepted: sipUsernameEdit.forceActiveFocus()
         }
 
         MaterialLineEdit {
@@ -140,6 +144,8 @@ Rectangle {
             KeyNavigation.tab: sipPasswordEdit
             KeyNavigation.up: sipProxyEdit
             KeyNavigation.down: KeyNavigation.tab
+
+            onAccepted: sipPasswordEdit.forceActiveFocus()
         }
 
         MaterialLineEdit {
@@ -160,6 +166,8 @@ Rectangle {
             KeyNavigation.tab: createAccountButton
             KeyNavigation.up: sipUsernameEdit
             KeyNavigation.down: KeyNavigation.tab
+
+            onAccepted: createAccountButton.clicked()
         }
 
         MaterialButton {
