@@ -2357,6 +2357,7 @@ ConversationModelPimpl::slotConversationRequestDeclined(const QString& accountId
         return;
     eraseConversation(conversationIndex);
     Q_EMIT linked.conversationRemoved(convId);
+    Q_EMIT linked.modelChanged();
 }
 
 void
