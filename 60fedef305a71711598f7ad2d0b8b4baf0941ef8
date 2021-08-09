@@ -39,6 +39,30 @@
       },
       "revId": "60fedef305a71711598f7ad2d0b8b4baf0941ef8",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5621b934_8580b3f5",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2777,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-08-09T15:26:37Z",
+      "side": 1,
+      "message": "good point, wasn\u0027t here before, but yes. and ideally, if we track conversation source model indexes in the client instead of ids, or map the ids to indexes, then we only need one of the 2 signals, either dataChanged(idx) or conversationUpdated(id)",
+      "parentUuid": "dc8ef761_14d6569b",
+      "range": {
+        "startLine": 2777,
+        "startChar": 36,
+        "endLine": 2777,
+        "endChar": 38
+      },
+      "revId": "60fedef305a71711598f7ad2d0b8b4baf0941ef8",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
