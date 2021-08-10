@@ -131,31 +131,36 @@ PluginManagerInterface::getPluginsEnabled()
 }
 
 VectorMapStringString
-PluginManagerInterface::getPluginPreferences(const QString& path)
+PluginManagerInterface::getPluginPreferences(const QString& path, const QString& accountId)
 {
     VectorMapStringString temp;
-    for (auto x : DRing::getPluginPreferences(path.toStdString())) {
+    for (auto x : DRing::getPluginPreferences(path.toStdString(), accountId.toStdString())) {
         temp.push_back(convertMap(x));
     }
     return temp;
 }
 
 bool
-PluginManagerInterface::setPluginPreference(const QString& path,
+PluginManagerInterface::setPluginPreference(const QString& accountId,
+                                            const QString& path,
                                             const QString& key,
                                             const QString& value)
 {
-    return DRing::setPluginPreference(path.toStdString(), key.toStdString(), value.toStdString());
+    return DRing::setPluginPreference(accountId.toStdString(),
+                                      path.toStdString(),
+                                      key.toStdString(),
+                                      value.toStdString());
 }
 
 MapStringString
-PluginManagerInterface::getPluginPreferencesValues(const QString& path)
+PluginManagerInterface::getPluginPreferencesValues(const QString& path, const QString& accountId)
 {
-    return convertMap(DRing::getPluginPreferencesValues(path.toStdString()));
+    return convertMap(
+        DRing::getPluginPreferencesValues(path.toStdString(), accountId.toStdString()));
 }
 
 bool
-PluginManagerInterface::resetPluginPreferencesValues(const QString& path)
+PluginManagerInterface::resetPluginPreferencesValues(const QString& path, const QString& accountId)
 {
-    return DRing::resetPluginPreferencesValues(path.toStdString());
+    return DRing::resetPluginPreferencesValues(path.toStdString(), accountId.toStdString());
 }
