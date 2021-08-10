@@ -157,13 +157,15 @@ public:
      * Get preferences map of installed plugin
      * @return Plugin preferences infos vector
      */
-    Q_INVOKABLE VectorMapStringString getPluginPreferences(const QString& path);
+    Q_INVOKABLE VectorMapStringString getPluginPreferences(const QString& path,
+                                                           const QString& accountId);
 
     /**
      * Modify preference of installed plugin
      * @return true if preference was succesfully modified
      */
     Q_INVOKABLE bool setPluginPreference(const QString& path,
+                                         const QString& accountId,
                                          const QString& key,
                                          const QString& value);
 
@@ -171,13 +173,13 @@ public:
      * Get preferences values of installed plugin
      * @return Plugin preferences map
      */
-    MapStringString getPluginPreferencesValues(const QString& path);
+    MapStringString getPluginPreferencesValues(const QString& path, const QString& accountId);
 
     /**
      * Reste preferences values of installed plugin to default values
      * @return true if preference was succesfully reset
      */
-    Q_INVOKABLE bool resetPluginPreferencesValues(const QString& path);
+    Q_INVOKABLE bool resetPluginPreferencesValues(const QString& path, const QString& accountId);
 
 Q_SIGNALS:
     void chatHandlerStatusUpdated(bool isVisible);
