@@ -81,13 +81,16 @@ public Q_SLOTS: // METHODS
 
     bool getPluginsEnabled();
 
-    VectorMapStringString getPluginPreferences(const QString& path);
+    VectorMapStringString getPluginPreferences(const QString& path, const QString& accountId);
 
-    bool setPluginPreference(const QString& path, const QString& key, const QString& value);
+    bool setPluginPreference(const QString& path,
+                             const QString& accountId,
+                             const QString& key,
+                             const QString& value);
 
-    MapStringString getPluginPreferencesValues(const QString& path);
+    MapStringString getPluginPreferencesValues(const QString& path, const QString& accountId);
 
-    bool resetPluginPreferencesValues(const QString& path);
+    bool resetPluginPreferencesValues(const QString& path, const QString& accountId);
 };
 
 namespace org {
