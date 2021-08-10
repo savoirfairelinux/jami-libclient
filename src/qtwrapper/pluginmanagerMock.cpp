@@ -135,7 +135,7 @@ PluginManagerInterface::setPluginPreference(const QString& path,
 }
 
 MapStringString
-PluginManagerInterface::getPluginPreferencesValues(const QString& path)
+PluginManagerInterface::getPluginPreferencesValues(const QString& path, const QString& accountId)
 {
     return {};
 }

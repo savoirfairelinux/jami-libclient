@@ -149,9 +149,10 @@ PluginManagerInterface::setPluginPreference(const QString& path,
 }
 
 MapStringString
-PluginManagerInterface::getPluginPreferencesValues(const QString& path)
+PluginManagerInterface::getPluginPreferencesValues(const QString& path, const QString& accountId)
 {
-    return convertMap(DRing::getPluginPreferencesValues(path.toStdString()));
+    return convertMap(
+        DRing::getPluginPreferencesValues(path.toStdString(), accountId.toStdString()));
 }
 
 bool
