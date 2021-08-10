@@ -336,7 +336,7 @@ Utils::accountPhoto(LRCInstance* instance, const QString& accountId, const QSize
         } else {
             auto bestName = instance->accountModel().bestNameForAccount(accInfo.id);
             QString name = bestName == accInfo.profileInfo.uri ? QString() : bestName;
-            QString prefix = accInfo.profileInfo.type == profile::Type::JAMI ? "ring:" : "sip:";
+            QString prefix = accInfo.profileInfo.type == profile::Type::JAMI ? "jami:" : "sip:";
             photo = fallbackAvatar(prefix + accInfo.profileInfo.uri, name, size);
         }
     } catch (const std::exception& e) {
@@ -369,11 +369,11 @@ Utils::contactPhoto(LRCInstance* instance,
             photo = imageFromBase64String(contactPhoto);
             if (photo.isNull()) {
                 auto avatarName = contactInfo.profileInfo.uri == bestName ? QString() : bestName;
-                photo = Utils::fallbackAvatar("ring:" + contactInfo.profileInfo.uri, avatarName);
+                photo = Utils::fallbackAvatar("jami:" + contactInfo.profileInfo.uri, avatarName);
             }
         } else {
             auto avatarName = contactInfo.profileInfo.uri == bestName ? QString() : bestName;
-            photo = Utils::fallbackAvatar("ring:" + contactInfo.profileInfo.uri, avatarName);
+            photo = Utils::fallbackAvatar("jami:" + contactInfo.profileInfo.uri, avatarName);
         }
     } catch (const std::exception& e) {
         qDebug() << e.what() << "; Using default avatar";

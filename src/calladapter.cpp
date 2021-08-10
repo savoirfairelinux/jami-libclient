@@ -821,7 +821,7 @@ CallAdapter::participantIsHost(const QString& uri) const
                 return uri == accInfo.profileInfo.uri;
             } else {
                 auto call = callModel->getCall(convInfo.callId);
-                auto peer = call.peerUri.remove("ring:");
+                auto peer = call.peerUri.remove("jami:").remove("ring:");
                 return (uri == peer);
             }
         } catch (...) {
