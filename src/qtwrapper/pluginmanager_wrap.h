@@ -83,11 +83,14 @@ public Q_SLOTS: // METHODS
 
     VectorMapStringString getPluginPreferences(const QString& path);
 
-    bool setPluginPreference(const QString& path, const QString& key, const QString& value);
+    bool setPluginPreference(const QString& accountId,
+                             const QString& path,
+                             const QString& key,
+                             const QString& value);
 
-    MapStringString getPluginPreferencesValues(const QString& path);
+    MapStringString getPluginPreferencesValues(const QString& path, const QString& accountId);
 
-    bool resetPluginPreferencesValues(const QString& path);
+    bool resetPluginPreferencesValues(const QString& path, const QString& accountId);
 };
 
 namespace org {

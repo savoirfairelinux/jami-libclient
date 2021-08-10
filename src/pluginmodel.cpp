@@ -227,23 +227,26 @@ PluginModel::getPluginPreferences(const QString& path)
 }
 
 bool
-PluginModel::setPluginPreference(const QString& path, const QString& key, const QString& value)
+PluginModel::setPluginPreference(const QString& accountId,
+                                 const QString& path,
+                                 const QString& key,
+                                 const QString& value)
 {
-    auto result = PluginManager::instance().setPluginPreference(path, key, value);
+    auto result = PluginManager::instance().setPluginPreference(accountId, path, key, value);
     Q_EMIT modelUpdated();
     return result;
 }
 
 MapStringString
-PluginModel::getPluginPreferencesValues(const QString& path)
+PluginModel::getPluginPreferencesValues(const QString& path, const QString& accountId)
 {
-    return PluginManager::instance().getPluginPreferencesValues(path);
+    return PluginManager::instance().getPluginPreferencesValues(path, accountId);
 }
 
 bool
-PluginModel::resetPluginPreferencesValues(const QString& path)
+PluginModel::resetPluginPreferencesValues(const QString& path, const QString& accountId)
 {
-    auto result = PluginManager::instance().resetPluginPreferencesValues(path);
+    auto result = PluginManager::instance().resetPluginPreferencesValues(path, accountId);
     Q_EMIT modelUpdated();
     return result;
 }
