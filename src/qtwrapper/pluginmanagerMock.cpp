@@ -121,13 +121,14 @@ PluginManagerInterface::getPluginsEnabled()
 }
 
 VectorMapStringString
-PluginManagerInterface::getPluginPreferences(const QString& path)
+PluginManagerInterface::getPluginPreferences(const QString& path, const QString& accountId)
 {
     return {};
 }
 
 bool
 PluginManagerInterface::setPluginPreference(const QString& path,
+                                            const QString& accountId,
                                             const QString& key,
                                             const QString& value)
 {
@@ -135,13 +136,13 @@ PluginManagerInterface::setPluginPreference(const QString& path,
 }
 
 MapStringString
-PluginManagerInterface::getPluginPreferencesValues(const QString& path)
+PluginManagerInterface::getPluginPreferencesValues(const QString& path, const QString& accountId)
 {
     return {};
 }
 
 bool
-PluginManagerInterface::resetPluginPreferencesValues(const QString& path)
+PluginManagerInterface::resetPluginPreferencesValues(const QString& path, const QString& accountId)
 {
     return false;
 }
