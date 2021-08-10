@@ -221,29 +221,32 @@ PluginModel::getChatHandlerDetails(const QString& chatHandlerId)
 }
 
 VectorMapStringString
-PluginModel::getPluginPreferences(const QString& path)
+PluginModel::getPluginPreferences(const QString& path, const QString& accountId)
 {
-    return PluginManager::instance().getPluginPreferences(path);
+    return PluginManager::instance().getPluginPreferences(path, accountId);
 }
 
 bool
-PluginModel::setPluginPreference(const QString& path, const QString& key, const QString& value)
+PluginModel::setPluginPreference(const QString& path,
+                                 const QString& accountId,
+                                 const QString& key,
+                                 const QString& value)
 {
-    auto result = PluginManager::instance().setPluginPreference(path, key, value);
+    auto result = PluginManager::instance().setPluginPreference(path, accountId, key, value);
     Q_EMIT modelUpdated();
     return result;
 }
 
 MapStringString
-PluginModel::getPluginPreferencesValues(const QString& path)
+PluginModel::getPluginPreferencesValues(const QString& path, const QString& accountId)
 {
-    return PluginManager::instance().getPluginPreferencesValues(path);
+    return PluginManager::instance().getPluginPreferencesValues(path, accountId);
 }
 
 bool
-PluginModel::resetPluginPreferencesValues(const QString& path)
+PluginModel::resetPluginPreferencesValues(const QString& path, const QString& accountId)
 {
-    auto result = PluginManager::instance().resetPluginPreferencesValues(path);
+    auto result = PluginManager::instance().resetPluginPreferencesValues(path, accountId);
     Q_EMIT modelUpdated();
     return result;
 }
