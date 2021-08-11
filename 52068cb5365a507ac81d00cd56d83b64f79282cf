@@ -41,6 +41,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f63b203_2283846d",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 1128,
+      "author": {
+        "id": 920
+      },
+      "writtenOn": "2021-08-11T15:19:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "684f60ec_0ce2001d",
+      "range": {
+        "startLine": 1124,
+        "startChar": 25,
+        "endLine": 1128,
+        "endChar": 21
+      },
+      "revId": "52068cb5365a507ac81d00cd56d83b64f79282cf",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ceca494f_b3eee733",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-08-11T13:33:26Z",
       "side": 1,
       "message": "bad copyright",
+      "range": {
+        "startLine": 2,
+        "startChar": 51,
+        "endLine": 4,
+        "endChar": 68
+      },
+      "revId": "52068cb5365a507ac81d00cd56d83b64f79282cf",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ebb47f3_51083618",
+        "filename": "src/messagelistmodel.cpp",
+        "patchSetId": 32
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 920
+      },
+      "writtenOn": "2021-08-11T15:19:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ceca494f_b3eee733",
       "range": {
         "startLine": 2,
         "startChar": 51,
