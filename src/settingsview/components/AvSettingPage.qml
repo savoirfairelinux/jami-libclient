@@ -42,6 +42,15 @@ Rectangle {
 
     color: JamiTheme.secondaryBackgroundColor
 
+    Connections {
+        target: AvAdapter
+
+        function onVideoDeviceAvailable() {
+            if (root.visible)
+                videoSettings.startPreviewing()
+        }
+    }
+
     ColumnLayout {
         id: avSettingsColumnLayout
 

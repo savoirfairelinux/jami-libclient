@@ -39,8 +39,8 @@ Q_SIGNALS:
 
     void audioDeviceListChanged(int inputs, int outputs);
     void videoDeviceListChanged(int inputs);
-
     void screenCaptured(int screenNumber, QString source);
+    void videoDeviceAvailable();
 
 protected:
     void safeInit() override {};
