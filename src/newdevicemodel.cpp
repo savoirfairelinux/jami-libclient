@@ -109,6 +109,9 @@ NewDeviceModel::setCurrentDeviceName(const QString& newName)
     for (auto& device : pimpl_->devices_) {
         if (device.id == config.deviceId) {
             device.name = newName;
+            emit deviceUpdated(device.id);
+
+            return;
         }
     }
 }
