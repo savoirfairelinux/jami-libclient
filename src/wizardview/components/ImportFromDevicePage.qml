@@ -55,8 +55,10 @@ Rectangle {
         function onMainStepChanged() {
             if (WizardViewStepModel.mainStep === WizardViewStepModel.MainSteps.AccountCreation &&
                     WizardViewStepModel.accountCreationOption ===
-                    WizardViewStepModel.AccountCreationOption.ImportFromDevice)
+                    WizardViewStepModel.AccountCreationOption.ImportFromDevice) {
+                clearAllTextFields()
                 root.showThisPage()
+            }
         }
     }
 
