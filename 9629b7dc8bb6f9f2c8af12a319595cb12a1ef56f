@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "295dd0ae_0d2e838e",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 32
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-08-11T13:33:26Z",
+      "side": 0,
+      "message": "Other clients (kateryna + amin) must be informed by the changes. Because it\u0027s from public API. They can use it.",
+      "range": {
+        "startLine": 348,
+        "startChar": 5,
+        "endLine": 348,
+        "endChar": 13
+      },
+      "revId": "9629b7dc8bb6f9f2c8af12a319595cb12a1ef56f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
