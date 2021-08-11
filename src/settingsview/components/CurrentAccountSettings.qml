@@ -44,7 +44,6 @@ Rectangle {
         accountEnableCheckBox.checked = SettingsAdapter.get_CurrentAccountInfo_Enabled()
         accountProfile.updateAccountInfo()
         userIdentity.updateAccountInfo()
-        linkedDevices.updateAndShowDevicesSlot()
         bannedContacts.updateAndShowBannedContactsSlot()
         advancedSettings.updateAdvancedAccountInfos()
         var isJams = !isSIP && SettingsAdapter.getAccountConfig_Manageruri() !== ""
@@ -67,16 +66,6 @@ Rectangle {
 
     function delAccountSlot() {
         deleteAccountDialog.openDialog()
-    }
-
-    function connectCurrentAccount() {
-        if (!isSIP) {
-            linkedDevices.connectCurrentAccount(true)
-        }
-    }
-
-    function disconnectAccountConnections() {
-        linkedDevices.connectCurrentAccount(false)
     }
 
     function getAdvancedSettingsScrollPosition() {

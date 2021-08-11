@@ -1,6 +1,7 @@
 /*
- * Copyright (C) 2019-2020 by Savoir-faire Linux
+ * Copyright (C) 2021 by Savoir-faire Linux
  * Author: Yang Wang   <yang.wang@savoirfairelinux.com>
+ * Author: Mingrui Zhang   <mingrui.zhang@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +28,19 @@
 
 DeviceItemListModel::DeviceItemListModel(QObject* parent)
     : AbstractListModelBase(parent)
-{}
+{
+    connect(this, &AbstractListModelBase::lrcInstanceChanged, [this] {
+        if (lrcInstance_) {
+            if (!lrcInstance_->get_currentAccountId().isEmpty())
+                onAccountChanged();
+            connect(lrcInstance_,
+                    &LRCInstance::currentAccountIdChanged,
+                    this,
+                    &DeviceItemListModel::onAccountChanged,
+                    Qt::UniqueConnection);
+        }
+    });
+}
 
 DeviceItemListModel::~DeviceItemListModel() {}
 
@@ -121,4 +134,36 @@ DeviceItemListModel::reset()
 {
     beginResetModel();
     endResetModel();
+}
+
+void
+DeviceItemListModel::revokeDevice(QString deviceId, QString password)
+{
+    lrcInstance_->getCurrentAccountInfo().deviceModel->revokeDevice(deviceId, password);
+}
+
+void
+DeviceItemListModel::onAccountChanged()
+{
+    reset();
+
+    auto* deviceModel = lrcInstance_->getCurrentAccountInfo().deviceModel.get();
+
+    connect(deviceModel,
+            &lrc::api::NewDeviceModel::deviceAdded,
+            this,
+            &DeviceItemListModel::reset,
+            Qt::UniqueConnection);
+
+    connect(deviceModel,
+            &lrc::api::NewDeviceModel::deviceRevoked,
+            this,
+            &DeviceItemListModel::reset,
+            Qt::UniqueConnection);
+
+    connect(deviceModel,
+            &lrc::api::NewDeviceModel::deviceUpdated,
+            this,
+            &DeviceItemListModel::reset,
+            Qt::UniqueConnection);
 }

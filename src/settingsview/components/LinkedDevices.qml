@@ -23,30 +23,12 @@ import QtQuick.Layouts 1.15
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
+import net.jami.Enums 1.1
 
 import "../../commoncomponents"
 
 ColumnLayout {
     id:root
-
-    Connections {
-        id: accountConnections_DeviceModel
-
-        target: AccountAdapter.deviceModel
-        enabled: root.visible
-
-        function onDeviceAdded(id) {
-            updateAndShowDevicesSlot()
-        }
-
-        function onDeviceRevoked(id, status) {
-            updateAndShowDevicesSlot()
-        }
-
-        function onDeviceUpdated(id) {
-            updateAndShowDevicesSlot()
-        }
-    }
 
     Connections {
         id: accountConnections
@@ -61,24 +43,9 @@ ColumnLayout {
         }
     }
 
-    function connectCurrentAccount(status) {
-        accountConnections_DeviceModel.enabled = status
-    }
-
-    function updateAndShowDevicesSlot() {
-        if (SettingsAdapter.getAccountConfig_Manageruri() === ""){
-            linkDevPushButton.visible = SettingsAdapter.get_CurrentAccountInfo_Enabled()
-        }
-        settingsListView.model.reset()
-    }
-
-    function revokeDeviceWithIDAndPassword(idDevice, password){
-        AccountAdapter.deviceModel.revokeDevice(idDevice, password)
-        updateAndShowDevicesSlot()
-    }
-
     function removeDeviceSlot(index){
-        var idOfDevice = settingsListView.model.data(settingsListView.model.index(index,0), DeviceItemListModel.DeviceID)
+        var idOfDevice = settingsListView.model.data(settingsListView.model.index(index,0),
+                                                     DeviceItemListModel.DeviceID)
         if(AccountAdapter.hasPassword()){
             revokeDevicePasswordDialog.openRevokeDeviceDialog(idOfDevice)
         } else {
@@ -89,14 +56,12 @@ ColumnLayout {
 
     LinkDeviceDialog {
         id: linkDeviceDialog
-
-        onAccepted: updateAndShowDevicesSlot()
     }
 
     RevokeDevicePasswordDialog{
         id: revokeDevicePasswordDialog
 
-        onRevokeDeviceWithPassword: revokeDeviceWithIDAndPassword(idOfDevice, password)
+        onRevokeDeviceWithPassword: deviceItemListModel.revokeDevice(idOfDevice, password)
     }
 
     SimpleMessageDialog {
@@ -104,19 +69,19 @@ ColumnLayout {
 
         property string idOfDev: ""
 
-        title: qsTr("Remove Device")
-        infoText: qsTr("Are you sure you wish to remove this device?")
+        title: JamiStrings.removeDevice
+        infoText: JamiStrings.sureToRemoveDevice
 
-        buttonTitles: [qsTr("Ok"), qsTr("Cancel")]
+        buttonTitles: [JamiStrings.optionOk, JamiStrings.optionCancel]
         buttonStyles: [SimpleMessageDialog.ButtonStyle.TintedBlue,
                        SimpleMessageDialog.ButtonStyle.TintedBlack]
-        buttonCallBacks: [function() {revokeDeviceWithIDAndPassword(idOfDev, "")}]
+        buttonCallBacks: [function() {deviceItemListModel.revokeDevice(idOfDev, "")}]
     }
 
     Label {
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        text: qsTr("Linked Devices")
+        text: JamiStrings.linkedDevices
         color: JamiTheme.textColor
 
         font.pointSize: JamiTheme.headerFontSize
@@ -129,7 +94,9 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: 160
 
-        model: DeviceItemListModel {
+        model: DeviceItemProxyModel {
+            id: deviceItemListModel
+
             lrcInstance: LRCInstance
         }
 

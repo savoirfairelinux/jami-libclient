@@ -1017,10 +1017,7 @@ SettingsAdapter::tlsProtocolComboBoxIndexChanged(const int& index)
 void
 SettingsAdapter::setDeviceName(QString text)
 {
-    auto confProps = lrcInstance_->accountModel().getAccountConfig(
-        lrcInstance_->get_currentAccountId());
-    confProps.deviceName = text;
-    lrcInstance_->accountModel().setAccountConfig(lrcInstance_->get_currentAccountId(), confProps);
+    lrcInstance_->getCurrentAccountInfo().deviceModel->setCurrentDeviceName(text);
 }
 
 void

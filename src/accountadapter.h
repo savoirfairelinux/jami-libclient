@@ -34,15 +34,12 @@ class AccountAdapter final : public QmlAdapterBase
     Q_OBJECT
 
     Q_PROPERTY(lrc::api::NewAccountModel* model READ getModel NOTIFY modelChanged)
-    Q_PROPERTY(lrc::api::NewDeviceModel* deviceModel READ getDeviceModel NOTIFY deviceModelChanged)
 
 public:
     lrc::api::NewAccountModel* getModel();
-    lrc::api::NewDeviceModel* getDeviceModel();
 
 Q_SIGNALS:
     void modelChanged();
-    void deviceModelChanged();
 
 public:
     explicit AccountAdapter(AppSettingsManager* settingsManager,

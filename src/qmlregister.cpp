@@ -148,7 +148,7 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERNAMESPACE(NS_ENUMS, dummy::staticMetaObject, "");
 
     // QAbstractListModels
-    QML_REGISTERTYPE(NS_MODELS, DeviceItemListModel);
+    QML_REGISTERTYPE(NS_MODELS, DeviceItemProxyModel);
     QML_REGISTERTYPE(NS_MODELS, BannedListModel);
     QML_REGISTERTYPE(NS_MODELS, ModeratorListModel);
     QML_REGISTERTYPE(NS_MODELS, MediaCodecListModel);
@@ -215,9 +215,10 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERUNCREATABLE_IN_NAMESPACE(PeerDiscoveryModel, lrc::api);
 
     // Enums
-    QML_REGISTERUNCREATABLE(NS_ENUMS, Settings);
-    QML_REGISTERUNCREATABLE(NS_ENUMS, NetWorkManager);
+    QML_REGISTERUNCREATABLE(NS_ENUMS, Settings)
+    QML_REGISTERUNCREATABLE(NS_ENUMS, NetWorkManager)
     QML_REGISTERUNCREATABLE(NS_ENUMS, WizardViewStepModel)
+    QML_REGISTERUNCREATABLE(NS_ENUMS, DeviceItemListModel)
 
     engine->addImageProvider(QLatin1String("qrImage"), new QrImageProvider(lrcInstance));
     engine->addImageProvider(QLatin1String("avatarImage"),

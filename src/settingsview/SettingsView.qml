@@ -52,7 +52,6 @@ Rectangle {
         if(selectedMenu === sel && (!recovery)) { return }
         switch(sel) {
             case SettingsView.Account:
-                pageIdCurrentAccountSettings.connectCurrentAccount()
                 AccountAdapter.stopPreviewing()
                 selectedMenu = sel
                 pageIdCurrentAccountSettings.updateAccountInfoDisplayed()
@@ -97,7 +96,6 @@ Rectangle {
         var accountList = AccountAdapter.model.getAccountList()
         if(accountList.length === 0)
             return
-        pageIdCurrentAccountSettings.disconnectAccountConnections()
         var device = AVModel.getDefaultDevice()
         if(device.length === 0) {
             AVModel.setCurrentVideoCaptureDevice(device)

@@ -54,12 +54,6 @@ AccountAdapter::getModel()
     return &(lrcInstance_->accountModel());
 }
 
-NewDeviceModel*
-AccountAdapter::getDeviceModel()
-{
-    return lrcInstance_->getCurrentAccountInfo().deviceModel.get();
-}
-
 void
 AccountAdapter::changeAccount(int row)
 {

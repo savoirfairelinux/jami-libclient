@@ -38,25 +38,10 @@ ItemDelegate {
 
     signal btnRemoveDeviceClicked
 
-    function toggleEditable() {
-        editable = !editable
-        if (!editable) {
-           SettingsAdapter.setDeviceName(elidedTextDeviceName.text)
-        }
-    }
+    highlighted: ListView.isCurrentItem
 
     background: Rectangle {
         color: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
-    }
-    highlighted: ListView.isCurrentItem
-
-    CustomBorder {
-        commonBorder: false
-        lBorderwidth: 0
-        rBorderwidth: 0
-        tBorderwidth: 0
-        bBorderwidth: 2
-        borderColor: JamiTheme.selectedColor
     }
 
     RowLayout {
@@ -80,6 +65,8 @@ ItemDelegate {
         }
 
         ColumnLayout {
+            id: deviceInfoColumnLayout
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.leftMargin: JamiTheme.preferredMarginSize
@@ -91,32 +78,50 @@ ItemDelegate {
                 Layout.fillWidth: true
                 Layout.preferredHeight: 30
 
+                padding: 8
                 font.pointSize: JamiTheme.textFontSize
+
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
 
                 wrapMode: Text.NoWrap
                 readOnly: !editable
+                loseFocusWhenEnterPressed: true
                 backgroundColor: JamiTheme.editBackgroundColor
-                text: elidedTextDeviceName.elidedText
-                padding: 8
+
+                onEditingFinished: {
+                    SettingsAdapter.setDeviceName(editDeviceName.text)
+                    editable = !editable
+                }
+                onReadOnlyChanged: {
+                    if (readOnly)
+                        editDeviceName.text = Qt.binding(function() {
+                            return elidedTextDeviceName.elidedText
+                        })
+                    else
+                        editDeviceName.text = deviceName
+                }
+
+                TextMetrics {
+                    id: elidedTextDeviceName
+
+                    font: editDeviceName.font
+                    elide: Text.ElideRight
+                    elideWidth: editDeviceName.width - editDeviceName.leftPadding * 2
+                    text: deviceName
+                }
             }
 
-            TextMetrics {
-                id: elidedTextDeviceName
-
-                elide: Text.ElideRight
-                elideWidth: root.width - btnEditDevice.width - deviceImage.width
-                            - editDeviceName.leftPadding
-                text: deviceName
-            }
-
-            ElidedTextLabel {
+            Text {
                 id: labelDeviceId
 
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+                Layout.fillWidth: true
                 Layout.leftMargin: editDeviceName.leftPadding
 
-                maxWidth: root.width - btnEditDevice.width - deviceImage.width
-                eText: deviceId === "" ? qsTr("Device Id") : deviceId
+                elide: Text.ElideRight
+                color: JamiTheme.textColor
+                text: deviceId === "" ? qsTr("Device Id") : deviceId
             }
         }
 
@@ -147,11 +152,23 @@ ItemDelegate {
 
             onClicked: {
                 if (isCurrent) {
-                    toggleEditable()
+                    if (!editable)
+                        editable = !editable
+                    else
+                        editDeviceName.focus = false
                 } else {
                     btnRemoveDeviceClicked()
                 }
             }
         }
+    }
+
+    CustomBorder {
+        commonBorder: false
+        lBorderwidth: 0
+        rBorderwidth: 0
+        tBorderwidth: 0
+        bBorderwidth: 2
+        borderColor: JamiTheme.selectedColor
     }
 }
