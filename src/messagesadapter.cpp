@@ -62,6 +62,7 @@ MessagesAdapter::setupChatView(const QVariantMap& convInfo)
     Utils::oneShotConnect(qmlObj_, SIGNAL(messagesCleared()), this, SLOT(slotMessagesCleared()));
     setMessagesVisibility(false);
     clearChatView();
+    setIsSwarm(convInfo["isSwarm"].toBool());
 
     Q_EMIT newMessageBarPlaceholderText(convInfo["title"].toString());
 }
@@ -371,6 +372,13 @@ void
 MessagesAdapter::setMessagesVisibility(bool visible)
 {
     QString s = QString::fromLatin1(visible ? "showMessagesDiv();" : "hideMessagesDiv();");
+    QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
+}
+
+void
+MessagesAdapter::setIsSwarm(bool isSwarm)
+{
+    QString s = QString::fromLatin1("set_is_swarm(%1)").arg(isSwarm);
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
 }
 

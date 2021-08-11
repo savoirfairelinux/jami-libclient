@@ -69,6 +69,7 @@ protected:
 
     // Run corrsponding js functions, c++ to qml.
     void setMessagesVisibility(bool visible);
+    void setIsSwarm(bool isSwarm);
     void clearChatView();
     void updateHistory(ConversationModel& conversationModel,
                        MessagesList interactions,
