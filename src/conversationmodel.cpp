@@ -1600,6 +1600,38 @@ ConversationModel::peersForConversation(const QString& conversationId)
 }
 
 void
+ConversationModel::restartConversation(const QString& conversationId)
+{
+    const auto conversationOpt = getConversationForUid(conversationId);
+    if (!conversationOpt.has_value()) {
+        return;
+    }
+    const auto& conversation = conversationOpt->get();
+    if (!conversation.isCoreDialog() || !conversation.readOnly) {
+        return;
+    }
+
+    auto peerUri = pimpl_->peersForConversation(conversation).at(0);
+
+    auto contact = owner.contactModel->getContact(peerUri);
+
+    ConfigurationManager::instance().removeConversation(owner.id, conversationId);
+    pimpl_->eraseConversation(pimpl_->indexOf(conversationId));
+    pimpl_->invalidateModel();
+    emit conversationRemoved(conversationId);
+
+    owner.contactModel->removeContact(peerUri, false);
+    owner.contactModel->addContact(contact);
+
+    /* auto convUid = ConfigurationManager::instance().startConversation(owner.id);
+     ConfigurationManager::instance().addConversationMember(owner.id, convUid, peerUri);
+     pimpl_->addSwarmConversation(convUid);
+     emit newConversation(convUid);
+     pimpl_->invalidateModel();
+     emit modelChanged();*/
+}
+
+void
 ConversationModel::addConversationMember(const QString& conversationId, const QString& memberId)
 {
     ConfigurationManager::instance().addConversationMember(owner.id, conversationId, memberId);

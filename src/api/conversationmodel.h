@@ -362,7 +362,17 @@ public:
      * @return number of conversations requests + unread
      */
     int notificationsCount() const;
+    /**
+     * @param conversationId
+     * @return a list of the conversation's peers not including self
+     */
     const VectorString peersForConversation(const QString& conversationId);
+    /**
+     * Restart a one-to-one conversation given that is already read-only
+     * @param conversationId
+     * @return the new conversationId
+     */
+    void restartConversation(const QString& conversationId);
 
     // Presentation
 
