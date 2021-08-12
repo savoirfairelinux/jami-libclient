@@ -65,6 +65,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "668daa36_2fb51329",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2557,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-08-12T18:08:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc41bedb_304beb1a",
+      "range": {
+        "startLine": 2557,
+        "startChar": 29,
+        "endLine": 2557,
+        "endChar": 81
+      },
+      "revId": "09c39fc111695cf2daefdef94e7fab4f79461be5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee6876c8_1fa74363",
