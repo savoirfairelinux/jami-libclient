@@ -103,20 +103,6 @@ Label {
         }
     }
 
-    Connections {
-        target: AccountListModel
-
-        function onModelReset() {
-            avatar.imageId = LRCInstance.currentAccountId
-            avatar.presenceStatus = AccountListModel.data(AccountListModel.index(0, 0),
-                                                          AccountList.Status)
-            userAliasText.text = AccountListModel.data(AccountListModel.index(0,0),
-                                                       AccountList.Alias)
-            usernameText.text = AccountListModel.data(AccountListModel.index(0,0),
-                                                      AccountList.Username)
-        }
-    }
-
     RowLayout {
         anchors.fill: parent
         anchors.leftMargin: 15
@@ -130,11 +116,9 @@ Label {
             Layout.preferredHeight: JamiTheme.accountListAvatarSize
             Layout.alignment: Qt.AlignVCenter
 
-            imageId: LRCInstance.currentAccountId
             mode: Avatar.Mode.Account
-
-            presenceStatus: AccountListModel.data(
-                                AccountListModel.index(0, 0), AccountList.Status)
+            imageId: CurrentAccount.id
+            presenceStatus: CurrentAccount.status
         }
 
         ColumnLayout {
@@ -143,28 +127,26 @@ Label {
             spacing: 2
 
             Text {
-                id: userAliasText
+                id: bestNameText
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
-                text: AccountListModel.data(AccountListModel.index(0,0),
-                                            AccountList.Alias)
+                text: CurrentAccount.bestName
                 font.pointSize: JamiTheme.textFontSize
                 color: JamiTheme.textColor
                 elide: Text.ElideRight
             }
 
             Text {
-                id: usernameText
+                id: bestIdText
 
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
-                visible: text.length && text != userAliasText.text
+                visible: text.length && text !== bestNameText.text
 
-                text:  AccountListModel.data(AccountListModel.index(0,0),
-                                             AccountList.Username)
+                text:  CurrentAccount.bestId
                 font.pointSize: JamiTheme.textFontSize
                 color: JamiTheme.faddedLastInteractionFontColor
                 elide: Text.ElideRight

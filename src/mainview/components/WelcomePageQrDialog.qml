@@ -22,7 +22,6 @@ import QtQuick.Layouts 1.14
 
 import net.jami.Models 1.0
 import net.jami.Adapters 1.0
-import net.jami.Constants 1.0
 
 import "../../commoncomponents"
 
@@ -49,12 +48,7 @@ ModalPopup {
             smooth: false
 
             fillMode: Image.PreserveAspectFit
-            source: {
-                if (LRCInstance.currentAccountId &&
-                        LRCInstance.currentAccountType === Profile.Type.JAMI)
-                    return "image://qrImage/account_" + LRCInstance.currentAccountId
-                return ""
-            }
+            source: "image://qrImage/account_" + CurrentAccount.id
         }
     }
 }
