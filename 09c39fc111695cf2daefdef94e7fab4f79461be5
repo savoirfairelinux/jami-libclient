@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69e09a2a_e047c386",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-08-12T14:46:53Z",
+      "side": 1,
+      "message": "On client-qt when receiving a new incoming message from DHT, no conversation is shown in pending requests.",
+      "revId": "09c39fc111695cf2daefdef94e7fab4f79461be5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
