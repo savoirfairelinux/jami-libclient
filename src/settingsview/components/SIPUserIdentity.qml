@@ -31,10 +31,10 @@ ColumnLayout {
     property int itemWidth
 
     function updateAccountInfo() {
-        usernameSIP.setText(SettingsAdapter.getAccountConfig_Username())
-        hostnameSIP.setText(SettingsAdapter.getAccountConfig_Hostname())
-        passSIPlineEdit.setText(SettingsAdapter.getAccountConfig_Password())
-        proxySIP.setText(SettingsAdapter.getAccountConfig_RouteSet())
+        usernameSIP.textField = SettingsAdapter.getAccountConfig_Username()
+        hostnameSIP.textField = SettingsAdapter.getAccountConfig_Hostname()
+        passSIPlineEdit.textField = SettingsAdapter.getAccountConfig_Password()
+        proxySIP.textField = SettingsAdapter.getAccountConfig_RouteSet()
     }
 
     SettingsMaterialLineEdit {
@@ -43,7 +43,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        titleField: qsTr("Username")
+        titleField: JamiStrings.username
         itemWidth: root.itemWidth
         onEditFinished: SettingsAdapter.setAccountConfig_Username(textField)
     }
@@ -54,7 +54,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        titleField: qsTr("Hostname")
+        titleField: JamiStrings.server
         itemWidth: root.itemWidth
         onEditFinished: SettingsAdapter.setAccountConfig_Hostname(textField)
     }
@@ -65,7 +65,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        titleField: qsTr("Proxy")
+        titleField: JamiStrings.proxy
         itemWidth: root.itemWidth
         onEditFinished: SettingsAdapter.setAccountConfig_RouteSet(textField)
     }
@@ -76,7 +76,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-        titleField: qsTr("Password")
+        titleField: JamiStrings.password
         itemWidth: root.itemWidth
         onEditFinished: SettingsAdapter.setAccountConfig_Password(textField)
         echoMode: TextInput.Password

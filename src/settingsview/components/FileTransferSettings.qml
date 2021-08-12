@@ -30,7 +30,7 @@ ColumnLayout {
     property int itemWidth
 
     function updateValues() {
-        acceptTransferBelowSpinBox.setValue(SettingsAdapter.getAppValue(Settings.AcceptTransferBelow))
+        acceptTransferBelowSpinBox.valueField = SettingsAdapter.getAppValue(Settings.AcceptTransferBelow)
         allowFromUntrustedCheckbox.checked = SettingsAdapter.getAppValue(Settings.AllowFromUntrusted)
         autoAcceptFilesCheckbox.checked = SettingsAdapter.getAppValue(Settings.AutoAcceptFiles)
     }
@@ -87,7 +87,6 @@ ColumnLayout {
         itemWidth: root.itemWidth
         bottomValue: 0
         topValue: 99999999
-        step: 1
 
         onNewValue: SettingsAdapter.acceptTransferBelow(valueField)
     }

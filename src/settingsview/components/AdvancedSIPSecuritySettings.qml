@@ -34,15 +34,15 @@ ColumnLayout {
     function updateSecurityAccountInfos() {
         enableSDESToggle.enabled = SettingsAdapter.getAccountConfig_SRTP_Enabled()
         fallbackRTPToggle.enabled = SettingsAdapter.getAccountConfig_SRTP_Enabled()
-        btnSIPCACert.setEnabled(SettingsAdapter.getAccountConfig_TLS_Enable())
-        btnSIPUserCert.setEnabled(SettingsAdapter.getAccountConfig_TLS_Enable())
-        btnSIPPrivateKey.setEnabled(SettingsAdapter.getAccountConfig_TLS_Enable())
-        lineEditSIPCertPassword.setEnabled(SettingsAdapter.getAccountConfig_TLS_Enable())
+        btnSIPCACert.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
+        btnSIPUserCert.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
+        btnSIPPrivateKey.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
+        lineEditSIPCertPassword.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
 
-        btnSIPCACert.setText(UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateListFile()))
-        btnSIPUserCert.setText(UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateFile()))
-        btnSIPPrivateKey.setText(UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile()))
-        lineEditSIPCertPassword.setText(SettingsAdapter.getAccountConfig_TLS_Password())
+        btnSIPCACert.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateListFile())
+        btnSIPUserCert.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateFile())
+        btnSIPPrivateKey.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile())
+        lineEditSIPCertPassword.textField = SettingsAdapter.getAccountConfig_TLS_Password()
 
         encryptMediaStreamsToggle.checked = SettingsAdapter.getAccountConfig_SRTP_Enabled()
         enableSDESToggle.checked = (SettingsAdapter.getAccountConfig_SRTP_KeyExchange()  === Account.KeyExchangeProtocol.SDES)
@@ -55,28 +55,28 @@ ColumnLayout {
         var method = SettingsAdapter.getAccountConfig_TLS_Method_inInt()
         tlsProtocolComboBox.setCurrentIndex(method)
 
-        outgoingTLSServerNameLineEdit.setText(SettingsAdapter.getAccountConfig_TLS_Servername())
-        negotiationTimeoutSpinBox.setValue(SettingsAdapter.getAccountConfig_TLS_NegotiationTimeoutSec())
+        outgoingTLSServerNameLineEdit.textField = SettingsAdapter.getAccountConfig_TLS_Servername()
+        negotiationTimeoutSpinBox.valueField = SettingsAdapter.getAccountConfig_TLS_NegotiationTimeoutSec()
     }
 
     function changeFileCACert(url){
         if(url.length !== 0) {
            SettingsAdapter.set_FileCACert(url)
-            btnSIPCACert.setText(UtilsAdapter.toFileInfoName(url))
+            btnSIPCACert.textField = UtilsAdapter.toFileInfoName(url)
         }
     }
 
     function changeFileUserCert(url){
         if(url.length !== 0) {
            SettingsAdapter.set_FileUserCert(url)
-            btnSIPUserCert.setText(UtilsAdapter.toFileInfoName(url))
+            btnSIPUserCert.textField = UtilsAdapter.toFileInfoName(url)
         }
     }
 
     function changeFilePrivateKey(url){
         if(url.length !== 0) {
            SettingsAdapter.set_FilePrivateKey(url)
-            btnSIPPrivateKey.setText(UtilsAdapter.toFileInfoName(url))
+            btnSIPPrivateKey.textField = UtilsAdapter.toFileInfoName(url)
         }
     }
 
@@ -190,10 +190,10 @@ ColumnLayout {
 
             onSwitchToggled: {
                 SettingsAdapter.setUseTLS(checked)
-                btnSIPCACert.setEnabled(checked)
-                btnSIPUserCert.setEnabled(checked)
-                btnSIPPrivateKey.setEnabled(checked)
-                lineEditSIPCertPassword.setEnabled(checked)
+                btnSIPCACert.enabled = checked
+                btnSIPUserCert.enabled = checked
+                btnSIPPrivateKey.enabled = checked
+                lineEditSIPCertPassword.enabled = checked
             }
         }
 
@@ -318,7 +318,6 @@ ColumnLayout {
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 3000
-            step: 1
 
             onNewValue: SettingsAdapter.negotiationTimeoutSpinBoxValueChanged(valueField)
         }

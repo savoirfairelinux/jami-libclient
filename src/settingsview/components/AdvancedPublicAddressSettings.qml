@@ -33,8 +33,8 @@ ColumnLayout {
     function updatePublicAddressAccountInfos() {
         checkBoxAllowIPAutoRewrite.checked = SettingsAdapter.getAccountConfig_AllowIPAutoRewrite()
         checkBoxCustomAddressPort.checked = !SettingsAdapter.getAccountConfig_PublishedSameAsLocal()
-        lineEditSIPCustomAddress.setText(SettingsAdapter.getAccountConfig_PublishedAddress())
-        customPortSIPSpinBox.setValue(SettingsAdapter.getAccountConfig_PublishedPort())
+        lineEditSIPCustomAddress.textField = SettingsAdapter.getAccountConfig_PublishedAddress()
+        customPortSIPSpinBox.valueField = SettingsAdapter.getAccountConfig_PublishedPort()
 
         if (checkBoxAllowIPAutoRewrite.checked) {
             checkBoxCustomAddressPort.visible = false
@@ -83,8 +83,8 @@ ColumnLayout {
 
             onSwitchToggled: {
                 SettingsAdapter.setUseCustomAddressAndPort(!checked)
-                lineEditSIPCustomAddress.setEnabled(checked)
-                customPortSIPSpinBox.setEnabled(checked)
+                lineEditSIPCustomAddress.enabled = checked
+                customPortSIPSpinBox.enabled = checked
             }
         }
 
@@ -106,7 +106,6 @@ ColumnLayout {
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65535
-            step: 1
 
             onNewValue: SettingsAdapter.customPortSIPSpinBoxValueChanged(valueField)
         }

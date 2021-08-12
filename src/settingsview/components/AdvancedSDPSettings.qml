@@ -31,15 +31,15 @@ ColumnLayout {
     property int itemWidth
 
     function updateSDPAccountInfos(){
-        audioRTPMinPortSpinBox.setValue(SettingsAdapter.getAccountConfig_Audio_AudioPortMin())
-        audioRTPMaxPortSpinBox.setValue(SettingsAdapter.getAccountConfig_Audio_AudioPortMax())
-        videoRTPMinPortSpinBox.setValue(SettingsAdapter.getAccountConfig_Video_VideoPortMin())
-        videoRTPMaxPortSpinBox.setValue(SettingsAdapter.getAccountConfig_Video_VideoPortMax())
+        audioRTPMinPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Audio_AudioPortMin()
+        audioRTPMaxPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Audio_AudioPortMax()
+        videoRTPMinPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Video_VideoPortMin()
+        videoRTPMaxPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Video_VideoPortMax()
     }
 
     function audioRTPMinPortSpinBoxEditFinished(value) {
         if (SettingsAdapter.getAccountConfig_Audio_AudioPortMax() < value) {
-            audioRTPMinPortSpinBox.setValue(SettingsAdapter.getAccountConfig_Audio_AudioPortMin())
+            audioRTPMinPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Audio_AudioPortMin()
             return
         }
        SettingsAdapter.audioRTPMinPortSpinBoxEditFinished(value)
@@ -47,7 +47,7 @@ ColumnLayout {
 
     function audioRTPMaxPortSpinBoxEditFinished(value) {
         if (value <SettingsAdapter.getAccountConfig_Audio_AudioPortMin()) {
-            audioRTPMaxPortSpinBox.setValue(SettingsAdapter.getAccountConfig_Audio_AudioPortMax())
+            audioRTPMaxPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Audio_AudioPortMax()
             return
         }
        SettingsAdapter.audioRTPMaxPortSpinBoxEditFinished(value)
@@ -55,7 +55,7 @@ ColumnLayout {
 
     function videoRTPMinPortSpinBoxEditFinished(value) {
         if (SettingsAdapter.getAccountConfig_Video_VideoPortMax() < value) {
-            videoRTPMinPortSpinBox.setValue(SettingsAdapter.getAccountConfig_Video_VideoPortMin())
+            videoRTPMinPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Video_VideoPortMin()
             return
         }
        SettingsAdapter.videoRTPMinPortSpinBoxEditFinished(value)
@@ -63,7 +63,7 @@ ColumnLayout {
 
     function videoRTPMaxPortSpinBoxEditFinished(value) {
         if (value <SettingsAdapter.getAccountConfig_Video_VideoPortMin()) {
-            videoRTPMinPortSpinBox.setValue(SettingsAdapter.getAccountConfig_Video_VideoPortMin())
+            videoRTPMinPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Video_VideoPortMin()
             return
         }
        SettingsAdapter.videoRTPMaxPortSpinBoxEditFinished(value)
@@ -98,7 +98,6 @@ ColumnLayout {
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65535
-            step: 1
 
             onNewValue: audioRTPMinPortSpinBoxEditFinished(valueField)
         }
@@ -110,7 +109,6 @@ ColumnLayout {
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65535
-            step: 1
 
             onNewValue: audioRTPMaxPortSpinBoxEditFinished(valueField)
         }
@@ -122,7 +120,6 @@ ColumnLayout {
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65535
-            step: 1
 
             onNewValue: videoRTPMinPortSpinBoxEditFinished(valueField)
         }
@@ -134,7 +131,6 @@ ColumnLayout {
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65535
-            step: 1
 
             onNewValue: videoRTPMaxPortSpinBoxEditFinished(valueField)
         }

@@ -315,6 +315,8 @@ Item {
     property string removeDevice: qsTr("Remove Device")
     property string sureToRemoveDevice: qsTr("Are you sure you wish to remove this device?")
     property string linkedDevices: qsTr("Linked Devices")
+    property string yourPinIs: qsTr("Your PIN is:")
+    property string linkDeviceNetWorkError: qsTr("Error connecting to the network.\nPlease try again later.")
 
     // BannedContacts
     property string tipBannedContacts: qsTr("Display or hide banned contacts")
@@ -350,6 +352,12 @@ Item {
     property string autoAcceptFiles: qsTr("Automatically accept incoming files")
     property string acceptTransferBelow: qsTr("Accept transfer limit")
     property string acceptTransferTooltip: qsTr("in MB, 0 = unlimited")
+
+    // JamiUserIdentity settings
+    property string register: qsTr("Register")
+    property string incorrectPassword: qsTr("Incorrect password")
+    property string networkError: qsTr("Network error")
+    property string somethingWentWrong: qsTr("Something went wrong")
 
     // Updates
     property string betaInstall: qsTr("Install beta version")

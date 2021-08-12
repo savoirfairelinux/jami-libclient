@@ -28,24 +28,19 @@ import "../../commoncomponents"
 RowLayout {
     id: root
 
-    property string titleField: ""
-    property string textField: ""
+    property alias titleField: title.text
+    property alias textField: materialLineEdit.text
+    property alias enabled: materialLineEdit.enabled
+
     property int itemWidth
     property int wrapMode: Text.NoWrap
     property int echoMode: TextInput.Normal
 
     signal editFinished
 
-    function setEnabled(status) {
-        materialLineEdit.enabled = status
-    }
-
-    function setText(text) {
-        root.textField = text
-        materialLineEdit.text = text
-    }
-
     Text {
+        id: title
+
         Layout.fillWidth: true
         Layout.rightMargin: JamiTheme.preferredMarginSize / 2
 
@@ -55,30 +50,27 @@ RowLayout {
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
 
-        text: titleField
         color: JamiTheme.textColor
         elide: Text.ElideRight
     }
 
     MaterialLineEdit {
         id: materialLineEdit
+
         Layout.alignment: Qt.AlignCenter
         Layout.preferredWidth: itemWidth
 
         font.pointSize: JamiTheme.settingsFontSize
         font.kerning: true
 
-        text: textField
-
+        padding: 8
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
+
+        loseFocusWhenEnterPressed: true
         wrapMode: root.wrapMode
         echoMode: root.echoMode
-        padding: 8
 
-        onEditingFinished: {
-            root.textField = text
-            editFinished()
-        }
+        onEditingFinished: editFinished()
     }
 }

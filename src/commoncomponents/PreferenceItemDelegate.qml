@@ -189,19 +189,21 @@ ItemDelegate {
         MaterialLineEdit {
             id: editTextPreference
 
-            visible: preferenceType === PreferenceItemDelegate.EDITTEXT
-            width: root.width / 2 - 8
             Layout.preferredWidth: root.width / 2 - 8
             Layout.preferredHeight: 30
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             Layout.rightMargin: 4
 
+            visible: preferenceType === PreferenceItemDelegate.EDITTEXT
+            width: root.width / 2 - 8
+            padding: 8
+
             selectByMouse: true
             text: preferenceCurrentValue
 
             font.pointSize: JamiTheme.settingsFontSize
-            padding: 8
             wrapMode: Text.NoWrap
+            loseFocusWhenEnterPressed: true
 
             onEditingFinished: getNewPreferenceValueSlot(0)
             opacity: enabled ? 1.0 : 0.5

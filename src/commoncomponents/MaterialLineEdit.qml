@@ -27,7 +27,6 @@ TextField {
 
     property int fieldLayoutWidth: 256
     property int fieldLayoutHeight: 48
-    property bool layoutFillwidth: false
 
     property var backgroundColor: JamiTheme.editBackgroundColor
     property var borderColor: JamiTheme.greyBorderColor
@@ -80,7 +79,7 @@ TextField {
             if (loseFocusWhenEnterPressed)
                 root.focus = false
             root.accepted()
-            event.accepted = true;
+            event.accepted = true
         }
     }
 }

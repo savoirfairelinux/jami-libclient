@@ -33,18 +33,18 @@ ColumnLayout {
 
     function updateConnectivityAccountInfos() {
         autoRegistrationAfterExpired.checked = SettingsAdapter.getAccountConfig_KeepAliveEnabled()
-        registrationExpireTimeoutSpinBox.setValue(SettingsAdapter.getAccountConfig_Registration_Expire())
-        networkInterfaceSpinBox.setValue(SettingsAdapter.getAccountConfig_Localport())
+        registrationExpireTimeoutSpinBox.valueField = SettingsAdapter.getAccountConfig_Registration_Expire()
+        networkInterfaceSpinBox.valueField = SettingsAdapter.getAccountConfig_Localport()
         checkBoxUPnP.checked = SettingsAdapter.getAccountConfig_UpnpEnabled()
         checkBoxTurnEnable.checked = SettingsAdapter.getAccountConfig_TURN_Enabled()
-        lineEditTurnAddress.setText(SettingsAdapter.getAccountConfig_TURN_Server())
-        lineEditTurnUsername.setText(SettingsAdapter.getAccountConfig_TURN_Username())
-        lineEditTurnPassword.setText(SettingsAdapter.getAccountConfig_TURN_Password())
+        lineEditTurnAddress.textField = SettingsAdapter.getAccountConfig_TURN_Server()
+        lineEditTurnUsername.textField = SettingsAdapter.getAccountConfig_TURN_Username()
+        lineEditTurnPassword.textField = SettingsAdapter.getAccountConfig_TURN_Password()
         checkBoxSTUNEnable.checked = SettingsAdapter.getAccountConfig_STUN_Enabled()
-        lineEditSTUNAddress.setText(SettingsAdapter.getAccountConfig_STUN_Server())
-        lineEditTurnRealmSIP.setText(SettingsAdapter.getAccountConfig_TURN_Realm())
-        lineEditTurnRealmSIP.setEnabled(SettingsAdapter.getAccountConfig_TURN_Enabled())
-        lineEditSTUNAddress.setEnabled(SettingsAdapter.getAccountConfig_STUN_Enabled())
+        lineEditSTUNAddress.textField = SettingsAdapter.getAccountConfig_STUN_Server()
+        lineEditTurnRealmSIP.textField = SettingsAdapter.getAccountConfig_TURN_Realm()
+        lineEditTurnRealmSIP.enabled = SettingsAdapter.getAccountConfig_TURN_Enabled()
+        lineEditSTUNAddress.enabled = SettingsAdapter.getAccountConfig_STUN_Enabled()
 
     }
 
@@ -81,7 +81,6 @@ ColumnLayout {
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 7*24*3600
-            step: 1
 
             onNewValue: SettingsAdapter.registrationExpirationTimeSpinBoxValueChanged(valueField)
         }
@@ -94,7 +93,6 @@ ColumnLayout {
             itemWidth: root.itemWidth
             bottomValue: 0
             topValue: 65535
-            step: 1
 
             onNewValue: SettingsAdapter.networkInterfaceSpinBoxValueChanged(valueField)
         }
@@ -121,10 +119,10 @@ ColumnLayout {
             onSwitchToggled: {
                 SettingsAdapter.setUseTURN(checked)
                 if (isSIP) {
-                    lineEditTurnAddress.setEnabled(checked)
-                    lineEditTurnUsername.setEnabled(checked)
-                    lineEditTurnPassword.setEnabled(checked)
-                    lineEditTurnRealmSIP.setEnabled(checked)
+                    lineEditTurnAddress.enabled = checked
+                    lineEditTurnUsername.enabled = checked
+                    lineEditTurnPassword.enabled = checked
+                    lineEditTurnRealmSIP.enabled = checked
                 }
             }
         }

@@ -41,17 +41,17 @@ ColumnLayout {
         checkBoxCustomRingtone.checked = SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled()
         checkboxAllModerators.checked = SettingsAdapter.isAllModeratorsEnabled(LRCInstance.currentAccountId)
 
-        btnRingtone.setEnabled(SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled())
-        btnRingtone.setText(UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_Ringtone_RingtonePath()))
+        btnRingtone.enabled = SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled()
+        btnRingtone.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_Ringtone_RingtonePath())
         updateAndShowModeratorsSlot()
     }
 
     function changeRingtonePath(url) {
         if(url.length !== 0) {
            SettingsAdapter.set_RingtonePath(url)
-            btnRingtone.setText(UtilsAdapter.toFileInfoName(url))
+            btnRingtone.textField = UtilsAdapter.toFileInfoName(url)
         } else if (SettingsAdapter.getAccountConfig_Ringtone_RingtonePath().length === 0){
-            btnRingtone.setText(JamiStrings.addCustomRingtone)
+            btnRingtone.textField = JamiStrings.addCustomRingtone
         }
     }
 
@@ -130,7 +130,7 @@ ColumnLayout {
 
             onSwitchToggled: {
                 SettingsAdapter.setEnableRingtone(checked)
-                btnRingtone.setEnabled(checked)
+                btnRingtone.enabled = checked
             }
         }
 

@@ -31,32 +31,32 @@ ColumnLayout {
     property int itemWidth
 
     function updateSecurityAccountInfos() {
-        btnCACert.setText(UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateListFile()))
-        btnCACert.setEnabled(SettingsAdapter.getAccountConfig_TLS_Enable())
-        btnUserCert.setText(UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateFile()))
-        btnUserCert.setEnabled(SettingsAdapter.getAccountConfig_TLS_Enable())
-        btnPrivateKey.setText(UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile()))
-        btnPrivateKey.setEnabled(SettingsAdapter.getAccountConfig_TLS_Enable())
+        btnCACert.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateListFile())
+        btnCACert.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
+        btnUserCert.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateFile())
+        btnUserCert.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
+        btnPrivateKey.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile())
+        btnPrivateKey.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
     }
 
     function changeFileCACert(url){
         if(url.length !== 0) {
            SettingsAdapter.set_FileCACert(url)
-            btnCACert.setText(UtilsAdapter.toFileInfoName(url))
+            btnCACert.textField = UtilsAdapter.toFileInfoName(url)
         }
     }
 
     function changeFileUserCert(url){
         if(url.length !== 0) {
            SettingsAdapter.set_FileUserCert(url)
-            btnUserCert.setText(UtilsAdapter.toFileInfoName(url))
+            btnUserCert.textField = UtilsAdapter.toFileInfoName(url)
         }
     }
 
     function changeFilePrivateKey(url){
         if(url.length !== 0) {
            SettingsAdapter.set_FilePrivateKey(url)
-            btnPrivateKey.setText(UtilsAdapter.toFileInfoName(url))
+            btnPrivateKey.textField = UtilsAdapter.toFileInfoName(url)
         }
     }
 

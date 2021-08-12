@@ -29,31 +29,25 @@ import "../../commoncomponents"
 RowLayout {
     id: root
 
+    property alias title: title.text
+    property alias enabled: textField.enabled
+    property alias bottomValue: textFieldValidator.bottom
+    property alias topValue: textFieldValidator.top
+    property alias valueField: textField.text
+    property alias tooltipText: toolTip.text
+
     property string borderColor: JamiTheme.greyBorderColor
-    property string title: ""
     property int itemWidth
-    property int bottomValue
-    property int topValue
-    property int step
-    property int valueField
-    property string tooltipText: ""
 
     signal newValue
 
-    function setEnabled(status) {
-        textField.enabled = status
-    }
-
-    function setValue(value) {
-        root.valueField = value
-        textField.text = value
-    }
-
     Text {
+        id: title
+
         Layout.fillWidth: true
         Layout.rightMargin: JamiTheme.preferredMarginSize
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
-        text: root.title
+
         color: JamiTheme.textColor
         elide: Text.ElideRight
         font.pointSize: JamiTheme.settingsFontSize
@@ -72,23 +66,34 @@ RowLayout {
         font.pointSize: JamiTheme.buttonFontSize
         font.kerning: true
 
-        validator: IntValidator {bottom: root.bottomValue; top: root.topValue}
-
-        onEditingFinished: {
-            root.valueField = text
-            newValue()
+        validator: IntValidator {
+            id: textFieldValidator
         }
 
         color: JamiTheme.textColor
+        hoverEnabled: true
 
         background: Rectangle {
-            border.color: enabled? root.borderColor : "transparent"
+            border.color: enabled ? root.borderColor : "transparent"
             color: JamiTheme.editBackgroundColor
         }
 
-        hoverEnabled: true
-        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-        ToolTip.visible: hovered && (root.tooltipText.length > 0)
-        ToolTip.text: root.tooltipText
+        onEditingFinished: newValue()
+
+        Keys.onPressed: {
+            if (event.key === Qt.Key_Enter ||
+                    event.key === Qt.Key_Return) {
+                textField.focus = false
+                event.accepted = true
+            }
+        }
+
+        MaterialToolTip {
+            id: toolTip
+
+            parent: textField
+            visible: textField.hovered && (root.tooltipText.length > 0)
+            delay: Qt.styleHints.mousePressAndHoldInterval
+        }
     }
 }

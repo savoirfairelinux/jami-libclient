@@ -144,6 +144,11 @@ ColumnLayout {
                             fieldLayoutWidth : maximumWidth
             }
 
+            padding: 8
+            horizontalAlignment: registeredIdNeedsSet ?
+                                Text.AlignLeft :
+                                Text.AlignRight
+            verticalAlignment: Text.AlignVCenter
             wrapMode: Text.NoWrap
             placeholderText: registeredIdNeedsSet ?
                                     JamiStrings.registerAUsername : ""
@@ -155,12 +160,12 @@ ColumnLayout {
             }
             readOnly: !registeredIdNeedsSet
             font.bold: !registeredIdNeedsSet
+            loseFocusWhenEnterPressed: btnRegisterName.visible
 
-            horizontalAlignment: registeredIdNeedsSet ?
-                                Text.AlignLeft :
-                                Text.AlignRight
-            verticalAlignment: Text.AlignVCenter
-            padding: 8
+            onAccepted: {
+                if (btnRegisterName.visible)
+                    btnRegisterName.clicked()
+            }
         }
     }
 
@@ -177,7 +182,7 @@ ColumnLayout {
                     currentRegisteredID.nameRegistrationState ===
                     UsernameLineEdit.NameRegistrationState.FREE
 
-        text: qsTr("Register")
+        text: JamiStrings.register
         toolTipText: JamiStrings.registerUsername
         color: JamiTheme.buttonTintedGrey
         hoveredColor: JamiTheme.buttonTintedGreyHovered

@@ -50,9 +50,9 @@ ColumnLayout {
         var count = deviceComboBoxSetting.comboModel.deviceCount()
 
         previewWidget.visible = count > 0
-        deviceComboBoxSetting.setEnabled(count > 0)
-        resolutionComboBoxSetting.setEnabled(count > 0)
-        fpsComboBoxSetting.setEnabled(count > 0)
+        deviceComboBoxSetting.enabled = count > 0
+        resolutionComboBoxSetting.enabled = count > 0
+        fpsComboBoxSetting.enabled = count > 0
 
         if (count === 0) {
             resolutionComboBoxSetting.comboModel.reset()
