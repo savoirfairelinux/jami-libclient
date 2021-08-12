@@ -138,7 +138,7 @@ public:
      * @param convId
      * @param contactUri
      */
-    void addConversationWith(const QString& convId, const QString& contactUri);
+    void addConversationWith(const QString& convId, const QString& contactUri, bool isRequest);
     /**
      * Add a swarm conversation to conversation list
      * @param convId
@@ -1924,16 +1924,17 @@ ConversationModelPimpl::initConversations()
         auto conv = storage::getConversationsWithPeer(db, c.second.profileInfo.uri);
         if (hasOneOneSwarmWith(c.second.profileInfo.uri))
             continue;
+        bool isRequest = c.second.profileInfo.type == profile::Type::PENDING;
         if (conv.empty()) {
             // Can't find a conversation with this contact
             // add pending not swarm conversation
-            if (c.second.profileInfo.type == profile::Type::PENDING) {
+            if (isRequest) {
                 addContactRequest(c.second.profileInfo.uri);
                 continue;
             }
             conv.push_back(storage::beginConversationWithPeer(db, c.second.profileInfo.uri));
         }
-        addConversationWith(conv[0], c.first);
+        addConversationWith(conv[0], c.first, isRequest);
 
         auto convIdx = indexOf(conv[0]);
 
@@ -2464,7 +2465,7 @@ ConversationModelPimpl::slotConversationRemoved(const QString& accountId,
             if (conv.empty()) {
                 conv.push_back(storage::beginConversationWithPeer(db, contactId));
             }
-            addConversationWith(conv[0], contactId);
+            addConversationWith(conv[0], contactId, false);
             emit linked.newConversation(conv[0]);
         } else {
             removeConversation();
@@ -2547,12 +2548,14 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
                 emit linked.modelChanged();
             }
             return;
+        } else {
+            conversation.isRequest = false;
         }
         if (conv.empty()) {
             conv.push_back(storage::beginConversationWithPeer(db, contactUri));
         }
         // remove temporary conversation that was added when receiving an incoming request
-        removeConversation = indexOf(contactUri) != -1;
+        removeConversation = indexOf(contactUri) != -1 && indexOf(conv[0]) == -1;
 
         // add a conversation if not exists
         addConversation = indexOf(conv[0]) == -1;
@@ -2568,7 +2571,7 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
         }
     }
     if (addConversation) {
-        addConversationWith(conv[0], contactUri);
+        addConversationWith(conv[0], contactUri, false);
         emit linked.conversationReady(conv[0], contactUri);
         emit linked.newConversation(conv[0]);
     }
@@ -2577,6 +2580,10 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
         invalidateModel();
         Q_EMIT linked.conversationRemoved(contactUri);
         emit linked.modelChanged();
+    } else if (!addConversation) {
+        invalidateModel();
+        emit linked.modelChanged();
+        emit linked.conversationReady(conv[0], contactUri);
     }
 }
 
@@ -2807,7 +2814,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
 }
 
 void
-ConversationModelPimpl::addConversationWith(const QString& convId, const QString& contactUri)
+ConversationModelPimpl::addConversationWith(const QString& convId, const QString& contactUri, bool isRequest)
 {
     conversation::Info conversation;
     conversation.uid = convId;
@@ -2815,6 +2822,8 @@ ConversationModelPimpl::addConversationWith(const QString& convId, const QString
     conversation.participants = {contactUri};
     conversation.mode = conversation::Mode::NON_SWARM;
     conversation.needsSyncing = false;
+    conversation.isRequest = isRequest;
+
     try {
         conversation.confId = linked.owner.callModel->getConferenceFromURI(contactUri).id;
     } catch (...) {
@@ -3059,10 +3068,15 @@ ConversationModelPimpl::addOrUpdateCallMessage(const QString& callId,
             auto contact = linked.owner.contactModel->getContact(from);
             if (contact.profileInfo.type == profile::Type::PENDING && !contact.isBanned) {
                 addContactRequest(from);
+                convIds.push_back(storage::beginConversationWithPeer(db, contact.profileInfo.uri));
+                auto& conv = getConversationForPeerUri(contact.profileInfo.uri).get();
+                conv.uid = convIds[0];
+            } else {
+                return;
             }
         } catch (const std::out_of_range&) {
+            return;
         }
-        return;
     }
     // Get conversation
     auto conv_it = std::find_if(conversations.begin(),
@@ -3153,17 +3167,24 @@ ConversationModelPimpl::addIncomingMessage(const QString& peerId,
                                            const QString& daemonId)
 {
     auto convIds = storage::getConversationsWithPeer(db, peerId);
+    bool isRequest = false;
     if (convIds.empty()) {
         // in case if we receive a message after removing contact, add a conversation request
         try {
             auto contact = linked.owner.contactModel->getContact(peerId);
-            if (contact.profileInfo.type == profile::Type::PENDING && !contact.isBanned
+            isRequest = contact.profileInfo.type == profile::Type::PENDING;
+            if (isRequest && !contact.isBanned
                 && peerId != linked.owner.profileInfo.uri) {
                 addContactRequest(peerId);
+                convIds.push_back(storage::beginConversationWithPeer(db, contact.profileInfo.uri));
+                auto& conv = getConversationForPeerUri(contact.profileInfo.uri).get();
+                conv.uid = convIds[0];
+            } else {
+                return "";
             }
         } catch (const std::out_of_range&) {
+            return"";
         }
-        return "";
     }
     auto msg = interaction::Info {peerId,
                                   body,
@@ -3180,7 +3201,7 @@ ConversationModelPimpl::addIncomingMessage(const QString& peerId,
     auto conversationIdx = indexOf(convIds[0]);
     // Add the conversation if not already here
     if (conversationIdx == -1) {
-        addConversationWith(convIds[0], peerId);
+        addConversationWith(convIds[0], peerId, isRequest);
         emit linked.newConversation(convIds[0]);
     } else {
         {
@@ -3576,18 +3597,24 @@ ConversationModelPimpl::slotTransferStatusCreated(const QString& fileId, datatra
         return;
     // create a new conversation if needed
     auto convIds = storage::getConversationsWithPeer(db, info.peerUri);
+    bool isRequest = false;
     if (convIds.empty()) {
         // in case if we receive file after removing contact add conversation request. If we have
         // swarm request this function will do nothing.
         try {
             auto contact = linked.owner.contactModel->getContact(info.peerUri);
-            if (contact.profileInfo.type == profile::Type::PENDING && !contact.isBanned
-                && info.peerUri != linked.owner.profileInfo.uri) {
+            isRequest = contact.profileInfo.type == profile::Type::PENDING;
+            if (isRequest && !contact.isBanned && info.peerUri != linked.owner.profileInfo.uri) {
                 addContactRequest(info.peerUri);
+                convIds.push_back(storage::beginConversationWithPeer(db, contact.profileInfo.uri));
+                auto& conv = getConversationForPeerUri(contact.profileInfo.uri).get();
+                conv.uid = convIds[0];
+            } else {
+                return;
             }
         } catch (const std::out_of_range&) {
+            return;
         }
-        return;
     }
 
     // add interaction to the db
@@ -3608,7 +3635,7 @@ ConversationModelPimpl::slotTransferStatusCreated(const QString& fileId, datatra
     // prepare interaction Info and emit signal for the client
     auto conversationIdx = indexOf(convId);
     if (conversationIdx == -1) {
-        addConversationWith(convId, info.peerUri);
+        addConversationWith(convId, info.peerUri, isRequest);
         emit linked.newConversation(convId);
     } else {
         {
