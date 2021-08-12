@@ -16,6 +16,52 @@
       "message": "On client-qt when receiving a new incoming message from DHT, no conversation is shown in pending requests.",
       "revId": "09c39fc111695cf2daefdef94e7fab4f79461be5",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7a775de_815c1808",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2557,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-08-12T14:58:11Z",
+      "side": 1,
+      "message": "first part still necessary?",
+      "range": {
+        "startLine": 2557,
+        "startChar": 29,
+        "endLine": 2557,
+        "endChar": 81
+      },
+      "revId": "09c39fc111695cf2daefdef94e7fab4f79461be5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee6876c8_1fa74363",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 2830,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-08-12T14:58:11Z",
+      "side": 1,
+      "message": "imho, we can change addConversationWith(QString, QString, bool isRequest) and control this before. This will avoid to check contact there",
+      "range": {
+        "startLine": 2825,
+        "startChar": 3,
+        "endLine": 2830,
+        "endChar": 41
+      },
+      "revId": "09c39fc111695cf2daefdef94e7fab4f79461be5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
