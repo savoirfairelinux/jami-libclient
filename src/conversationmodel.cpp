@@ -2547,12 +2547,14 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
                 emit linked.modelChanged();
             }
             return;
+        } else {
+            conversation.isRequest = false;
         }
         if (conv.empty()) {
             conv.push_back(storage::beginConversationWithPeer(db, contactUri));
         }
         // remove temporary conversation that was added when receiving an incoming request
-        removeConversation = indexOf(contactUri) != -1;
+        removeConversation = indexOf(contactUri) != -1 && indexOf(conv[0]) == -1;
 
         // add a conversation if not exists
         addConversation = indexOf(conv[0]) == -1;
@@ -2577,6 +2579,10 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
         invalidateModel();
         Q_EMIT linked.conversationRemoved(contactUri);
         emit linked.modelChanged();
+    } else if (!addConversation) {
+        invalidateModel();
+        emit linked.modelChanged();
+        emit linked.conversationReady(conv[0], contactUri);
     }
 }
 
@@ -2815,6 +2821,13 @@ ConversationModelPimpl::addConversationWith(const QString& convId, const QString
     conversation.participants = {contactUri};
     conversation.mode = conversation::Mode::NON_SWARM;
     conversation.needsSyncing = false;
+
+    try {
+        auto contact = linked.owner.contactModel->getContact(contactUri);
+        if (contact.profileInfo.type == profile::Type::PENDING && contactUri != linked.owner.profileInfo.uri) {
+            conversation.isRequest = true;
+        }
+    } catch (const std::out_of_range&) {}
     try {
         conversation.confId = linked.owner.callModel->getConferenceFromURI(contactUri).id;
     } catch (...) {
@@ -3059,10 +3072,15 @@ ConversationModelPimpl::addOrUpdateCallMessage(const QString& callId,
             auto contact = linked.owner.contactModel->getContact(from);
             if (contact.profileInfo.type == profile::Type::PENDING && !contact.isBanned) {
                 addContactRequest(from);
+                convIds.push_back(storage::beginConversationWithPeer(db, contact.profileInfo.uri));
+                auto& conv = getConversationForPeerUri(contact.profileInfo.uri).get();
+                conv.uid = convIds[0];
+            } else {
+                return;
             }
         } catch (const std::out_of_range&) {
+            return;
         }
-        return;
     }
     // Get conversation
     auto conv_it = std::find_if(conversations.begin(),
@@ -3160,10 +3178,15 @@ ConversationModelPimpl::addIncomingMessage(const QString& peerId,
             if (contact.profileInfo.type == profile::Type::PENDING && !contact.isBanned
                 && peerId != linked.owner.profileInfo.uri) {
                 addContactRequest(peerId);
+                convIds.push_back(storage::beginConversationWithPeer(db, contact.profileInfo.uri));
+                auto& conv = getConversationForPeerUri(contact.profileInfo.uri).get();
+                conv.uid = convIds[0];
+            } else {
+                return "";
             }
         } catch (const std::out_of_range&) {
+            return"";
         }
-        return "";
     }
     auto msg = interaction::Info {peerId,
                                   body,
@@ -3584,10 +3607,15 @@ ConversationModelPimpl::slotTransferStatusCreated(const QString& fileId, datatra
             if (contact.profileInfo.type == profile::Type::PENDING && !contact.isBanned
                 && info.peerUri != linked.owner.profileInfo.uri) {
                 addContactRequest(info.peerUri);
+                convIds.push_back(storage::beginConversationWithPeer(db, contact.profileInfo.uri));
+                auto& conv = getConversationForPeerUri(contact.profileInfo.uri).get();
+                conv.uid = convIds[0];
+            } else {
+                return;
             }
         } catch (const std::out_of_range&) {
+            return;
         }
-        return;
     }
 
     // add interaction to the db
