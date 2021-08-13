@@ -108,14 +108,14 @@ public:
      */
     std::reference_wrapper<conversation::Info> getConversationForPeerUri(
         const QString& uri, const bool searchResultIncluded = false) const;
-
     /**
-     * return a conversation index from conversations or -1 if no index is found.
-     * @param uri of the contact to search.
-     * @return an int.
+     * return a vector of conversation indices for the given contact uri empty
+     * if no index is found
+     * @param uri of the contact to search
+     * @param writable whether or not to exclude read-only conversations(use for interactions)
+     * @return an vector of indices
      */
-    int indexOfContact(const QString& uri) const;
-
+    std::vector<int> getIndicesForContact(const QString& uri, bool writable = false) const;
     /**
      * Initialize conversations_ and filteredConversations_
      */
@@ -795,22 +795,23 @@ ConversationModel::removeConversation(const QString& uid, bool banned)
                     "participant";
         return;
     }
-    if (!conversation.isCoreDialog()) {
-        ConfigurationManager::instance().removeConversation(owner.id, uid);
-        pimpl_->eraseConversation(conversationIdx);
-        pimpl_->invalidateModel();
-        emit conversationRemoved(uid);
-        return;
-    }
 
-    // Remove contact from daemon
-    // NOTE: this will also remove the conversation into the database for non-swarm and remove
-    // conversation repository for one-to-one.
-    auto& peers = pimpl_->peersForConversation(conversation);
-    if (peers.size() != 1) {
-        return;
+    ConfigurationManager::instance().removeConversation(owner.id, uid);
+    pimpl_->eraseConversation(conversationIdx);
+    pimpl_->invalidateModel();
+    emit conversationRemoved(uid);
+
+    // dialog conversations we need to remove the contact
+    if (conversation.isCoreDialog()) {
+        // Remove contact from daemon
+        // NOTE: this will also remove the conversation into the database for non-swarm and remove
+        // conversation repository for one-to-one.
+        auto& peers = pimpl_->peersForConversation(conversation);
+        if (peers.size() != 1) {
+            return;
+        }
+        owner.contactModel->removeContact(peers.front(), banned);
     }
-    owner.contactModel->removeContact(peers.front(), banned);
 }
 
 void
@@ -2694,16 +2695,20 @@ ConversationModelPimpl::slotPendingContactAccepted(const QString& uri)
 void
 ConversationModelPimpl::slotContactRemoved(const QString& uri)
 {
-    auto conversationIdx = indexOfContact(uri);
-    if (conversationIdx == -1) {
-        qDebug() << "ConversationModelPimpl::slotContactRemoved, but conversation not found";
-        return; // Not a contact
-    }
-    auto& conversationId = conversations[conversationIdx].uid;
+    std::vector<QString> convIdsToRemove;
 
-    eraseConversation(conversationIdx);
+    // save the ids to remove from the list
+    for (auto i : getIndicesForContact(uri)) {
+        convIdsToRemove.emplace_back(conversations[i].uid);
+    }
+
+    // actually remove them from the list
+    for (auto id : convIdsToRemove) {
+        eraseConversation(id);
+        emit linked.conversationRemoved(id);
+    }
+
     invalidateModel();
-    emit linked.conversationRemoved(conversationId);
     emit linked.modelChanged();
 }
 
@@ -2814,7 +2819,9 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
 }
 
 void
-ConversationModelPimpl::addConversationWith(const QString& convId, const QString& contactUri, bool isRequest)
+ConversationModelPimpl::addConversationWith(const QString& convId,
+                                            const QString& contactUri,
+                                            bool isRequest)
 {
     conversation::Info conversation;
     conversation.uid = convId;
@@ -2924,20 +2931,21 @@ ConversationModelPimpl::getConversationForPeerUri(const QString& uri,
         searchResultIncluded);
 }
 
-int
-ConversationModelPimpl::indexOfContact(const QString& uri) const
+std::vector<int>
+ConversationModelPimpl::getIndicesForContact(const QString& uri, bool writable) const
 {
+    std::vector<int> ret;
     for (unsigned int i = 0; i < conversations.size(); ++i) {
-        if (!conversations.at(i).isCoreDialog()) {
+        const auto& convInfo = conversations.at(i);
+        if (!convInfo.isCoreDialog() || (writable && convInfo.readOnly)) {
             continue;
         }
-        auto peers = peersForConversation(conversations.at(i));
-        if (peers.isEmpty())
-            continue;
-        if (peers.front() == uri)
-            return i;
+        auto peers = peersForConversation(convInfo);
+        if (!peers.isEmpty() && peers.front() == uri) {
+            ret.emplace_back(i);
+        }
     }
-    return -1;
+    return ret;
 }
 
 void
@@ -2955,14 +2963,14 @@ ConversationModelPimpl::slotIncomingCall(const QString& fromId, const QString& c
         } catch (const std::out_of_range&) {
         }
     }
-    auto conversationIdx = indexOfContact(fromId);
 
-    if (conversationIdx == -1) {
+    auto conversationIndices = getIndicesForContact(fromId);
+    if (conversationIndices.empty()) {
         qDebug() << "ConversationModelPimpl::slotIncomingCall, but conversation not found";
         return; // Not a contact
     }
 
-    auto& conversation = conversations.at(conversationIdx);
+    auto& conversation = conversations.at(conversationIndices.at(0));
     qDebug() << "Add call to conversation with " << fromId;
     conversation.callId = callId;
 
@@ -3173,8 +3181,7 @@ ConversationModelPimpl::addIncomingMessage(const QString& peerId,
         try {
             auto contact = linked.owner.contactModel->getContact(peerId);
             isRequest = contact.profileInfo.type == profile::Type::PENDING;
-            if (isRequest && !contact.isBanned
-                && peerId != linked.owner.profileInfo.uri) {
+            if (isRequest && !contact.isBanned && peerId != linked.owner.profileInfo.uri) {
                 addContactRequest(peerId);
                 convIds.push_back(storage::beginConversationWithPeer(db, contact.profileInfo.uri));
                 auto& conv = getConversationForPeerUri(contact.profileInfo.uri).get();
@@ -3183,7 +3190,7 @@ ConversationModelPimpl::addIncomingMessage(const QString& peerId,
                 return "";
             }
         } catch (const std::out_of_range&) {
-            return"";
+            return "";
         }
     }
     auto msg = interaction::Info {peerId,
