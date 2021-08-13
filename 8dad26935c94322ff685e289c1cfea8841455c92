@@ -22,6 +22,30 @@
       },
       "revId": "8dad26935c94322ff685e289c1cfea8841455c92",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3b46cbb_bf680703",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 802,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-08-13T19:50:55Z",
+      "side": 1,
+      "message": "makes sense, reverting this part for now though as we won\u0027t allow user interface for this",
+      "parentUuid": "4f230428_d4f51bd4",
+      "range": {
+        "startLine": 800,
+        "startChar": 33,
+        "endLine": 802,
+        "endChar": 34
+      },
+      "revId": "8dad26935c94322ff685e289c1cfea8841455c92",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
