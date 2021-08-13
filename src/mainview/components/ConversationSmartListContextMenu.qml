@@ -78,15 +78,6 @@ ContextMenuAutoLoader {
                            responsibleConvUid)
         },
         GeneralMenuItem {
-            id: removeConversation
-
-            canTrigger: isSwarm && !hasCall
-            itemName: JamiStrings.removeConversation
-            iconSource: JamiResources.delete_24dp_svg
-            onClicked: MessagesAdapter.removeConversation(
-                           responsibleConvUid)
-        },
-        GeneralMenuItem {
             id: removeContact
 
             canTrigger: !hasCall && (contactType === Profile.Type.JAMI
