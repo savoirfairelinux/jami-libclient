@@ -797,9 +797,6 @@ ConversationModel::removeConversation(const QString& uid, bool banned)
     }
     if (!conversation.isCoreDialog()) {
         ConfigurationManager::instance().removeConversation(owner.id, uid);
-        pimpl_->eraseConversation(conversationIdx);
-        pimpl_->invalidateModel();
-        emit conversationRemoved(uid);
         return;
     }
 
