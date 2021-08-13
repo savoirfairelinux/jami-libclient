@@ -797,9 +797,6 @@ ConversationModel::removeConversation(const QString& uid, bool banned)
     }
     if (!conversation.isCoreDialog()) {
         ConfigurationManager::instance().removeConversation(owner.id, uid);
-        pimpl_->eraseConversation(conversationIdx);
-        pimpl_->invalidateModel();
-        emit conversationRemoved(uid);
         return;
     }
 
@@ -2814,7 +2811,9 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
 }
 
 void
-ConversationModelPimpl::addConversationWith(const QString& convId, const QString& contactUri, bool isRequest)
+ConversationModelPimpl::addConversationWith(const QString& convId,
+                                            const QString& contactUri,
+                                            bool isRequest)
 {
     conversation::Info conversation;
     conversation.uid = convId;
@@ -3173,8 +3172,7 @@ ConversationModelPimpl::addIncomingMessage(const QString& peerId,
         try {
             auto contact = linked.owner.contactModel->getContact(peerId);
             isRequest = contact.profileInfo.type == profile::Type::PENDING;
-            if (isRequest && !contact.isBanned
-                && peerId != linked.owner.profileInfo.uri) {
+            if (isRequest && !contact.isBanned && peerId != linked.owner.profileInfo.uri) {
                 addContactRequest(peerId);
                 convIds.push_back(storage::beginConversationWithPeer(db, contact.profileInfo.uri));
                 auto& conv = getConversationForPeerUri(contact.profileInfo.uri).get();
@@ -3183,7 +3181,7 @@ ConversationModelPimpl::addIncomingMessage(const QString& peerId,
                 return "";
             }
         } catch (const std::out_of_range&) {
-            return"";
+            return "";
         }
     }
     auto msg = interaction::Info {peerId,
