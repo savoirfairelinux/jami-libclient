@@ -34,9 +34,7 @@ Rectangle {
 
     property bool isIncoming: false
     property bool isAudioOnly: false
-    property var accountConvPair: ["", ""]
     property int callStatus: 0
-    property string bestName: ""
 
     signal callCanceled
     signal callAccepted
@@ -58,13 +56,6 @@ Rectangle {
         }
     }
 
-    onAccountConvPairChanged: {
-        if (accountConvPair[1]) {
-            contactImg.imageId = accountConvPair[1]
-            root.bestName = UtilsAdapter.getBestName(accountConvPair[0], accountConvPair[1])
-        }
-    }
-
     // Prevent right click propagate to VideoCallPage.
     MouseArea {
         anchors.fill: parent
@@ -78,14 +69,13 @@ Rectangle {
         anchors.verticalCenter: root.verticalCenter
 
         ConversationAvatar {
-            id: contactImg
-
             Layout.alignment: Qt.AlignHCenter
             Layout.preferredWidth: JamiTheme.avatarSizeInCall
             Layout.preferredHeight: JamiTheme.avatarSizeInCall
 
             showPresenceIndicator: false
             animationMode: SpinningAnimation.Mode.Radial
+            imageId: CurrentConversation.id
         }
 
         Text {
@@ -98,11 +88,15 @@ Rectangle {
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
 
+            property string title: CurrentConversation.title
+
             text: {
                 if (root.isIncoming)
-                    return root.isAudioOnly ? JamiStrings.incomingAudioCallFrom.replace("{}", root.bestName) : JamiStrings.incomingVideoCallFrom.replace("{}", root.bestName)
+                    return root.isAudioOnly ?
+                                JamiStrings.incomingAudioCallFrom.replace("{}", title) :
+                                JamiStrings.incomingVideoCallFrom.replace("{}", title)
                 else
-                    return root.bestName
+                    return title
             }
             wrapMode: Text.WordWrap
             elide: Text.ElideRight
@@ -188,6 +182,7 @@ Rectangle {
                         font.kerning: true
                         color: actionButton.hovered ? JamiTheme.whiteColor : JamiTheme.whiteColorTransparent
 
+
                         text: {
                             if (type === "refuse")
                                 return JamiStrings.refuse
@@ -212,16 +207,16 @@ Rectangle {
     Shortcut {
         sequence: "Ctrl+Y"
         context: Qt.ApplicationShortcut
-        onActivated: CallAdapter.acceptACall(root.accountConvPair[0],
-                                             root.accountConvPair[1])
+        onActivated: CallAdapter.acceptACall(CurrentAccount.id,
+                                             CurrentConversation.id)
     }
 
     Shortcut {
         sequence: "Ctrl+Shift+D"
         context: Qt.ApplicationShortcut
         onActivated: {
-            CallAdapter.hangUpACall(root.accountConvPair[0],
-                                    root.accountConvPair[1])
+            CallAdapter.hangUpACall(CurrentAccount.id,
+                                    CurrentConversation.id)
         }
     }
 }

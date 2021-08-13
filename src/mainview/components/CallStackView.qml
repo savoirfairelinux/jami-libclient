@@ -93,7 +93,6 @@ Rectangle {
         } else {
             callStackMainView.pop(itemToFind, StackView.Immediate)
         }
-        initialCallPage.accountConvPair = [responsibleAccountId, responsibleConvUid]
         initialCallPage.callStatus = callState
         initialCallPage.isAudioOnly = isAudioOnly
         if (initialCallPage.callStatus === Call.Status.INCOMING_RINGING)
