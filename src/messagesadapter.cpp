@@ -330,19 +330,13 @@ MessagesAdapter::userIsComposing(bool isComposing)
 void
 MessagesAdapter::setConversationProfileData(const conversation::Info& convInfo)
 {
-    auto& accInfo = lrcInstance_->getCurrentAccountInfo();
-    if (convInfo.participants.isEmpty()) {
-        return;
+    // make the all the participant avatars available within the web view
+    for (const auto& participant : convInfo.participants) {
+        QByteArray ba;
+        QBuffer bu(&ba);
+        Utils::conversationAvatar(lrcInstance_, convInfo.uid).save(&bu, "PNG");
+        setSenderImage(participant, QString::fromLocal8Bit(ba.toBase64()));
     }
-
-    auto title = accInfo.conversationModel->title(convInfo.uid);
-
-    // make the conversation avatar available within the web view
-    auto avatar = Utils::conversationAvatar(lrcInstance_, convInfo.uid);
-    QByteArray ba;
-    QBuffer bu(&ba);
-    avatar.save(&bu, "PNG");
-    setSenderImage(title, QString::fromLocal8Bit(ba.toBase64()));
 }
 
 void
