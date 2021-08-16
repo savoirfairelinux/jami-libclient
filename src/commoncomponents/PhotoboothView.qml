@@ -31,7 +31,7 @@ Item {
 
     property bool isPreviewing: false
     property alias imageId: avatar.imageId
-    required property real avatarSize
+    property real avatarSize
 
     signal focusOnPreviousItem
     signal focusOnNextItem
