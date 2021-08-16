@@ -1049,12 +1049,14 @@ public Q_SLOTS: // METHODS
     uint32_t countInteractions(const QString& accountId,
                                const QString& conversationId,
                                const QString& toId,
-                               const QString& fromId)
+                               const QString& fromId,
+                               const QString& authorUri)
     {
         return DRing::countInteractions(accountId.toStdString(),
                                         conversationId.toStdString(),
                                         toId.toStdString(),
-                                        fromId.toStdString());
+                                        fromId.toStdString(),
+                                        authorUri.toStdString());
     }
 Q_SIGNALS: // SIGNALS
     void volumeChanged(const QString& device, double value);
