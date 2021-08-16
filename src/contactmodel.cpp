@@ -891,13 +891,12 @@ ContactModelPimpl::slotContactRemoved(const QString& accountId,
         }
     }
 
+    // Update the smartlist
+    linked.owner.conversationModel->refreshFilter();
     if (banned) {
-        // Update the smartlist
-        linked.owner.conversationModel->refreshFilter();
         emit linked.bannedStatusChanged(contactUri, true);
-    } else {
-        emit linked.contactRemoved(contactUri);
     }
+    emit linked.contactRemoved(contactUri);
 }
 
 void
