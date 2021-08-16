@@ -2778,8 +2778,11 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     conversation.readOnly = mode == conversation::Mode::ONE_TO_ONE && membersLeft.size() == 1;
     conversation.participants = participants;
     conversation.mode = mode;
-    conversation.unreadMessages = ConfigurationManager::instance()
-                                      .countInteractions(linked.owner.id, convId, lastRead, "");
+    conversation.unreadMessages = ConfigurationManager::instance().countInteractions(linked.owner.id,
+                                                                                     convId,
+                                                                                     lastRead,
+                                                                                     "",
+                                                                                     accountURI);
     if (mode == conversation::Mode::ONE_TO_ONE && !otherMember.isEmpty()) {
         try {
             conversation.confId = linked.owner.callModel->getConferenceFromURI(otherMember).id;
