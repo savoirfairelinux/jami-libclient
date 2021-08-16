@@ -19,11 +19,12 @@
 #pragma once
 
 #include "interaction.h"
-#include "messageslist.h"
+#include "messagelistmodel.h"
 #include "typedefs.h"
 
-#include <vector>
 #include <map>
+#include <memory>
+#include <vector>
 
 namespace lrc {
 
@@ -57,7 +58,9 @@ to_mode(const int intMode)
 
 struct Info
 {
-    Info() = default;
+    Info()
+        : interactions(std::make_unique<MessageListModel>(nullptr))
+    {}
     Info(const Info& other) = delete;
     Info(Info&& other) = default;
     Info& operator=(const Info& other) = delete;
@@ -69,7 +72,8 @@ struct Info
     VectorString participants;
     QString callId;
     QString confId;
-    MessagesList interactions;
+    std::unique_ptr<MessageListModel> interactions;
+    // MessageListModel interactions;
     QString lastMessageUid = 0;
     QHash<QString, QString> parentsId; // pair messageid/parentid for messages without parent loaded
     std::map<QString, QString> lastDisplayedMessageUid;
