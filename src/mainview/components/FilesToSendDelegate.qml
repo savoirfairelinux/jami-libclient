@@ -103,7 +103,7 @@ Rectangle {
 
             // :/ -> resource url for test purposes
             var sourceUrl = FilePath
-            if (!sourceUrl.includes(":/"))
+            if (!sourceUrl.startsWith(":/"))
                 return JamiQmlUtils.qmlFilePrefix + sourceUrl
             else
                 return "qrc" + sourceUrl
