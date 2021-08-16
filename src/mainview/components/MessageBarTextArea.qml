@@ -87,7 +87,6 @@ Flickable {
         color: JamiTheme.textColor
         renderType: Text.NativeRendering
         wrapMode: TextEdit.Wrap
-        overwriteMode: true
         selectByMouse: true
         selectionColor: JamiTheme.placeHolderTextFontColor
         textFormat: TextEdit.PlainText
