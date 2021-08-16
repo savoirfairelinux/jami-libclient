@@ -74,7 +74,7 @@
         <location filename="../src/authority/storagehelper.cpp" line="135"/>
         <location filename="../src/authority/storagehelper.cpp" line="932"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Undangan diterima</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="222"/>

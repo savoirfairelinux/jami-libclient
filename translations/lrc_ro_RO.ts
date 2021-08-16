@@ -450,7 +450,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Send file</source>
-        <translation>Trimite fișierul</translation>
+        <translation>Trimite un fișier</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
