@@ -2171,6 +2171,7 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t,
             }
             if (message["type"] == "initial") {
                 conversation.allMessagesLoaded = true;
+                Q_EMIT linked.conversationUpdated(conversationId);
                 if (message.find("invited") == message.end()) {
                     continue;
                 }
@@ -2243,6 +2244,7 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
         }
         if (message["type"] == "initial") {
             conversation.allMessagesLoaded = true;
+            Q_EMIT linked.conversationUpdated(conversationId);
             if (message.find("invited") == message.end()) {
                 return;
             }
