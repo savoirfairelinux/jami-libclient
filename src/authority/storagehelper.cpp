@@ -436,7 +436,7 @@ getHistory(Database& db, api::conversation::Info& conversation)
                                                type,
                                                status,
                                                (payloads[i + 6] == "1" ? true : false)});
-            conversation.interactions.emplace(payloads[i], std::move(msg));
+            conversation.interactions->emplace(payloads[i], std::move(msg));
             conversation.lastMessageUid = payloads[i];
             if (status != api::interaction::Status::DISPLAYED || !payloads[i + 1].isEmpty()) {
                 continue;
@@ -448,9 +448,9 @@ getHistory(Database& db, api::conversation::Info& conversation)
                                                              payloads[i]);
                 continue;
             }
-            auto lastReadInteraction = conversation.interactions.find(messageId->second);
+            auto lastReadInteraction = conversation.interactions->find(messageId->second);
             auto timestamp = std::stoi(payloads[i + 3].toStdString());
-            if (lastReadInteraction == conversation.interactions.end()
+            if (lastReadInteraction == conversation.interactions->end()
                 || lastReadInteraction->second.timestamp < timestamp) {
                 conversation.lastDisplayedMessageUid.at(conversation.participants.front())
                     = std::stoull(payloads[i].toStdString());
@@ -818,7 +818,7 @@ writeJSONValue(QJsonObject& json, const QString& key, const QString& value)
 // ├── history.db < --conversations and interactions database
 // ├── profile.vcf < --account vcard
 // ├── profiles < --account contact vcards
-// │   │──{ contact_uri }.vcf
+// │   │──{ contact_uri }.vcf
 // │   └── ...
 // ├── ring_device.crt
 // └── ring_device.key

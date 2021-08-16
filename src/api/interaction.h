@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
  *    Copyright (C) 2017-2021 Savoir-faire Linux Inc.                                  *
  *   Author: Nicolas Jäger <nicolas.jager@savoirfairelinux.com>             *
  *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
@@ -235,6 +235,9 @@ getContactInteractionString(const QString& authorUri, const ContactAction& actio
  * @var type
  * @var status
  * @var isRead
+ * @var commit
+ * @var linkPreviewInfo
+ * @var linkified
  */
 struct Info
 {
@@ -247,6 +250,8 @@ struct Info
     Status status = Status::INVALID;
     bool isRead = false;
     MapStringString commit;
+    QVariantMap linkPreviewInfo = {};
+    bool linkified = false;
 
     Info() {}
 
