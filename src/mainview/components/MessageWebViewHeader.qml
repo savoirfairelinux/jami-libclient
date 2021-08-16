@@ -36,7 +36,7 @@ Rectangle {
     signal needToHideConversationInCall
     signal pluginSelector
 
-    property bool callButtonsVisibility: {
+    property bool interactionButtonsVisibility: {
         if (CurrentConversation.inCall)
             return false
         if (CurrentConversation.isSwarm &&
@@ -142,7 +142,7 @@ Rectangle {
             PushButton {
                 id: startAAudioCallButton
 
-                visible: callButtonsVisibility
+                visible: interactionButtonsVisibility
 
                 anchors.right: startAVideoCallButton.left
                 anchors.rightMargin: 8
@@ -160,7 +160,7 @@ Rectangle {
             PushButton {
                 id: startAVideoCallButton
 
-                visible: callButtonsVisibility
+                visible: interactionButtonsVisibility
 
                 anchors.right: selectPluginButton.visible ? selectPluginButton.left :
                                    sendContactRequestButton.visible ?
@@ -181,7 +181,8 @@ Rectangle {
             PushButton {
                 id: selectPluginButton
 
-                visible: PluginAdapter.chatHandlersListCount
+                visible: PluginAdapter.chatHandlersListCount &&
+                         interactionButtonsVisibility
 
                 anchors.right: sendContactRequestButton.visible ?
                                    sendContactRequestButton.left :
