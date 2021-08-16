@@ -86,11 +86,13 @@ public:
 
     using Role = ConversationList::Role;
 
-    void safeInit() override;
+    void safeInit() override {}
 
     Q_INVOKABLE QVariant getContactSelectableModel(int type);
     Q_INVOKABLE void setSearchFilter(const QString& filter);
     Q_INVOKABLE void contactSelected(int index);
+
+    void connectSignals();
 
 Q_SIGNALS:
     void bannedStatusChanged(const QString& uri, bool banned);

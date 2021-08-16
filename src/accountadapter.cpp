@@ -48,10 +48,6 @@ AccountAdapter::AccountAdapter(AppSettingsManager* settingsManager,
             &AccountAdapter::accountStatusChanged);
 }
 
-void
-AccountAdapter::safeInit()
-{}
-
 NewAccountModel*
 AccountAdapter::getModel()
 {

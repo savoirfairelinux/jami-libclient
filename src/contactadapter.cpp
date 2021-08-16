@@ -26,18 +26,10 @@ ContactAdapter::ContactAdapter(LRCInstance* instance, QObject* parent)
     : QmlAdapterBase(instance, parent)
 {
     selectableProxyModel_.reset(new SelectableProxyModel(this));
-}
-
-void
-ContactAdapter::safeInit()
-{
-    connect(lrcInstance_, &LRCInstance::currentAccountIdChanged, [this] {
-        connect(lrcInstance_->getCurrentContactModel(),
-                &ContactModel::bannedStatusChanged,
-                this,
-                &ContactAdapter::bannedStatusChanged,
-                Qt::UniqueConnection);
-    });
+    if (lrcInstance_) {
+        connectSignals();
+        connect(lrcInstance_, &LRCInstance::currentAccountIdChanged, [this] { connectSignals(); });
+    }
 }
 
 QVariant
@@ -193,4 +185,14 @@ ContactAdapter::contactSelected(int index)
             break;
         }
     }
+}
+
+void
+ContactAdapter::connectSignals()
+{
+    connect(lrcInstance_->getCurrentContactModel(),
+            &ContactModel::bannedStatusChanged,
+            this,
+            &ContactAdapter::bannedStatusChanged,
+            Qt::UniqueConnection);
 }

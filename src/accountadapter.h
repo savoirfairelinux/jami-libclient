@@ -50,7 +50,7 @@ public:
                             QObject* parent = nullptr);
     ~AccountAdapter() = default;
 
-    void safeInit() override;
+    void safeInit() override {}
 
     // Change to account corresponding to combox box index.
     Q_INVOKABLE void changeAccount(int row);
