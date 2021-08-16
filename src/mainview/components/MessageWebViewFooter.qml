@@ -30,6 +30,7 @@ import "../../commoncomponents/emojipicker"
 Rectangle {
     id: root
 
+    property alias textInput: messageBar.textAreaObj
     property string previousConvId: ""
 
     function setFilePathsToSend(filePaths) {

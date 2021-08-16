@@ -28,6 +28,7 @@ Flickable {
     id: root
 
     property alias text: textArea.text
+    property var textAreaObj: textArea
     property alias placeholderText: textArea.placeholderText
 
     signal sendMessagesRequired

@@ -45,7 +45,7 @@ Rectangle {
     }
 
     function focusMessageWebView() {
-        messageWebView.forceActiveFocus()
+        messageWebViewFooter.textInput.forceActiveFocus()
     }
 
     function webViewRunJavaScript(arg) {

@@ -135,6 +135,12 @@ ColumnLayout {
 
             objectName: "messageBarTextArea"
 
+            // forward activeFocus to the actual text area object
+            onActiveFocusChanged: {
+                if (activeFocus)
+                    textAreaObj.forceActiveFocus()
+            }
+
             Layout.alignment: Qt.AlignVCenter
             Layout.fillWidth: true
             Layout.margins: marginSize / 2
