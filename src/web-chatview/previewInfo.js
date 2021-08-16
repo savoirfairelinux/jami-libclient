@@ -25,6 +25,7 @@ SOFTWARE.*/
  * @param doc the DOM of the url that is being previewed
  * @returns the title of the given webpage
  */
+
 function getTitle(doc){
     const og_title = doc.querySelector("meta[property=\"og:title\"]")
     if (og_title !== null && og_title.content.length > 0) {
