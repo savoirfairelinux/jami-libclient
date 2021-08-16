@@ -2760,7 +2760,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
     QString lastRead;
-    VectorString membersRemaining;
+    VectorString membersLeft;
     for (auto& member : members) {
         // this check should be removed once all usage of participants replaced by
         // peersForConversation. We should have ourself in participants list
@@ -2772,10 +2772,10 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
             lastRead = member["lastDisplayed"];
         }
         conversation.lastDisplayedMessageUid.emplace(member["uri"], member["lastDisplayed"]);
-        if (member["role"] != "left")
-            membersRemaining.append(member["uri"]);
+        if (member["role"] == "left")
+            membersLeft.append(member["uri"]);
     }
-    conversation.readOnly = membersRemaining == VectorString(1, accountURI);
+    conversation.readOnly = mode == conversation::Mode::ONE_TO_ONE && membersLeft.size() == 1;
     conversation.participants = participants;
     conversation.mode = mode;
     conversation.unreadMessages = ConfigurationManager::instance()
