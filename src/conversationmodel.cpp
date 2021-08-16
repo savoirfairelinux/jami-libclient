@@ -2624,6 +2624,9 @@ ConversationModelPimpl::addConversationRequest(const MapStringString& convReques
     auto mode = conversation::to_mode(convRequest["mode"].toInt());
     if (mode == conversation::Mode::ONE_TO_ONE) {
         try {
+            if (linked.owner.contactModel->getContact(peerUri).isBanned)
+                return;
+
             // check if we have contact request for peer
             auto& conv = getConversationForPeerUri(peerUri).get();
             if (conv.mode == conversation::Mode::NON_SWARM) {
