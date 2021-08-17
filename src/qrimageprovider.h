@@ -78,15 +78,14 @@ public:
         } else {
             if (indexPair.second.isEmpty())
                 return QImage();
-
-            auto accountList = lrcInstance_->accountModel().getAccountList();
-            auto accountIndex = indexPair.second.toInt();
-            if (accountList.size() <= accountIndex)
+            auto accountId = indexPair.second;
+            try {
+                auto& accountInfo = lrcInstance_->getAccountInfo(accountId);
+                uri = accountInfo.profileInfo.uri;
+            } catch (const std::out_of_range&) {
+                qWarning() << "Couldn't get account info for id:" << accountId;
                 return QImage();
-
-            auto& accountInfo = lrcInstance_->accountModel().getAccountInfo(
-                accountList.at(accountIndex));
-            uri = accountInfo.profileInfo.uri;
+            }
         }
 
         if (!requestedSize.isEmpty())
