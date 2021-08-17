@@ -16,6 +16,24 @@
       "message": "should be done in daemon. If contact is banned, no message should come.",
       "revId": "ea9d6155cff5e07349defe583e7820bd3f7b9dbc",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3501aa7e_1a52cf9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-08-17T14:01:21Z",
+      "side": 1,
+      "message": "like this https://review.jami.net/c/ring-daemon/+/19072/1?",
+      "parentUuid": "56d68d5c_e5a9a73b",
+      "revId": "ea9d6155cff5e07349defe583e7820bd3f7b9dbc",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
