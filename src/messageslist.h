@@ -56,11 +56,12 @@ public:
     // jami functions
     QPair<iterator, bool> insert(int it, QPair<QString, interaction::Info> message);
     int indexOfMessage(QString msgId, bool reverse = true) const;
+    int indexOfChildForMessage(QString msgId, bool reverse = false) const;
     void moveMessages(QList<QString> msgIds, QString parentId);
+    void moveMessage(QString msgId, QString parentId);
 
 private:
     QList<QPair<QString, interaction::Info>> interactions_;
-    void moveMessage(QString msgId, QString parentId);
 };
 } // namespace api
 } // namespace lrc

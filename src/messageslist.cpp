@@ -192,8 +192,11 @@ MessagesList::insert(int it, QPair<QString, interaction::Info> message)
             return qMakePair(itr, false);
         }
     }
-    if (it >= size()) {
+    if (it >= size() - 1) {
         auto iterator = interactions_.insert(interactions_.end(), message);
+        return qMakePair(iterator, true);
+    } else if (it < 0) {
+        auto iterator = interactions_.insert(interactions_.begin(), message);
         return qMakePair(iterator, true);
     }
     interactions_.insert(it, message);
@@ -205,6 +208,22 @@ MessagesList::indexOfMessage(QString msgId, bool reverse) const
 {
     auto getIndex = [reverse, &msgId](const auto& start, const auto& end) -> int {
         auto it = std::find_if(start, end, [&msgId](const auto& it) { return it.first == msgId; });
+        if (it == end) {
+            return -1;
+        }
+        return reverse ? std::distance(it, end) - 1 : std::distance(start, it);
+    };
+    return reverse ? getIndex(interactions_.rbegin(), interactions_.rend())
+                   : getIndex(interactions_.begin(), interactions_.end());
+}
+
+int
+MessagesList::indexOfChildForMessage(QString msgId, bool reverse) const
+{
+    auto getIndex = [reverse, &msgId](const auto& start, const auto& end) -> int {
+        auto it = std::find_if(start, end, [&msgId](const auto& it) {
+            return it.second.parentId == msgId;
+        });
         if (it == end) {
             return -1;
         }
