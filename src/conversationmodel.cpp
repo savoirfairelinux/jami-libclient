@@ -2164,8 +2164,7 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t,
     try {
         auto& conversation = getConversationForUid(conversationId).get();
         auto size = messages.size();
-        for (int i = size - 1; i >= 0; --i) {
-            auto message = messages[i];
+        for (auto& message : messages) {
             if (message["type"].isEmpty()) {
                 continue;
             }
@@ -2317,29 +2316,30 @@ ConversationModelPimpl::insertSwarmInteraction(const QString& interactionId,
                                                bool insertAtBegin)
 {
     std::lock_guard<std::mutex> lk(interactionsLocks[conversation.uid]);
-    int index = conversation.interactions.indexOfMessage(interaction.parentId);
-    if (index >= 0) {
+    QPair<iterator, bool> result;
+    int index;
+    if ((index = conversation.interactions.indexOfChildForMessage(interactionId)) >= 0) {
+        // if child interaction exists insert new interaction before child
+        auto result = conversation.interactions.insert(index - 1,
+                                                       qMakePair(interactionId, interaction));
+    } else if ((index = conversation.interactions.indexOfMessage(interaction.parentId)) >= 0) {
+        // if parent interaction exists insert new interaction after parent
         auto result = conversation.interactions.insert(index + 1,
                                                        qMakePair(interactionId, interaction));
-        if (!result.second) {
-            return false;
-        }
     } else {
         auto result = conversation.interactions.insert(std::make_pair(interactionId, interaction),
                                                        insertAtBegin);
-        if (!result.second) {
-            return false;
-        }
-        conversation.parentsId[interactionId] = interaction.parentId;
+        conversation.unorderedInteractions.append(interactionId);
     }
-    if (!conversation.parentsId.values().contains(interactionId)) {
+    if (!result.second) {
+        return false;
+    }
+    // check if interaction is child for unordered interaction
+    if (conversation.unorderedInteractions.indexOf(interaction.parentId) < 0) {
         return true;
     }
-    auto msgIds = conversation.parentsId.keys(interactionId);
-    conversation.interactions.moveMessages(msgIds, interactionId);
-    for (auto& msg : msgIds) {
-        conversation.parentsId.remove(msg);
-    }
+    conversation.interactions.moveMessage(interactionId, interaction.parentId);
+    conversation.unorderedInteractions.removeAll(interaction.parentId);
     return true;
 }
 

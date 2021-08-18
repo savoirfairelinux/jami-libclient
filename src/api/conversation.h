@@ -71,7 +71,8 @@ struct Info
     QString confId;
     MessagesList interactions;
     QString lastMessageUid = 0;
-    QHash<QString, QString> parentsId; // pair messageid/parentid for messages without parent loaded
+    VectorString unorderedInteractions; // interactions ids without child or parent present in the
+                                        // loaded messages
     std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
 
