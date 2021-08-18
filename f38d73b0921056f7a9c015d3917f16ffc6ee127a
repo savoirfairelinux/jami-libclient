@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50068618_605550d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-08-18T14:35:21Z",
+      "side": 1,
+      "message": "On client-qt can\u0027t send new messages. Need to reload.",
+      "revId": "f38d73b0921056f7a9c015d3917f16ffc6ee127a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
