@@ -195,15 +195,11 @@ body {
   background: var(--action-critical-icon-press-color);
 }
 
-#callButtons {
-  display: flex;
-}
-
 #navbar #unbanButton, #navbar #addToConversationsButton {
   display: none;
 }
 
-#navbar.onBannedState #addToConvButton, #navbar.onBannedState #callButtons, #navbar.onBannedState #addToConversationsButton {
+#navbar.onBannedState #addToConvButton, #navbar.onBannedState #navbar.onBannedState #addToConversationsButton {
   display: none;
 }
 

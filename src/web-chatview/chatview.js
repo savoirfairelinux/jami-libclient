@@ -543,9 +543,11 @@ function hideMessageBar(hide) {
  */
 function hideControls(hide) {
     if (hide) {
-        callButtons.style.display = "none"
+        placeAudioCallButton.style.display = "none"
+        placeCallButton.style.display = "none"
     } else {
-        callButtons.style.display = ""
+        placeAudioCallButton.style.display = ""
+        placeCallButton.style.display = ""
     }
 }
 
