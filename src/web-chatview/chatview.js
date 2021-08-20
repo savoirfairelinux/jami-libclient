@@ -67,7 +67,6 @@ const emojiBtn = document.getElementById("emojiButton")
 const invitationText = document.getElementById("invitation_text")
 const joinText = document.getElementById("join_text")
 const noteText = document.getElementById("note_text")
-const invitationNoteText = document.getElementById("invitation_note")
 
 var messages = document.getElementById("messages")
 var sendContainer = document.getElementById("data_transfer_send_container")
@@ -331,7 +330,7 @@ function back_to_bottom() {
  * @param bestId
  */
 /* exported update_chatview_frame */
-function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid) {
+function update_chatview_frame(accountEnabled, banned, temporary, bestname, bestid) {
     /* This function updates lots of things in the navbar and we don't want to
        trigger that many DOM updates. Instead set display to none so DOM is
        updated only once. */
@@ -339,9 +338,9 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
 
     hoverBackButtonAllowed = true
 
-    aliasField.innerHTML = (alias ? alias : bestid)
+    aliasField.innerHTML = (bestname ? bestname : bestid)
 
-    if (alias) {
+    if (bestname) {
         bestIdField.innerHTML = bestid
         idField.classList.remove("oneEntry")
     } else {
@@ -377,7 +376,7 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
     }
 
     if (!temporary) {
-        reset_message_bar_input(alias ? alias : bestid)
+        reset_message_bar_input(bestname ? bestname : bestid)
     }
 
     navbar.style.display = ""
@@ -387,17 +386,16 @@ function update_chatview_frame(accountEnabled, banned, temporary, alias, bestid)
 /**
  * Hide or show invitation to a conversation.
  *
- * Invitation is hidden if no contactAlias/invalid alias is passed.
+ * Invitation is hidden if no bestId is passed.
  * Otherwise, invitation div is updated.
  *
- * @param contactAlias
- * @param contactId
- * @param isSwarm
+ * @param bestName
+ * @param bestId
  * @param isSyncing
  */
 /* exported showInvitation */
-function showInvitation(contactAlias, contactId, isSwarm, isSyncing) {
-    if (!contactAlias) {
+function showInvitation(bestName, bestId, isSyncing) {
+    if (!bestId) {
         if (hasInvitation) {
             hasInvitation = false
             invitation.style.display = "none"
@@ -409,18 +407,20 @@ function showInvitation(contactAlias, contactId, isSwarm, isSyncing) {
             inviteImage.classList.add("sender_image")
         }
         if (use_qt) {
-            if (!inviteImage.classList.contains(`sender_image_${contactId}`)) {
-                inviteImage.classList.add(`sender_image_${contactId}`)
+            if (!inviteImage.classList.contains(`sender_image_${bestId}`)) {
+                inviteImage.classList.add(`sender_image_${bestId}`)
             }
         } else {
-            const className = `sender_image_${contactId}`.replace(/@/g, "_").replace(/\./g, "_")
+            const className = `sender_image_${bestId}`.replace(/@/g, "_").replace(/\./g, "_")
             if (!inviteImage.classList.contains(className)) {
                 inviteImage.classList.add(className)
             }
         }
-        invitationText.innerHTML = contactAlias + " " + (use_qt ?
-            i18nStringData["has sent you a conversation request."] :
-            i18n.gettext("has sent you a conversation request."))
+        invitationText.innerHTML = (bestName ? bestName : bestId)
+            + " "
+            + (use_qt
+               ? i18nStringData["has sent you a conversation request."]
+               : i18n.gettext("has sent you a conversation request."))
             + "<br/>"
 
         var joinTextValue = (isSyncing ?
@@ -436,21 +436,8 @@ function showInvitation(contactAlias, contactId, isSwarm, isSyncing) {
             i18n.gettext("We are waiting for another device to synchronize the conversation."))
             + "<br/>"
 
-        invitationNoteText.innerHTML = (use_qt ?
-            i18nStringData["Note: you can automatically accept this invitation by sending a message."] :
-            i18n.gettext("Note: you can automatically accept this invitation by sending a message."))
-            + "<br/>"
-
         messages.style.visibility = "hidden"
         hasInvitation = true
-
-        if (isSwarm) {
-            invitationNoteText.style.visibility = "hidden"
-            messageBar.style.visibility = "hidden"
-        } else {
-            invitationNoteText.style.visibility = "visible"
-            messageBar.style.visibility = "visible"
-        }
 
         invitation.style.display = "flex"
         invitation.style.visibility = "visible"
@@ -460,13 +447,11 @@ function showInvitation(contactAlias, contactId, isSwarm, isSyncing) {
         if (isSyncing) {
             actions.style.visibility = "collapse"
             invitationText.style.visibility = "hidden"
-            invitationNoteText.style.visibility = "hidden"
             quote_img.style.visibility = "collapse"
             noteText.style.visibility = "visible"
         } else {
             actions.style.visibility = "visible"
             invitationText.style.visibility = "visible"
-            invitationNoteText.style.visibility = "visible"
             quote_img.style.visibility = "visible"
             noteText.style.visibility = "collapse"
         }
@@ -537,7 +522,7 @@ function hideMessageBar(hide) {
 }
 
 /**
- * Hide or show add to conversations/calls
+ * Hide or show call buttons
  *
  * @param hide whether the buttons should be hidden
  */
