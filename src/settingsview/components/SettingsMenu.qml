@@ -20,8 +20,8 @@ import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.14
 
-import net.jami.Models 1.0
-import net.jami.Constants 1.0
+import net.jami.Models 1.1
+import net.jami.Constants 1.1
 
 // TODO: these includes should generally be resource uris
 import "../../commoncomponents"

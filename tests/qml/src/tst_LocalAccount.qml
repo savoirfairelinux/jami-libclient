@@ -20,7 +20,7 @@
 import QtQuick 2.14
 import QtTest 1.2
 
-import net.jami.Adapters 1.0
+import net.jami.Adapters 1.1
 
 TestCase {
     name: "Local Account Test"

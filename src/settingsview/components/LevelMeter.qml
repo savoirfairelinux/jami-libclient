@@ -19,8 +19,8 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
 
-import net.jami.Models 1.0
-import net.jami.Adapters 1.0
+import net.jami.Models 1.1
+import net.jami.Adapters 1.1
 
 ProgressBar {
     id: root

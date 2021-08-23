@@ -23,7 +23,7 @@ import QtQuick.Controls.Universal 2.14
 import QtQuick.Layouts 1.14
 import QtGraphicalEffects 1.14
 
-import net.jami.Constants 1.0
+import net.jami.Constants 1.1
 
 import "../../commoncomponents"
 

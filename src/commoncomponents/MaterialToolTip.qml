@@ -19,7 +19,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.14
 
-import net.jami.Constants 1.0
+import net.jami.Constants 1.1
 
 ToolTip {
     id: root

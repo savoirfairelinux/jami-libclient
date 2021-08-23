@@ -21,7 +21,7 @@ pragma Singleton
 
 import QtQuick 2.14
 
-import net.jami.Adapters 1.0
+import net.jami.Adapters 1.1
 
 Item {
     property string qmlFilePrefix: "file:/"

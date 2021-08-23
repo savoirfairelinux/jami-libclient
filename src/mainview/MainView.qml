@@ -23,9 +23,9 @@ import QtQuick.Layouts 1.14
 import QtQuick.Controls.Universal 2.14
 import QtGraphicalEffects 1.14
 
-import net.jami.Models 1.0
-import net.jami.Adapters 1.0
-import net.jami.Constants 1.0
+import net.jami.Models 1.1
+import net.jami.Adapters 1.1
+import net.jami.Constants 1.1
 
 // Import qml component files.
 import "components"

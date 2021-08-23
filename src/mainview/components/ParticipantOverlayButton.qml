@@ -18,7 +18,7 @@
 
 import QtQuick 2.14
 
-import net.jami.Constants 1.0
+import net.jami.Constants 1.1
 
 import "../../commoncomponents"
 

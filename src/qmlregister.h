@@ -28,7 +28,7 @@
 #define NS_HELPERS     "net.jami.Helpers"
 #define NS_ENUMS       "net.jami.Enums"
 #define MODULE_VER_MAJ 1
-#define MODULE_VER_MIN 0
+#define MODULE_VER_MIN 1
 
 class SystemTray;
 class LRCInstance;
