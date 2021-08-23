@@ -22,13 +22,13 @@
 #include <QQmlEngine>
 #include <QObject>
 
-#define NS_MODELS    "net.jami.Models"
-#define NS_ADAPTERS  "net.jami.Adapters"
-#define NS_CONSTANTS "net.jami.Constants"
-#define NS_HELPERS   "net.jami.Helpers"
-#define NS_ENUMS     "net.jami.Enums"
-#define VER_MAJ      1
-#define VER_MIN      0
+#define NS_MODELS      "net.jami.Models"
+#define NS_ADAPTERS    "net.jami.Adapters"
+#define NS_CONSTANTS   "net.jami.Constants"
+#define NS_HELPERS     "net.jami.Helpers"
+#define NS_ENUMS       "net.jami.Enums"
+#define MODULE_VER_MAJ 1
+#define MODULE_VER_MIN 0
 
 class SystemTray;
 class LRCInstance;
@@ -46,12 +46,13 @@ Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 #define QML_REGISTERSINGLETONTYPE_POBJECT(NS, I, N) \
     QQmlEngine::setObjectOwnership(I, QQmlEngine::CppOwnership); \
     { using T = std::remove_reference<decltype(*I)>::type; \
-    qmlRegisterSingletonType<T>(NS, VER_MAJ, VER_MIN, N, \
+    qmlRegisterSingletonType<T>(NS, MODULE_VER_MAJ, MODULE_VER_MIN, N, \
                                 [i=I](QQmlEngine*, QJSEngine*) -> QObject* { \
                                     return i; }); }
 
 #define QML_REGISTERSINGLETONTYPE_CUSTOM(NS, T, P) \
-    qmlRegisterSingletonType<T>(NS, VER_MAJ, VER_MIN, #T, \
+    QQmlEngine::setObjectOwnership(P, QQmlEngine::CppOwnership); \
+    qmlRegisterSingletonType<T>(NS, MODULE_VER_MAJ, MODULE_VER_MIN, #T, \
                                 [p=P](QQmlEngine*, QJSEngine*) -> QObject* { \
                                     return p; \
                                 });

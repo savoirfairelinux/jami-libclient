@@ -71,26 +71,26 @@
 // clang-format off
 // TODO: remove this
 #define QML_REGISTERSINGLETONTYPE_WITH_INSTANCE(T) \
-    qmlRegisterSingletonType<T>(NS_MODELS, VER_MAJ, VER_MIN, #T, \
+    qmlRegisterSingletonType<T>(NS_MODELS, MODULE_VER_MAJ, MODULE_VER_MIN, #T, \
                                 [](QQmlEngine* e, QJSEngine* se) -> QObject* { \
                                     Q_UNUSED(e); Q_UNUSED(se); \
                                     return &(T::instance()); \
                                 });
 
 #define QML_REGISTERSINGLETONTYPE_URL(NS, URL, T) \
-    qmlRegisterSingletonType(QUrl(QStringLiteral(URL)), NS, VER_MAJ, VER_MIN, #T);
+    qmlRegisterSingletonType(QUrl(QStringLiteral(URL)), NS, MODULE_VER_MAJ, MODULE_VER_MIN, #T);
 
-#define QML_REGISTERTYPE(NS, T) qmlRegisterType<T>(NS, VER_MAJ, VER_MIN, #T);
+#define QML_REGISTERTYPE(NS, T) qmlRegisterType<T>(NS, MODULE_VER_MAJ, MODULE_VER_MIN, #T);
 
 #define QML_REGISTERNAMESPACE(NS, T, NAME) \
-    qmlRegisterUncreatableMetaObject(T, NS, VER_MAJ, VER_MIN, NAME, "")
+    qmlRegisterUncreatableMetaObject(T, NS, MODULE_VER_MAJ, MODULE_VER_MIN, NAME, "")
 
 #define QML_REGISTERUNCREATABLE(N, T) \
-    qmlRegisterUncreatableType<T>(N, VER_MAJ, VER_MIN, #T, "Don't try to add to a qml definition of " #T);
+    qmlRegisterUncreatableType<T>(N, MODULE_VER_MAJ, MODULE_VER_MIN, #T, "Don't try to add to a qml definition of " #T);
 
 #define QML_REGISTERUNCREATABLE_IN_NAMESPACE(T, NAMESPACE) \
     qmlRegisterUncreatableType<NAMESPACE::T>(NS_MODELS, \
-                                             VER_MAJ, VER_MIN, #T, \
+                                             MODULE_VER_MAJ, MODULE_VER_MIN, #T, \
                                              "Don't try to add to a qml definition of " #T);
 
 namespace Utils {
