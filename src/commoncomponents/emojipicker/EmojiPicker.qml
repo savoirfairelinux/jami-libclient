@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.14
-import QtQuick.Controls 2.14
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 import QtWebEngine 1.10
-import QtWebChannel 1.14
+import QtWebChannel 1.15
 
 import net.jami.Constants 1.1
 import net.jami.Adapters 1.1

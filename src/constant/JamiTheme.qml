@@ -19,7 +19,7 @@
 // JamiTheme as a singleton is to provide global theme property entry.
 pragma Singleton
 
-import QtQuick 2.14
+import QtQuick 2.15
 
 import net.jami.Adapters 1.1
 import net.jami.Enums 1.1
