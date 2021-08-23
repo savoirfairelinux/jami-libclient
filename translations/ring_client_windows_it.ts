@@ -1675,7 +1675,7 @@ Vuoi aggiornare ora?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="425"/>
         <source>Stop taking photo</source>
-        <translation type="unfinished"/>
+        <translation>Non scattare più foto</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>
@@ -2307,17 +2307,17 @@ Per favore riprova più tardi.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="443"/>
+        <location filename="../src/mainapplication.cpp" line="432"/>
         <source>E&amp;xit</source>
         <translation>E&amp;sci</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="445"/>
+        <location filename="../src/mainapplication.cpp" line="434"/>
         <source>&amp;Quit</source>
         <translation>&amp;Esci</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="451"/>
+        <location filename="../src/mainapplication.cpp" line="440"/>
         <source>&amp;Show Jami</source>
         <translation>&amp;Mostra Jami</translation>
     </message>

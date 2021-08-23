@@ -1675,7 +1675,7 @@ Jami 將會結束。</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="425"/>
         <source>Stop taking photo</source>
-        <translation type="unfinished"/>
+        <translation>停止拍照</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>
@@ -2308,17 +2308,17 @@ Please try again later.</source>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="443"/>
+        <location filename="../src/mainapplication.cpp" line="432"/>
         <source>E&amp;xit</source>
         <translation>離開(&amp;X)</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="445"/>
+        <location filename="../src/mainapplication.cpp" line="434"/>
         <source>&amp;Quit</source>
         <translation>結束(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="451"/>
+        <location filename="../src/mainapplication.cpp" line="440"/>
         <source>&amp;Show Jami</source>
         <translation>顯示 Jami(&amp;S)</translation>
     </message>

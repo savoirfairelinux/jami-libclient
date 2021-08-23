@@ -745,17 +745,17 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="43"/>
         <source>You are viewing a conversation where all participants other than you have left. New interactions will not be possible.</source>
-        <translation type="unfinished"/>
+        <translation>Katsot keskustelua, josta kaikki muut osallistujat ovat poistuneet. Uudet toimet eivät ole mahdollisia.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="44"/>
         <source>Start new conversation</source>
-        <translation type="unfinished"/>
+        <translation>Aloita uusi keskustelu</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="81"/>
         <source>Chat Settings</source>
-        <translation type="unfinished"/>
+        <translation>Keskustelun asetukset</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="82"/>
@@ -765,7 +765,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="83"/>
         <source>Send and receive receipts indicating that a message have been displayed</source>
-        <translation type="unfinished"/>
+        <translation>Lähetä ja vastaanota kuittaus, jotka ilmaisee, että viesti on nähty.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="108"/>
@@ -1227,7 +1227,7 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="250"/>
         <source>Hide chat view</source>
-        <translation>Piilota chat-näkymä</translation>
+        <translation>Piilota keskustelu</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="251"/>
@@ -1518,12 +1518,12 @@ Jami sulkeutuu nyt.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="340"/>
         <source>Chatview</source>
-        <translation>Chat-näkymä</translation>
+        <translation>Keskustelunäkymä</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="342"/>
         <source>Display hyperlink previews in the chatview</source>
-        <translation>Näytä hyperlinkkien esikatselu chatti näytössä</translation>
+        <translation>Näytä hyperlinkkien esikatselu keskustelussa</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="345"/>
@@ -1675,7 +1675,7 @@ Haluatko päivittää nyt?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="425"/>
         <source>Stop taking photo</source>
-        <translation type="unfinished"/>
+        <translation>Lopeta valokuvien ottaminen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>
@@ -1710,7 +1710,7 @@ Haluatko päivittää nyt?</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="476"/>
         <source>Hide advanced features</source>
-        <translation type="unfinished"/>
+        <translation>Piilota lisäominaisuudet</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="483"/>
@@ -2308,17 +2308,17 @@ Yritä myöhemmin uudelleen.</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="443"/>
+        <location filename="../src/mainapplication.cpp" line="432"/>
         <source>E&amp;xit</source>
         <translation>P&amp;oistu</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="445"/>
+        <location filename="../src/mainapplication.cpp" line="434"/>
         <source>&amp;Quit</source>
         <translation>&amp;Lopeta</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="451"/>
+        <location filename="../src/mainapplication.cpp" line="440"/>
         <source>&amp;Show Jami</source>
         <translation>&amp;Näytä Jami</translation>
     </message>
