@@ -110,7 +110,6 @@
         <file>src/mainview/components/ConversationSmartListContextMenu.qml</file>
         <file>src/mainview/components/CallViewContextMenu.qml</file>
         <file>src/mainview/components/UserProfile.qml</file>
-        <file>src/mainview/components/VideoCallPageContextMenuDeviceItem.qml</file>
         <file>src/mainview/components/SelectScreen.qml</file>
         <file>src/mainview/components/ScreenRubberBand.qml</file>
         <file>src/mainview/components/ContactPicker.qml</file>
