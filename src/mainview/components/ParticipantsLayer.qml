@@ -17,7 +17,6 @@
  */
 
 import QtQuick 2.14
-import QtQml 2.14
 
 Item {
     id: root

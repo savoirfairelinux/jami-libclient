@@ -17,7 +17,6 @@
  */
 
 import QtQuick 2.14
-import QtQuick.Controls 2.14
 import QtWebEngine 1.10
 import QtWebChannel 1.14
 

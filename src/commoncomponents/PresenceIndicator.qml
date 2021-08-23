@@ -17,7 +17,6 @@
  */
 
 import QtQuick 2.14
-import QtQuick.Controls 2.14
 
 import net.jami.Models 1.1
 import net.jami.Constants 1.1
