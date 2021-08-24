@@ -242,6 +242,16 @@ else()
 
     find_package(PkgConfig REQUIRED)
 
+    pkg_check_modules(GLIB REQUIRED glib-2.0)
+    if(GLIB_FOUND)
+        add_definitions(${GLIB_CFLAGS_OTHER})
+    endif()
+
+    pkg_check_modules(GIO REQUIRED gio-2.0)
+    if(GIO_FOUND)
+        add_definitions(${GIO_CFLAGS})
+    endif()
+
     pkg_check_modules(LIBNM libnm)
     if(LIBNM_FOUND)
         add_definitions(-DUSE_LIBNM)
@@ -294,7 +304,8 @@ else()
     include_directories(${LRC_SRC_PATH}
                         ${LIBNM_INCLUDE_DIRS}
                         ${LIBNOTIFY_INCLUDE_DIRS}
-                        ${LIBGDKPIXBUF_INCLUDE_DIRS})
+                        ${LIBGDKPIXBUF_INCLUDE_DIRS}
+                        ${GLIB_INCLUDE_DIRS})
 
     set(JAMI_DATA_PREFIX "${CMAKE_INSTALL_PREFIX}/share")
 
@@ -419,7 +430,9 @@ else()
                           ${X11}
                           ${LIBNM_LIBRARIES}
                           ${LIBNOTIFY_LIBRARIES}
-                          ${LIBGDKPIXBUF_LIBRARIES})
+                          ${LIBGDKPIXBUF_LIBRARIES}
+                          ${GLIB_LIBRARIES}
+                          ${GIO_LIBRARIES})
 
     # Installation rules
     install(TARGETS jami-qt

@@ -18,6 +18,7 @@
 
 #ifndef _WIN32
 #include <glib.h>
+#include <gio/gio.h>
 #ifdef USE_LIBNM
 #include <NetworkManager.h>
 #endif
