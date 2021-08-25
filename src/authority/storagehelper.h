@@ -172,11 +172,13 @@ VectorString getConversationsBetween(Database& db,
  * @param db
  * @param peer_uri the URI of the peer
  * @param isOutgoing
+ * @param timestamp
  * @return conversation_id of the new conversation.
  */
 QString beginConversationWithPeer(Database& db,
                                   const QString& peer_uri,
-                                  const bool isOutgoing = true);
+                                  const bool isOutgoing = true,
+                                  time_t timestamp = 0);
 
 /**
  * Return interactions from a conversation

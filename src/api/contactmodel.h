@@ -86,6 +86,11 @@ public:
      */
     const contact::Info getContact(const QString& contactUri) const;
     ContactInfoMap getSearchResults() const;
+
+    /**
+     * Retrieve when a contact is added
+     */
+    time_t getAddedTs(const QString& contactUri) const;
     /**
      * get list of banned contacts.
      * @return list of banned contacts uris as string
