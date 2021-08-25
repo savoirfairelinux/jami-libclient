@@ -16,6 +16,24 @@
       "message": "Hi FuchtelJockel,\n\nThanks for your patch!  It looks good to me.  But for reference, could you please show an example of a build failure you would get without this change?",
       "revId": "747a45a0f7b5e2b37a04cecdc13c74fe5ba8c3ba",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "457e130f_3cd2d5b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 907
+      },
+      "writtenOn": "2021-08-25T14:00:17Z",
+      "side": 1,
+      "message": "make[2]: *** No rule to make target \u0027../web/emoji.css\u0027, needed by \u0027web/web.gresource.c\u0027.  Stop.\nmake[1]: *** [CMakeFiles/Makefile2:251: CMakeFiles/jami-gnome.dir/all] Error 2\nmake[1]: *** Waiting for unfinished jobs....",
+      "parentUuid": "329ef86c_981aa156",
+      "revId": "747a45a0f7b5e2b37a04cecdc13c74fe5ba8c3ba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
