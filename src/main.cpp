@@ -63,6 +63,7 @@ main(int argc, char* argv[])
 
 #ifdef Q_OS_LINUX
     setenv("QT_QPA_PLATFORMTHEME", "gtk3", true);
+    setenv("QML_DISABLE_DISK_CACHE", "1", true);
 #ifdef __GLIBC__
     // Current glibc is causing some bugs with font loading
     // See https://bugreports.qt.io/browse/QTBUG-92969
