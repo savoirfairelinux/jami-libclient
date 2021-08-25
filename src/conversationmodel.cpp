@@ -1932,7 +1932,11 @@ ConversationModelPimpl::initConversations()
                 addContactRequest(c.second.profileInfo.uri);
                 continue;
             }
-            conv.push_back(storage::beginConversationWithPeer(db, c.second.profileInfo.uri));
+            conv.push_back(storage::beginConversationWithPeer(db,
+                                                              c.second.profileInfo.uri,
+                                                              true,
+                                                              linked.owner.contactModel->getAddedTs(
+                                                                  c.second.profileInfo.uri)));
         }
         addConversationWith(conv[0], c.first, isRequest);
 
@@ -2570,7 +2574,11 @@ ConversationModelPimpl::slotContactAdded(const QString& contactUri)
          */
         addConversation = true;
         if (conv.empty()) {
-            conv.push_back(storage::beginConversationWithPeer(db, contactUri));
+            conv.push_back(storage::beginConversationWithPeer(db,
+                                                              contactUri,
+                                                              true,
+                                                              linked.owner.contactModel->getAddedTs(
+                                                                  contactUri)));
         }
     }
     if (addConversation) {
