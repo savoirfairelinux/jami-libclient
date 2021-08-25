@@ -896,7 +896,7 @@ ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
             auto& newConv = isTemporary ? getConversationForUid(conversationId).get()
                                         : conversation;
 
-            newConv.callId = linked.owner.callModel->createCall(uri, isAudioOnly);
+            newConv.callId = linked.owner.callModel->createCall("swarm:" + newConv.uid, isAudioOnly);
             if (newConv.callId.isEmpty()) {
                 qDebug() << "Can't place call (daemon side failure ?)";
                 return;
