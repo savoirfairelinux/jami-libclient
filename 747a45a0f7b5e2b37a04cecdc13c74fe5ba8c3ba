@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "329ef86c_981aa156",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 892
+      },
+      "writtenOn": "2021-08-25T13:20:17Z",
+      "side": 1,
+      "message": "Hi FuchtelJockel,\n\nThanks for your patch!  It looks good to me.  But for reference, could you please show an example of a build failure you would get without this change?",
+      "revId": "747a45a0f7b5e2b37a04cecdc13c74fe5ba8c3ba",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
