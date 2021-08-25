@@ -357,7 +357,10 @@ getConversationsBetween(Database& db, const QString& peer1_uri, const QString& p
 }
 
 QString
-beginConversationWithPeer(Database& db, const QString& peer_uri, const bool isOutgoing)
+beginConversationWithPeer(Database& db,
+                          const QString& peer_uri,
+                          const bool isOutgoing,
+                          time_t timestamp)
 {
     // Add conversation between account and profile
     auto newConversationsId = db.select("IFNULL(MAX(id), 0) + 1", "conversations", "1=1", {})
@@ -367,7 +370,7 @@ beginConversationWithPeer(Database& db, const QString& peer_uri, const bool isOu
                   {{":id", newConversationsId}, {":participant", peer_uri}});
     api::interaction::Info msg {isOutgoing ? "" : peer_uri,
                                 {},
-                                std::time(nullptr),
+                                timestamp ? timestamp : std::time(nullptr),
                                 0,
                                 api::interaction::Type::CONTACT,
                                 isOutgoing ? api::interaction::Status::SUCCESS

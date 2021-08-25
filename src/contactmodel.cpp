@@ -234,6 +234,17 @@ ContactModel::getAllContacts() const
     return pimpl_->contacts;
 }
 
+time_t
+ContactModel::getAddedTs(const QString& contactUri) const
+{
+    MapStringString details = ConfigurationManager::instance().getContactDetails(owner.id,
+                                                                                 contactUri);
+    auto itAdded = details.find("added");
+    if (itAdded == details.end())
+        return 0;
+    return itAdded.value().toUInt();
+}
+
 void
 ContactModel::addContact(contact::Info contactInfo)
 {
