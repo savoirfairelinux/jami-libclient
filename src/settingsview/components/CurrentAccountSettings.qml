@@ -41,14 +41,7 @@ Rectangle {
     signal advancedSettingsToggled(bool settingsVisible)
 
     function updateAccountInfoDisplayed() {
-        accountEnableCheckBox.checked = SettingsAdapter.get_CurrentAccountInfo_Enabled()
-        accountProfile.updateAccountInfo()
-        userIdentity.updateAccountInfo()
         bannedContacts.updateAndShowBannedContactsSlot()
-        advancedSettings.updateAdvancedAccountInfos()
-        var isJams = !isSIP && SettingsAdapter.getAccountConfig_Manageruri() !== ""
-        passwdPushButton.visible = !isJams
-        btnExportAccount.visible = !isJams
         setPasswordButtonText()
     }
 
@@ -65,7 +58,7 @@ Rectangle {
     }
 
     function delAccountSlot() {
-        deleteAccountDialog.openDialog()
+        deleteAccountDialog.open()
     }
 
     function getAdvancedSettingsScrollPosition() {
@@ -176,8 +169,9 @@ Rectangle {
             labelText: JamiStrings.enableAccount
             fontPointSize: JamiTheme.headerFontSize
 
-            onSwitchToggled: AccountAdapter.model.setAccountEnabled(
-                                 LRCInstance.currentAccountId, checked)
+            checked: CurrentAccount.enabled
+
+            onSwitchToggled: CurrentAccount.enabled = checked
         }
 
         AccountProfile {
@@ -204,7 +198,7 @@ Rectangle {
         MaterialButton {
             id: passwdPushButton
 
-            visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
+            visible: !isSIP && CurrentAccount.managerUri === ""
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: JamiTheme.preferredMarginSize
 
@@ -231,7 +225,7 @@ Rectangle {
         MaterialButton {
             id: btnExportAccount
 
-            visible: !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
+            visible: !isSIP && CurrentAccount.managerUri === ""
             Layout.alignment: Qt.AlignHCenter
 
             preferredWidth: JamiTheme.preferredFieldWidth

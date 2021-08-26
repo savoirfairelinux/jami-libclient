@@ -39,13 +39,14 @@ ColumnLayout {
     }
 
     function populateAudioSettings() {
-        inputComboBoxSetting.setCurrentIndex(inputComboBoxSetting.comboModel.getCurrentIndex())
-        outputComboBoxSetting.setCurrentIndex(outputComboBoxSetting.comboModel.getCurrentIndex())
-        ringtoneComboBoxSetting.setCurrentIndex(outputComboBoxSetting.comboModel.getCurrentIndex())
+        inputComboBoxSetting.modelIndex = inputComboBoxSetting.comboModel.getCurrentIndex()
+        outputComboBoxSetting.modelIndex = outputComboBoxSetting.comboModel.getCurrentIndex()
+        ringtoneComboBoxSetting.modelIndex = outputComboBoxSetting.comboModel.getCurrentIndex()
         if(audioManagerComboBoxSetting.comboModel.rowCount() > 0) {
-            audioManagerComboBoxSetting.setCurrentIndex(audioManagerComboBoxSetting.comboModel.getCurrentSettingIndex())
+            audioManagerComboBoxSetting.modelIndex =
+                    audioManagerComboBoxSetting.comboModel.getCurrentSettingIndex()
         }
-        audioManagerComboBoxSetting.visible = (audioManagerComboBoxSetting.comboModel.rowCount() > 0)
+        audioManagerComboBoxSetting.visible = audioManagerComboBoxSetting.comboModel.rowCount() > 0
     }
 
     ElidedTextLabel {
@@ -74,7 +75,7 @@ ColumnLayout {
         tipText: JamiStrings.selectAudioInputDevice
         role: "DeviceName"
 
-        onIndexChanged: {
+        onModelIndexChanged: {
             AvAdapter.stopAudioMeter()
             AVModel.setInputDevice(comboModel.data(
                                        comboModel.index(modelIndex, 0),
@@ -113,7 +114,7 @@ ColumnLayout {
         tipText: JamiStrings.selectAudioOutputDevice
         role: "DeviceName"
 
-        onIndexChanged: {
+        onModelIndexChanged: {
             AvAdapter.stopAudioMeter()
             AVModel.setOutputDevice(comboModel.data(
                                         comboModel.index(modelIndex, 0),
@@ -139,7 +140,7 @@ ColumnLayout {
         tipText: JamiStrings.selectRingtoneOutputDevice
         role: "DeviceName"
 
-        onIndexChanged: {
+        onModelIndexChanged: {
             AvAdapter.stopAudioMeter()
             AVModel.setRingtoneDevice(comboModel.data(
                                           comboModel.index(modelIndex, 0),
@@ -163,7 +164,7 @@ ColumnLayout {
         widthOfComboBox: itemWidth
         role: "ID_UTF8"
 
-        onIndexChanged: {
+        onModelIndexChanged: {
             AvAdapter.stopAudioMeter()
             var selectedAudioManager = comboModel.data(
                         comboModel.index(modelIndex, 0), AudioManagerListModel.AudioManagerID)

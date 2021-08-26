@@ -29,12 +29,6 @@ ColumnLayout {
 
     property int itemWidth
 
-    function updateValues() {
-        acceptTransferBelowSpinBox.valueField = SettingsAdapter.getAppValue(Settings.AcceptTransferBelow)
-        allowFromUntrustedCheckbox.checked = SettingsAdapter.getAppValue(Settings.AllowFromUntrusted)
-        autoAcceptFilesCheckbox.checked = SettingsAdapter.getAppValue(Settings.AutoAcceptFiles)
-    }
-
     Label {
         Layout.fillWidth: true
 
@@ -52,14 +46,14 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        checked: SettingsAdapter.getAppValue(Settings.AllowFromUntrusted)
+        checked: CurrentAccount.autoTransferFromUntrusted
 
         labelText: JamiStrings.allowFromUntrusted
         fontPointSize: JamiTheme.settingsFontSize
 
         tooltipText: JamiStrings.allowFromUntrusted
 
-        onSwitchToggled: SettingsAdapter.allowFromUntrusted(checked)
+        onSwitchToggled: CurrentAccount.autoTransferFromUntrusted = checked
     }
 
     ToggleSwitch {
@@ -67,14 +61,14 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        checked: SettingsAdapter.getAppValue(Settings.AutoAcceptFiles)
+        checked: CurrentAccount.autoTransferFromTrusted
 
         labelText: JamiStrings.autoAcceptFiles
         fontPointSize: JamiTheme.settingsFontSize
 
         tooltipText: JamiStrings.autoAcceptFiles
 
-        onSwitchToggled: SettingsAdapter.autoAcceptFiles(checked)
+        onSwitchToggled: CurrentAccount.autoTransferFromTrusted = checked
     }
 
     SettingSpinBox {
@@ -86,8 +80,10 @@ ColumnLayout {
         tooltipText: JamiStrings.acceptTransferTooltip
         itemWidth: root.itemWidth
         bottomValue: 0
-        topValue: 99999999
+        topValue: Number.MAX_VALUE
 
-        onNewValue: SettingsAdapter.acceptTransferBelow(valueField)
+        valueField: CurrentAccount.autoTransferSizeThreshold
+
+        onNewValue: CurrentAccount.autoTransferSizeThreshold = valueField
     }
 }

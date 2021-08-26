@@ -31,10 +31,6 @@ ColumnLayout {
 
     property int itemWidth
 
-    function updateVoiceMailSettingsInfos() {
-        lineEditVoiceMailDialCode.textField = SettingsAdapter.getAccountConfig_Mailbox()
-    }
-
     ElidedTextLabel {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
@@ -50,9 +46,12 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
         itemWidth: root.itemWidth
         titleField: JamiStrings.voiceMailDialCode
 
-        onEditFinished: SettingsAdapter.lineEditVoiceMailDialCodeEditFinished(textField)
+        textField: CurrentAccount.mailbox
+
+        onEditFinished: CurrentAccount.mailbox = textField
     }
 }

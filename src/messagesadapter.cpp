@@ -531,6 +531,22 @@ MessagesAdapter::blockConversation(const QString& convUid)
 }
 
 void
+MessagesAdapter::unbanContact(int index)
+{
+    auto& accountInfo = lrcInstance_->getCurrentAccountInfo();
+    auto bannedContactList = accountInfo.contactModel->getBannedContacts();
+    auto it = bannedContactList.begin();
+    std::advance(it, index);
+
+    try {
+        auto contactInfo = accountInfo.contactModel->getContact(*it);
+        accountInfo.contactModel->addContact(contactInfo);
+    } catch (const std::out_of_range& e) {
+        qDebug() << e.what();
+    }
+}
+
+void
 MessagesAdapter::clearConversationHistory(const QString& accountId, const QString& convUid)
 {
     lrcInstance_->getAccountInfo(accountId).conversationModel->clearHistory(convUid);

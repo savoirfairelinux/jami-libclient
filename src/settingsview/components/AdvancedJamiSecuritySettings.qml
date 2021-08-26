@@ -30,90 +30,58 @@ ColumnLayout {
 
     property int itemWidth
 
-    function updateSecurityAccountInfos() {
-        btnCACert.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateListFile())
-        btnCACert.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
-        btnUserCert.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateFile())
-        btnUserCert.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
-        btnPrivateKey.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile())
-        btnPrivateKey.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
-    }
-
-    function changeFileCACert(url){
-        if(url.length !== 0) {
-           SettingsAdapter.set_FileCACert(url)
-            btnCACert.textField = UtilsAdapter.toFileInfoName(url)
-        }
-    }
-
-    function changeFileUserCert(url){
-        if(url.length !== 0) {
-           SettingsAdapter.set_FileUserCert(url)
-            btnUserCert.textField = UtilsAdapter.toFileInfoName(url)
-        }
-    }
-
-    function changeFilePrivateKey(url){
-        if(url.length !== 0) {
-           SettingsAdapter.set_FilePrivateKey(url)
-            btnPrivateKey.textField = UtilsAdapter.toFileInfoName(url)
-        }
-    }
-
     JamiFileDialog {
         id: caCert_Dialog
 
-        property string oldPath : SettingsAdapter.getAccountConfig_TLS_CertificateListFile()
-        property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
+        property string oldPath: CurrentAccount.certificateListFile_TLS
+        property string openPath: oldPath === "" ?
+                                      (UtilsAdapter.getCurrentPath() + "/ringtones/") :
+                                      (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
         title: JamiStrings.selectCACert
         folder: openPath
-        nameFilters: [qsTr("Certificate File") + " (*.crt)", qsTr(
-                "All files") + " (*)"]
+        nameFilters: [qsTr("Certificate File") + " (*.crt)",
+            qsTr("All files") + " (*)"]
 
-        onAccepted: {
-            var url = UtilsAdapter.getAbsPath(file.toString())
-            changeFileCACert(url)
-        }
+        onAccepted: CurrentAccount.certificateListFile_TLS =
+                    UtilsAdapter.getAbsPath(file.toString())
     }
 
     JamiFileDialog {
         id: userCert_Dialog
 
-        property string oldPath : SettingsAdapter.getAccountConfig_TLS_CertificateFile()
-        property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
+        property string oldPath: CurrentAccount.certificateFile_TLS
+        property string openPath: oldPath === "" ?
+                                      (UtilsAdapter.getCurrentPath() + "/ringtones/") :
+                                      (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
         title: JamiStrings.selectUserCert
         folder: openPath
-        nameFilters: [qsTr("Certificate File") + " (*.crt)", qsTr(
-                "All files") + " (*)"]
+        nameFilters: [qsTr("Certificate File") + " (*.crt)",
+            qsTr("All files") + " (*)"]
 
-        onAccepted: {
-            var url = UtilsAdapter.getAbsPath(file.toString())
-            changeFileUserCert(url)
-        }
+        onAccepted: CurrentAccount.certificateFile_TLS =
+                    UtilsAdapter.getAbsPath(file.toString())
     }
 
     JamiFileDialog {
         id: privateKey_Dialog
 
-        property string oldPath : {
-            return SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile()
-        }
-        property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
+        property string oldPath: CurrentAccount.privateKeyFile_TLS
+        property string openPath: oldPath === "" ?
+                                      (UtilsAdapter.getCurrentPath() + "/ringtones/") :
+                                      (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
         title: JamiStrings.selectPrivateKey
         folder: openPath
-        nameFilters: [qsTr("Key File") + " (*.key)", qsTr(
-                "All files") + " (*)"]
+        nameFilters: [qsTr("Key File") + " (*.key)",
+            qsTr("All files") + " (*)"]
 
-        onAccepted: {
-            var url = UtilsAdapter.getAbsPath(file.toString())
-            changeFilePrivateKey(url)
-        }
+        onAccepted: CurrentAccount.privateKeyFile_TLS =
+                    UtilsAdapter.getAbsPath(file.toString())
     }
 
     ElidedTextLabel {
@@ -131,34 +99,46 @@ ColumnLayout {
 
         SettingMaterialButton {
             id: btnCACert
+
             Layout.fillWidth: true
             Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
+            enabled: CurrentAccount.enable_TLS
+            textField: UtilsAdapter.toFileInfoName(CurrentAccount.certificateListFile_TLS)
             titleField: JamiStrings.caCertificate
             source: JamiResources.round_folder_24dp_svg
             itemWidth: root.itemWidth
+
             onClick: caCert_Dialog.open()
         }
 
         SettingMaterialButton {
             id: btnUserCert
+
             Layout.fillWidth: true
             Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
+            enabled: CurrentAccount.enable_TLS
+            textField: UtilsAdapter.toFileInfoName(CurrentAccount.certificateFile_TLS)
             titleField: JamiStrings.userCertificate
             source: JamiResources.round_folder_24dp_svg
             itemWidth: root.itemWidth
+
             onClick: userCert_Dialog.open()
         }
 
         SettingMaterialButton {
             id: btnPrivateKey
+
             Layout.fillWidth: true
             Layout.minimumHeight: JamiTheme.preferredFieldHeight
 
+            enabled: CurrentAccount.enable_TLS
+            textField: UtilsAdapter.toFileInfoName(CurrentAccount.privateKeyFile_TLS)
             titleField: JamiStrings.privateKey
             source: JamiResources.round_folder_24dp_svg
             itemWidth: root.itemWidth
+
             onClick: privateKey_Dialog.open()
         }
 
@@ -167,8 +147,13 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
             itemWidth: root.itemWidth
             titleField: JamiStrings.privateKeyPassword
+
+            textField: CurrentAccount.password_TLS
+
+            onEditFinished: CurrentAccount.password_TLS = textField
         }
     }
 }

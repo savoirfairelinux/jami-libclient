@@ -33,20 +33,6 @@ ColumnLayout {
     property alias settingsVisible: advancedSettingsView.visible
     signal showAdvancedSettingsRequest
 
-    function updateAdvancedAccountInfos() {
-        advancedCallSettings.updateCallSettingsInfos()
-        advancedChatSettings.updateSettings()
-        advancedVoiceMailSettings.updateVoiceMailSettingsInfos()
-        advancedSIPSecuritySettings.updateSecurityAccountInfos()
-        advancedNameServerSettings.updateNameServerInfos()
-        advancedOpenDHTSettings.updateOpenDHTSettingsInfos()
-        advancedJamiSecuritySettings.updateSecurityAccountInfos()
-        advancedConnectivitySettings.updateConnectivityAccountInfos()
-        advancedPublicAddressSettings.updatePublicAddressAccountInfos()
-        advancedMediaSettings.updateMediaConnectivityAccountInfos()
-        advancedSDPStettings.updateSDPAccountInfos()
-    }
-
     RowLayout {
         id: rowAdvancedSettingsBtn
         Layout.fillWidth: true
@@ -82,8 +68,6 @@ ColumnLayout {
 
             onClicked: {
                 advancedSettingsView.visible = !advancedSettingsView.visible
-                if(advancedSettingsView.visible)
-                    updateAdvancedAccountInfos()
                 showAdvancedSettingsRequest()
             }
         }

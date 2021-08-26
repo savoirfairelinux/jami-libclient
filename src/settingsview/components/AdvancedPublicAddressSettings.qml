@@ -30,19 +30,6 @@ ColumnLayout {
 
     property int itemWidth
 
-    function updatePublicAddressAccountInfos() {
-        checkBoxAllowIPAutoRewrite.checked = SettingsAdapter.getAccountConfig_AllowIPAutoRewrite()
-        checkBoxCustomAddressPort.checked = !SettingsAdapter.getAccountConfig_PublishedSameAsLocal()
-        lineEditSIPCustomAddress.textField = SettingsAdapter.getAccountConfig_PublishedAddress()
-        customPortSIPSpinBox.valueField = SettingsAdapter.getAccountConfig_PublishedPort()
-
-        if (checkBoxAllowIPAutoRewrite.checked) {
-            checkBoxCustomAddressPort.visible = false
-            lineEditSIPCustomAddress.visible = false
-            customPortSIPSpinBox.visible = false
-        }
-    }
-
     Text {
         Layout.fillWidth: true
 
@@ -67,12 +54,9 @@ ColumnLayout {
             labelText: JamiStrings.allowIPAutoRewrite
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setAllowIPAutoRewrite(checked)
-                checkBoxCustomAddressPort.visible = !checked
-                lineEditSIPCustomAddress.visible = !checked
-                customPortSIPSpinBox.visible = !checked
-            }
+            checked: CurrentAccount.allowIPAutoRewrite
+
+            onSwitchToggled: CurrentAccount.allowIPAutoRewrite = checked
         }
 
         ToggleSwitch {
@@ -81,11 +65,10 @@ ColumnLayout {
             labelText: JamiStrings.useCustomAddress
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setUseCustomAddressAndPort(!checked)
-                lineEditSIPCustomAddress.enabled = checked
-                customPortSIPSpinBox.enabled = checked
-            }
+            visible: !checkBoxAllowIPAutoRewrite.checked
+            checked: CurrentAccount.publishedSameAsLocal
+
+            onSwitchToggled: CurrentAccount.publishedSameAsLocal = checked
         }
 
         SettingsMaterialLineEdit {
@@ -93,10 +76,16 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            visible: !checkBoxAllowIPAutoRewrite.checked
+            enabled: checkBoxCustomAddressPort.checked
+
             itemWidth: root.itemWidth
             titleField: JamiStrings.address
 
-            onEditFinished: SettingsAdapter.lineEditSIPCustomAddressLineEditTextChanged(textField)
+            textField: CurrentAccount.publishedAddress
+
+            onEditFinished: CurrentAccount.publishedAddress = textField
         }
 
         SettingSpinBox {
@@ -107,7 +96,17 @@ ColumnLayout {
             bottomValue: 0
             topValue: 65535
 
-            onNewValue: SettingsAdapter.customPortSIPSpinBoxValueChanged(valueField)
+            visible: !checkBoxAllowIPAutoRewrite.checked
+            enabled: checkBoxCustomAddressPort.checked
+
+            valueField: CurrentAccount.publishedPort
+
+            onInputAcceptableChanged: {
+                if (!inputAcceptable && valueField.length !== 0)
+                    valueField = Qt.binding(function() { return CurrentAccount.publishedPort })
+            }
+
+            onNewValue: CurrentAccount.publishedPort = valueField
         }
     }
 }

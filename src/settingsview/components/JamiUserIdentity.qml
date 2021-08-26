@@ -30,27 +30,12 @@ ColumnLayout {
     id: root
 
     property int itemWidth
-    property bool registeredIdNeedsSet: false
-
-    function updateAccountInfo() {
-        currentRingIDText.text = SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
-        registeredIdNeedsSet = (SettingsAdapter.get_CurrentAccountInfo_RegisteredName() === "")
-
-        if(!registeredIdNeedsSet) {
-            currentRegisteredID.text = SettingsAdapter.get_CurrentAccountInfo_RegisteredName()
-        } else {
-            currentRegisteredID.text = ""
-        }
-    }
 
     NameRegistrationDialog {
         id : nameRegistrationDialog
 
-        onAccepted: {
-            registeredIdNeedsSet = false
-            currentRegisteredID.nameRegistrationState =
+        onAccepted: currentRegisteredID.nameRegistrationState =
                     UsernameLineEdit.NameRegistrationState.BLANK
-        }
     }
 
     // Identity
@@ -106,7 +91,7 @@ ColumnLayout {
                 elideWidth: root.width - idLabel.width -
                             JamiTheme.preferredMarginSize * 4
 
-                text: SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
+                text: CurrentAccount.uri
             }
         }
     }
@@ -145,21 +130,15 @@ ColumnLayout {
             }
 
             padding: 8
-            horizontalAlignment: registeredIdNeedsSet ?
-                                Text.AlignLeft :
-                                Text.AlignRight
+            horizontalAlignment: CurrentAccount.registeredName === "" ? Text.AlignLeft :
+                                                                        Text.AlignRight
             verticalAlignment: Text.AlignVCenter
             wrapMode: Text.NoWrap
-            placeholderText: registeredIdNeedsSet ?
-                                    JamiStrings.registerAUsername : ""
-            text: {
-                if (!registeredIdNeedsSet)
-                    return SettingsAdapter.get_CurrentAccountInfo_RegisteredName()
-                else
-                    return ""
-            }
-            readOnly: !registeredIdNeedsSet
-            font.bold: !registeredIdNeedsSet
+            placeholderText: CurrentAccount.registeredName === "" ?
+                                 JamiStrings.registerAUsername : ""
+            text: CurrentAccount.registeredName
+            readOnly: CurrentAccount.registeredName !== ""
+            font.bold: CurrentAccount.registeredName !== ""
             loseFocusWhenEnterPressed: btnRegisterName.visible
 
             onAccepted: {
@@ -178,9 +157,9 @@ ColumnLayout {
         preferredWidth: 120
         preferredHeight: 30
 
-        visible: registeredIdNeedsSet &&
-                    currentRegisteredID.nameRegistrationState ===
-                    UsernameLineEdit.NameRegistrationState.FREE
+        visible: CurrentAccount.registeredName === "" &&
+                 currentRegisteredID.nameRegistrationState ===
+                 UsernameLineEdit.NameRegistrationState.FREE
 
         text: JamiStrings.register
         toolTipText: JamiStrings.registerUsername

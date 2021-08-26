@@ -43,10 +43,7 @@ ColumnLayout {
         var codecId = mediaListWidget.model.data(mediaListWidget.model.index(index,0),
                                                  MediaCodecListModel.MediaCodecID)
 
-        if (mediaType === MediaSettings.VIDEO)
-            SettingsAdapter.decreaseVideoCodecPriority(codecId)
-        else if (mediaType === MediaSettings.AUDIO)
-            SettingsAdapter.decreaseAudioCodecPriority(codecId)
+        AvAdapter.decreaseCodecPriority(codecId, mediaType === MediaSettings.VIDEO)
         mediaListWidget.currentIndex = index + 1
         updateCodecs()
     }
@@ -66,10 +63,7 @@ ColumnLayout {
         var codecId = mediaListWidget.model.data(mediaListWidget.model.index(index,0),
                                                  MediaCodecListModel.MediaCodecID)
 
-        if (mediaType === MediaSettings.VIDEO)
-            SettingsAdapter.increaseVideoCodecPriority(codecId)
-        else if (mediaType === MediaSettings.AUDIO)
-            SettingsAdapter.increaseAudioCodecPriority(codecId)
+        AvAdapter.increaseCodecPriority(codecId, mediaType === MediaSettings.VIDEO)
         mediaListWidget.currentIndex = index - 1
         updateCodecs()
     }
@@ -86,9 +80,9 @@ ColumnLayout {
             maxWidth: width
             eText:  {
                 if (mediaType === MediaSettings.VIDEO)
-                    return "Video Codecs"
+                    return JamiStrings.videoCodecs
                 else if (mediaType === MediaSettings.AUDIO)
-                    return "Audio Codecs"
+                    return JamiStrings.audioCodecs
             }
             fontSize: JamiTheme.settingsFontSize
         }
@@ -134,10 +128,7 @@ ColumnLayout {
             }
 
             onMediaCodecStateChange: {
-                if (mediaType === MediaSettings.VIDEO)
-                    SettingsAdapter.videoCodecsStateChange(idToSet, isToBeEnabled)
-                if (mediaType === MediaSettings.AUDIO)
-                    SettingsAdapter.audioCodecsStateChange(idToSet, isToBeEnabled)
+                AvAdapter.enableCodec(idToSet, isToBeEnabled)
                 updateCodecs()
             }
         }

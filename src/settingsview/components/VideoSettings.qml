@@ -37,10 +37,16 @@ ColumnLayout {
 
     Connections {
         target: AvAdapter
-        enabled: root.visible
 
         function onVideoDeviceListChanged() {
             populateVideoSettings()
+        }
+    }
+
+    function startPreviewing(force = false) {
+        if (root.visible) {
+            AccountAdapter.startPreviewing(force)
+            previewAvailable = true
         }
     }
 
@@ -55,22 +61,26 @@ ColumnLayout {
         fpsComboBoxSetting.enabled = count > 0
 
         if (count === 0) {
-            resolutionComboBoxSetting.comboModel.reset()
-            fpsComboBoxSetting.comboModel.reset()
+            resolutionComboBoxSetting.reset()
+            fpsComboBoxSetting.reset()
         } else {
-            deviceComboBoxSetting.setCurrentIndex(
-                        deviceComboBoxSetting.comboModel.getCurrentIndex(), true)
+            deviceComboBoxSetting.modelIndex =
+                    deviceComboBoxSetting.comboModel.getCurrentIndex()
         }
         hardwareAccelControl.checked = AVModel.getHardwareAcceleration()
     }
 
     function slotDeviceBoxCurrentIndexChanged(index) {
-        if(deviceComboBoxSetting.comboModel.deviceCount() <= 0)
+        if (deviceComboBoxSetting.comboModel.deviceCount() <= 0)
             return
 
         try {
-            var deviceId = deviceComboBoxSetting.comboModel.data(deviceComboBoxSetting.comboModel.index(index, 0), VideoInputDeviceModel.DeviceId)
-            var deviceName = deviceComboBoxSetting.comboModel.data(deviceComboBoxSetting.comboModel.index(index, 0), VideoInputDeviceModel.DeviceName)
+            var deviceId = deviceComboBoxSetting.comboModel.data(
+                        deviceComboBoxSetting.comboModel.index(index, 0),
+                        VideoInputDeviceModel.DeviceId)
+            var deviceName = deviceComboBoxSetting.comboModel.data(
+                        deviceComboBoxSetting.comboModel.index(index, 0),
+                        VideoInputDeviceModel.DeviceName)
             if(deviceId.length === 0) {
                 console.warn("Couldn't find device: " + deviceName)
                 return
@@ -81,58 +91,8 @@ ColumnLayout {
                 AVModel.setDefaultDevice(deviceId)
             }
 
-            setFormatListForCurrentDevice()
-            startPreviewing()
+            resolutionComboBoxSetting.reset()
         } catch(err){ console.warn(err.message) }
-    }
-
-    function startPreviewing(force = false) {
-        AccountAdapter.startPreviewing(force)
-        previewAvailable = true
-    }
-
-    function setFormatListForCurrentDevice() {
-        var device = AVModel.getCurrentVideoCaptureDevice()
-        try {
-            if (SettingsAdapter.get_DeviceCapabilitiesSize(device) === 0)
-                return
-
-            resolutionComboBoxSetting.comboModel.reset()
-            resolutionComboBoxSetting.setCurrentIndex(
-                        resolutionComboBoxSetting.comboModel.getCurrentSettingIndex(), true)
-        } catch(err) { console.warn("Exception: " + err.message) }
-    }
-
-    function slotFormatCurrentIndexChanged(index, isResolutionIndex) {
-        var resolution
-        var rate
-        if(isResolutionIndex) {
-            fpsComboBoxSetting.comboModel.reset()
-            resolution = resolutionComboBoxSetting.comboModel.data(
-                        resolutionComboBoxSetting.comboModel.index(index, 0),
-                        VideoFormatResolutionModel.Resolution)
-            fpsComboBoxSetting.comboModel.currentResolution = resolution
-            fpsComboBoxSetting.setCurrentIndex(
-                        fpsComboBoxSetting.comboModel.getCurrentSettingIndex(), true)
-            rate = fpsComboBoxSetting.comboModel.data(
-                        fpsComboBoxSetting.comboModel.index(0, 0),
-                        VideoFormatFpsModel.FPS)
-        } else {
-            resolution = resolutionComboBoxSetting.comboModel.data(
-                        resolutionComboBoxSetting.comboModel.index(
-                            resolutionComboBoxSetting.modelIndex, 0),
-                        VideoFormatResolutionModel.Resolution)
-            fpsComboBoxSetting.comboModel.currentResolution = resolution
-            rate = fpsComboBoxSetting.comboModel.data(
-                        fpsComboBoxSetting.comboModel.index(index, 0),
-                        VideoFormatFpsModel.FPS)
-        }
-
-        try {
-            SettingsAdapter.set_Video_Settings_Rate_And_Resolution(
-                        AVModel.getCurrentVideoCaptureDevice(),rate, resolution)
-            updatePreviewRatio(resolution)
-        } catch(error){ console.warn(error.message) }
     }
 
     function updatePreviewRatio(resolution) {
@@ -143,6 +103,11 @@ ColumnLayout {
         } else {
             console.error("Could not scale recording video preview")
         }
+    }
+
+    onVisibleChanged: {
+        if (visible)
+            startPreviewing(true)
     }
 
     ElidedTextLabel {
@@ -170,15 +135,19 @@ ColumnLayout {
         tipText: JamiStrings.selectVideoDevice
         role: "DeviceName_UTF8"
 
-        onIndexChanged: {
-            slotDeviceBoxCurrentIndexChanged(modelIndex)
-        }
+        onModelIndexChanged: slotDeviceBoxCurrentIndexChanged(modelIndex)
 
         placeholderText: JamiStrings.noVideoDevice
     }
 
     SettingsComboBox {
         id: resolutionComboBoxSetting
+
+        function reset() {
+            modelIndex = -1
+            comboModel.reset()
+            modelIndex = 0
+        }
 
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
@@ -193,13 +162,33 @@ ColumnLayout {
         tipText: JamiStrings.selectVideoResolution
         role: "Resolution_UTF8"
 
-        onIndexChanged: {
-            slotFormatCurrentIndexChanged(modelIndex, true)
+        modelIndex: -1
+
+        onModelIndexChanged: {
+            if (modelIndex === -1)
+                return
+            var resolution = comboModel.data(comboModel.index(modelIndex, 0),
+                                             VideoFormatResolutionModel.Resolution)
+            fpsComboBoxSetting.comboModel.currentResolution = resolution
+            fpsComboBoxSetting.modelIndex = 0
+
+            var rate = fpsComboBoxSetting.comboModel.data(
+                        fpsComboBoxSetting.comboModel.index(0, 0),
+                        VideoFormatFpsModel.FPS)
+
+            AvAdapter.setCurrentVideoDeviceRateAndResolution(rate, resolution)
+            updatePreviewRatio(resolution)
         }
     }
 
     SettingsComboBox {
         id: fpsComboBoxSetting
+
+        function reset() {
+            modelIndex = -1
+            comboModel.reset()
+            modelIndex = 0
+        }
 
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
@@ -214,8 +203,20 @@ ColumnLayout {
         tipText: JamiStrings.selectFPS
         role: "FPS_ToDisplay_UTF8"
 
-        onIndexChanged: {
-            slotFormatCurrentIndexChanged(modelIndex, false)
+        modelIndex: -1
+
+        onModelIndexChanged: {
+            if (modelIndex === -1)
+                return
+            var resolution = resolutionComboBoxSetting.comboModel.data(
+                        resolutionComboBoxSetting.comboModel.index(
+                            resolutionComboBoxSetting.modelIndex, 0),
+                        VideoFormatResolutionModel.Resolution)
+
+            var rate = comboModel.data(comboModel.index(modelIndex, 0),
+                                       VideoFormatFpsModel.FPS)
+
+            AvAdapter.setCurrentVideoDeviceRateAndResolution(rate, resolution)
         }
     }
 

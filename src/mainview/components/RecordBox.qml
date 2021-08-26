@@ -68,7 +68,7 @@ Rectangle {
         height = preferredHeight
         if (isVideo) {
             var device = AVModel.getDefaultDevice()
-            var settings = SettingsAdapter.get_Video_Settings_Size(device)
+            var settings = AvAdapter.getVideoSettingsSize(device)
             var res = settings.split("x")
             var aspectRatio = res[1] / res[0]
             if (aspectRatio) {

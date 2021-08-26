@@ -90,7 +90,7 @@ ItemDelegate {
                 backgroundColor: JamiTheme.editBackgroundColor
 
                 onEditingFinished: {
-                    SettingsAdapter.setDeviceName(editDeviceName.text)
+                    AvAdapter.setDeviceName(editDeviceName.text)
                     editable = !editable
                 }
                 onReadOnlyChanged: {

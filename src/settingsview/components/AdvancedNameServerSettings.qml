@@ -30,10 +30,6 @@ ColumnLayout {
 
     property int itemWidth
 
-    function updateNameServerInfos() {
-        lineEditNameServer.textField = SettingsAdapter.getAccountConfig_RingNS_Uri()
-    }
-
     Text {
         Layout.fillWidth: true
         Layout.rightMargin: JamiTheme.preferredMarginSize / 2
@@ -55,9 +51,12 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
         itemWidth: root.itemWidth
         titleField: qsTr("Address")
 
-        onEditFinished: SettingsAdapter.setNameServer(textField)
+        textField: CurrentAccount.uri_RingNS
+
+        onEditFinished: CurrentAccount.uri_RingNS = textField
     }
 }

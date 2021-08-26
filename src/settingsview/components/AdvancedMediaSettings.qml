@@ -29,12 +29,6 @@ import "../../commoncomponents"
 ColumnLayout {
     id: root
 
-    function updateMediaConnectivityAccountInfos() {
-        videoCheckBox.checked = SettingsAdapter.getAccountConfig_Video_Enabled()
-        videoSettings.updateCodecs();
-        audioSettings.updateCodecs();
-    }
-
     Label {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
@@ -58,7 +52,9 @@ ColumnLayout {
             labelText: JamiStrings.enableVideo
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: SettingsAdapter.setVideoState(checked)
+            checked: CurrentAccount.videoEnabled_Video
+
+            onSwitchToggled: CurrentAccount.videoEnabled_Video = checked
         }
 
         RowLayout {

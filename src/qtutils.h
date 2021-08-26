@@ -24,7 +24,7 @@
 
 #include <QObject>
 
-#define PROPERTY_BASE(type, prop) \
+#define PROPERTY_GETTER_BASE(type, prop) \
     type prop##_ {}; \
 \
 public: \
@@ -32,7 +32,9 @@ public: \
     type get_##prop() \
     { \
         return prop##_; \
-    } \
+    }
+
+#define PROPERTY_SETTER_BASE(type, prop) \
     void set_##prop(const type& x = {}) \
     { \
         if (prop##_ != x) { \
@@ -40,6 +42,10 @@ public: \
             Q_EMIT prop##Changed(); \
         } \
     }
+
+#define PROPERTY_BASE(type, prop) \
+    PROPERTY_GETTER_BASE(type, prop) \
+    PROPERTY_SETTER_BASE(type, prop)
 
 #define QML_RO_PROPERTY(type, prop) \
 private: \

@@ -36,10 +36,6 @@ ColumnLayout {
         }
     }
 
-    function updateAccountInfo() {
-        displayNameLineEdit.text = SettingsAdapter.getCurrentAccount_Profile_Info_Alias()
-    }
-
     function stopBooth() {
         currentAccountAvatar.stopBooth()
     }
@@ -77,6 +73,7 @@ ColumnLayout {
 
         font.pointSize: JamiTheme.textFontSize
         font.kerning: true
+        text: CurrentAccount.alias
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter

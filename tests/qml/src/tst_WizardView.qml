@@ -290,7 +290,7 @@ WizardView {
             compare(spyCloseWizardView.count, 1)
 
             // Check alias text
-            compare(SettingsAdapter.getCurrentAccount_Profile_Info_Alias(), aliasText)
+            compare(CurrentAccount.alias, aliasText)
 
             spyAccountStatusChanged.clear()
 
@@ -364,7 +364,7 @@ WizardView {
             compare(spyAccountConfigFinalized.count, 1)
 
             // Check if it is a RendezVous acc
-            compare(SettingsAdapter.getAccountConfig_RendezVous(), true)
+            compare(CurrentAccount.isRendezVous, true)
 
             aliasEdit.text = aliasText
             saveProfileBtn.clicked()
@@ -384,7 +384,7 @@ WizardView {
             compare(spyCloseWizardView.count, 1)
 
             // Check alias text
-            compare(SettingsAdapter.getCurrentAccount_Profile_Info_Alias(), aliasText)
+            compare(CurrentAccount.alias, aliasText)
 
             spyAccountStatusChanged.clear()
 
@@ -459,10 +459,10 @@ WizardView {
             compare(spyAccountConfigFinalized.count, 1)
 
             // Check if paras match with setup
-            compare(SettingsAdapter.getAccountConfig_RouteSet(), proxy)
-            compare(SettingsAdapter.getAccountConfig_Username(), userName)
-            compare(SettingsAdapter.getAccountConfig_Hostname(), serverName)
-            compare(SettingsAdapter.getAccountConfig_Password(), password)
+            compare(CurrentAccount.routeset, proxy)
+            compare(CurrentAccount.username, userName)
+            compare(CurrentAccount.hostname, serverName)
+            compare(CurrentAccount.password, password)
 
             WizardViewStepModel.nextStep()
 
@@ -1530,7 +1530,7 @@ WizardView {
             compare(spyCloseWizardView.count, 1)
 
             // Check alias text
-            compare(SettingsAdapter.getCurrentAccount_Profile_Info_Alias(), aliasName)
+            compare(CurrentAccount.alias, aliasName)
 
             AccountAdapter.deleteCurrentAccount()
 

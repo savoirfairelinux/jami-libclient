@@ -33,19 +33,10 @@ RowLayout {
     property alias placeholderText: comboBoxOfLayout.placeholderText
     property alias enabled: comboBoxOfLayout.enabled
     property alias fontPointSize: comboBoxOfLayout.font.pointSize
+    property alias modelIndex: comboBoxOfLayout.currentIndex
 
     property int heightOfLayout: 30
     property int widthOfComboBox: 50
-    property int modelIndex
-
-    signal indexChanged
-
-    function setCurrentIndex(index, emitIndexChanged = false) {
-        comboBoxOfLayout.currentIndex = index
-        modelIndex = index
-        if (emitIndexChanged)
-            indexChanged()
-    }
 
     ElidedTextLabel {
         id: label
@@ -71,10 +62,5 @@ RowLayout {
 
         textRole: role
         tooltipText: tipText
-
-        onActivated: {
-            root.modelIndex = index
-            indexChanged()
-        }
     }
 }

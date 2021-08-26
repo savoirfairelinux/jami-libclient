@@ -85,6 +85,10 @@ public:
     Q_INVOKABLE void setCurrAccDisplayName(const QString& text);
     Q_INVOKABLE void setCurrentAccountAvatarFile(const QString& source);
     Q_INVOKABLE void setCurrentAccountAvatarBase64(const QString& source = {});
+    Q_INVOKABLE void setDefaultModerator(const QString& accountId,
+                                         const QString& peerURI,
+                                         const bool& state);
+    Q_INVOKABLE QStringList getDefaultModerators(const QString& accountId);
 
 Q_SIGNALS:
     // Trigger other components to reconnect account related signals.

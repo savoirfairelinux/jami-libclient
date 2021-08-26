@@ -29,10 +29,8 @@ import "../commoncomponents"
 BaseDialog {
     id: root
 
-    property int profileType: SettingsAdapter.getCurrentAccount_Profile_Info_Type()
-
     property bool isSIP: {
-        switch (profileType) {
+        switch (CurrentAccount.type) {
         case Profile.Type.SIP:
             return true;
         default:
@@ -41,13 +39,6 @@ BaseDialog {
     }
 
     signal accepted
-
-    function openDialog() {
-        profileType = SettingsAdapter.getCurrentAccount_Profile_Info_Type()
-        labelBestId.text = SettingsAdapter.getAccountBestName()
-        labelAccountHash.text = SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
-        open()
-    }
 
     title: JamiStrings.deleteAccount
 
@@ -67,7 +58,8 @@ BaseDialog {
                 id: labelDeletion
 
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: deleteAccountContentRect.width - JamiTheme.preferredMarginSize * 2
+                Layout.preferredWidth: deleteAccountContentRect.width -
+                                       JamiTheme.preferredMarginSize * 2
 
                 color: JamiTheme.textColor
                 text: JamiStrings.confirmDeleteQuestion
@@ -84,10 +76,11 @@ BaseDialog {
                 id: labelBestId
 
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: deleteAccountContentRect.width - JamiTheme.preferredMarginSize * 2
+                Layout.preferredWidth: deleteAccountContentRect.width -
+                                       JamiTheme.preferredMarginSize * 2
 
                 color: JamiTheme.textColor
-                text: SettingsAdapter.getAccountBestName()
+                text: CurrentAccount.bestName
 
                 font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
@@ -102,10 +95,11 @@ BaseDialog {
                 id: labelAccountHash
 
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: deleteAccountContentRect.width - JamiTheme.preferredMarginSize * 2
+                Layout.preferredWidth: deleteAccountContentRect.width -
+                                       JamiTheme.preferredMarginSize * 2
 
                 color: JamiTheme.textColor
-                text: SettingsAdapter.getCurrentAccount_Profile_Info_Uri()
+                text: CurrentAccount.uri
 
                 font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
@@ -121,7 +115,8 @@ BaseDialog {
                 visible: !isSIP
 
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: deleteAccountContentRect.width - JamiTheme.preferredMarginSize * 2
+                Layout.preferredWidth: deleteAccountContentRect.width -
+                                       JamiTheme.preferredMarginSize * 2
 
                 text: JamiStrings.deleteAccountInfos
 

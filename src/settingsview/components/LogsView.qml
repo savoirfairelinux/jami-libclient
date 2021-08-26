@@ -43,38 +43,41 @@ Dialog {
     property var lineSize: []
     property var lineCounter: 0
 
-
     function monitor(continuous) {
-        SettingsAdapter.monitor(continuous)
+        UtilsAdapter.monitor(continuous)
     }
 
-    Connections{
-        target: SettingsAdapter
+    Connections {
+        target: UtilsAdapter
+
         function onDebugMessageReceived(message) {
             if (!root.visible) {
-                return;
+                return
             }
             var initialPosition = scrollView.ScrollBar.vertical.position
             lineCounter += 1
             lineSize.push(message.length)
             if (!root.cancelPressed) {
-                logsText.append(message);
+                logsText.append(message)
             }
-            if (lineCounter >= 10000){
+            if (lineCounter >= 10000) {
                 lineCounter -= 1
                 logsText.remove(0, lineSize[0])
                 lineSize.shift()
             }
-            scrollView.ScrollBar.vertical.position = initialPosition > (.8*(1.0 - scrollView.ScrollBar.vertical.size)) ? 1.0 - scrollView.ScrollBar.vertical.size : initialPosition
+            scrollView.ScrollBar.vertical.position = initialPosition
+                    > (.8 * (1.0 - scrollView.ScrollBar.vertical.size)) ?
+                        1.0 - scrollView.ScrollBar.vertical.size : initialPosition
         }
     }
 
     onVisibleChanged: {
         if (visible && startStopToggle.checked) {
             if (hasOpened && lineCounter == 0) {
-                logsText.append(SettingsAdapter.getLogs())
-                lineCounter = SettingsAdapter.getSizeOfLogs()
-                lineSize.push(SettingsAdapter.getFirstLogLength())
+                var logList = UtilsAdapter.logList
+                logsText.append(logList.join('\n'))
+                lineCounter = logList.length
+                lineSize.push(lineCounter ? logList[0].length : 0)
             }
         } else {
             logsText.clear()
@@ -111,12 +114,12 @@ Dialog {
 
             border.color: color
             border.width: 0
-            height: JamiTheme.preferredFieldHeight*2
+            height: JamiTheme.preferredFieldHeight * 2
 
             RowLayout {
                 id: buttons
 
-                Layout.alignment: Qt.AlignTop| Qt.AlignHCenter
+                Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                 anchors.centerIn: parent
 
                 ToggleSwitch {
@@ -132,7 +135,7 @@ Dialog {
 
                     onSwitchToggled: {
                         logging = !logging
-                        if (logging){
+                        if (logging) {
                             isStopped = false
                             root.cancelPressed = false
                             monitor(true)
@@ -165,7 +168,7 @@ Dialog {
                         logging = false
                         startStopToggle.checked = false
                         root.cancelPressed = true
-                        SettingsAdapter.clearLogs()
+                        UtilsAdapter.logList = []
                         monitor(false)
                     }
                 }
@@ -185,7 +188,7 @@ Dialog {
                     outlined: true
                     text: JamiStrings.logsViewCopy
 
-                    onClicked:{
+                    onClicked: {
                         logsText.selectAll()
                         logsText.copy()
                         logsText.deselect()
@@ -196,11 +199,11 @@ Dialog {
                         id: copiedToolTip
 
                         height: JamiTheme.preferredFieldHeight
-                        TextArea{
+                        TextArea {
                             text: JamiStrings.logsViewCopied
                             color: JamiTheme.textColor
                         }
-                        background: Rectangle{
+                        background: Rectangle {
                             color: JamiTheme.primaryBackgroundColor
                         }
                     }
@@ -223,7 +226,8 @@ Dialog {
                     text: JamiStrings.logsViewReport
                     outlined: true
 
-                    onClicked: Qt.openUrlExternally("https://jami.net/bugs-and-improvements/")
+                    onClicked: Qt.openUrlExternally(
+                                   "https://jami.net/bugs-and-improvements/")
                 }
             }
         }
@@ -236,20 +240,19 @@ Dialog {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            color:  JamiTheme.primaryBackgroundColor
+            color: JamiTheme.primaryBackgroundColor
             border.color: color
             border.width: 6
             height: root.height - buttonRectangleBackground.height
 
-
-            ScrollView{
+            ScrollView {
                 id: scrollView
 
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 anchors.fill: flickableRectangleBackground
 
-                TextArea{
+                TextArea {
                     id: logsText
 
                     readOnly: true
@@ -286,7 +289,3 @@ Dialog {
         }
     }
 }
-
-
-
-

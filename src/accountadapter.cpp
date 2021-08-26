@@ -324,6 +324,20 @@ AccountAdapter::setCurrentAccountAvatarBase64(const QString& data)
     });
 }
 
+void
+AccountAdapter::setDefaultModerator(const QString& accountId,
+                                    const QString& peerURI,
+                                    const bool& state)
+{
+    lrcInstance_->accountModel().setDefaultModerator(accountId, peerURI, state);
+}
+
+QStringList
+AccountAdapter::getDefaultModerators(const QString& accountId)
+{
+    return lrcInstance_->accountModel().getDefaultModerators(accountId);
+}
+
 bool
 AccountAdapter::hasPassword()
 {

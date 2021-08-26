@@ -26,15 +26,23 @@
 #include <QObject>
 
 #include "qmladapterbase.h"
+#include "appsettingsmanager.h"
+#include "qtutils.h"
 
 class QClipboard;
 class SystemTray;
 
+#define LOGSLIMIT 10000
+
 class UtilsAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
+    QML_PROPERTY(QStringList, logList)
 public:
-    explicit UtilsAdapter(SystemTray* systemTray, LRCInstance* instance, QObject* parent = nullptr);
+    explicit UtilsAdapter(AppSettingsManager* settingsManager,
+                          SystemTray* systemTray,
+                          LRCInstance* instance,
+                          QObject* parent = nullptr);
     ~UtilsAdapter() = default;
 
     void safeInit() override {}
@@ -74,9 +82,22 @@ public:
     Q_INVOKABLE bool isImage(const QString& fileExt);
     Q_INVOKABLE QString humanFileSize(qint64 fileSize);
     Q_INVOKABLE void setSystemTrayIconVisible(bool visible);
+    Q_INVOKABLE QVariant getAppValue(const Settings::Key key);
+    Q_INVOKABLE void setAppValue(const Settings::Key key, const QVariant& value);
+    Q_INVOKABLE QString getDirDocument();
+    Q_INVOKABLE QString getDirDownload();
+    Q_INVOKABLE void setRunOnStartUp(bool state);
+    Q_INVOKABLE void setDownloadPath(QString dir);
+    Q_INVOKABLE void monitor(const bool& continuous);
+
+Q_SIGNALS:
+    void debugMessageReceived(const QString& message);
 
 private:
     QClipboard* clipboard_;
     SystemTray* systemTray_;
+    AppSettingsManager* settingsManager_;
+
+    QMetaObject::Connection debugMessageReceivedConnection_;
 };
 Q_DECLARE_METATYPE(UtilsAdapter*)

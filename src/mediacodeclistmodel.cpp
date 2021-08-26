@@ -28,7 +28,14 @@
 
 MediaCodecListModel::MediaCodecListModel(QObject* parent)
     : AbstractListModelBase(parent)
-{}
+{
+    connect(this, &MediaCodecListModel::lrcInstanceChanged, [this]() {
+        connect(lrcInstance_,
+                &LRCInstance::currentAccountIdChanged,
+                this,
+                &MediaCodecListModel::reset);
+    });
+}
 
 MediaCodecListModel::~MediaCodecListModel() {}
 
@@ -139,6 +146,13 @@ MediaCodecListModel::flags(const QModelIndex& index) const
         return QAbstractItemModel::flags(index);
     }
     return flags;
+}
+
+void
+MediaCodecListModel::reset()
+{
+    beginResetModel();
+    endResetModel();
 }
 
 int

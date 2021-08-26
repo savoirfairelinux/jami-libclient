@@ -30,13 +30,6 @@ ColumnLayout {
 
     property int itemWidth
 
-    function updateOpenDHTSettingsInfos() {
-        checkAutoConnectOnLocalNetwork.checked = SettingsAdapter.getAccountConfig_PeerDiscovery()
-        checkBoxEnableProxy.checked = SettingsAdapter.getAccountConfig_ProxyEnabled()
-        lineEditProxy.textField = SettingsAdapter.getAccountConfig_ProxyServer()
-        lineEditBootstrap.textField = SettingsAdapter.getAccountConfig_Hostname()
-    }
-
     Text {
         Layout.fillWidth: true
         Layout.rightMargin: JamiTheme.preferredMarginSize / 2
@@ -65,9 +58,9 @@ ColumnLayout {
             tooltipText: JamiStrings.tooltipPeerDiscovery
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setAutoConnectOnLocalNetwork(checked)
-            }
+            checked: CurrentAccount.peerDiscovery
+
+            onSwitchToggled: CurrentAccount.peerDiscovery = checked
         }
 
         ToggleSwitch {
@@ -76,10 +69,9 @@ ColumnLayout {
             labelText: JamiStrings.enableProxy
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setEnableProxy(checked)
-                lineEditProxy.enabled = checked
-            }
+            checked: CurrentAccount.proxyEnabled
+
+            onSwitchToggled: CurrentAccount.proxyEnabled = checked
         }
 
         SettingsMaterialLineEdit {
@@ -87,10 +79,15 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            enabled: checkBoxEnableProxy.checked
+
+            textField: CurrentAccount.proxyServer
+
             itemWidth: root.itemWidth
             titleField: JamiStrings.proxyAddress
 
-            onEditFinished: SettingsAdapter.setProxyAddress(textField)
+            onEditFinished: CurrentAccount.proxyServer = textField
         }
 
         SettingsMaterialLineEdit {
@@ -98,10 +95,13 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            textField: CurrentAccount.hostname
+
             itemWidth: root.itemWidth
             titleField: JamiStrings.bootstrap
 
-            onEditFinished: SettingsAdapter.setBootstrapAddress(textField)
+            onEditFinished: CurrentAccount.hostname = textField
         }
     }
 }

@@ -116,7 +116,7 @@ ApplicationWindow {
     function close(force = false) {
         // If we're in the onboarding wizard or 'MinimizeOnClose'
         // is set, then we can quit
-        if (force || !SettingsAdapter.getAppValue(Settings.MinimizeOnClose) ||
+        if (force || !UtilsAdapter.getAppValue(Settings.MinimizeOnClose) ||
                 !UtilsAdapter.getAccountListSize()) {
             Qt.quit()
         } else
@@ -158,7 +158,7 @@ ApplicationWindow {
 
         onLoaded: {
             // Quiet check for updates on start if set to.
-            if (SettingsAdapter.getAppValue(Settings.AutoUpdate)) {
+            if (UtilsAdapter.getAppValue(Settings.AutoUpdate)) {
                 UpdateManager.checkForUpdates(true)
                 UpdateManager.setAutoUpdateCheck(true)
             }

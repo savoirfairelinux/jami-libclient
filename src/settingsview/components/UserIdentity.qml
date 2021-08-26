@@ -31,14 +31,6 @@ ColumnLayout {
     property int itemWidth
     property bool isSIP
 
-    function updateAccountInfo() {
-        if (!isSIP) {
-            jamiUserIdentity.updateAccountInfo()
-        } else {
-            sipUserIdentity.updateAccountInfo()
-        }
-    }
-
     ElidedTextLabel {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight

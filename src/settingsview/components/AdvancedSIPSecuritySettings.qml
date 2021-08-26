@@ -31,107 +31,58 @@ ColumnLayout {
 
     property int itemWidth
 
-    function updateSecurityAccountInfos() {
-        enableSDESToggle.enabled = SettingsAdapter.getAccountConfig_SRTP_Enabled()
-        fallbackRTPToggle.enabled = SettingsAdapter.getAccountConfig_SRTP_Enabled()
-        btnSIPCACert.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
-        btnSIPUserCert.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
-        btnSIPPrivateKey.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
-        lineEditSIPCertPassword.enabled = SettingsAdapter.getAccountConfig_TLS_Enable()
-
-        btnSIPCACert.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateListFile())
-        btnSIPUserCert.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_CertificateFile())
-        btnSIPPrivateKey.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile())
-        lineEditSIPCertPassword.textField = SettingsAdapter.getAccountConfig_TLS_Password()
-
-        encryptMediaStreamsToggle.checked = SettingsAdapter.getAccountConfig_SRTP_Enabled()
-        enableSDESToggle.checked = (SettingsAdapter.getAccountConfig_SRTP_KeyExchange()  === Account.KeyExchangeProtocol.SDES)
-        fallbackRTPToggle.checked = SettingsAdapter.getAccountConfig_SRTP_RtpFallback()
-        encryptNegotitationToggle.checked = SettingsAdapter.getAccountConfig_TLS_Enable()
-        verifyIncomingCertificatesServerToggle.checked = SettingsAdapter.getAccountConfig_TLS_VerifyServer()
-        verifyIncomingCertificatesClientToggle.checked = SettingsAdapter.getAccountConfig_TLS_VerifyClient()
-        requireCeritificateForTLSIncomingToggle.checked = SettingsAdapter.getAccountConfig_TLS_RequireClientCertificate()
-
-        var method = SettingsAdapter.getAccountConfig_TLS_Method_inInt()
-        tlsProtocolComboBox.setCurrentIndex(method)
-
-        outgoingTLSServerNameLineEdit.textField = SettingsAdapter.getAccountConfig_TLS_Servername()
-        negotiationTimeoutSpinBox.valueField = SettingsAdapter.getAccountConfig_TLS_NegotiationTimeoutSec()
-    }
-
-    function changeFileCACert(url){
-        if(url.length !== 0) {
-           SettingsAdapter.set_FileCACert(url)
-            btnSIPCACert.textField = UtilsAdapter.toFileInfoName(url)
-        }
-    }
-
-    function changeFileUserCert(url){
-        if(url.length !== 0) {
-           SettingsAdapter.set_FileUserCert(url)
-            btnSIPUserCert.textField = UtilsAdapter.toFileInfoName(url)
-        }
-    }
-
-    function changeFilePrivateKey(url){
-        if(url.length !== 0) {
-           SettingsAdapter.set_FilePrivateKey(url)
-            btnSIPPrivateKey.textField = UtilsAdapter.toFileInfoName(url)
-        }
-    }
-
     JamiFileDialog {
         id: caCert_Dialog_SIP
 
-        property string oldPath : SettingsAdapter.getAccountConfig_TLS_CertificateListFile()
-        property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
+        property string oldPath: CurrentAccount.certificateListFile_TLS
+        property string openPath: oldPath === "" ?
+                                      (UtilsAdapter.getCurrentPath() + "/ringtones/") :
+                                      (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
         title: JamiStrings.selectCACert
         folder: openPath
-        nameFilters: [qsTr("Certificate File") + " (*.crt)", qsTr(
-                "All files") + " (*)"]
+        nameFilters: [qsTr("Certificate File") + " (*.crt)",
+            qsTr("All files") + " (*)"]
 
-        onAccepted: {
-            var url = UtilsAdapter.getAbsPath(file.toString())
-            changeFileCACert(url)
-        }
+        onAccepted: CurrentAccount.certificateListFile_TLS =
+                    UtilsAdapter.getAbsPath(file.toString())
     }
 
     JamiFileDialog {
         id: userCert_Dialog_SIP
 
-        property string oldPath : SettingsAdapter.getAccountConfig_TLS_CertificateFile()
-        property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
+        property string oldPath: CurrentAccount.certificateFile_TLS
+        property string openPath: oldPath === "" ?
+                                      (UtilsAdapter.getCurrentPath() + "/ringtones/") :
+                                      (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
         title: JamiStrings.selectUserCert
         folder: openPath
-        nameFilters: [qsTr("Certificate File") + " (*.crt)", qsTr(
-                "All files") + " (*)"]
+        nameFilters: [qsTr("Certificate File") + " (*.crt)",
+            qsTr("All files") + " (*)"]
 
-        onAccepted: {
-            var url = UtilsAdapter.getAbsPath(file.toString())
-            changeFileUserCert(url)
-        }
+        onAccepted: CurrentAccount.certificateFile_TLS =
+                    UtilsAdapter.getAbsPath(file.toString())
     }
 
     JamiFileDialog {
         id: privateKey_Dialog_SIP
 
-        property string oldPath : SettingsAdapter.getAccountConfig_TLS_PrivateKeyFile()
-        property string openPath : oldPath === "" ? (UtilsAdapter.getCurrentPath() + "/ringtones/") : (UtilsAdapter.toFileAbsolutepath(oldPath))
+        property string oldPath: CurrentAccount.privateKeyFile_TLS
+        property string openPath: oldPath === "" ?
+                                      (UtilsAdapter.getCurrentPath() + "/ringtones/") :
+                                      (UtilsAdapter.toFileAbsolutepath(oldPath))
 
         mode: JamiFileDialog.OpenFile
         title: JamiStrings.selectPrivateKey
         folder: openPath
-        nameFilters: [qsTr("Key File") + " (*.key)", qsTr(
-                "All files") + " (*)"]
+        nameFilters: [qsTr("Key File") + " (*.key)",
+            qsTr("All files") + " (*)"]
 
-        onAccepted: {
-            var url = UtilsAdapter.getAbsPath(file.toString())
-            changeFilePrivateKey(url)
-        }
+        onAccepted: CurrentAccount.privateKeyFile_TLS =
+                    UtilsAdapter.getAbsPath(file.toString())
     }
 
     ElidedTextLabel {
@@ -153,33 +104,35 @@ ColumnLayout {
             labelText: JamiStrings.encryptMediaStream
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setUseSRTP(checked)
-                enableSDESToggle.enabled = checked
-                fallbackRTPToggle.enabled = checked
-            }
+            checked: CurrentAccount.enable_SRTP
+
+            onSwitchToggled: CurrentAccount.enable_SRTP = checked
         }
 
         ToggleSwitch {
             id: enableSDESToggle
 
+            enabled: CurrentAccount.enable_SRTP
+
             labelText: JamiStrings.enableSDES
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setUseSDES(checked)
-            }
+            checked: CurrentAccount.keyExchange_SRTP
+
+            onSwitchToggled: CurrentAccount.keyExchange_SRTP = Number(checked)
         }
 
         ToggleSwitch {
             id: fallbackRTPToggle
 
+            enabled: CurrentAccount.enable_SRTP
+
             labelText: JamiStrings.fallbackRTP
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setUseRTPFallback(checked)
-            }
+            checked: CurrentAccount.rtpFallback_SRTP
+
+            onSwitchToggled: CurrentAccount.rtpFallback_SRTP = checked
         }
 
         ToggleSwitch {
@@ -188,45 +141,59 @@ ColumnLayout {
             labelText: JamiStrings.encryptNegotiation
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setUseTLS(checked)
-                btnSIPCACert.enabled = checked
-                btnSIPUserCert.enabled = checked
-                btnSIPPrivateKey.enabled = checked
-                lineEditSIPCertPassword.enabled = checked
-            }
+            checked: CurrentAccount.enable_TLS
+
+            onSwitchToggled: CurrentAccount.enable_TLS = checked
         }
 
         SettingMaterialButton {
             id: btnSIPCACert
+
             Layout.fillWidth: true
             Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+            enabled: CurrentAccount.enable_TLS
 
             titleField: JamiStrings.caCertificate
             source: JamiResources.round_folder_24dp_svg
             itemWidth: root.itemWidth
+
+            textField: UtilsAdapter.toFileInfoName(CurrentAccount.certificateListFile_TLS)
+
             onClick: caCert_Dialog_SIP.open()
         }
 
         SettingMaterialButton {
             id: btnSIPUserCert
+
             Layout.fillWidth: true
             Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+            enabled: CurrentAccount.enable_TLS
 
             titleField: JamiStrings.userCertificate
             source: JamiResources.round_folder_24dp_svg
             itemWidth: root.itemWidth
+
+            textField: UtilsAdapter.toFileInfoName(CurrentAccount.certificateFile_TLS)
+
             onClick: userCert_Dialog_SIP.open()
         }
 
         SettingMaterialButton {
             id: btnSIPPrivateKey
+
             Layout.fillWidth: true
             Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+            enabled: CurrentAccount.enable_TLS
 
             titleField: JamiStrings.privateKey
             source: JamiResources.round_folder_24dp_svg
             itemWidth: root.itemWidth
+
+            textField: UtilsAdapter.toFileInfoName(CurrentAccount.privateKeyFile_TLS)
+
             onClick: privateKey_Dialog_SIP.open()
         }
 
@@ -236,10 +203,15 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            enabled: CurrentAccount.enable_TLS
+
             itemWidth: root.itemWidth
             titleField: JamiStrings.privateKeyPassword
 
-            onEditFinished: SettingsAdapter.lineEditSIPCertPasswordLineEditTextChanged(textField)
+            textField: CurrentAccount.password_TLS
+
+            onEditFinished: CurrentAccount.password_TLS = textField
         }
 
         ToggleSwitch {
@@ -248,9 +220,9 @@ ColumnLayout {
             labelText: JamiStrings.verifyCertificatesServer
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setVerifyCertificatesServer(checked)
-            }
+            checked: CurrentAccount.verifyServer_TLS
+
+            onSwitchToggled: CurrentAccount.verifyServer_TLS = checked
         }
 
         ToggleSwitch {
@@ -259,9 +231,9 @@ ColumnLayout {
             labelText: JamiStrings.verifyCertificatesClient
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setVerifyCertificatesClient(checked)
-            }
+            checked: CurrentAccount.verifyClient_TLS
+
+            onSwitchToggled: CurrentAccount.verifyClient_TLS = checked
         }
 
         ToggleSwitch {
@@ -270,9 +242,9 @@ ColumnLayout {
             labelText: JamiStrings.tlsRequireConnections
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setRequireCertificatesIncomingTLS(checked)
-            }
+            checked: CurrentAccount.requireClientCertificate_TLS
+
+            onSwitchToggled: CurrentAccount.requireClientCertificate_TLS = checked
         }
 
         SettingsComboBox {
@@ -293,10 +265,10 @@ ColumnLayout {
             tipText: JamiStrings.audioDeviceSelector
             role: "textDisplay"
 
-            onIndexChanged: {
-                var indexOfOption = comboModel.get(modelIndex).secondArg
-                SettingsAdapter.tlsProtocolComboBoxIndexChanged(parseInt(indexOfOption))
-            }
+            modelIndex: CurrentAccount.method_TLS
+
+            onModelIndexChanged: CurrentAccount.method_TLS =
+                                 parseInt(comboModel.get(modelIndex).secondArg)
         }
 
         SettingsMaterialLineEdit {
@@ -307,7 +279,9 @@ ColumnLayout {
             itemWidth: root.itemWidth
             titleField: JamiStrings.tlsServerName
 
-            onEditFinished: SettingsAdapter.outgoingTLSServerNameLineEditTextChanged(textField)
+            textField: CurrentAccount.serverName_TLS
+
+            onEditFinished: CurrentAccount.serverName_TLS = textField
         }
 
         SettingSpinBox {
@@ -319,7 +293,14 @@ ColumnLayout {
             bottomValue: 0
             topValue: 3000
 
-            onNewValue: SettingsAdapter.negotiationTimeoutSpinBoxValueChanged(valueField)
+            valueField: CurrentAccount.negotiationTimeoutSec_TLS
+
+            onInputAcceptableChanged: {
+                if (!inputAcceptable && valueField.length !== 0)
+                    valueField = Qt.binding(function() { return CurrentAccount.negotiationTimeoutSec_TLS })
+            }
+
+            onNewValue: CurrentAccount.negotiationTimeoutSec_TLS = valueField
         }
     }
 }

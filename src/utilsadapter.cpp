@@ -28,15 +28,20 @@
 #include "version.h"
 
 #include "api/pluginmodel.h"
+#include "api/datatransfermodel.h"
 
 #include <QApplication>
 #include <QClipboard>
 #include <QFileInfo>
 
-UtilsAdapter::UtilsAdapter(SystemTray* systemTray, LRCInstance* instance, QObject* parent)
+UtilsAdapter::UtilsAdapter(AppSettingsManager* settingsManager,
+                           SystemTray* systemTray,
+                           LRCInstance* instance,
+                           QObject* parent)
     : QmlAdapterBase(instance, parent)
     , clipboard_(QApplication::clipboard())
     , systemTray_(systemTray)
+    , settingsManager_(settingsManager)
 {}
 
 const QString
@@ -318,4 +323,79 @@ void
 UtilsAdapter::setSystemTrayIconVisible(bool visible)
 {
     systemTray_->setVisible(visible);
+}
+
+QVariant
+UtilsAdapter::getAppValue(const Settings::Key key)
+{
+    return settingsManager_->getValue(key);
+}
+
+void
+UtilsAdapter::setAppValue(const Settings::Key key, const QVariant& value)
+{
+    settingsManager_->setValue(key, value);
+}
+
+QString
+UtilsAdapter::getDirDocument()
+{
+    return QDir::toNativeSeparators(
+        QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+}
+
+QString
+UtilsAdapter::getDirDownload()
+{
+    QString downloadPath = QDir::toNativeSeparators(lrcInstance_->accountModel().downloadDirectory);
+    if (downloadPath.isEmpty()) {
+        downloadPath = lrc::api::DataTransferModel::createDefaultDirectory();
+        setDownloadPath(downloadPath);
+        lrcInstance_->accountModel().downloadDirectory = downloadPath;
+    }
+#ifdef Q_OS_WIN
+    int pos = downloadPath.lastIndexOf(QChar('\\'));
+#else
+    int pos = downloadPath.lastIndexOf(QChar('/'));
+#endif
+    if (pos == downloadPath.length() - 1)
+        downloadPath.truncate(pos);
+    return downloadPath;
+}
+
+void
+UtilsAdapter::setRunOnStartUp(bool state)
+{
+    if (Utils::CheckStartupLink(L"Jami")) {
+        if (!state) {
+            Utils::DeleteStartupLink(L"Jami");
+        }
+    } else if (state) {
+        Utils::CreateStartupLink(L"Jami");
+    }
+}
+
+void
+UtilsAdapter::setDownloadPath(QString dir)
+{
+    setAppValue(Settings::Key::DownloadPath, dir);
+    lrcInstance_->accountModel().downloadDirectory = dir + "/";
+}
+
+void
+UtilsAdapter::monitor(const bool& continuous)
+{
+    disconnect(debugMessageReceivedConnection_);
+    if (continuous)
+        debugMessageReceivedConnection_
+            = QObject::connect(&lrcInstance_->behaviorController(),
+                               &lrc::api::BehaviorController::debugMessageReceived,
+                               [this](const QString& data) {
+                                   logList_.append(data);
+                                   if (logList_.size() >= LOGSLIMIT) {
+                                       logList_.removeFirst();
+                                   }
+                                   Q_EMIT debugMessageReceived(data);
+                               });
+    lrcInstance_->monitor(continuous);
 }

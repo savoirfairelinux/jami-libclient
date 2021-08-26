@@ -35,10 +35,6 @@ Rectangle {
 
     color: JamiTheme.secondaryBackgroundColor
 
-    function updateValues() {
-        fileTransferSettings.updateValues()
-    }
-
     ColumnLayout {
         id: generalSettingsColumnLayout
 

@@ -47,8 +47,6 @@ Rectangle {
     }
 
     function setSelected(sel, recovery = false) {
-        profileType = SettingsAdapter.getCurrentAccount_Profile_Info_Type()
-
         if(selectedMenu === sel && (!recovery)) { return }
         switch(sel) {
             case SettingsView.Account:
@@ -57,7 +55,6 @@ Rectangle {
                 pageIdCurrentAccountSettings.updateAccountInfoDisplayed()
                 break
             case SettingsView.General:
-                generalSettings.updateValues()
                 AccountAdapter.stopPreviewing()
                 selectedMenu = sel
                 break
@@ -102,7 +99,6 @@ Rectangle {
         }
     }
 
-    property int profileType: SettingsAdapter.getCurrentAccount_Profile_Info_Type()
     property int selectedMenu: SettingsView.Account
     // signal to redirect the page to main view
     signal settingsViewNeedToShowMainView()
@@ -121,7 +117,7 @@ Rectangle {
         signal stopBooth
 
         property bool isSIP: {
-            switch (profileType) {
+            switch (CurrentAccount.type) {
                 case Profile.Type.SIP:
                     return true;
                 default:

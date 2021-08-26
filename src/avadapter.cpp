@@ -21,6 +21,9 @@
 #include "avadapter.h"
 #include "qtutils.h"
 
+#include "api/newcodecmodel.h"
+#include "api/newdevicemodel.h"
+
 #ifdef Q_OS_LINUX
 #include "xrectsel.h"
 #endif
@@ -338,4 +341,52 @@ AvAdapter::getScreenNumber() const
     }
 #endif
     return display;
+}
+
+void
+AvAdapter::setDeviceName(const QString& deviceName)
+{
+    lrcInstance_->getCurrentAccountInfo().deviceModel->setCurrentDeviceName(deviceName);
+}
+
+void
+AvAdapter::setCurrentVideoDeviceRateAndResolution(qreal rate, const QString& resolution)
+{
+    auto settings = lrcInstance_->avModel().getDeviceSettings(
+        lrcInstance_->avModel().getCurrentVideoCaptureDevice());
+    settings.rate = rate;
+    settings.size = resolution;
+    lrcInstance_->avModel().setDeviceSettings(settings);
+}
+
+QString
+AvAdapter::getVideoSettingsSize(const QString& deviceId)
+{
+    return lrcInstance_->avModel().getDeviceSettings(deviceId).size;
+}
+
+int
+AvAdapter::getCurrentVideoDeviceCapabilitiesSize()
+{
+    return lrcInstance_->avModel()
+        .getDeviceCapabilities(lrcInstance_->avModel().getCurrentVideoCaptureDevice())
+        .size();
+}
+
+void
+AvAdapter::enableCodec(unsigned int id, bool isToEnable)
+{
+    lrcInstance_->getCurrentAccountInfo().codecModel->enable(id, isToEnable);
+}
+
+void
+AvAdapter::increaseCodecPriority(unsigned int id, bool isVideo)
+{
+    lrcInstance_->getCurrentAccountInfo().codecModel->increasePriority(id, isVideo);
+}
+
+void
+AvAdapter::decreaseCodecPriority(unsigned int id, bool isVideo)
+{
+    lrcInstance_->getCurrentAccountInfo().codecModel->decreasePriority(id, isVideo);
 }

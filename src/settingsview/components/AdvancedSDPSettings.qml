@@ -30,45 +30,6 @@ ColumnLayout {
 
     property int itemWidth
 
-    function updateSDPAccountInfos(){
-        audioRTPMinPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Audio_AudioPortMin()
-        audioRTPMaxPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Audio_AudioPortMax()
-        videoRTPMinPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Video_VideoPortMin()
-        videoRTPMaxPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Video_VideoPortMax()
-    }
-
-    function audioRTPMinPortSpinBoxEditFinished(value) {
-        if (SettingsAdapter.getAccountConfig_Audio_AudioPortMax() < value) {
-            audioRTPMinPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Audio_AudioPortMin()
-            return
-        }
-       SettingsAdapter.audioRTPMinPortSpinBoxEditFinished(value)
-    }
-
-    function audioRTPMaxPortSpinBoxEditFinished(value) {
-        if (value <SettingsAdapter.getAccountConfig_Audio_AudioPortMin()) {
-            audioRTPMaxPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Audio_AudioPortMax()
-            return
-        }
-       SettingsAdapter.audioRTPMaxPortSpinBoxEditFinished(value)
-    }
-
-    function videoRTPMinPortSpinBoxEditFinished(value) {
-        if (SettingsAdapter.getAccountConfig_Video_VideoPortMax() < value) {
-            videoRTPMinPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Video_VideoPortMin()
-            return
-        }
-       SettingsAdapter.videoRTPMinPortSpinBoxEditFinished(value)
-    }
-
-    function videoRTPMaxPortSpinBoxEditFinished(value) {
-        if (value <SettingsAdapter.getAccountConfig_Video_VideoPortMin()) {
-            videoRTPMinPortSpinBox.valueField = SettingsAdapter.getAccountConfig_Video_VideoPortMin()
-            return
-        }
-       SettingsAdapter.videoRTPMaxPortSpinBoxEditFinished(value)
-    }
-
     ElidedTextLabel {
         Layout.preferredWidth: textWidth
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
@@ -97,9 +58,16 @@ ColumnLayout {
             title: JamiStrings.audioRTPMinPort
             itemWidth: root.itemWidth
             bottomValue: 0
-            topValue: 65535
+            topValue: audioRTPMaxPortSpinBox.valueField - 1
 
-            onNewValue: audioRTPMinPortSpinBoxEditFinished(valueField)
+            valueField: CurrentAccount.audioPortMin_Audio
+
+            onInputAcceptableChanged: {
+                if (!inputAcceptable && valueField.length !== 0)
+                    valueField = Qt.binding(function() { return CurrentAccount.audioPortMin_Audio })
+            }
+
+            onNewValue: CurrentAccount.audioPortMin_Audio = valueField
         }
 
         SettingSpinBox {
@@ -107,10 +75,17 @@ ColumnLayout {
 
             title: JamiStrings.audioRTPMaxPort
             itemWidth: root.itemWidth
-            bottomValue: 0
+            bottomValue: audioRTPMinPortSpinBox.valueField + 1
             topValue: 65535
 
-            onNewValue: audioRTPMaxPortSpinBoxEditFinished(valueField)
+            valueField: CurrentAccount.audioPortMax_Audio
+
+            onInputAcceptableChanged: {
+                if (!inputAcceptable && valueField.length !== 0)
+                    valueField = Qt.binding(function() { return CurrentAccount.audioPortMax_Audio })
+            }
+
+            onNewValue: CurrentAccount.audioPortMax_Audio = valueField
         }
 
         SettingSpinBox {
@@ -119,9 +94,16 @@ ColumnLayout {
             title: JamiStrings.videoRTPMinPort
             itemWidth: root.itemWidth
             bottomValue: 0
-            topValue: 65535
+            topValue: videoRTPMaxPortSpinBox.valueField - 1
 
-            onNewValue: videoRTPMinPortSpinBoxEditFinished(valueField)
+            valueField: CurrentAccount.videoPortMin_Video
+
+            onInputAcceptableChanged: {
+                if (!inputAcceptable && valueField.length !== 0)
+                    valueField = Qt.binding(function() { return CurrentAccount.videoPortMin_Video })
+            }
+
+            onNewValue: CurrentAccount.videoPortMin_Video = valueField
         }
 
         SettingSpinBox {
@@ -129,10 +111,17 @@ ColumnLayout {
 
             title: JamiStrings.videoRTPMaxPort
             itemWidth: root.itemWidth
-            bottomValue: 0
+            bottomValue: videoRTPMinPortSpinBox.valueField + 1
             topValue: 65535
 
-            onNewValue: videoRTPMaxPortSpinBoxEditFinished(valueField)
+            valueField: CurrentAccount.videoPortMax_Video
+
+            onInputAcceptableChanged: {
+                if (!inputAcceptable && valueField.length !== 0)
+                    valueField = Qt.binding(function() { return CurrentAccount.videoPortMax_Video })
+            }
+
+            onNewValue: CurrentAccount.videoPortMax_Video = valueField
         }
     }
 }

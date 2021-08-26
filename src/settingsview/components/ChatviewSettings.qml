@@ -50,14 +50,14 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        checked: SettingsAdapter.getAppValue(Settings.EnableTypingIndicator)
+        checked: UtilsAdapter.getAppValue(Settings.EnableTypingIndicator)
 
         labelText: JamiStrings.enableTypingIndicator
         fontPointSize: JamiTheme.settingsFontSize
 
         tooltipText: JamiStrings.enableTypingIndicator
 
-        onSwitchToggled: SettingsAdapter.setAppValue(Settings.Key.EnableTypingIndicator, checked)
+        onSwitchToggled: UtilsAdapter.setAppValue(Settings.Key.EnableTypingIndicator, checked)
     }
 
     ToggleSwitch {
@@ -66,7 +66,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        checked: SettingsAdapter.getAppValue(Settings.DisplayHyperlinkPreviews)
+        checked: UtilsAdapter.getAppValue(Settings.DisplayHyperlinkPreviews)
 
         labelText: JamiStrings.displayHyperlinkPreviews
         fontPointSize: JamiTheme.settingsFontSize
@@ -74,7 +74,7 @@ ColumnLayout {
         tooltipText: JamiStrings.displayHyperlinkPreviews
 
         onSwitchToggled: {
-            SettingsAdapter.setAppValue(Settings.Key.DisplayHyperlinkPreviews, checked)
+            UtilsAdapter.setAppValue(Settings.Key.DisplayHyperlinkPreviews, checked)
             MessagesAdapter.setDisplayLinks()
         }
     }

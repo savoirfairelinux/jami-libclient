@@ -24,7 +24,6 @@
 #include "contactadapter.h"
 #include "pluginadapter.h"
 #include "messagesadapter.h"
-#include "settingsadapter.h"
 #include "utilsadapter.h"
 #include "conversationsadapter.h"
 #include "currentconversation.h"
@@ -113,11 +112,10 @@ registerTypes(QQmlEngine* engine,
     auto avAdapter = new AvAdapter(lrcInstance, parent);
     auto contactAdapter = new ContactAdapter(lrcInstance, parent);
     auto accountAdapter = new AccountAdapter(appSettingsManager, lrcInstance, parent);
-    auto utilsAdapter = new UtilsAdapter(systemTray, lrcInstance, parent);
-    auto settingsAdapter = new SettingsAdapter(appSettingsManager, lrcInstance, parent);
+    auto utilsAdapter = new UtilsAdapter(appSettingsManager, systemTray, lrcInstance, parent);
     auto pluginAdapter = new PluginAdapter(lrcInstance, parent);
     auto currentConversation = new CurrentConversation(lrcInstance, parent);
-    auto currentAccount = new CurrentAccount(lrcInstance, parent);
+    auto currentAccount = new CurrentAccount(lrcInstance, appSettingsManager, parent);
 
     // qml adapter registration
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, callAdapter, "CallAdapter");
@@ -127,7 +125,6 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, contactAdapter, "ContactAdapter");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, accountAdapter, "AccountAdapter");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, utilsAdapter, "UtilsAdapter");
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, settingsAdapter, "SettingsAdapter");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, pluginAdapter, "PluginAdapter");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, currentConversation, "CurrentConversation");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, currentAccount, "CurrentAccount");

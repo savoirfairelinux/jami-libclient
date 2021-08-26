@@ -50,14 +50,14 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        checked: SettingsAdapter.getAppValue(Settings.Key.AutoUpdate)
+        checked: UtilsAdapter.getAppValue(Settings.Key.AutoUpdate)
 
         labelText: JamiStrings.update
         tooltipText: JamiStrings.enableAutoUpdates
         fontPointSize: JamiTheme.settingsFontSize
 
         onSwitchToggled: {
-            SettingsAdapter.setAppValue(Settings.Key.AutoUpdate, checked)
+            UtilsAdapter.setAppValue(Settings.Key.AutoUpdate, checked)
             UpdateManager.setAutoUpdateCheck(checked)
         }
     }

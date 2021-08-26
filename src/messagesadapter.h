@@ -50,6 +50,7 @@ protected:
     Q_INVOKABLE void acceptInvitation(const QString& convId = {});
     Q_INVOKABLE void refuseInvitation(const QString& convUid = "");
     Q_INVOKABLE void blockConversation(const QString& convUid = "");
+    Q_INVOKABLE void unbanContact(int index);
 
     // JS Q_INVOKABLE.
     Q_INVOKABLE void setDisplayLinks();

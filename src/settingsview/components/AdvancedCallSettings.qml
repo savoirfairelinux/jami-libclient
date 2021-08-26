@@ -34,32 +34,9 @@ ColumnLayout {
     property bool isSIP
     property int itemWidth
 
-    function updateCallSettingsInfos() {
-        checkBoxUntrusted.checked = SettingsAdapter.getAccountConfig_DHT_PublicInCalls()
-        checkBoxRdv.checked = SettingsAdapter.getAccountConfig_RendezVous()
-        checkBoxAutoAnswer.checked = SettingsAdapter.getAccountConfig_AutoAnswer()
-        checkBoxCustomRingtone.checked = SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled()
-        checkboxAllModerators.checked = SettingsAdapter.isAllModeratorsEnabled(LRCInstance.currentAccountId)
-
-        btnRingtone.enabled = SettingsAdapter.getAccountConfig_Ringtone_RingtoneEnabled()
-        btnRingtone.textField = UtilsAdapter.toFileInfoName(SettingsAdapter.getAccountConfig_Ringtone_RingtonePath())
-        updateAndShowModeratorsSlot()
-    }
-
-    function changeRingtonePath(url) {
-        if(url.length !== 0) {
-           SettingsAdapter.set_RingtonePath(url)
-            btnRingtone.textField = UtilsAdapter.toFileInfoName(url)
-        } else if (SettingsAdapter.getAccountConfig_Ringtone_RingtonePath().length === 0){
-            btnRingtone.textField = JamiStrings.addCustomRingtone
-        }
-    }
-
     function updateAndShowModeratorsSlot() {
-        toggleLocalModerators.checked = SettingsAdapter.isLocalModeratorsEnabled(
-                    LRCInstance.currentAccountId)
         moderatorListWidget.model.reset()
-        moderatorListWidget.visible = (moderatorListWidget.model.rowCount() > 0)
+        moderatorListWidget.visible = moderatorListWidget.model.rowCount() > 0
     }
 
     Connections {
@@ -76,14 +53,16 @@ ColumnLayout {
         mode: JamiFileDialog.OpenFile
         title: JamiStrings.selectNewRingtone
         folder: JamiQmlUtils.qmlFilePrefix + UtilsAdapter.toFileAbsolutepath(
-                    SettingsAdapter.getAccountConfig_Ringtone_RingtonePath())
+                    CurrentAccount.ringtonePath_Ringtone)
 
-        nameFilters: [qsTr("Audio Files") + " (*.wav *.ogg *.opus *.mp3 *.aiff *.wma)", qsTr(
-                "All files") + " (*)"]
+        nameFilters: [qsTr("Audio Files") + " (*.wav *.ogg *.opus *.mp3 *.aiff *.wma)",
+            qsTr("All files") + " (*)"]
 
         onAccepted: {
             var url = UtilsAdapter.getAbsPath(file.toString())
-            changeRingtonePath(url)
+
+            if(url.length !== 0)
+                CurrentAccount.ringtonePath_Ringtone = url
         }
     }
 
@@ -106,9 +85,9 @@ ColumnLayout {
             labelText: JamiStrings.allowCallsUnknownContacs
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setCallsUntrusted(checked)
-            }
+            checked: CurrentAccount.PublicInCalls_DHT
+
+            onSwitchToggled: CurrentAccount.PublicInCalls_DHT = checked
         }
 
         ToggleSwitch {
@@ -117,9 +96,9 @@ ColumnLayout {
             labelText: JamiStrings.autoAnswerCalls
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setAutoAnswerCalls(checked)
-            }
+            checked: CurrentAccount.autoAnswer
+
+            onSwitchToggled: CurrentAccount.autoAnswer = checked
         }
 
         ToggleSwitch {
@@ -128,16 +107,20 @@ ColumnLayout {
             labelText: JamiStrings.enableCustomRingtone
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setEnableRingtone(checked)
-                btnRingtone.enabled = checked
-            }
+            checked: CurrentAccount.ringtoneEnabled_Ringtone
+
+            onSwitchToggled: CurrentAccount.ringtoneEnabled_Ringtone = checked
         }
 
         SettingMaterialButton {
             id: btnRingtone
+
             Layout.fillWidth: true
             Layout.minimumHeight: JamiTheme.preferredFieldHeight
+
+            enabled: checkBoxCustomRingtone.checked
+
+            textField: UtilsAdapter.toFileInfoName(CurrentAccount.ringtonePath_Ringtone)
 
             titleField: JamiStrings.selectCustomRingtone
             source: JamiResources.round_folder_24dp_svg
@@ -147,14 +130,15 @@ ColumnLayout {
 
         ToggleSwitch {
             id: checkBoxRdv
+
             visible: !isSIP
 
             labelText: JamiStrings.rendezVous
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setIsRendezVous(checked)
-            }
+            checked: CurrentAccount.isRendezVous
+
+            onSwitchToggled: CurrentAccount.isRendezVous = checked
         }
 
         ToggleSwitch {
@@ -163,8 +147,9 @@ ColumnLayout {
             labelText: JamiStrings.enableLocalModerators
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: SettingsAdapter.enableLocalModerators(
-                                 LRCInstance.currentAccountId, checked)
+            checked: CurrentAccount.isLocalModeratorsEnabled
+
+            onSwitchToggled: CurrentAccount.isLocalModeratorsEnabled = checked
         }
 
         ElidedTextLabel {
@@ -181,6 +166,8 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: 160
+
+            visible: model.rowCount() > 0
 
             model: ModeratorListModel {
                 lrcInstance: LRCInstance
@@ -200,7 +187,7 @@ ColumnLayout {
 
                 onClicked: moderatorListWidget.currentIndex = index
                 onBtnContactClicked: {
-                    SettingsAdapter.setDefaultModerator(
+                    AccountAdapter.setDefaultModerator(
                                 LRCInstance.currentAccountId, contactID, false)
                     updateAndShowModeratorsSlot()
                 }
@@ -239,8 +226,9 @@ ColumnLayout {
             labelText: JamiStrings.enableAllModerators
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: SettingsAdapter.setAllModeratorsEnabled(
-                                 LRCInstance.currentAccountId, checked)
+            checked: CurrentAccount.isAllModeratorsEnabled
+
+            onSwitchToggled: CurrentAccount.isAllModeratorsEnabled = checked
         }
     }
 }

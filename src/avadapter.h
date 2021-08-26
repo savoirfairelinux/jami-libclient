@@ -75,6 +75,15 @@ protected:
     Q_INVOKABLE void startAudioMeter();
     Q_INVOKABLE void stopAudioMeter();
 
+    Q_INVOKABLE void setDeviceName(const QString& deviceName);
+    Q_INVOKABLE void setCurrentVideoDeviceRateAndResolution(qreal rate, const QString& resolution);
+    Q_INVOKABLE QString getVideoSettingsSize(const QString& deviceId);
+    Q_INVOKABLE int getCurrentVideoDeviceCapabilitiesSize();
+
+    Q_INVOKABLE void enableCodec(unsigned int id, bool isToEnable);
+    Q_INVOKABLE void increaseCodecPriority(unsigned int id, bool isVideo);
+    Q_INVOKABLE void decreaseCodecPriority(unsigned int id, bool isVideo);
+
 private Q_SLOTS:
     void onAudioDeviceEvent();
     void onVideoDeviceEvent();

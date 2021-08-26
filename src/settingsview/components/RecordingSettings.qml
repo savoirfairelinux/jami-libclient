@@ -31,7 +31,7 @@ ColumnLayout {
     id:root
 
     property int itemWidth
-    property string recordPath: SettingsAdapter.getDir_Document()
+    property string recordPath: UtilsAdapter.getDirDocument()
 
     onRecordPathChanged: {
         if(recordPath === "") return

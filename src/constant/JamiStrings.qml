@@ -131,6 +131,8 @@ Item {
     // AdvancedMediaSettings
     property string media: qsTr("Media")
     property string enableVideo: qsTr("Enable video")
+    property string videoCodecs: qsTr("Video Codecs")
+    property string audioCodecs: qsTr("Audio Codecs")
 
     // AdvancedSDPSettings
     property string sdpSettingsTitle: qsTr("SDP Session Negotiation (ICE Fallback)")

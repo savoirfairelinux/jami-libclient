@@ -31,23 +31,6 @@ ColumnLayout {
     property int itemWidth
     property bool isSIP
 
-    function updateConnectivityAccountInfos() {
-        autoRegistrationAfterExpired.checked = SettingsAdapter.getAccountConfig_KeepAliveEnabled()
-        registrationExpireTimeoutSpinBox.valueField = SettingsAdapter.getAccountConfig_Registration_Expire()
-        networkInterfaceSpinBox.valueField = SettingsAdapter.getAccountConfig_Localport()
-        checkBoxUPnP.checked = SettingsAdapter.getAccountConfig_UpnpEnabled()
-        checkBoxTurnEnable.checked = SettingsAdapter.getAccountConfig_TURN_Enabled()
-        lineEditTurnAddress.textField = SettingsAdapter.getAccountConfig_TURN_Server()
-        lineEditTurnUsername.textField = SettingsAdapter.getAccountConfig_TURN_Username()
-        lineEditTurnPassword.textField = SettingsAdapter.getAccountConfig_TURN_Password()
-        checkBoxSTUNEnable.checked = SettingsAdapter.getAccountConfig_STUN_Enabled()
-        lineEditSTUNAddress.textField = SettingsAdapter.getAccountConfig_STUN_Server()
-        lineEditTurnRealmSIP.textField = SettingsAdapter.getAccountConfig_TURN_Realm()
-        lineEditTurnRealmSIP.enabled = SettingsAdapter.getAccountConfig_TURN_Enabled()
-        lineEditSTUNAddress.enabled = SettingsAdapter.getAccountConfig_STUN_Enabled()
-
-    }
-
     ElidedTextLabel {
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
@@ -70,11 +53,14 @@ ColumnLayout {
             labelText: JamiStrings.autoRegistration
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: SettingsAdapter.setKeepAliveEnabled(checked)
+            checked: CurrentAccount.keepAliveEnabled
+
+            onSwitchToggled: CurrentAccount.keepAliveEnabled = checked
         }
 
         SettingSpinBox {
             id: registrationExpireTimeoutSpinBox
+
             visible: isSIP
 
             title: JamiStrings.registrationExpirationTime
@@ -82,11 +68,14 @@ ColumnLayout {
             bottomValue: 0
             topValue: 7*24*3600
 
-            onNewValue: SettingsAdapter.registrationExpirationTimeSpinBoxValueChanged(valueField)
+            valueField: CurrentAccount.expire_Registration
+
+            onNewValue: CurrentAccount.expire_Registration = valueField
         }
 
         SettingSpinBox {
             id: networkInterfaceSpinBox
+
             visible: isSIP
 
             title: JamiStrings.networkInterface
@@ -94,7 +83,14 @@ ColumnLayout {
             bottomValue: 0
             topValue: 65535
 
-            onNewValue: SettingsAdapter.networkInterfaceSpinBoxValueChanged(valueField)
+            valueField: CurrentAccount.localPort
+
+            onInputAcceptableChanged: {
+                if (!inputAcceptable && valueField.length !== 0)
+                    valueField = Qt.binding(function() { return CurrentAccount.localPort })
+            }
+
+            onNewValue: CurrentAccount.localPort = valueField
         }
 
         ToggleSwitch {
@@ -105,7 +101,9 @@ ColumnLayout {
             labelText: JamiStrings.useUPnP
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: SettingsAdapter.setUseUPnP(checked)
+            checked: CurrentAccount.upnpEnabled
+
+            onSwitchToggled: CurrentAccount.upnpEnabled = checked
         }
 
         ToggleSwitch {
@@ -116,15 +114,9 @@ ColumnLayout {
             labelText: JamiStrings.useTURN
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setUseTURN(checked)
-                if (isSIP) {
-                    lineEditTurnAddress.enabled = checked
-                    lineEditTurnUsername.enabled = checked
-                    lineEditTurnPassword.enabled = checked
-                    lineEditTurnRealmSIP.enabled = checked
-                }
-            }
+            checked: CurrentAccount.enable_TURN
+
+            onSwitchToggled: CurrentAccount.enable_TURN = checked
         }
 
         SettingsMaterialLineEdit {
@@ -132,9 +124,15 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            enabled: checkBoxTurnEnable.checked
+
+            textField: CurrentAccount.server_TURN
+
             itemWidth: root.itemWidth
             titleField: JamiStrings.turnAdress
-            onEditFinished: SettingsAdapter.setTURNAddress(textField)
+
+            onEditFinished: CurrentAccount.server_TURN = textField
         }
 
         SettingsMaterialLineEdit {
@@ -142,9 +140,15 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            enabled: checkBoxTurnEnable.checked
+
+            textField: CurrentAccount.username_TURN
+
             itemWidth: root.itemWidth
             titleField: JamiStrings.turnUsername
-            onEditFinished: SettingsAdapter.setTURNUsername(textField)
+
+            onEditFinished: CurrentAccount.username_TURN = textField
         }
 
         SettingsMaterialLineEdit {
@@ -152,9 +156,15 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            enabled: checkBoxTurnEnable.checked
+
+            textField: CurrentAccount.password_TURN
+
             itemWidth: root.itemWidth
             titleField: JamiStrings.turnPassword
-            onEditFinished: SettingsAdapter.setTURNPassword(textField)
+
+            onEditFinished: CurrentAccount.password_TURN = textField
         }
 
         SettingsMaterialLineEdit {
@@ -162,9 +172,15 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            enabled: checkBoxTurnEnable.checked
+
+            textField: CurrentAccount.realm_TURN
+
             itemWidth: root.itemWidth
             titleField: JamiStrings.turnRealm
-            onEditFinished: SettingsAdapter.setTURNRealm(textField)
+
+            onEditFinished: CurrentAccount.realm_TURN = textField
         }
 
         ToggleSwitch {
@@ -175,10 +191,9 @@ ColumnLayout {
             labelText: JamiStrings.useSTUN
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setUseSTUN(checked)
-                lineEditSTUNAddress.enabled = checked
-            }
+            checked: CurrentAccount.enable_STUN
+
+            onSwitchToggled: CurrentAccount.enable_STUN = checked
         }
 
         SettingsMaterialLineEdit {
@@ -186,9 +201,15 @@ ColumnLayout {
 
             Layout.fillWidth: true
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+            enabled: checkBoxSTUNEnable.checked
+
+            textField: CurrentAccount.server_STUN
+
             itemWidth: root.itemWidth
             titleField: JamiStrings.stunAdress
-            onEditFinished: SettingsAdapter.setSTUNAddress(textField)
+
+            onEditFinished: CurrentAccount.server_STUN = textField
         }
     }
 }

@@ -30,19 +30,6 @@ import "../../commoncomponents"
 ColumnLayout {
     id:root
 
-    Connections {
-        id: accountConnections
-
-        target: AccountAdapter
-        enabled: root.visible
-
-        function onAccountStatusChanged(id) {
-            if (SettingsAdapter.getAccountConfig_Manageruri() === ""){
-                linkDevPushButton.visible = SettingsAdapter.get_CurrentAccountInfo_Enabled()
-            }
-        }
-    }
-
     function removeDeviceSlot(index){
         var idOfDevice = settingsListView.model.data(settingsListView.model.index(index,0),
                                                      DeviceItemListModel.DeviceID)
@@ -121,6 +108,8 @@ ColumnLayout {
         Layout.alignment: Qt.AlignCenter
 
         preferredWidth: JamiTheme.preferredFieldWidth
+
+        visible: CurrentAccount.managerUri === "" && CurrentAccount.enabled
 
         color: JamiTheme.buttonTintedBlack
         hoveredColor: JamiTheme.buttonTintedBlackHovered

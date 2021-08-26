@@ -60,7 +60,6 @@ set(COMMON_SOURCES
     ${SRC_DIR}/avadapter.cpp
     ${SRC_DIR}/contactadapter.cpp
     ${SRC_DIR}/pluginadapter.cpp
-    ${SRC_DIR}/settingsadapter.cpp
     ${SRC_DIR}/deviceitemlistmodel.cpp
     ${SRC_DIR}/pluginitemlistmodel.cpp
     ${SRC_DIR}/pluginhandleritemlistmodel.cpp
@@ -117,7 +116,6 @@ set(COMMON_HEADERS
     ${SRC_DIR}/avadapter.h
     ${SRC_DIR}/contactadapter.h
     ${SRC_DIR}/pluginadapter.h
-    ${SRC_DIR}/settingsadapter.h
     ${SRC_DIR}/deviceitemlistmodel.h
     ${SRC_DIR}/pluginitemlistmodel.h
     ${SRC_DIR}/pluginhandleritemlistmodel.h

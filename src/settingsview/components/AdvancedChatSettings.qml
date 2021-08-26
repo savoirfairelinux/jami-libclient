@@ -29,10 +29,6 @@ ColumnLayout {
 
     property int itemWidth
 
-    function updateSettings() {
-        checkBoxSendDisplayed.checked = SettingsAdapter.getAccountConfig_ReadReceipt()
-    }
-
     ElidedTextLabel {
         Layout.fillWidth: true
 
@@ -52,9 +48,9 @@ ColumnLayout {
             labelText: JamiStrings.enableReadReceipts
             fontPointSize: JamiTheme.settingsFontSize
 
-            onSwitchToggled: {
-                SettingsAdapter.setSendReadReceipt(checked)
-            }
+            checked: CurrentAccount.sendReadReceipt
+
+            onSwitchToggled: CurrentAccount.sendReadReceipt = checked
         }
     }
 }

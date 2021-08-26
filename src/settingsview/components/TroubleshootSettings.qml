@@ -26,15 +26,16 @@ import net.jami.Constants 1.1
 
 import "../../commoncomponents"
 
-ColumnLayout{
-    id:root
+ColumnLayout {
+    id: root
+
     property int itemWidth
 
-    LogsView{
+    LogsView {
         id: logsView
     }
 
-    Label{
+    Label {
         Layout.fillWidth: true
 
         text: JamiStrings.troubleshootTitle
@@ -47,7 +48,9 @@ ColumnLayout{
     }
 
     RowLayout {
-        Text{
+        Layout.leftMargin: JamiTheme.preferredMarginSize
+
+        Text {
             Layout.fillWidth: true
             Layout.preferredHeight: 30
             Layout.rightMargin: JamiTheme.preferredMarginSize
@@ -81,4 +84,3 @@ ColumnLayout{
         }
     }
 }
-

@@ -46,6 +46,8 @@ public:
     QModelIndex parent(const QModelIndex& child) const;
     Qt::ItemFlags flags(const QModelIndex& index) const;
 
+    Q_INVOKABLE void reset();
+
     int mediaType();
     void setMediaType(int mediaType);
 

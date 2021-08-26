@@ -33,7 +33,7 @@ ColumnLayout {
     visible: {
         if (bannedListWidget.model.rowCount() <= 0)
             return false
-        return true && !isSIP && SettingsAdapter.getAccountConfig_Manageruri() === ""
+        return true && !isSIP && CurrentAccount.managerUri === ""
     }
 
     Connections {
@@ -66,10 +66,6 @@ ColumnLayout {
         } else {
             bannedContactsBtn.visible = true
         }
-    }
-
-    function unban(index) {
-        SettingsAdapter.unbanContact(index)
     }
 
     RowLayout {
@@ -127,7 +123,7 @@ ColumnLayout {
             btnToolTip: JamiStrings.reinstateContact
 
             onClicked: bannedListWidget.currentIndex = index
-            onBtnContactClicked: unban(index)
+            onBtnContactClicked: MessagesAdapter.unbanContact(index)
         }
     }
 }

@@ -35,6 +35,7 @@ RowLayout {
     property alias topValue: textFieldValidator.top
     property alias valueField: textField.text
     property alias tooltipText: toolTip.text
+    property alias inputAcceptable: textField.acceptableInput
 
     property string borderColor: JamiTheme.greyBorderColor
     property int itemWidth

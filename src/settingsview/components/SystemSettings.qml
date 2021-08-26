@@ -32,11 +32,11 @@ ColumnLayout {
     id:root
 
     property int itemWidth
-    property string downloadPath: SettingsAdapter.getDir_Download()
+    property string downloadPath: UtilsAdapter.getDirDownload()
 
     onDownloadPathChanged: {
         if(downloadPath === "") return
-       SettingsAdapter.setDownloadPath(downloadPath)
+       UtilsAdapter.setDownloadPath(downloadPath)
     }
 
     FolderDialog {
@@ -68,7 +68,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        checked: SettingsAdapter.getAppValue(Settings.EnableDarkTheme)
+        checked: UtilsAdapter.getAppValue(Settings.EnableDarkTheme)
 
         labelText: qsTr("Enable dark theme")
         fontPointSize: JamiTheme.settingsFontSize
@@ -77,7 +77,7 @@ ColumnLayout {
 
         onSwitchToggled: {
             JamiTheme.setTheme(checked)
-            SettingsAdapter.setAppValue(Settings.Key.EnableDarkTheme, checked)
+            UtilsAdapter.setAppValue(Settings.Key.EnableDarkTheme, checked)
         }
     }
 
@@ -86,26 +86,26 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
-        checked: SettingsAdapter.getAppValue(Settings.EnableNotifications)
+        checked: UtilsAdapter.getAppValue(Settings.EnableNotifications)
 
         labelText: qsTr("Enable desktop notifications")
         fontPointSize: JamiTheme.settingsFontSize
 
         tooltipText: JamiStrings.enableNotifications
 
-        onSwitchToggled: SettingsAdapter.setAppValue(Settings.Key.EnableNotifications, checked)
+        onSwitchToggled: UtilsAdapter.setAppValue(Settings.Key.EnableNotifications, checked)
     }
 
     ToggleSwitch {
         id: closeOrMinCheckBox
         Layout.fillWidth: true
         Layout.leftMargin: JamiTheme.preferredMarginSize
-        checked: SettingsAdapter.getAppValue(Settings.MinimizeOnClose)
+        checked: UtilsAdapter.getAppValue(Settings.MinimizeOnClose)
 
         labelText: JamiStrings.keepMinimized
         fontPointSize: JamiTheme.settingsFontSize
 
-        onSwitchToggled: SettingsAdapter.setAppValue(Settings.Key.MinimizeOnClose, checked)
+        onSwitchToggled: UtilsAdapter.setAppValue(Settings.Key.MinimizeOnClose, checked)
     }
 
     ToggleSwitch {
@@ -120,7 +120,7 @@ ColumnLayout {
 
         tooltipText: JamiStrings.tipRunStartup
 
-        onSwitchToggled: SettingsAdapter.setRunOnStartUp(checked)
+        onSwitchToggled: UtilsAdapter.setRunOnStartUp(checked)
     }
 
     RowLayout {
