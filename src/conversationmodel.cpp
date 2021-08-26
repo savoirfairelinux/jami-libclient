@@ -789,24 +789,27 @@ ConversationModel::removeConversation(const QString& uid, bool banned)
         return;
 
     auto& conversation = pimpl_->conversations.at(conversationIdx);
-    if (conversation.participants.empty()) {
+    // Remove contact from daemon
+    // NOTE: this will also remove the conversation into the database for non-swarm and remove
+    // conversation repository for one-to-one.
+    auto& peers = pimpl_->peersForConversation(conversation);
+    if (peers.empty()) {
         // Should not
         qDebug() << "ConversationModel::removeConversation can't remove a conversation without "
                     "participant";
         return;
     }
-    if (!conversation.isCoreDialog()) {
+    if (conversation.isSwarm()) {
         ConfigurationManager::instance().removeConversation(owner.id, uid);
         pimpl_->eraseConversation(conversationIdx);
         pimpl_->invalidateModel();
         emit conversationRemoved(uid);
-        return;
+
+        // Still some other conversation, do nothing else
+        if (!banned && getConversationForPeerUri(peers.front()) != std::nullopt)
+            return;
     }
 
-    // Remove contact from daemon
-    // NOTE: this will also remove the conversation into the database for non-swarm and remove
-    // conversation repository for one-to-one.
-    auto& peers = pimpl_->peersForConversation(conversation);
     if (peers.size() != 1) {
         return;
     }
