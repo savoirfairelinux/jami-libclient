@@ -781,7 +781,7 @@ ConversationModel::selectConversation(const QString& uid) const
 }
 
 void
-ConversationModel::removeConversation(const QString& uid, bool banned)
+ConversationModel::removeConversation(const QString& uid, bool banned, bool removeContact)
 {
     // Get conversation
     auto conversationIdx = pimpl_->indexOf(uid);
@@ -795,13 +795,14 @@ ConversationModel::removeConversation(const QString& uid, bool banned)
                     "participant";
         return;
     }
-    if (!conversation.isCoreDialog()) {
+    if (conversation.isSwarm()) {
         ConfigurationManager::instance().removeConversation(owner.id, uid);
         pimpl_->eraseConversation(conversationIdx);
         pimpl_->invalidateModel();
         emit conversationRemoved(uid);
-        return;
     }
+    if (!removeContact)
+        return;
 
     // Remove contact from daemon
     // NOTE: this will also remove the conversation into the database for non-swarm and remove

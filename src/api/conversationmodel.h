@@ -191,8 +191,9 @@ public:
      * Remove a conversation and the contact if it's a dialog
      * @param uid of the conversation
      * @param banned if we want to ban the contact.
+     * @param if we also need to remove contact
      */
-    void removeConversation(const QString& uid, bool banned = false);
+    void removeConversation(const QString& uid, bool banned = false, bool removeContact = true);
     /**
      * Get the action wanted by the user when they click on the conversation
      * @param uid of the conversation
