@@ -2642,6 +2642,9 @@ ConversationModelPimpl::addConversationRequest(const MapStringString& convReques
 
     // add the author to the contact model's contact list as a PENDING
     // if they aren't already a contact
+    auto isSelf = linked.owner.profileInfo.uri == peerUri;
+    if (isSelf)
+        return;
     linked.owner.contactModel->addToContacts(peerUri);
 
     conversation::Info conversation;
@@ -2652,7 +2655,7 @@ ConversationModelPimpl::addConversationRequest(const MapStringString& convReques
     conversation.isRequest = true;
     emplaceBackConversation(std::move(conversation));
     invalidateModel();
-    emit linked.newConversation(peerUri);
+    emit linked.newConversation(convId);
     emit linked.modelChanged();
 }
 
