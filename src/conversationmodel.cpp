@@ -3430,6 +3430,10 @@ ConversationModel::sendFile(const QString& convUid, const QString& path, const Q
 {
     try {
         auto& conversation = pimpl_->getConversationForUid(convUid, true).get();
+        if (conversation.isSwarm()) {
+            owner.dataTransferModel->sendFile(owner.id, "", convUid, path, filename);
+            return;
+        }
         auto peers = pimpl_->peersForConversation(conversation);
         if (peers.size() < 1) {
             qDebug() << "send file error: could not send file in conversation with no participants";
@@ -3440,9 +3444,6 @@ ConversationModel::sendFile(const QString& convUid, const QString& path, const Q
          Conversations for new contact from search result are NON_SWARM but after receiving
          conversationReady callback could be updated to ONE_TO_ONE. We still use conversationReady
          callback for one_to_one conversation to check if contact is blocked*/
-        if (peers.size() > 1) {
-            owner.dataTransferModel->sendFile(owner.id, "", convUid, path, filename);
-        }
         const auto peerId = peers.front();
         bool isTemporary = peerId == convUid;
 
