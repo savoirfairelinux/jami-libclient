@@ -373,6 +373,8 @@ public:
      * @note callId can be omitted to switch the input of the local recorder
      */
     void setDisplay(int idx, int x, int y, int w, int h, const QString& callId = {});
+
+    void emplaceConversationConference(const QString& callId);
 Q_SIGNALS:
 
     /**

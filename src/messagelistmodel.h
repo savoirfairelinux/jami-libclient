@@ -42,6 +42,8 @@ struct Info;
     X(IsRead) \
     X(ContactAction) \
     X(ActionUri) \
+    X(ConfId) \
+    X(DeviceId) \
     X(LinkPreviewInfo) \
     X(Linkified) \
     X(TransferName) \

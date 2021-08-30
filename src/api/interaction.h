@@ -255,6 +255,7 @@ struct Info
     QString authorUri;
     QString body;
     QString parentId = "";
+    QString confId;
     std::time_t timestamp = 0;
     std::time_t duration = 0;
     Type type = Type::INVALID;
@@ -300,6 +301,8 @@ struct Info
             body = QObject::tr("Swarm created");
         } else if (type == Type::CALL) {
             duration = message["duration"].toInt() / 1000;
+            if (message.contains("confId"))
+                confId = message["confId"];
         }
         commit = message;
     }

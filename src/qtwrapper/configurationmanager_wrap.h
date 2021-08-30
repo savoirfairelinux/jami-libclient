@@ -394,9 +394,15 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
-    QStringList getAccountList()
+    QStringList getAccountList() { return convertStringList(DRing::getAccountList()); }
+
+    VectorMapStringString getActiveCalls(const QString& accountId, const QString& convId)
     {
-        QStringList temp = convertStringList(DRing::getAccountList());
+
+        VectorMapStringString temp;
+        for (const auto& x : DRing::getActiveCalls(accountId.toStdString(), convId.toStdString())) {
+            temp.push_back(convertMap(x));
+        }
         return temp;
     }
 

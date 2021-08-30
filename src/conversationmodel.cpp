@@ -841,6 +841,31 @@ ConversationModel::deleteObsoleteHistory(int days)
 }
 
 void
+ConversationModel::joinCall(const QString& uid,
+                            const QString& confId,
+                            const QString& uri,
+                            const QString& deviceId,
+                            bool isAudioOnly)
+{
+    try {
+        auto& conversation = pimpl_->getConversationForUid(uid, true).get();
+        if (!conversation.callId.isEmpty()) {
+            qWarning() << "Already in a call for swarm:" + uid;
+            return;
+        }
+        conversation.callId = owner.callModel->createCall("swarm:" + uid + "/" + uri + "/"
+                                                              + deviceId + "/" + confId,
+                                                          isAudioOnly);
+
+        // Update interaction status
+        pimpl_->invalidateModel();
+        emit selectConversation(uid);
+        emit conversationUpdated(uid);
+    } catch (...) {
+    }
+}
+
+void
 ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
 {
     try {
@@ -851,6 +876,19 @@ ConversationModelPimpl::placeCall(const QString& uid, bool isAudioOnly)
                 << "ConversationModel::placeCall can't call a conversation without participant";
             return;
         }
+
+        if (!conversation.isCoreDialog() && conversation.isSwarm()) {
+            qDebug() << "Start call for swarm:" + uid;
+            conversation.callId = linked.owner.callModel->createCall("swarm:" + uid, isAudioOnly);
+
+            // Update interaction status
+            invalidateModel();
+            emit linked.selectConversation(conversation.uid);
+            emit linked.conversationUpdated(conversation.uid);
+            Q_EMIT linked.dataChanged(indexOf(conversation.uid));
+            return;
+        }
+
         auto& peers = peersForConversation(conversation);
         // there is no calls in group with more than 2 participants
         if (peers.size() != 1) {
@@ -2381,6 +2419,27 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
                                                       : interaction::Status::TRANSFER_ONGOING;
             linked.owner.dataTransferModel->registerTransferId(fileId, msgId);
         } else if (msg.type == interaction::Type::CALL) {
+            // If we're a call in a swarm
+            // TODO method
+            if (!msg.confId.isEmpty()) {
+                // TODO signal
+                if (msg.commit.contains("duration")) {
+                    // Remove active call
+                    auto idx = conversation.indexOfActiveCall(msg.commit);
+                    if (idx != -1) {
+                        conversation.activeCalls.remove(idx);
+                        qWarning() << "Remove active call: " << msg.confId;
+                    }
+                } else {
+                    conversation.activeCalls.emplace_back(MapStringString {
+                        {"id", msg.confId},
+                        {"uri", msg.commit["uri"]},
+                        {"device", msg.commit["device"]}
+                    });
+                    linked.owner.callModel->emplaceConversationConference(msg.confId);
+                    qWarning() << "Add active call: " << msg.confId;
+                }
+            }
             msg.body = storage::getCallInteractionString(msg.authorUri, msg.duration);
         } else if (msg.type == interaction::Type::CONTACT) {
             auto bestName = msg.authorUri == linked.owner.profileInfo.uri
@@ -2877,6 +2936,8 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
     conversation.infos = details;
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
+    VectorMapStringString activeCalls = ConfigurationManager::instance().getActiveCalls(linked.owner.id, convId);
+    conversation.activeCalls = activeCalls;
     QString lastRead;
     VectorString membersLeft;
     for (auto& member : members) {
@@ -3366,6 +3427,7 @@ ConversationModelPimpl::slotCallAddedToConference(const QString& callId, const Q
                                               .getConferenceDetails(linked.owner.id, confId);
             if (confDetails["STATE"] == "ACTIVE_ATTACHED")
                 emit linked.selectConversation(conversation.uid);
+            return;
         }
     }
 }

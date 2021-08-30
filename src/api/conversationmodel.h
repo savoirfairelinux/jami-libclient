@@ -210,6 +210,11 @@ public:
      * @param uid of the conversation
      */
     void placeAudioOnlyCall(const QString& uid);
+    void joinCall(const QString& uid,
+                  const QString& confId,
+                  const QString& uri,
+                  const QString& deviceId,
+                  bool isAudioOnly);
     /**
      * Send a message to the conversation
      * @param uid of the conversation

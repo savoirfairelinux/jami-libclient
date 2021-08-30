@@ -1788,21 +1788,48 @@ function updateCallInteraction(message_div, message_object) {
     const message_duration = message_object["duration"]
     const message_sender = message_object["sender"]
 
-    const missed = message_duration === 0 ? true : false
+    const uri = message_object["uri"]
+    const deviceId = message_object["deviceId"]
+    const confId = message_object["confId"]
 
-    message_div.querySelector(".text").innerText = message_text
+    if (uri !== "") {
 
-    var left_buttons = message_div.querySelector(".left_buttons")
-    left_buttons.innerHTML = ""
-    var status_button = document.createElement("div")
-    var statusFile = ""
-    if (missed)
-        statusFile = (message_direction === "in") ? callMissed : outgoingMissed
-    else
-        statusFile = (message_direction === "in") ? callReceived : outgoingCall
-    status_button.innerHTML = statusFile
-    status_button.setAttribute("class", "flat-button")
-    left_buttons.appendChild(status_button)
+        const join = document.createElement("div")
+        join.setAttribute("class", "join")
+        if (use_qt) {
+            join.innerHTML = "join"
+        } else {
+            join.innerHTML = i18n.gettext("join")
+        }
+        join.confId = confId
+        join.uri = uri
+        join.deviceId = deviceId
+        join.onclick = function () {
+            if (use_qt) {
+                window.jsbridge.joinCall(`${this.confId}`, `${this.uri}`, `${this.deviceId}`)
+            } else {
+                window.prompt(`JOIN_CALL:${this.confId}:${this.uri}:${this.deviecId}`)
+            }
+        }
+        message_div.querySelector(".text").appendChild(join)
+    } else {
+        const missed = message_duration === 0 ? true : false
+    
+        message_div.querySelector(".text").innerText = message_text
+    
+        var left_buttons = message_div.querySelector(".left_buttons")
+        left_buttons.innerHTML = ""
+        var status_button = document.createElement("div")
+        var statusFile = ""
+        if (missed)
+            statusFile = (message_direction === "in") ? callMissed : outgoingMissed
+        else
+            statusFile = (message_direction === "in") ? callReceived : outgoingCall
+        status_button.innerHTML = statusFile
+        status_button.setAttribute("class", "flat-button")
+        left_buttons.appendChild(status_button)
+    }
+
 }
 
 /**
