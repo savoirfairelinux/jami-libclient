@@ -28,8 +28,7 @@ Rectangle {
     property alias delegate: listView.delegate
     property alias currentIndex: listView.currentIndex
 
-    border.width: 1
-    border.color: JamiTheme.hoverColor
+    border.width: 0
 
     color: JamiTheme.backgroundColor
 

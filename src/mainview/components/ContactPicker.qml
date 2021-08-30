@@ -112,7 +112,6 @@ Popup {
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: contactPickerPopupRect.width
                 Layout.preferredHeight: 200
-                border.width: 0
 
                 model: ContactAdapter.getContactSelectableModel(type)
 

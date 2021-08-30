@@ -129,7 +129,6 @@ Popup {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    border.width: 0
 
                     model: {
                         if (isCall) {
@@ -244,6 +243,7 @@ Popup {
 
                 ListViewJami {
                     id: pluginhandlerPreferencePickerListView
+
                     Layout.alignment: Qt.AlignHCenter
                     Layout.fillWidth: true
                     Layout.fillHeight: true
@@ -252,7 +252,6 @@ Popup {
                     property string handlerName: ""
 
                     model: PluginAdapter.getHandlerPreferencesModel(pluginId, handlerName)
-                    border.width: 0
 
                     clip: true
 

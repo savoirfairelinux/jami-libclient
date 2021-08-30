@@ -129,8 +129,6 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.preferredHeight: 160
 
-        border.width: 0
-
         model: DeviceItemListModel {
             lrcInstance: LRCInstance
         }
