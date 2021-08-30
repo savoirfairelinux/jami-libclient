@@ -39,6 +39,8 @@ SmartListModel::SmartListModel(QObject* parent,
 {
     if (listModelType_ == Type::CONFERENCE) {
         setConferenceableFilter();
+    } else if (listModelType_ == Type::CONVERSATION) {
+        fillConversationsList();
     }
 }
 
