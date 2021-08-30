@@ -136,6 +136,11 @@ body {
   border-radius: 50%;
 }
 
+.join {
+    border: 1px solid white;
+    padding: 8px;
+}
+
 .nav-button.deactivated {
   width: 40px;
   height: 40px;

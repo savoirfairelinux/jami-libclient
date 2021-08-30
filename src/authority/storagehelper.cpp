@@ -166,7 +166,13 @@ getFormattedCallDuration(const std::time_t duration)
 QString
 getCallInteractionString(const QString& authorUri, const std::time_t& duration)
 {
-    if (duration < 0) {
+    /*if (confId.isEmpty()) {
+        if (duration < 0) {
+            return QObject::tr("Join call");
+        } else {
+            return QObject::tr("Call ended");
+        }
+    } else*/ if (duration < 0) {
         if (authorUri.isEmpty()) {
             return QObject::tr("Outgoing call");
         } else {
