@@ -33,8 +33,6 @@ Rectangle {
     id: root
 
     property var accountPeerPair: ["", ""]
-    property alias bestName: callOverlay.bestName
-    property string bestId: "Best Id"
     property variant clickPos: "1,1"
     property int previewMargin: 15
     property int previewMarginYTop: previewMargin + 42
@@ -52,12 +50,6 @@ Rectangle {
             return
         contactImage.imageId = accountPeerPair[1]
         callOverlay.participantsLayer.update(CallAdapter.getConferencesInfos())
-
-        bestName = UtilsAdapter.getBestName(accountPeerPair[0],
-                                            accountPeerPair[1])
-        var id = UtilsAdapter.getBestId(accountPeerPair[0], accountPeerPair[1])
-        bestId = (bestName !== id) ? id : ""
-
         root.callId = UtilsAdapter.getCallId(accountPeerPair[0],
                                              accountPeerPair[1])
     }
@@ -85,12 +77,6 @@ Rectangle {
     }
 
     function handleParticipantsInfo(infos) {
-        if (infos.length === 0) {
-            bestName = UtilsAdapter.getBestName(LRCInstance.currentAccountId,
-                                                LRCInstance.selectedConvUid)
-        } else {
-            bestName = ""
-        }
         callOverlay.participantsLayer.update(infos)
     }
 
@@ -292,17 +278,17 @@ Rectangle {
                     anchors.fill: parent
 
                     function toggleConversation() {
-                        inCallMessageWebViewStack.visible ?
-                                    closeInCallConversation() :
-                                    openInCallConversation()
+                        if (inCallMessageWebViewStack.visible)
+                            closeInCallConversation()
+                        else
+                            openInCallConversation()
                     }
 
                     Connections {
                         target: CallAdapter
 
                         function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
-                                                 isRecording, isSIP, isConferenceCall, isGrid,
-                                                 bestName) {
+                                                 isRecording, isSIP, isConferenceCall, isGrid) {
                             callOverlay.showOnHoldImage(isPaused)
                             root.isAudioOnly = isAudioOnly
                             audioCallPageRectCentralRect.visible = !isPaused && root.isAudioOnly
@@ -310,7 +296,6 @@ Rectangle {
                                                  isAudioMuted, isVideoMuted,
                                                  isRecording, isSIP,
                                                  isConferenceCall, isGrid)
-                            root.bestName = bestName
                             callOverlay.participantsLayer.update(CallAdapter.getConferencesInfos())
                         }
 
@@ -375,22 +360,7 @@ Rectangle {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
 
-                        text: root.bestName
-                        elide: Text.ElideMiddle
-                        color: "white"
-                    }
-
-                    Text {
-                        Layout.alignment: Qt.AlignCenter
-                        Layout.topMargin: JamiTheme.preferredMarginSize
-                        Layout.preferredWidth: root.width
-
-                        font.pointSize: JamiTheme.textFontSize
-
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-
-                        text: root.bestId
+                        text: CurrentConversation.title
                         elide: Text.ElideMiddle
                         color: "white"
                     }

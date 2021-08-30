@@ -46,8 +46,6 @@ Item {
     property bool isConferenceCall
     property bool isGrid
 
-    property string bestName: ""
-
     signal chatButtonClicked
 
     ParticipantsLayer {
@@ -186,8 +184,6 @@ Item {
         id: mainOverlay
 
         anchors.fill: parent
-
-        bestName: root.bestName
 
         Connections {
             target: mainOverlay.callActionBar

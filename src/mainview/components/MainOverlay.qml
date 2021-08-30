@@ -34,8 +34,6 @@ Item {
     property string timeText: "00:00"
     property string remoteRecordingLabel: ""
 
-    property string bestName: ""
-
     property alias recordingVisible: recordingRect.visible
     property alias callActionBar: __callActionBar
 
@@ -120,7 +118,7 @@ Item {
                 text: {
                     if (!root.isAudioOnly) {
                         if (remoteRecordingLabel === "") {
-                            return root.bestName
+                            return CurrentConversation.title
                         } else {
                             return remoteRecordingLabel
                         }

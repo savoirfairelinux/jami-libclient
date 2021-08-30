@@ -100,8 +100,7 @@ Q_SIGNALS:
                        bool isRecording,
                        bool isSIP,
                        bool isConferenceCall,
-                       bool isGrid,
-                       const QString& bestName);
+                       bool isGrid);
     void remoteRecordingChanged(const QStringList& peers, bool state);
     void eraseRemoteRecording();
 
