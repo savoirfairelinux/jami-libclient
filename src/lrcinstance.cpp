@@ -417,3 +417,15 @@ LRCInstance::monitor(bool continuous)
 {
     lrc_->monitor(continuous);
 }
+
+QString
+LRCInstance::getCurrentCallId()
+{
+    try {
+        const auto& convInfo = getConversationFromConvUid(get_selectedConvUid());
+        auto call = getCallInfoForConversation(convInfo);
+        return call ? call->id : QString();
+    } catch (...) {
+        return QString();
+    }
+}

@@ -190,10 +190,11 @@ Rectangle {
                     }
 
                     Connections {
-                        target: AvAdapter
+                        target: VideoDevices
 
-                        function onVideoDeviceListChanged(inputs) {
-                            previewRenderer.visible = (inputs !== 0)
+                        // TODO: previewRenderer visible should be listening to a property
+                        function onDeviceListChanged() {
+                            previewRenderer.visible = VideoDevices.listSize !== 0
                         }
                     }
 

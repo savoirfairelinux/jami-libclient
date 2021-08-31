@@ -77,11 +77,7 @@ public:
     Q_INVOKABLE bool savePassword(const QString& accountId,
                                   const QString& oldPassword,
                                   const QString& newPassword);
-
-    Q_INVOKABLE void startPreviewing(bool force = false);
-    Q_INVOKABLE void stopPreviewing();
     Q_INVOKABLE bool hasVideoCall();
-    Q_INVOKABLE bool isPreviewing();
     Q_INVOKABLE void setCurrAccDisplayName(const QString& text);
     Q_INVOKABLE void setCurrentAccountAvatarFile(const QString& source);
     Q_INVOKABLE void setCurrentAccountAvatarBase64(const QString& source = {});

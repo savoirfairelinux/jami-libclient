@@ -267,8 +267,8 @@ ColumnLayout {
 
             modelIndex: CurrentAccount.method_TLS
 
-            onModelIndexChanged: CurrentAccount.method_TLS =
-                                 parseInt(comboModel.get(modelIndex).secondArg)
+            onActivated: CurrentAccount.method_TLS =
+                         parseInt(comboModel.get(modelIndex).secondArg)
         }
 
         SettingsMaterialLineEdit {

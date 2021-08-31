@@ -31,12 +31,15 @@ RowLayout {
     property alias tipText: comboBoxOfLayout.tooltipText
     property alias role: comboBoxOfLayout.textRole
     property alias placeholderText: comboBoxOfLayout.placeholderText
+    property alias currentSelectionText: comboBoxOfLayout.currentSelectionText
     property alias enabled: comboBoxOfLayout.enabled
     property alias fontPointSize: comboBoxOfLayout.font.pointSize
     property alias modelIndex: comboBoxOfLayout.currentIndex
 
     property int heightOfLayout: 30
     property int widthOfComboBox: 50
+
+    signal activated
 
     ElidedTextLabel {
         id: label
@@ -62,5 +65,7 @@ RowLayout {
 
         textRole: role
         tooltipText: tipText
+
+        onActivated: root.activated()
     }
 }

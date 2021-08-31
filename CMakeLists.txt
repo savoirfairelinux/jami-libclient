@@ -67,10 +67,7 @@ set(COMMON_SOURCES
     ${SRC_DIR}/mediacodeclistmodel.cpp
     ${SRC_DIR}/accountstomigratelistmodel.cpp
     ${SRC_DIR}/audiodevicemodel.cpp
-    ${SRC_DIR}/videoinputdevicemodel.cpp
     ${SRC_DIR}/pluginlistpreferencemodel.cpp
-    ${SRC_DIR}/videoformatfpsmodel.cpp
-    ${SRC_DIR}/videoformatresolutionmodel.cpp
     ${SRC_DIR}/audiomanagerlistmodel.cpp
     ${SRC_DIR}/qmlregister.cpp
     ${SRC_DIR}/utilsadapter.cpp
@@ -88,7 +85,8 @@ set(COMMON_SOURCES
     ${SRC_DIR}/wizardviewstepmodel.cpp
     ${SRC_DIR}/avatarregistry.cpp
     ${SRC_DIR}/currentconversation.cpp
-    ${SRC_DIR}/currentaccount.cpp)
+    ${SRC_DIR}/currentaccount.cpp
+    ${SRC_DIR}/videodevices.cpp)
 
 set(COMMON_HEADERS
     ${SRC_DIR}/avatarimageprovider.h
@@ -123,10 +121,7 @@ set(COMMON_HEADERS
     ${SRC_DIR}/mediacodeclistmodel.h
     ${SRC_DIR}/accountstomigratelistmodel.h
     ${SRC_DIR}/audiodevicemodel.h
-    ${SRC_DIR}/videoinputdevicemodel.h
     ${SRC_DIR}/pluginlistpreferencemodel.h
-    ${SRC_DIR}/videoformatfpsmodel.h
-    ${SRC_DIR}/videoformatresolutionmodel.h
     ${SRC_DIR}/audiomanagerlistmodel.h
     ${SRC_DIR}/qmlregister.h
     ${SRC_DIR}/abstractlistmodelbase.h
@@ -147,7 +142,8 @@ set(COMMON_HEADERS
     ${SRC_DIR}/wizardviewstepmodel.h
     ${SRC_DIR}/avatarregistry.h
     ${SRC_DIR}/currentconversation.h
-    ${SRC_DIR}/currentaccount.h)
+    ${SRC_DIR}/currentaccount.h
+    ${SRC_DIR}/videodevices.h)
 
 set(QML_LIBS
     Qt5::Quick

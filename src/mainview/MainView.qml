@@ -57,7 +57,6 @@ Rectangle {
     property string currentAccountId: LRCInstance.currentAccountId
     onCurrentAccountIdChanged: {
         if (inSettingsView) {
-            settingsView.accountListChanged()
             settingsView.setSelected(settingsView.selectedMenu, true)
         } else {
             backToMainView(true)

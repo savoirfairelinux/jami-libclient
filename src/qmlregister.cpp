@@ -28,6 +28,7 @@
 #include "conversationsadapter.h"
 #include "currentconversation.h"
 #include "currentaccount.h"
+#include "videodevices.h"
 
 #include "accountlistmodel.h"
 #include "accountstomigratelistmodel.h"
@@ -52,9 +53,6 @@
 #include "pluginlistpreferencemodel.h"
 #include "previewrenderer.h"
 #include "version.h"
-#include "videoformatfpsmodel.h"
-#include "videoformatresolutionmodel.h"
-#include "videoinputdevicemodel.h"
 #include "wizardviewstepmodel.h"
 
 #include "api/peerdiscoverymodel.h"
@@ -116,6 +114,7 @@ registerTypes(QQmlEngine* engine,
     auto pluginAdapter = new PluginAdapter(lrcInstance, parent);
     auto currentConversation = new CurrentConversation(lrcInstance, parent);
     auto currentAccount = new CurrentAccount(lrcInstance, appSettingsManager, parent);
+    auto videoDevices = new VideoDevices(lrcInstance, parent);
 
     // qml adapter registration
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, callAdapter, "CallAdapter");
@@ -128,6 +127,7 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, pluginAdapter, "PluginAdapter");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, currentConversation, "CurrentConversation");
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, currentAccount, "CurrentAccount");
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_ADAPTERS, videoDevices, "VideoDevices");
 
     // TODO: remove these
     QML_REGISTERSINGLETONTYPE_CUSTOM(NS_MODELS, AVModel, &lrcInstance->avModel())
@@ -152,9 +152,6 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERTYPE(NS_MODELS, AccountsToMigrateListModel);
     QML_REGISTERTYPE(NS_MODELS, AudioDeviceModel);
     QML_REGISTERTYPE(NS_MODELS, AudioManagerListModel);
-    QML_REGISTERTYPE(NS_MODELS, VideoInputDeviceModel);
-    QML_REGISTERTYPE(NS_MODELS, VideoFormatResolutionModel);
-    QML_REGISTERTYPE(NS_MODELS, VideoFormatFpsModel);
     QML_REGISTERTYPE(NS_MODELS, PluginListPreferenceModel);
     QML_REGISTERTYPE(NS_MODELS, FilesToSendListModel);
     QML_REGISTERTYPE(NS_MODELS, SmartListModel);
@@ -216,6 +213,9 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERUNCREATABLE(NS_ENUMS, NetWorkManager)
     QML_REGISTERUNCREATABLE(NS_ENUMS, WizardViewStepModel)
     QML_REGISTERUNCREATABLE(NS_ENUMS, DeviceItemListModel)
+    QML_REGISTERUNCREATABLE(NS_ENUMS, VideoInputDeviceModel)
+    QML_REGISTERUNCREATABLE(NS_ENUMS, VideoFormatResolutionModel)
+    QML_REGISTERUNCREATABLE(NS_ENUMS, VideoFormatFpsModel)
 
     engine->addImageProvider(QLatin1String("qrImage"), new QrImageProvider(lrcInstance));
     engine->addImageProvider(QLatin1String("avatarImage"),

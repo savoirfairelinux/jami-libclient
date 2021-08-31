@@ -263,30 +263,10 @@ AccountAdapter::savePassword(const QString& accountId,
     return lrcInstance_->accountModel().changeAccountPassword(accountId, oldPassword, newPassword);
 }
 
-void
-AccountAdapter::startPreviewing(bool force)
-{
-    lrcInstance_->renderer()->startPreviewing(force);
-}
-
-void
-AccountAdapter::stopPreviewing()
-{
-    if (!lrcInstance_->hasActiveCall(true) && lrcInstance_->renderer()->isPreviewing()) {
-        lrcInstance_->renderer()->stopPreviewing();
-    }
-}
-
 bool
 AccountAdapter::hasVideoCall()
 {
     return lrcInstance_->hasActiveCall(true);
-}
-
-bool
-AccountAdapter::isPreviewing()
-{
-    return lrcInstance_->renderer()->isPreviewing();
 }
 
 void

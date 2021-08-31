@@ -29,27 +29,19 @@
 class AvAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
-    QML_PROPERTY(lrc::api::video::DeviceType, currentRenderingDeviceType)
+    QML_RO_PROPERTY(lrc::api::video::DeviceType, currentRenderingDeviceType)
 
 public:
     explicit AvAdapter(LRCInstance* instance, QObject* parent = nullptr);
     ~AvAdapter() = default;
 
 Q_SIGNALS:
-
-    void audioDeviceListChanged(int inputs, int outputs);
-    void videoDeviceListChanged(int inputs);
     void screenCaptured(int screenNumber, QString source);
-    void videoDeviceAvailable();
+    // TODO: move to future audio device class
+    void audioDeviceListChanged(int inputs, int outputs);
 
 protected:
     void safeInit() override {};
-
-    // switch preview video input by device name
-    Q_INVOKABLE void selectVideoInputDeviceByName(const QString& deviceName);
-
-    // switch preview video input by device id
-    Q_INVOKABLE void selectVideoInputDeviceById(const QString& deviceId);
 
     // Share the screen specificed by screen number.
     Q_INVOKABLE void shareEntireScreen(int screenNumber);
@@ -76,30 +68,24 @@ protected:
     Q_INVOKABLE void stopAudioMeter();
 
     Q_INVOKABLE void setDeviceName(const QString& deviceName);
-    Q_INVOKABLE void setCurrentVideoDeviceRateAndResolution(qreal rate, const QString& resolution);
-    Q_INVOKABLE QString getVideoSettingsSize(const QString& deviceId);
-    Q_INVOKABLE int getCurrentVideoDeviceCapabilitiesSize();
 
     Q_INVOKABLE void enableCodec(unsigned int id, bool isToEnable);
     Q_INVOKABLE void increaseCodecPriority(unsigned int id, bool isVideo);
     Q_INVOKABLE void decreaseCodecPriority(unsigned int id, bool isVideo);
 
+    // TODO: to be removed
+    Q_INVOKABLE bool getHardwareAcceleration();
+    Q_INVOKABLE void setHardwareAcceleration(bool accelerate);
+    Q_INVOKABLE bool isPreviewing();
+    Q_INVOKABLE void startPreviewing(bool force = false);
+    Q_INVOKABLE void stopPreviewing();
+
 private Q_SLOTS:
     void onAudioDeviceEvent();
-    void onVideoDeviceEvent();
 
 private:
     // Get screens arrangement rect relative to primary screen.
     const QRect getAllScreensBoundingRect();
-
-    // Get current callId from current selected conv id.
-    QString getCurrentCallId();
-
-    // Used to classify capture device events.
-    enum class DeviceEvent { Added, RemovedCurrent, None };
-
-    // Used to track the capture device count.
-    int deviceListSize_;
 
     // Get the screen number
     int getScreenNumber() const;

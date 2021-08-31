@@ -24,19 +24,23 @@ import net.jami.Constants 1.1
 ComboBox {
     id: root
 
-    property string tooltipText
-    property string comboBoxBackgroundColor: JamiTheme.editBackgroundColor
+    property alias tooltipText: toolTip.text
     property string placeholderText
+    property string currentSelectionText: currentText
+    property string comboBoxBackgroundColor: JamiTheme.editBackgroundColor
+
+    MaterialToolTip {
+        id: toolTip
+
+        parent: root
+        visible: hovered && (text.length > 0)
+        delay: Qt.styleHints.mousePressAndHoldInterval
+    }
 
     displayText: currentIndex !== -1 ?
-                     currentText :
-                     (placeholderText !== "" ?
-                          placeholderText :
-                          JamiStrings.notAvailable)
-
-    ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-    ToolTip.visible: hovered && (tooltipText.length > 0)
-    ToolTip.text: tooltipText
+                     currentSelectionText : (placeholderText !== "" ?
+                                                 placeholderText :
+                                                 JamiStrings.notAvailable)
 
     delegate: ItemDelegate {
         width: root.width
@@ -53,7 +57,6 @@ ComboBox {
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
         }
-        highlighted: root.highlightedIndex === index
         background: Rectangle {
             color: highlighted? JamiTheme.selectedColor : JamiTheme.editBackgroundColor
         }
@@ -61,8 +64,10 @@ ComboBox {
 
     indicator: Canvas {
         id: canvas
+
         x: root.width - width - root.rightPadding
         y: root.topPadding + (root.availableHeight - height) / 2
+
         width: 12
         height: 8
         contextType: "2d"
@@ -113,17 +118,17 @@ ComboBox {
 
         contentItem: ListView {
             id: listView
+
             clip: true
             implicitHeight: contentHeight
             model: root.delegateModel
-            currentIndex: root.highlightedIndex
 
-            ScrollBar.vertical: ScrollBar { }
+            ScrollBar.vertical: ScrollBar {}
         }
 
         background: Rectangle {
             color: JamiTheme.editBackgroundColor
-            border.color: "gray"
+            border.color: JamiTheme.greyBorderColor
             radius: 2
         }
     }

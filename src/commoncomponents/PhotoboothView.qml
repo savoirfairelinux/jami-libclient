@@ -39,13 +39,13 @@ Item {
     height: boothLayout.height
 
     function startBooth() {
-        AccountAdapter.startPreviewing(false)
+        AvAdapter.startPreviewing(false)
         isPreviewing = true
     }
 
     function stopBooth(){
         if (!AccountAdapter.hasVideoCall()) {
-            AccountAdapter.stopPreviewing()
+            AvAdapter.stopPreviewing()
         }
         isPreviewing = false
     }
@@ -136,8 +136,6 @@ Item {
                 anchors.margins: 1
 
                 visible: isPreviewing
-
-                onRenderingStopped: stopBooth()
                 lrcInstance: LRCInstance
 
                 layer.enabled: true
@@ -147,6 +145,11 @@ Item {
                         height: avatarSize
                         radius: avatarSize / 2
                     }
+                }
+
+                onRenderingStopped: {
+                    if (root.visible)
+                        stopBooth()
                 }
             }
 

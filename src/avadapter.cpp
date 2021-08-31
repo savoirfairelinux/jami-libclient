@@ -36,36 +36,18 @@
 AvAdapter::AvAdapter(LRCInstance* instance, QObject* parent)
     : QmlAdapterBase(instance, parent)
 {
-    auto& avModel = lrcInstance_->avModel();
-
-    deviceListSize_ = avModel.getDevices().size();
-    connect(&avModel, &lrc::api::AVModel::audioDeviceEvent, this, &AvAdapter::onAudioDeviceEvent);
-    connect(&avModel, &lrc::api::AVModel::deviceEvent, this, &AvAdapter::onVideoDeviceEvent);
     connect(lrcInstance_->renderer(), &RenderManager::previewFrameStarted, [this]() {
         // TODO: listen to the correct signals that are needed to be added in daemon or lrc
-        auto callId = getCurrentCallId();
+        auto callId = lrcInstance_->getCurrentCallId();
         if (!callId.isEmpty())
             set_currentRenderingDeviceType(
                 lrcInstance_->avModel().getCurrentRenderedDevice(callId).type);
     });
-}
 
-void
-AvAdapter::selectVideoInputDeviceByName(const QString& deviceName)
-{
-    auto deviceId = lrcInstance_->avModel().getDeviceIdFromName(deviceName);
-    if (deviceId.isEmpty()) {
-        qWarning() << "Couldn't find device: " << deviceName;
-        return;
-    }
-    selectVideoInputDeviceById(deviceId);
-}
-
-void
-AvAdapter::selectVideoInputDeviceById(const QString& deviceId)
-{
-    lrcInstance_->avModel().setCurrentVideoCaptureDevice(deviceId);
-    lrcInstance_->avModel().switchInputTo(deviceId, getCurrentCallId());
+    connect(&lrcInstance_->avModel(),
+            &lrc::api::AVModel::audioDeviceEvent,
+            this,
+            &AvAdapter::onAudioDeviceEvent);
 }
 
 // The top left corner of primary screen is (0, 0).
@@ -114,7 +96,7 @@ AvAdapter::shareEntireScreen(int screenNumber)
                                        rect.y(),
                                        rect.width() * screen->devicePixelRatio(),
                                        rect.height() * screen->devicePixelRatio(),
-                                       getCurrentCallId());
+                                       lrcInstance_->getCurrentCallId());
 }
 
 void
@@ -127,7 +109,7 @@ AvAdapter::shareAllScreens()
                                        arrangementRect.y(),
                                        arrangementRect.width(),
                                        arrangementRect.height(),
-                                       getCurrentCallId());
+                                       lrcInstance_->getCurrentCallId());
 }
 
 void
@@ -187,7 +169,7 @@ AvAdapter::captureAllScreens()
 void
 AvAdapter::shareFile(const QString& filePath)
 {
-    lrcInstance_->avModel().setInputFile(filePath, getCurrentCallId());
+    lrcInstance_->avModel().setInputFile(filePath, lrcInstance_->getCurrentCallId());
 }
 
 void
@@ -206,7 +188,7 @@ AvAdapter::shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned heig
                                            y,
                                            width < 128 ? 128 : width,
                                            height < 128 ? 128 : height,
-                                           getCurrentCallId());
+                                           lrcInstance_->getCurrentCallId());
     });
 #else
     lrcInstance_->avModel().setDisplay(getScreenNumber(),
@@ -214,14 +196,14 @@ AvAdapter::shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned heig
                                        y,
                                        width < 128 ? 128 : width,
                                        height < 128 ? 128 : height,
-                                       getCurrentCallId());
+                                       lrcInstance_->getCurrentCallId());
 #endif
 }
 
 void
 AvAdapter::stopSharing()
 {
-    auto callId = getCurrentCallId();
+    auto callId = lrcInstance_->getCurrentCallId();
     if (!callId.isEmpty())
         lrcInstance_->avModel().switchInputTo(lrcInstance_->avModel().getCurrentVideoCaptureDevice(),
                                               callId);
@@ -246,82 +228,6 @@ AvAdapter::onAudioDeviceEvent()
     auto inputs = avModel.getAudioInputDevices().size();
     auto outputs = avModel.getAudioOutputDevices().size();
     Q_EMIT audioDeviceListChanged(inputs, outputs);
-}
-
-void
-AvAdapter::onVideoDeviceEvent()
-{
-    auto& avModel = lrcInstance_->avModel();
-    auto defaultDevice = avModel.getDefaultDevice();
-    auto currentCaptureDevice = avModel.getCurrentVideoCaptureDevice();
-    QString callId = getCurrentCallId();
-
-    /*
-     * Decide whether a device has plugged, unplugged, or nothing has changed.
-     */
-    auto deviceList = avModel.getDevices();
-    auto currentDeviceListSize = deviceList.size();
-
-    DeviceEvent deviceEvent {DeviceEvent::None};
-    if (currentDeviceListSize > deviceListSize_) {
-        deviceEvent = DeviceEvent::Added;
-    } else if (currentDeviceListSize < deviceListSize_) {
-        /*
-         * Check if the currentCaptureDevice is still in the device list.
-         */
-        if (std::find(std::begin(deviceList), std::end(deviceList), currentCaptureDevice)
-            == std::end(deviceList)) {
-            deviceEvent = DeviceEvent::RemovedCurrent;
-        }
-    }
-
-    auto cb = [this, currentDeviceListSize, deviceEvent, defaultDevice, callId] {
-        auto& avModel = lrcInstance_->avModel();
-        if (currentDeviceListSize == 0) {
-            avModel.clearCurrentVideoCaptureDevice();
-            avModel.switchInputTo({}, callId);
-            avModel.stopPreview();
-        } else if (deviceEvent == DeviceEvent::RemovedCurrent && currentDeviceListSize > 0) {
-            avModel.setDefaultDevice(defaultDevice);
-            avModel.setCurrentVideoCaptureDevice(defaultDevice);
-            avModel.switchInputTo(defaultDevice, callId);
-        }
-    };
-
-    if (lrcInstance_->renderer()->isPreviewing()) {
-        Utils::oneShotConnect(lrcInstance_->renderer(),
-                              &RenderManager::previewRenderingStopped,
-                              [cb] { QtConcurrent::run([cb]() { cb(); }); });
-    } else {
-        if (deviceEvent == DeviceEvent::Added && currentDeviceListSize == 1) {
-            avModel.setDefaultDevice(defaultDevice);
-            avModel.setCurrentVideoCaptureDevice(defaultDevice);
-            if (callId.isEmpty()) {
-                Q_EMIT videoDeviceAvailable();
-            } else {
-                avModel.switchInputTo(defaultDevice, callId);
-            }
-        } else {
-            cb();
-        }
-    }
-
-    Q_EMIT videoDeviceListChanged(currentDeviceListSize);
-
-    deviceListSize_ = currentDeviceListSize;
-}
-
-QString
-AvAdapter::getCurrentCallId()
-{
-    try {
-        const auto& convInfo = lrcInstance_->getConversationFromConvUid(
-            lrcInstance_->get_selectedConvUid());
-        auto call = lrcInstance_->getCallInfoForConversation(convInfo);
-        return call ? call->id : QString();
-    } catch (...) {
-        return QString();
-    }
 }
 
 int
@@ -350,30 +256,6 @@ AvAdapter::setDeviceName(const QString& deviceName)
 }
 
 void
-AvAdapter::setCurrentVideoDeviceRateAndResolution(qreal rate, const QString& resolution)
-{
-    auto settings = lrcInstance_->avModel().getDeviceSettings(
-        lrcInstance_->avModel().getCurrentVideoCaptureDevice());
-    settings.rate = rate;
-    settings.size = resolution;
-    lrcInstance_->avModel().setDeviceSettings(settings);
-}
-
-QString
-AvAdapter::getVideoSettingsSize(const QString& deviceId)
-{
-    return lrcInstance_->avModel().getDeviceSettings(deviceId).size;
-}
-
-int
-AvAdapter::getCurrentVideoDeviceCapabilitiesSize()
-{
-    return lrcInstance_->avModel()
-        .getDeviceCapabilities(lrcInstance_->avModel().getCurrentVideoCaptureDevice())
-        .size();
-}
-
-void
 AvAdapter::enableCodec(unsigned int id, bool isToEnable)
 {
     lrcInstance_->getCurrentAccountInfo().codecModel->enable(id, isToEnable);
@@ -389,4 +271,35 @@ void
 AvAdapter::decreaseCodecPriority(unsigned int id, bool isVideo)
 {
     lrcInstance_->getCurrentAccountInfo().codecModel->decreasePriority(id, isVideo);
+}
+
+bool
+AvAdapter::getHardwareAcceleration()
+{
+    return lrcInstance_->avModel().getHardwareAcceleration();
+}
+void
+AvAdapter::setHardwareAcceleration(bool accelerate)
+{
+    lrcInstance_->avModel().setHardwareAcceleration(accelerate);
+}
+
+void
+AvAdapter::startPreviewing(bool force)
+{
+    lrcInstance_->renderer()->startPreviewing(force);
+}
+
+void
+AvAdapter::stopPreviewing()
+{
+    if (!lrcInstance_->hasActiveCall(true)) {
+        lrcInstance_->renderer()->stopPreviewing();
+    }
+}
+
+bool
+AvAdapter::isPreviewing()
+{
+    return lrcInstance_->renderer()->isPreviewing();
 }

@@ -234,10 +234,6 @@ RenderManager::isPreviewing()
 void
 RenderManager::stopPreviewing()
 {
-    if (!previewFrameWrapper_->isRendering()) {
-        return;
-    }
-
     previewFrameWrapper_->stopRendering();
     avModel_.stopPreview();
 }

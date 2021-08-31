@@ -59,7 +59,7 @@ Rectangle {
         updateState(RecordBox.States.INIT)
 
         if (isVideo) {
-            AccountAdapter.startPreviewing(false)
+            AvAdapter.startPreviewing(false)
             previewAvailable = true
         }
     }
@@ -67,10 +67,9 @@ Rectangle {
     function scaleHeight() {
         height = preferredHeight
         if (isVideo) {
-            var device = AVModel.getDefaultDevice()
-            var settings = AvAdapter.getVideoSettingsSize(device)
-            var res = settings.split("x")
-            var aspectRatio = res[1] / res[0]
+            var resolution = VideoDevices.defaultRes
+            var resVec = resolution.split("x")
+            var aspectRatio = resVec[1] / resVec[0]
             if (aspectRatio) {
                 height = preferredWidth * aspectRatio
             } else {
@@ -80,8 +79,8 @@ Rectangle {
     }
 
     function closeRecorder() {
-        if (isVideo && AccountAdapter.isPreviewing()) {
-            AccountAdapter.stopPreviewing()
+        if (isVideo && AvAdapter.isPreviewing()) {
+            AvAdapter.stopPreviewing()
         }
         stopRecording()
         visible = false

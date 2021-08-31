@@ -70,11 +70,6 @@ Control {
             audioOutputDeviceListModel.reset();
             audioOutputMenuAction.enabled = outputs
         }
-
-        function onVideoDeviceListChanged(inputs) {
-            videoInputDeviceListModel.reset();
-            videoInputMenuAction.enabled = inputs
-        }
     }
 
     property list<Action> menuActions: [
@@ -144,34 +139,16 @@ Control {
         },
         Action {
             id: videoInputMenuAction
+            enabled: VideoDevices.listSize !== 0
             text: JamiStrings.selectVideoDevice
-            Component.onCompleted: enabled = videoInputDeviceListModel.rowCount()
-            property var listModel: VideoInputDeviceModel {
-                id: videoInputDeviceListModel
-                lrcInstance: LRCInstance
-            }
+            property var listModel: VideoDevices.devicesSourceModel()
             function accept(index) {
-                if (listModel.deviceCount() < 1)
+                if (VideoDevices.listSize < 1)
                     return
-                try {
-                    var deviceId = listModel.data(
-                                listModel.index(index, 0),
-                                VideoInputDeviceModel.DeviceId)
-                    var deviceName = listModel.data(
-                                listModel.index(index, 0),
-                                VideoInputDeviceModel.DeviceName)
-                    if (deviceId.length === 0) {
-                        console.warn("Couldn't find device: " + deviceName)
-                        return
-                    }
-                    if (AVModel.getCurrentVideoCaptureDevice() !== deviceId) {
-                        AVModel.setCurrentVideoCaptureDevice(deviceId)
-                        AVModel.setDefaultDevice(deviceId)
-                    }
-                    AvAdapter.selectVideoInputDeviceById(deviceId)
-                } catch (err) {
-                    console.warn(err.message)
-                }
+                // TODO: change it when we can suppot showing default and
+                //       current rendering device at the same time and
+                //       start and stop preview logic in here should be in LRC
+                VideoDevices.setDefaultDevice(index, true)
             }
         }
     ]
