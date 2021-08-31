@@ -121,12 +121,6 @@ public:
                       const BehaviorController& behaviorController);
     ~NewCallModelPimpl();
 
-    /**
-     * Send the profile VCard into a call
-     * @param callId
-     */
-    void sendProfile(const QString& callId);
-
     NewCallModel::CallInfoMap calls;
     const CallbacksHandler& callbacksHandler;
     const NewCallModel& linked;
@@ -1124,7 +1118,6 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
             }
             call->startTime = std::chrono::steady_clock::now();
             emit linked.callStarted(callId);
-            sendProfile(callId);
         }
         // Add to calls if in pendingConferences_
         for (int i = 0; i < pendingConferencees_.size(); ++i) {
@@ -1303,31 +1296,6 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
                 break;
             }
         }
-    }
-}
-
-void
-NewCallModelPimpl::sendProfile(const QString& callId)
-{
-    auto vCard = linked.owner.accountModel->accountVCard(linked.owner.id);
-
-    std::random_device rdev;
-    auto key = std::to_string(dis(rdev));
-
-    int i = 0;
-    int total = vCard.size() / 1000 + (vCard.size() % 1000 ? 1 : 0);
-    while (vCard.size()) {
-        auto sizeLimit = std::min(1000, static_cast<int>(vCard.size()));
-        MapStringString chunk;
-        chunk[QString("%1; id=%2,part=%3,of=%4")
-                  .arg(lrc::vCard::PROFILE_VCF)
-                  .arg(key.c_str())
-                  .arg(QString::number(i + 1))
-                  .arg(QString::number(total))]
-            = vCard.left(sizeLimit);
-        vCard.remove(0, sizeLimit);
-        ++i;
-        CallManager::instance().sendTextMessage(callId, chunk, false);
     }
 }
 
