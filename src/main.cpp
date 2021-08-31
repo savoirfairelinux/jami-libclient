@@ -74,8 +74,11 @@ main(int argc, char* argv[])
 #endif
 #endif
     qtWebEngineChromiumFlags << disableWebSecurity;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 2, 0)
+    // To be recovered in Qt 6.2 and above
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=1060099#c6*/
     qtWebEngineChromiumFlags << singleProcess;
-
+#endif
     QApplication::setApplicationName("Jami");
     QApplication::setOrganizationDomain("jami.net");
     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
