@@ -278,13 +278,17 @@ BaseDialog {
                             verticalAlignment: Text.AlignVCenter
                         }
 
-                        Label {
+                        MaterialLineEdit {
                             id: exportedPIN
 
                             Layout.alignment: Qt.AlignHCenter
+                            Layout.preferredHeight: fieldLayoutHeight
+                            Layout.preferredWidth: fieldLayoutWidth
 
                             text: JamiStrings.pin
                             color: JamiTheme.textColor
+                            selectByMouse: true
+                            readOnly: true
                             font.pointSize: JamiTheme.headerFontSize
                             font.kerning: true
                             horizontalAlignment: Text.AlignHCenter
