@@ -301,6 +301,18 @@ Q_SIGNALS:
     void deviceEvent();
 
     /**
+     * Emitted when the default video device is changed
+     *  @param id
+     */
+    void defaultVideoDeviceChanged(const QString& id);
+
+    /**
+     * Emitted when the video device settings are changed
+     *  @param id
+     */
+    void videoDeviceSettingsChanged(const QString& id);
+
+    /**
      * Emitted when an audio level is plugged or unplugged
      */
     void audioDeviceEvent();
@@ -607,6 +619,18 @@ private Q_SLOTS:
      * Detect when a video device is plugged or unplugged
      */
     void slotDeviceEvent();
+
+    /**
+     * Detect when the default video device is changed
+     *  @param id
+     */
+    void slotDefaultVideoDeviceChanged(const QString& id);
+
+    /**
+     * Detect when the video device settings are changed
+     *  @param id
+     */
+    void slotVideoDeviceSettingsChanged(const QString& id);
 
     /**
      * Detect when an audio device is plugged or unplugged

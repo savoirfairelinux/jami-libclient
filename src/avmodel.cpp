@@ -118,6 +118,14 @@ public Q_SLOTS:
      */
     void slotDeviceEvent();
     /**
+     * Detect when the default video device is changed
+     */
+    void slotDefaultVideoDeviceChanged(const QString& id);
+    /**
+     * Detect when the video device settings are changed
+     */
+    void slotVideoDeviceSettingsChanged(const QString& id);
+    /**
      * Detect when an audio device is plugged or unplugged
      */
     void slotAudioDeviceEvent();
@@ -284,16 +292,6 @@ AVModel::setDeviceSettings(video::Settings& settings)
     newSettings["rate"] = rate;
     newSettings["size"] = settings.size;
     VideoManager::instance().applySettings(settings.id, newSettings);
-
-    // If the preview is running, reload it
-    // doing this during a call will cause re-invite, this is unwanted
-    if (pimpl_->renderers_[video::PREVIEW_RENDERER_ID]) {
-        if (pimpl_->renderers_[video::PREVIEW_RENDERER_ID]->isRendering()
-            && pimpl_->renderers_.size() == 1) {
-            stopPreview();
-            startPreview();
-        }
-    }
 }
 
 QString
@@ -648,6 +646,14 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
 #endif
     connect(&callbacksHandler, &CallbacksHandler::deviceEvent, this, &AVModelPimpl::slotDeviceEvent);
     connect(&callbacksHandler,
+            &CallbacksHandler::defaultVideoDeviceChanged,
+            this,
+            &AVModelPimpl::slotDefaultVideoDeviceChanged);
+    connect(&callbacksHandler,
+            &CallbacksHandler::videoDeviceSettingsChanged,
+            this,
+            &AVModelPimpl::slotVideoDeviceSettingsChanged);
+    connect(&callbacksHandler,
             &CallbacksHandler::audioDeviceEvent,
             this,
             &AVModelPimpl::slotAudioDeviceEvent);
@@ -865,6 +871,27 @@ void
 AVModelPimpl::slotDeviceEvent()
 {
     emit linked_.deviceEvent();
+}
+
+void
+AVModelPimpl::slotDefaultVideoDeviceChanged(const QString& id)
+{
+    emit linked_.defaultVideoDeviceChanged(id);
+}
+
+void
+AVModelPimpl::slotVideoDeviceSettingsChanged(const QString& id)
+{
+    emit linked_.videoDeviceSettingsChanged(id);
+
+    // If the preview is running, reload it
+    // doing this during a call will cause re-invite, this is unwanted
+    if (renderers_[video::PREVIEW_RENDERER_ID]) {
+        if (renderers_[video::PREVIEW_RENDERER_ID]->isRendering() && renderers_.size() == 1) {
+            linked_.stopPreview();
+            linked_.startPreview();
+        }
+    }
 }
 
 void
