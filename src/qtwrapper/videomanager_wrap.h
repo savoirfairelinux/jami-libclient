@@ -49,6 +49,8 @@ public:
 
 public Q_SLOTS:
     void slotDeviceEvent();
+    void slotDefaultDeviceChanged(const QString& id);
+    void slotDeviceSettingsChanged(const QString& id);
     void slotStartedDecoding(
         const QString& id, const QString& shmPath, int width, int height, bool isMixer);
     void slotStoppedDecoding(const QString& id, const QString& shmPath, bool isMixer);
@@ -65,6 +67,8 @@ class VideoManagerProxySender : public QObject
 public:
 Q_SIGNALS:
     void deviceEvent();
+    void defaultDeviceChanged(const QString& id);
+    void deviceSettingsChanged(const QString& id);
     void startedDecoding(
         const QString& id, const QString& shmPath, int width, int height, bool isMixer);
     void stoppedDecoding(const QString& id, const QString& shmPath, bool isMixer);
@@ -240,6 +244,8 @@ public Q_SLOTS: // METHODS
 
 Q_SIGNALS: // SIGNALS
     void deviceEvent();
+    void defaultDeviceChanged(const QString& id);
+    void deviceSettingsChanged(const QString& id);
     void startedDecoding(
         const QString& id, const QString& shmPath, int width, int height, bool isMixer);
     void stoppedDecoding(const QString& id, const QString& shmPath, bool isMixer);

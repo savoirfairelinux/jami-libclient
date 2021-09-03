@@ -31,6 +31,14 @@ VideoManagerInterface::VideoManagerInterface()
                      &VideoManagerSignalProxy::slotDeviceEvent,
                      Qt::QueuedConnection);
     QObject::connect(sender,
+                     &VideoManagerProxySender::defaultDeviceChanged,
+                     proxy,
+                     &VideoManagerSignalProxy::slotDefaultDeviceChanged);
+    QObject::connect(sender,
+                     &VideoManagerProxySender::deviceSettingsChanged,
+                     proxy,
+                     &VideoManagerSignalProxy::slotDeviceSettingsChanged);
+    QObject::connect(sender,
                      &VideoManagerProxySender::startedDecoding,
                      proxy,
                      &VideoManagerSignalProxy::slotStartedDecoding);
@@ -43,6 +51,12 @@ VideoManagerInterface::VideoManagerInterface()
     using DRing::VideoSignal;
     videoHandlers
         = {exportable_callback<VideoSignal::DeviceEvent>([this]() { emit sender->deviceEvent(); }),
+           exportable_callback<VideoSignal::DefaultDeviceChanged>([this](const std::string& id) {
+               emit sender->defaultDeviceChanged(QString(id.c_str()));
+           }),
+           exportable_callback<VideoSignal::DeviceSettingsChanged>([this](const std::string& id) {
+               emit sender->deviceSettingsChanged(QString(id.c_str()));
+           }),
            exportable_callback<VideoSignal::DecodingStarted>([this](const std::string& id,
                                                                     const std::string& shmPath,
                                                                     int width,
@@ -73,6 +87,18 @@ void
 VideoManagerSignalProxy::slotDeviceEvent()
 {
     emit m_pParent->deviceEvent();
+}
+
+void
+VideoManagerSignalProxy::slotDefaultDeviceChanged(const QString& id)
+{
+    emit m_pParent->defaultDeviceChanged(id);
+}
+
+void
+VideoManagerSignalProxy::slotDeviceSettingsChanged(const QString& id)
+{
+    emit m_pParent->deviceSettingsChanged(id);
 }
 
 void

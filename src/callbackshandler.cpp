@@ -286,6 +286,16 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             this,
             &CallbacksHandler::slotDeviceEvent,
             Qt::QueuedConnection);
+    connect(&VideoManager::instance(),
+            &VideoManagerInterface::defaultDeviceChanged,
+            this,
+            &CallbacksHandler::slotDefaultVideoDeviceChanged,
+            Qt::QueuedConnection);
+    connect(&VideoManager::instance(),
+            &VideoManagerInterface::deviceSettingsChanged,
+            this,
+            &CallbacksHandler::slotVideoDeviceSettingsChanged,
+            Qt::QueuedConnection);
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::audioDeviceEvent,
             this,
@@ -705,6 +715,18 @@ void
 CallbacksHandler::slotDeviceEvent()
 {
     emit deviceEvent();
+}
+
+void
+CallbacksHandler::slotDefaultVideoDeviceChanged(const QString& id)
+{
+    emit defaultVideoDeviceChanged(id);
+}
+
+void
+CallbacksHandler::slotVideoDeviceSettingsChanged(const QString& id)
+{
+    emit videoDeviceSettingsChanged(id);
 }
 
 void
