@@ -322,6 +322,16 @@ Q_SIGNALS:
      */
     void deviceEvent();
     /**
+     * Emitted when the default video device is changed
+     *  @param device id
+     */
+    void defaultVideoDeviceChanged(const QString& id);
+    /**
+     * Emitted when the video device settings are changed
+     *  @param device id
+     */
+    void videoDeviceSettingsChanged(const QString& id);
+    /**
      * Emitted when an audio device is plugged or unplugged
      */
     void audioDeviceEvent();
