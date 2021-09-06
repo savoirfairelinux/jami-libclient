@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>El contacto abandonó la conversación</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
@@ -470,7 +470,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>Copiar a descargas</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
@@ -480,22 +480,22 @@
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>te ha enviado una solicitud de conversación.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Hola, ¿quieres unirte a la conversación?</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Has aceptado la solicitud de conversación.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Esperando a otro dispositivo para sincronizar la conversación.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>

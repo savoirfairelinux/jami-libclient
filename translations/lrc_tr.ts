@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>Hesap görüşmeden ayrıldı</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
@@ -415,7 +415,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Kullanılabilir eklentileri göster</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
@@ -445,7 +445,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>En sondakine git</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
@@ -465,37 +465,37 @@
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Sesli mesaj bırak</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>İndirilenlere kopyala</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>{0} &apos;a yaz</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>size bir görüşme isteği gönderdi.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>İyi günler, görüşmeye katılmak ister misiniz?</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Görüşme isteğini kabul ettiniz.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Başka bir aygıtın bu konuşmayı senkronize etmesi bekleniyor</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
@@ -510,12 +510,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="71"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>İletişim kurulamadı</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="76"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>İletişim bekleniyor</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="77"/>
@@ -525,7 +525,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="78"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>İletişim zaman aşımına uğradı</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
@@ -570,7 +570,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="75"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>Devam Ediyor</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
