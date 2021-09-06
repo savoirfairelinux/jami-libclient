@@ -1453,28 +1453,29 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="315"/>
         <source>Remove Device</source>
-        <translation type="unfinished"/>
+        <translation>删除设备</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="316"/>
         <source>Are you sure you wish to remove this device?</source>
-        <translation type="unfinished"/>
+        <translation>您确定要删除此设备吗？ </translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="317"/>
         <source>Linked Devices</source>
-        <translation type="unfinished"/>
+        <translation>关联设备</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="318"/>
         <source>Your PIN is:</source>
-        <translation type="unfinished"/>
+        <translation>您的 PIN 是：</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>Error connecting to the network.
 Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>连接网络失败。
+请稍后重试。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="322"/>
@@ -1579,12 +1580,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>注册</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Incorrect password</source>
-        <translation type="unfinished"/>
+        <translation>密码错误</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="363"/>

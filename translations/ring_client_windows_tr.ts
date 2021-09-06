@@ -117,7 +117,7 @@
     <message>
         <location filename="../src/calladapter.cpp" line="130"/>
         <source>Missed call from %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 &apos;den cevapsız çağrı</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="496"/>
@@ -132,7 +132,7 @@
     <message>
         <location filename="../src/calladapter.cpp" line="551"/>
         <source>%1 is calling you</source>
-        <translation type="unfinished"/>
+        <translation>%1 sizi aramaktadır</translation>
     </message>
     <message>
         <location filename="../src/calladapter.cpp" line="562"/>
@@ -223,12 +223,13 @@
         <location filename="../src/DaemonReconnectWindow.qml" line="96"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>Jami arka plan prosesine (jamid) yeniden bağlanılamadı.
+Jami şimdi kapatılacak.</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="97"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
-        <translation type="unfinished"/>
+        <translation>Jami arka plan prosesine (jamid) yeniden bağlanmaya çalışılıyor…</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="152"/>
@@ -382,12 +383,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="37"/>
         <source>Incoming audio call from {}</source>
-        <translation type="unfinished"/>
+        <translation> {} &apos;dan gelen arama</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="38"/>
         <source>Incoming video call from {}</source>
-        <translation type="unfinished"/>
+        <translation> {} &apos;dan gelen görüntülü arama</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="73"/>
@@ -618,7 +619,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="346"/>
         <source>Enable typing indicators</source>
-        <translation type="unfinished"/>
+        <translation>Yazma göstergelerini etkinleştir</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="359"/>
@@ -760,7 +761,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="82"/>
         <source>Enable read receipts</source>
-        <translation type="unfinished"/>
+        <translation>Okundu onaylarını etkinleştir</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="83"/>
@@ -1242,7 +1243,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="253"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Kullanılabilir eklentileri göster</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="254"/>
@@ -1453,28 +1454,29 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="315"/>
         <source>Remove Device</source>
-        <translation type="unfinished"/>
+        <translation>Aygıtı Kaldır</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="316"/>
         <source>Are you sure you wish to remove this device?</source>
-        <translation type="unfinished"/>
+        <translation>Bu aygıtı kaldırmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="317"/>
         <source>Linked Devices</source>
-        <translation type="unfinished"/>
+        <translation>Bağlı Aygıtlar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="318"/>
         <source>Your PIN is:</source>
-        <translation type="unfinished"/>
+        <translation>PIN&apos;iniz:</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>Error connecting to the network.
 Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>Ağa bağlanırken hata.
+Lütfen yeniden deneyin.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="322"/>
@@ -1579,12 +1581,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Kaydol</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Incorrect password</source>
-        <translation type="unfinished"/>
+        <translation>Geçersiz parola</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="363"/>
@@ -1777,13 +1779,14 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="536"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
-        <translation type="unfinished"/>
+        <translation>Jami arka plan prosesine (jamid) yeniden bağlanmaya çalışılıyor…</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="537"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>Jami arka plan prosesine (jamid) yeniden bağlanılamadı.
+Jami şimdi kapatılacak.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="540"/>
@@ -1813,7 +1816,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="547"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Sesli mesaj bırak</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="548"/>
@@ -2124,7 +2127,7 @@ Kopyalayın ve arkadaşlarınızla paylaşın!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="530"/>
         <source>Enable local moderators</source>
-        <translation type="unfinished"/>
+        <translation>Yerel moderatörleri etkinleştir</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="531"/>

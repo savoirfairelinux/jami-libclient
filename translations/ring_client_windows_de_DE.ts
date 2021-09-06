@@ -1454,28 +1454,29 @@ Jami wird nun beendet.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="315"/>
         <source>Remove Device</source>
-        <translation type="unfinished"/>
+        <translation>Gerät entfernen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="316"/>
         <source>Are you sure you wish to remove this device?</source>
-        <translation type="unfinished"/>
+        <translation>Sind Sie sicher, dass Sie dieses Gerät entfernen wollen?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="317"/>
         <source>Linked Devices</source>
-        <translation type="unfinished"/>
+        <translation>Verknüpfte Geräte</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="318"/>
         <source>Your PIN is:</source>
-        <translation type="unfinished"/>
+        <translation>Ihre PIN lautet:</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>Error connecting to the network.
 Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>Netzwerkfehler
+Versuchen Sie es später erneut.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="322"/>
@@ -1580,12 +1581,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Registrieren</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Incorrect password</source>
-        <translation type="unfinished"/>
+        <translation>Falsches Passwort</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="363"/>

@@ -1463,7 +1463,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="317"/>
         <source>Linked Devices</source>
-        <translation type="unfinished"/>
+        <translation>Gekoppelde apparaten</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="318"/>
@@ -1579,7 +1579,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Registreren</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="358"/>

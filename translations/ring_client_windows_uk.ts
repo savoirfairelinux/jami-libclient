@@ -1579,7 +1579,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Зареєструватися</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="358"/>

@@ -1453,17 +1453,17 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="315"/>
         <source>Remove Device</source>
-        <translation type="unfinished"/>
+        <translation>Remover dispositivo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="316"/>
         <source>Are you sure you wish to remove this device?</source>
-        <translation type="unfinished"/>
+        <translation>Tem a certeza que quer remover este dispositivo?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="317"/>
         <source>Linked Devices</source>
-        <translation type="unfinished"/>
+        <translation>Dispositivos associados</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="318"/>
@@ -1579,12 +1579,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Registar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Incorrect password</source>
-        <translation type="unfinished"/>
+        <translation>Palavra-chave incorreta</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="363"/>

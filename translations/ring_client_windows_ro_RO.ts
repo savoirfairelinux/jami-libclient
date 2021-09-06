@@ -1444,7 +1444,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="313"/>
         <source>Link a new device to this account</source>
-        <translation>Asociază un nou aparat acestui cont</translation>
+        <translation>Asociază alt aparat acestui cont</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="314"/>

@@ -223,12 +223,13 @@
         <location filename="../src/DaemonReconnectWindow.qml" line="96"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo reconectar al deamon Jami (jamid).
+Jami se cerrará.</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="97"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
-        <translation type="unfinished"/>
+        <translation>Intentando reconectar al deamon Jami (jamid)...</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="152"/>
@@ -735,27 +736,27 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="33"/>
         <source>Accept in audio</source>
-        <translation type="unfinished"/>
+        <translation>Aceptar audio</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="34"/>
         <source>Accept in video</source>
-        <translation type="unfinished"/>
+        <translation>Aceptar vídeo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="43"/>
         <source>You are viewing a conversation where all participants other than you have left. New interactions will not be possible.</source>
-        <translation type="unfinished"/>
+        <translation>Estás viendo una conversación en la que todos los participantes excepto tú se han ido. Nuevas interacciones no serán posibles.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="44"/>
         <source>Start new conversation</source>
-        <translation type="unfinished"/>
+        <translation>Iniciar nueva conversación</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="81"/>
         <source>Chat Settings</source>
-        <translation type="unfinished"/>
+        <translation>Preferencias del chat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="82"/>
@@ -765,7 +766,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="83"/>
         <source>Send and receive receipts indicating that a message have been displayed</source>
-        <translation type="unfinished"/>
+        <translation>Enviar y recibir confirmaciones de lectura indicando que se ha visto un mensaje</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="108"/>
@@ -830,7 +831,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="125"/>
         <source>Allow IP Auto Rewrite</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar Reescritura Automática de IP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="126"/>
@@ -1453,28 +1454,29 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="315"/>
         <source>Remove Device</source>
-        <translation type="unfinished"/>
+        <translation>Quitar dispositivo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="316"/>
         <source>Are you sure you wish to remove this device?</source>
-        <translation type="unfinished"/>
+        <translation>¿Está seguro de querer eliminar este dispositivo?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="317"/>
         <source>Linked Devices</source>
-        <translation type="unfinished"/>
+        <translation>Dispositivos vinculados</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="318"/>
         <source>Your PIN is:</source>
-        <translation type="unfinished"/>
+        <translation>Tu PIN es:</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>Error connecting to the network.
 Please try again later.</source>
-        <translation type="unfinished"/>
+        <translation>Error al conectar a la red.
+Por favor inténtalo más tarde.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="322"/>
@@ -1549,7 +1551,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="347"/>
         <source>Display hyperlink previews in the chatview</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar vistas previas de los vínculos en la vista de chat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="350"/>
@@ -1569,22 +1571,22 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="353"/>
         <source>Accept transfer limit</source>
-        <translation type="unfinished"/>
+        <translation>Aceptar límite de transferencia</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="354"/>
         <source>in MB, 0 = unlimited</source>
-        <translation type="unfinished"/>
+        <translation>en MB, 0 = ilimitado</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Registrar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Incorrect password</source>
-        <translation type="unfinished"/>
+        <translation>Contraseña incorrecta</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="363"/>
@@ -1712,12 +1714,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="436"/>
         <source>Stop taking photo</source>
-        <translation type="unfinished"/>
+        <translation>Dejar de tomar fotografía</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="437"/>
         <source>Clear avatar image</source>
-        <translation type="unfinished"/>
+        <translation>Quitar imagen de avatar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="453"/>
@@ -1747,7 +1749,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="487"/>
         <source>Hide advanced features</source>
-        <translation type="unfinished"/>
+        <translation>Ocultar características avanzadas</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="494"/>
@@ -1767,38 +1769,39 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="514"/>
         <source>Upgrade</source>
-        <translation type="unfinished"/>
+        <translation>Actualizar</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="515"/>
         <source>Later</source>
-        <translation type="unfinished"/>
+        <translation>Más tarde</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="536"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
-        <translation type="unfinished"/>
+        <translation>Intentando reconectar al deamon Jami (jamid)...</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="537"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo reconectar al deamon Jami (jamid).
+Jami se cerrará.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="540"/>
         <source>Is swarm:</source>
-        <translation type="unfinished"/>
+        <translation>Es enjambre:</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="541"/>
         <source>True</source>
-        <translation type="unfinished"/>
+        <translation>Verdadero</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="542"/>
         <source>False</source>
-        <translation type="unfinished"/>
+        <translation>Falso</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="545"/>
@@ -1833,30 +1836,33 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="551"/>
         <source>Write to %1</source>
-        <translation type="unfinished"/>
+        <translation>Escribirle a %1</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="554"/>
         <source>%1 has sent you a request for a conversation.</source>
-        <translation type="unfinished"/>
+        <translation>%1 te ha enviado una solicitud de conversación.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="555"/>
         <source>Hello,
 Would you like to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Hola,
+¿Te gustaría unirte a la conversación?</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="556"/>
         <source>You have accepted
 the conversation request</source>
-        <translation type="unfinished"/>
+        <translation>Has aceptado
+ la solicitud de conversación.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="557"/>
         <source>Waiting until %1
 connects to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Esperando hasta que %1
+se conecte para sincronizar la conversación.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="219"/>

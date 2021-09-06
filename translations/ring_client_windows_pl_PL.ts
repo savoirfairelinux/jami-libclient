@@ -1579,12 +1579,12 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Zarejestruj</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Incorrect password</source>
-        <translation type="unfinished"/>
+        <translation>Nieprawidłowe hasło</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="363"/>
