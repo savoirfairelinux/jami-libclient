@@ -43,6 +43,7 @@ BaseDialog {
     contentItem: Rectangle {
         id: revokeDeviceContentRect
 
+        color: JamiTheme.secondaryBackgroundColor
         implicitWidth: JamiTheme.preferredDialogWidth
         implicitHeight: JamiTheme.preferredDialogHeight
 

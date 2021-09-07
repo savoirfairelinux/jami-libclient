@@ -61,7 +61,7 @@ ColumnLayout {
     RevokeDevicePasswordDialog{
         id: revokeDevicePasswordDialog
 
-        onRevokeDeviceWithPassword: deviceItemListModel.revokeDevice(idOfDevice, password)
+        onRevokeDeviceWithPassword: deviceItemListModel.sourceModel.revokeDevice(idOfDevice, password)
     }
 
     SimpleMessageDialog {
@@ -75,7 +75,7 @@ ColumnLayout {
         buttonTitles: [JamiStrings.optionOk, JamiStrings.optionCancel]
         buttonStyles: [SimpleMessageDialog.ButtonStyle.TintedBlue,
                        SimpleMessageDialog.ButtonStyle.TintedBlack]
-        buttonCallBacks: [function() {deviceItemListModel.revokeDevice(idOfDev, "")}]
+        buttonCallBacks: [function() {deviceItemListModel.sourceModel.revokeDevice(idOfDev, "")}]
     }
 
     Label {
