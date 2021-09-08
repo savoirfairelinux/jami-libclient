@@ -14,7 +14,7 @@ from enum import Enum
 # vs help
 win_sdk_default = '10.0.16299.0'
 win_toolset_default = '142'
-qt_version_default = '5.15.0'
+qt_version_default = '6.2.0'
 
 vs_where_path = os.path.join(
     os.environ['ProgramFiles(x86)'], 'Microsoft Visual Studio', 'Installer', 'vswhere.exe'
@@ -142,17 +142,20 @@ def generate(force, qtver, sdk, toolset, arch):
     # we just assume Qt is installed in the default folder
     qt_dir = 'C:\\Qt\\' + qtver
     cmake_gen = getCMakeGenerator(getLatestVSVersion())
-    qt_minor_version = getQtVersionNumber(qtver, QtVerison.Minor)
+    qt_major_version = getQtVersionNumber(qtver, QtVerison.Major)
 
-    qt_cmake_dir = qt_dir + (
-        '\\msvc2017_64' if int(qt_minor_version) <= 14 else '\\msvc2019_64') + '\\lib\\cmake\\'
+    msvc_folder = '\\msvc2019_64'
+    qt_cmake_dir = qt_dir + msvc_folder +'\\lib\\cmake\\'
+    qt_general_macro = 'Qt' + qt_major_version
     cmake_options = [
-        '-DQt5_DIR=' + qt_cmake_dir + 'Qt5',
-        '-DQt5Core_DIR=' + qt_cmake_dir + 'Qt5Core',
-        '-DQt5Sql_DIR=' + qt_cmake_dir + 'Qt5Sql',
-        '-DQt5LinguistTools_DIR=' + qt_cmake_dir + 'Qt5LinguistTools',
-        '-DQt5Concurrent_DIR=' + qt_cmake_dir + 'Qt5Concurrent',
-        '-DQt5Gui_DIR=' + qt_cmake_dir + 'Qt5Gui',
+        '-DCMAKE_PREFIX_PATH=' + qt_cmake_dir,
+        '-DQT_DIR=' + qt_dir + msvc_folder,
+        '-D' + qt_general_macro + '_DIR=' + qt_cmake_dir + qt_general_macro,
+        '-D' + qt_general_macro + 'Core_DIR=' + qt_cmake_dir + qt_general_macro + 'Core',
+        '-D' + qt_general_macro + 'Sql_DIR=' + qt_cmake_dir + qt_general_macro + 'Sql',
+        '-D' + qt_general_macro + 'LinguistTools_DIR=' + qt_cmake_dir + qt_general_macro+ 'LinguistTools',
+        '-D' + qt_general_macro + 'Concurrent_DIR=' + qt_cmake_dir + qt_general_macro + 'Concurrent',
+        '-D' + qt_general_macro + 'Gui_DIR=' + qt_cmake_dir + qt_general_macro + 'Gui',
         '-Dring_BIN=' + daemon_bin,
         '-DRING_INCLUDE_DIR=' + daemon_dir + '\\src\\jami',
         '-DCMAKE_SYSTEM_VERSION=' + sdk
@@ -264,6 +267,10 @@ def main():
         sys.exit(1)
 
     parsed_args = parse_args()
+
+    if int(getQtVersionNumber(parsed_args.qtver, QtVerison.Major)) < 6:
+        print('We currently only support Qt6')
+        sys.exit(1)
 
     if parsed_args.purge:
         print('Purging build dir')
