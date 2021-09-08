@@ -142,17 +142,19 @@ def generate(force, qtver, sdk, toolset, arch):
     # we just assume Qt is installed in the default folder
     qt_dir = 'C:\\Qt\\' + qtver
     cmake_gen = getCMakeGenerator(getLatestVSVersion())
-    qt_minor_version = getQtVersionNumber(qtver, QtVerison.Minor)
+    qt_major_version = getQtVersionNumber(qtver, QtVerison.Major)
 
-    qt_cmake_dir = qt_dir + (
-        '\\msvc2017_64' if int(qt_minor_version) <= 14 else '\\msvc2019_64') + '\\lib\\cmake\\'
+    qt_cmake_dir = qt_dir + '\\msvc2019_64' +'\\lib\\cmake\\'
+    qt_general_macro = 'Qt' + qt_major_version
     cmake_options = [
-        '-DQt5_DIR=' + qt_cmake_dir + 'Qt5',
-        '-DQt5Core_DIR=' + qt_cmake_dir + 'Qt5Core',
-        '-DQt5Sql_DIR=' + qt_cmake_dir + 'Qt5Sql',
-        '-DQt5LinguistTools_DIR=' + qt_cmake_dir + 'Qt5LinguistTools',
-        '-DQt5Concurrent_DIR=' + qt_cmake_dir + 'Qt5Concurrent',
-        '-DQt5Gui_DIR=' + qt_cmake_dir + 'Qt5Gui',
+        '-DCMAKE_PREFIX_PATH=' + qt_cmake_dir,
+        '-DQT_DIR=' + qt_cmake_dir + qt_general_macro,
+        '-D' + qt_general_macro + '_DIR=' + qt_cmake_dir + qt_general_macro,
+        '-D' + qt_general_macro + 'Core_DIR=' + qt_cmake_dir + qt_general_macro + 'Core',
+        '-D' + qt_general_macro + 'Sql_DIR=' + qt_cmake_dir + qt_general_macro + 'Sql',
+        '-D' + qt_general_macro + 'LinguistTools_DIR=' + qt_cmake_dir + qt_general_macro+ 'LinguistTools',
+        '-D' + qt_general_macro + 'Concurrent_DIR=' + qt_cmake_dir + qt_general_macro + 'Concurrent',
+        '-D' + qt_general_macro + 'Gui_DIR=' + qt_cmake_dir + qt_general_macro + 'Gui',
         '-Dring_BIN=' + daemon_bin,
         '-DRING_INCLUDE_DIR=' + daemon_dir + '\\src\\jami',
         '-DCMAKE_SYSTEM_VERSION=' + sdk
