@@ -221,7 +221,6 @@ setProfile(const QString& accountId, const api::profile::Info& profileInfo, cons
         return;
     }
     QTextStream in(&file);
-    in.setCodec("UTF-8");
     in << vcard;
 }
 } // namespace vcard
@@ -283,7 +282,6 @@ getAccountAvatar(const QString& accountId)
         return {};
     }
     QTextStream in(&file);
-    in.setCodec("UTF-8");
     const auto vCard = lrc::vCard::utils::toHashMap(in.readAll().toUtf8());
     const auto photo = (vCard.find(vCard::Property::PHOTO_PNG) == vCard.end())
                            ? vCard[vCard::Property::PHOTO_JPEG]
@@ -321,7 +319,6 @@ buildContactFromProfile(const QString& accountId,
         }
     }
     QTextStream in(&file);
-    in.setCodec("UTF-8");
     QByteArray vcard = in.readAll().toUtf8();
     const auto vCard = lrc::vCard::utils::toHashMap(vcard);
     const auto alias = vCard[vCard::Property::FORMATTED_NAME];
@@ -433,8 +430,8 @@ getHistory(Database& db, api::conversation::Info& conversation)
             auto timestamp = std::stoi(payloads[i + 3].toStdString());
             if (lastReadInteraction == conversation.interactions.end()
                 || lastReadInteraction->second.timestamp < timestamp) {
-                conversation.lastDisplayedMessageUid.at(conversation.participants.front())
-                    = std::stoull(payloads[i].toStdString());
+                    conversation.lastDisplayedMessageUid.at(conversation.participants.front())
+                    = payloads[i];
             }
         }
     }
@@ -671,7 +668,7 @@ void
 deleteObsoleteHistory(Database& db, long int date)
 {
     try {
-        db.deleteFrom("interactions", "timestamp<=:date", {{":date", toQString(date)}});
+        db.deleteFrom("interactions", "timestamp<=:date", {{":date", QString::number(date)}});
     } catch (Database::QueryDeleteError& e) {
         qWarning() << "deleteFrom error: " << e.details();
     }
