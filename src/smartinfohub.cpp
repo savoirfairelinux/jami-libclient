@@ -81,7 +81,7 @@ SmartInfoHub::isConference() const
 float
 SmartInfoHub::localFps() const
 {
-    if (d_ptr->m_information[LOCAL_FPS] != NULL)
+    if (!d_ptr->m_information[LOCAL_FPS].isEmpty())
         return d_ptr->m_information[LOCAL_FPS].toFloat();
 
     return 0.0;
@@ -90,7 +90,7 @@ SmartInfoHub::localFps() const
 float
 SmartInfoHub::remoteFps() const
 {
-    if (d_ptr->m_information[REMOTE_FPS] != NULL)
+    if (!d_ptr->m_information[REMOTE_FPS].isEmpty())
         return d_ptr->m_information[REMOTE_FPS].toFloat();
 
     return 0.0;
@@ -99,7 +99,7 @@ SmartInfoHub::remoteFps() const
 int
 SmartInfoHub::remoteWidth() const
 {
-    if (d_ptr->m_information[REMOTE_WIDTH] != NULL)
+    if (!d_ptr->m_information[REMOTE_WIDTH].isEmpty())
         return d_ptr->m_information[REMOTE_WIDTH].toInt();
     else
         return 0;
@@ -108,7 +108,7 @@ SmartInfoHub::remoteWidth() const
 int
 SmartInfoHub::remoteHeight() const
 {
-    if (d_ptr->m_information[REMOTE_HEIGHT] != NULL)
+    if (!d_ptr->m_information[REMOTE_HEIGHT].isEmpty())
         return d_ptr->m_information[REMOTE_HEIGHT].toInt();
     else
         return 0;
@@ -117,7 +117,7 @@ SmartInfoHub::remoteHeight() const
 int
 SmartInfoHub::localWidth() const
 {
-    if (d_ptr->m_information[LOCAL_WIDTH] != NULL)
+    if (!d_ptr->m_information[LOCAL_WIDTH].isEmpty())
         return d_ptr->m_information[LOCAL_WIDTH].toInt();
     else
         return 0;
@@ -126,7 +126,7 @@ SmartInfoHub::localWidth() const
 int
 SmartInfoHub::localHeight() const
 {
-    if (d_ptr->m_information[LOCAL_HEIGHT] != NULL)
+    if (!d_ptr->m_information[LOCAL_HEIGHT].isEmpty())
         return d_ptr->m_information[LOCAL_HEIGHT].toInt();
     else
         return 0;
@@ -135,7 +135,7 @@ SmartInfoHub::localHeight() const
 QString
 SmartInfoHub::callID() const
 {
-    if (d_ptr->m_information[CALL_ID] != NULL)
+    if (!d_ptr->m_information[CALL_ID].isEmpty())
         return d_ptr->m_information[CALL_ID];
     else
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
@@ -144,7 +144,7 @@ SmartInfoHub::callID() const
 QString
 SmartInfoHub::localVideoCodec() const
 {
-    if (d_ptr->m_information[LOCAL_VIDEO_CODEC] != NULL)
+    if (!d_ptr->m_information[LOCAL_VIDEO_CODEC].isEmpty())
         return d_ptr->m_information[LOCAL_VIDEO_CODEC];
     else
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
@@ -153,7 +153,7 @@ SmartInfoHub::localVideoCodec() const
 QString
 SmartInfoHub::localAudioCodec() const
 {
-    if (d_ptr->m_information[LOCAL_AUDIO_CODEC] != NULL)
+    if (!d_ptr->m_information[LOCAL_AUDIO_CODEC].isEmpty())
         return d_ptr->m_information[LOCAL_AUDIO_CODEC];
     else
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
@@ -162,7 +162,7 @@ SmartInfoHub::localAudioCodec() const
 QString
 SmartInfoHub::remoteVideoCodec() const
 {
-    if (d_ptr->m_information[REMOTE_VIDEO_CODEC] != NULL)
+    if (!d_ptr->m_information[REMOTE_VIDEO_CODEC].isEmpty())
         return d_ptr->m_information[REMOTE_VIDEO_CODEC];
     else
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
@@ -171,7 +171,7 @@ SmartInfoHub::remoteVideoCodec() const
 QString
 SmartInfoHub::remoteAudioCodec() const
 {
-    if (d_ptr->m_information[REMOTE_AUDIO_CODEC] != NULL)
+    if (!d_ptr->m_information[REMOTE_AUDIO_CODEC].isEmpty())
         return d_ptr->m_information[REMOTE_AUDIO_CODEC];
     else
         return SmartInfoHubPrivate::DEFAULT_RETURN_VALUE_QSTRING;
