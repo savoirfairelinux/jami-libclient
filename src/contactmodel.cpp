@@ -1213,7 +1213,6 @@ ContactModelPimpl::slotProfileReceived(const QString& accountId,
     if (!vCardFile.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
     QTextStream in(&vCardFile);
-    in.setCodec("UTF-8");
 
     auto vCard = in.readAll();
 
