@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.5.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.16)
 
 IF(POLICY CMP0022)
    CMAKE_POLICY(SET CMP0022 NEW)
@@ -68,38 +68,38 @@ ENDIF()
 SET(CMAKE_CXX_STANDARD 17)
 SET(CXX_STANDARD_REQUIRED TRUE)
 
-SET(CMAKE_AUTOMOC TRUE)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+# Here we let find_package(<PackageName>...) try to find Qt 6,
+# If it is found, find_package will succeed, and the CMake variable
+# QT_VERSION_MAJOR will be defined 6.
+find_package(QT NAMES Qt6 COMPONENTS Core REQUIRED)
+if (${QT_VERSION_MAJOR} STRLESS 6)
+   message(FATAL_ERROR "We currently only support Qt6" )
+endif()
+
+if(QT6_VER AND QT6_PATH)
+   message(STATUS "Using custom Qt version")
+   find_package(Qt${QT_VERSION_MAJOR}
+                REQUIRED COMPONENTS Core DBus Sql Gui PATHS ${QT6_PATH} NO_DEFAULT_PATH)
+   # Linguist tools is not required.
+   find_package(Qt${QT_VERSION_MAJOR}
+                COMPONENTS LinguistTools PATHS ${QT6_PATH} NO_DEFAULT_PATH)
+else()
+   find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core DBus Sql Gui)
+   # Linguist tools is not required.
+   find_package(Qt${QT_VERSION_MAJOR}LinguistTools)
+endif()
 
 SET(LOCAL_CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/")
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${LOCAL_CMAKE_MODULE_PATH})
 
 FIND_PACKAGE(Ring REQUIRED)
 
-if(QT5_VER AND QT5_PATH)
-   string(REPLACE "." ";" VERSION_LIST ${QT5_VER})
-   list(GET VERSION_LIST 0 QT5_VER_MAJOR)
-   list(GET VERSION_LIST 1 QT5_VER_MINOR)
-   list(GET VERSION_LIST 2 QT5_VER_PATCH)
-
-   if ((${QT5_VER_MAJOR} GREATER_EQUAL 5) AND (${QT5_VER_MINOR} GREATER_EQUAL 14))
-      message(STATUS "Using custom Qt version")
-      find_package(Qt5 ${QT5_VER} REQUIRED
-                  COMPONENTS Core DBus Sql Gui
-                  PATHS ${QT5_PATH} NO_DEFAULT_PATH)
-      # Linguist tools is not required.
-      find_package(Qt5 ${QT5_VER}
-                  COMPONENTS LinguistTools
-                  PATHS ${QT5_PATH} NO_DEFAULT_PATH)
-   endif()
-else()
-   find_package(Qt5 REQUIRED
-                COMPONENTS Core DBus Sql Gui)
-   # Linguist tools is not required.
-   find_package(Qt5LinguistTools)
-endif()
-
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND NOT ENABLE_LIBWRAP)
-   FIND_PACKAGE(Qt5DBus)
+   FIND_PACKAGE(Qt${QT_VERSION_MAJOR}DBus)
 ELSE()
    SET(ENABLE_LIBWRAP true)
 ENDIF()
@@ -234,8 +234,8 @@ IF(${ENABLE_LIBWRAP} MATCHES true)
    if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
       ADD_DEFINITIONS(-Wno-unknown-pragmas)
    endif()
-   SET(ENABLE_QT5 true) # Use Qt5
-   MESSAGE(STATUS "Compiling with qtwrapper enabled, Qt5 enabled.")
+   SET(ENABLE_QT${QT_VERSION_MAJOR} true)
+   MESSAGE(STATUS "Compiling with qtwrapper enabled, Qt${QT_VERSION_MAJOR} enabled.")
 
    INCLUDE_DIRECTORIES (${CMAKE_SOURCE_DIR}/src/qtwrapper/)
 
@@ -424,12 +424,6 @@ ELSE()
       INCLUDE ${dbus_metatype_path}
    )
 
-   QT5_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${presencemanager_xml}
-      presencemanager_dbus_interface
-   )
-
    # configuration manager interface
    SET ( configurationmanager_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.ConfigurationManager.xml )
 
@@ -438,12 +432,6 @@ ELSE()
       PROPERTIES
       CLASSNAME ConfigurationManagerInterface
       INCLUDE ${dbus_metatype_path}
-   )
-
-   QT5_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${configurationmanager_xml}
-      configurationmanager_dbus_interface
    )
 
    # call manager interface
@@ -456,12 +444,6 @@ ELSE()
       INCLUDE ${dbus_metatype_path}
    )
 
-   QT5_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${callmanager_xml}
-      callmanager_dbus_interface
-   )
-
    # video manager interface
    SET ( video_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.VideoManager.xml )
 
@@ -470,12 +452,6 @@ ELSE()
       PROPERTIES
       CLASSNAME VideoManagerInterface
       INCLUDE ${dbus_metatype_path}
-   )
-
-   QT5_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${video_xml}
-      video_dbus_interface
    )
 
    # plugin manager interface
@@ -488,12 +464,6 @@ ELSE()
       INCLUDE ${dbus_metatype_path}
    )
 
-   QT5_ADD_DBUS_INTERFACE(
-      libringclient_LIB_SRCS
-      ${plugin_xml}
-      plugin_dbus_interface
-   )
-
    # instance interface
    SET ( instance_xml  ${dbus_xml_introspecs_path}/cx.ring.Ring.Instance.xml )
 
@@ -504,7 +474,37 @@ ELSE()
       INCLUDE ${dbus_metatype_path}
    )
 
-   QT5_ADD_DBUS_INTERFACE(
+   QT_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${presencemanager_xml}
+      presencemanager_dbus_interface
+   )
+
+   QT_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${configurationmanager_xml}
+      configurationmanager_dbus_interface
+   )
+
+   QT_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${callmanager_xml}
+      callmanager_dbus_interface
+   )
+
+   QT_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${video_xml}
+      video_dbus_interface
+   )
+
+   QT_ADD_DBUS_INTERFACE(
+      libringclient_LIB_SRCS
+      ${plugin_xml}
+      plugin_dbus_interface
+   )
+
+   QT_ADD_DBUS_INTERFACE(
       libringclient_LIB_SRCS
       ${instance_xml}
       instance_dbus_interface
@@ -535,20 +535,20 @@ IF(${ENABLE_LIBWRAP} MATCHES true AND ${ENABLE_TEST} MATCHES false)
 ENDIF()
 
 IF(NOT ${ENABLE_TEST} MATCHES true)
-  QT5_WRAP_CPP(LIB_HEADER_MOC ${libringclient_PRIVATE_HDRS})
+   QT_WRAP_CPP(LIB_HEADER_MOC ${libringclient_PRIVATE_HDRS})
 ENDIF()
 
 IF(NOT ${ENABLE_STATIC} MATCHES false)
     message(STATUS "Configuring as static lib")
     add_library( ringclient_static  STATIC ${libringclient_LIB_SRCS} ${libringclient_api_LIB_HDRS} ${LIB_HEADER_MOC} )
-    target_link_libraries(ringclient_static Qt5::Core)
-    target_link_libraries(ringclient_static Qt5::Gui)
+    target_link_libraries(ringclient_static Qt::Core)
+    target_link_libraries(ringclient_static Qt::Gui)
     target_link_libraries( ringclient_static
        -lpthread
        ${QT_QTDBUS_LIBRARY}
        ${QT_QTCORE_LIBRARY}
        ${QT_QTGUI_LIBRARY}
-       Qt5::Sql
+       Qt::Sql
        )
     SET_TARGET_PROPERTIES( ringclient_static
        PROPERTIES VERSION ${GENERIC_LIB_VERSION}
@@ -558,26 +558,26 @@ ENDIF()
 if (ENABLE_SHARED)
     message(STATUS "Configuring as shared lib")
     add_library(ringclient SHARED ${libringclient_LIB_SRCS} ${libringclient_api_LIB_HDRS} ${LIB_HEADER_MOC} )
-    target_link_libraries(ringclient Qt5::Core Qt5::Gui)
+    target_link_libraries(ringclient Qt::Core Qt::Gui)
 endif()
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     if (ENABLE_SHARED)
-        target_link_libraries(ringclient Qt5::DBus)
+        target_link_libraries(ringclient Qt::DBus)
     endif()
   IF(${ENABLE_STATIC} MATCHES true)
-      target_link_libraries(ringclient_static Qt5::DBus)
+      target_link_libraries(ringclient_static Qt::DBus)
   ENDIF()
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    FIND_PACKAGE(Qt5Concurrent)
+    FIND_PACKAGE(Qt${QT_VERSION_MAJOR}Concurrent)
 
     #For some reason, QSemaphore wont compile on Windows without QtConcurrent
     if(${ENABLE_STATIC} MATCHES true)
-        target_link_libraries(ringclient_static Qt5::Concurrent)
+        target_link_libraries(ringclient_static Qt::Concurrent)
     endif()
 
     if(ENABLE_SHARED)
-        target_link_libraries(ringclient Qt5::Concurrent)
+        target_link_libraries(ringclient Qt::Concurrent)
     endif()
 ENDIF()
 
@@ -586,8 +586,8 @@ IF (NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     TARGET_LINK_LIBRARIES( ringclient
         -lpthread
         ${QT_QTCORE_LIBRARY}
-        Qt5::Gui
-        Qt5::Sql
+        Qt::Gui
+        Qt::Sql
         )
 ENDIF()
 
@@ -727,7 +727,7 @@ INSTALL( FILES ${libringclient_CONFIG_PATH}
 # )
 
 # translations
-IF( Qt5LinguistTools_FOUND )
+IF(Qt${QT_VERSION_MAJOR}LinguistTools_FOUND)
    # translation template file
    SET(TS_TEMPLATE ${CMAKE_SOURCE_DIR}/translations/lrc_en.ts)
 
@@ -736,7 +736,7 @@ IF( Qt5LinguistTools_FOUND )
    LIST(REMOVE_ITEM TS_FILES ${TS_TEMPLATE})
 
    # compiled .qm files
-   QT5_ADD_TRANSLATION(QM_FILES ${TS_FILES})
+   QT_ADD_TRANSLATION(QM_FILES ${TS_FILES})
 
    ADD_CUSTOM_TARGET(translations ALL DEPENDS ${QM_FILES})
 
