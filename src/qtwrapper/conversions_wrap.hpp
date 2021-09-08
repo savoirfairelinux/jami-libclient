@@ -143,6 +143,26 @@ convertVectorULongLong(const std::vector<uint64_t>& v)
     return temp;
 }
 
+inline VectorUInt
+convertVectorUnsignedInt(const std::vector<unsigned int>& v)
+{
+    VectorUInt temp;
+    for (const auto& x : v) {
+        temp.push_back(x);
+    }
+    return temp;
+}
+
+inline std::vector<unsigned int>
+convertStdVectorUnsignedInt(const VectorUInt& v)
+{
+    std::vector<unsigned int> temp;
+    for (const auto& x : v) {
+        temp.push_back(x);
+    }
+    return temp;
+}
+
 inline std::vector<std::string>
 convertStringList(const QStringList& v)
 {
