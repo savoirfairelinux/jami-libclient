@@ -19,7 +19,6 @@
 
 #include "previewengine.h"
 
-#include <QtWebEngine>
 #include <QWebEngineScript>
 #include <QWebEngineProfile>
 #include <QWebEngineSettings>

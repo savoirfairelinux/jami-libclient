@@ -144,7 +144,7 @@ AccountAdapter::createJamiAccount(QString registeredName,
 
     connectFailure();
 
-    QtConcurrent::run([this, settings] {
+    auto futureResult = QtConcurrent::run([this, settings] {
         lrcInstance_->accountModel().createNewAccount(lrc::api::profile::Type::JAMI,
                                                       settings["alias"].toString(),
                                                       settings["archivePath"].toString(),
@@ -189,7 +189,7 @@ AccountAdapter::createSIPAccount(const QVariantMap& settings)
 
     connectFailure();
 
-    QtConcurrent::run([this, settings] {
+    auto futureResult = QtConcurrent::run([this, settings] {
         lrcInstance_->accountModel().createNewAccount(lrc::api::profile::Type::SIP,
                                                       settings["alias"].toString(),
                                                       settings["archivePath"].toString(),
@@ -233,7 +233,7 @@ AccountAdapter::createJAMSAccount(const QVariantMap& settings)
 
     connectFailure();
 
-    QtConcurrent::run([this, settings] {
+    auto futureResult = QtConcurrent::run([this, settings] {
         lrcInstance_->accountModel().connectToAccountManager(settings["username"].toString(),
                                                              settings["password"].toString(),
                                                              settings["manager"].toString());
@@ -278,7 +278,7 @@ AccountAdapter::setCurrAccDisplayName(const QString& text)
 void
 AccountAdapter::setCurrentAccountAvatarFile(const QString& source)
 {
-    QtConcurrent::run([this, source]() {
+    auto futureResult = QtConcurrent::run([this, source]() {
         QPixmap image;
         if (!image.load(source)) {
             qWarning() << "Not a valid image file";
@@ -298,7 +298,7 @@ AccountAdapter::setCurrentAccountAvatarFile(const QString& source)
 void
 AccountAdapter::setCurrentAccountAvatarBase64(const QString& data)
 {
-    QtConcurrent::run([this, data]() {
+    auto futureResult = QtConcurrent::run([this, data]() {
         auto accountId = lrcInstance_->get_currentAccountId();
         lrcInstance_->accountModel().setAvatar(accountId, data);
     });
@@ -346,7 +346,7 @@ AccountAdapter::exportToFile(const QString& accountId,
 void
 AccountAdapter::setArchivePasswordAsync(const QString& accountID, const QString& password)
 {
-    QtConcurrent::run([this, accountID, password] {
+    auto futureResult = QtConcurrent::run([this, accountID, password] {
         auto config = lrcInstance_->accountModel().getAccountConfig(accountID);
         config.archivePassword = password;
         lrcInstance_->accountModel().setAccountConfig(accountID, config);

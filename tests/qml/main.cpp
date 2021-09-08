@@ -30,7 +30,9 @@
 #include <QtQuickTest/quicktest.h>
 #include <QQmlEngine>
 #include <QQmlContext>
-#include <QtWebEngine>
+#include <QFontDatabase>
+#include <QtWebEngineCore>
+#include <QtWebEngineQuick>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -154,7 +156,7 @@ main(int argc, char** argv)
         argc = std::distance(argv, end);
     }
 
-    QtWebEngine::initialize();
+    QtWebEngineQuick::initialize();
 
     QTEST_SET_MAIN_SOURCE_PATH
     Setup setup(muteDring);

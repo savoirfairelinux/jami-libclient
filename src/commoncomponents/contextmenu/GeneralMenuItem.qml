@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 import net.jami.Constants 1.1
 
@@ -54,10 +54,13 @@ MenuItem {
 
         background: Rectangle {
             id: background
+
             anchors.fill: parent
             anchors.leftMargin: 1
             anchors.rightMargin: 1
-            color: "transparent"
+
+            color: menuItemContentRect.hovered ?
+                       JamiTheme.hoverColor : JamiTheme.backgroundColor
         }
 
         anchors.fill: parent
@@ -127,25 +130,6 @@ MenuItem {
             menuItem.clicked()
             parentMenu.close()
         }
-
-        states: [
-            State {
-                name: "hovered"
-                when: hovered
-                PropertyChanges {
-                    target: background
-                    color: JamiTheme.hoverColor
-                }
-            },
-            State {
-                name: "normal"
-                when: !hovered
-                PropertyChanges {
-                    target: background
-                    color: JamiTheme.backgroundColor
-                }
-            }
-        ]
     }
 
     highlighted: true

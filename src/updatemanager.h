@@ -53,7 +53,7 @@ private:
     // LRCInstance pointer
     LRCInstance* lrcInstance_ {nullptr};
 
-    QByteArray baseUrl_;
+    QString baseUrlString_;
     QString tempPath_;
     QTimer* updateTimer_;
 

@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtGraphicalEffects 1.15
+import QtQuick
+import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
 
 import net.jami.Constants 1.1
 
@@ -28,11 +28,6 @@ Popup {
     // convient access to closePolicy
     property bool autoClose: true
     property alias backgroundColor: container.color
-
-    onContentItemChanged: {
-        if(root.contentItem !== null)
-            root.contentItem.parent = container
-    }
 
     parent: Overlay.overlay
 
@@ -65,9 +60,9 @@ Popup {
         horizontalOffset: 3.0
         verticalOffset: 3.0
         radius: container.radius * 4
-        samples: JamiTheme.modalPopupDropShadowSamples
         color: JamiTheme.shadowColor
         source: container
+        transparentBorder: true
     }
 
     enter: Transition {

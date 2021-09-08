@@ -19,7 +19,7 @@
 // JamiQmlUtils as a singleton is to provide global property entry
 pragma Singleton
 
-import QtQuick 2.15
+import QtQuick
 
 import net.jami.Adapters 1.1
 

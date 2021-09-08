@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtGraphicalEffects 1.15
+import QtQuick
+import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
 
 import net.jami.Constants 1.1
 
@@ -111,8 +111,8 @@ Menu {
             horizontalOffset: 3.0
             verticalOffset: 3.0
             radius: 16.0
-            samples: 16
             color: JamiTheme.shadowColor
+            transparentBorder: true
         }
     }
 

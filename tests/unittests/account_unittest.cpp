@@ -64,7 +64,7 @@ TEST_F(AccountFixture, CreateSIPAccountTest)
     EXPECT_EQ(accountAddedSpy.count(), 1);
 
     QList<QVariant> accountAddedArguments = accountAddedSpy.takeFirst();
-    EXPECT_TRUE(accountAddedArguments.at(0).type() == QVariant::String);
+    EXPECT_TRUE(accountAddedArguments.at(0).typeId() == qMetaTypeId<QString>());
 
     // Select the created account
     globalEnv.lrcInstance->set_currentAccountId(accountAddedArguments.at(0).toString());

@@ -248,7 +248,8 @@ MessagesAdapter::onPaste()
         // Extract the local paths of the files.
         for (int i = 0; i < urlList.size(); ++i) {
             // Trim file:// or file:/// from url.
-            QString filePath = urlList.at(i).toString().remove(QRegExp("^file:\\/{2,3}"));
+            QString filePath = urlList.at(i).toString().remove(
+                QRegularExpression("^file:\\/{2,3}"));
             Q_EMIT newFilePasted(filePath);
         }
     } else {

@@ -476,7 +476,7 @@ Utils::forceDeleteAsync(const QString& path)
      * Keep deleting file until the process holding it let go,
      * or the file itself does not exist anymore.
      */
-    QtConcurrent::run([path] {
+    auto futureResult = QtConcurrent::run([path] {
         QFile file(path);
         if (!QFile::exists(path))
             return;
@@ -499,7 +499,6 @@ Utils::getProjectCredits()
         return {};
     }
     QTextStream in(&projectCreditsFile);
-    in.setCodec("UTF-8");
     while (!in.atEnd()) {
         QString currentLine = in.readLine();
         if (currentLine.contains("Created by:")) {
@@ -637,12 +636,14 @@ Utils::fallbackAvatar(const QString& canonicalUri, const QString& name, const QS
     // if a letter was passed, then we paint a letter in the circle,
     // otherwise we draw the default avatar icon
     QString trimmedName(name);
-    if (!trimmedName.remove(QRegExp("[\\n\\t\\r]")).isEmpty()) {
+    if (!trimmedName.remove(QRegularExpression("[\\n\\t\\r]")).isEmpty()) {
         auto unicode = trimmedName.toUcs4().at(0);
         if (unicode >= 0x1F000 && unicode <= 0x1FFFF) {
             // emoticon
-            auto letter = QString::fromUcs4(&unicode, 1);
-            QFont font(QStringLiteral("Segoe UI Emoji"), avatar.height() / 2.66667, QFont::Medium);
+            auto letter = QString::fromUcs4(reinterpret_cast<char32_t*>(&unicode), 1);
+            QFont font(QString("Segoe UI Emoji").split(QLatin1Char(',')),
+                       avatar.height() / 2.66667,
+                       QFont::Medium);
             painter.setFont(font);
             QRect emojiRect(avatar.rect());
             emojiRect.moveTop(-6);
@@ -650,13 +651,17 @@ Utils::fallbackAvatar(const QString& canonicalUri, const QString& name, const QS
         } else if (unicode >= 0x0000 && unicode <= 0x00FF) {
             // basic Latin
             auto letter = trimmedName.at(0).toUpper();
-            QFont font("Arial", avatar.height() / 2.66667, QFont::Medium);
+            QFont font(QString("Arial").split(QLatin1Char(',')),
+                       avatar.height() / 2.66667,
+                       QFont::Medium);
             painter.setFont(font);
             painter.setPen(Qt::white);
             painter.drawText(avatar.rect(), QString(letter), QTextOption(Qt::AlignCenter));
         } else {
-            auto letter = QString::fromUcs4(&unicode, 1);
-            QFont font("Arial", avatar.height() / 2.66667, QFont::Medium);
+            auto letter = QString::fromUcs4(reinterpret_cast<char32_t*>(&unicode), 1);
+            QFont font(QString("Arial").split(QLatin1Char(',')),
+                       avatar.height() / 2.66667,
+                       QFont::Medium);
             painter.setFont(font);
             painter.setPen(Qt::white);
             painter.drawText(avatar.rect(), QString(letter), QTextOption(Qt::AlignCenter));

@@ -344,10 +344,9 @@ CallOverlayModel::eventFilter(QObject* object, QEvent* event)
 {
     if (event->type() == QEvent::MouseMove) {
         auto mouseEvent = static_cast<QMouseEvent*>(event);
-        QPoint eventPos(mouseEvent->x(), mouseEvent->y());
         auto windowItem = static_cast<QQuickWindow*>(object)->contentItem();
         Q_FOREACH (const auto& item, watchedItems_) {
-            if (item->contains(windowItem->mapToItem(item, eventPos))) {
+            if (item->contains(windowItem->mapToItem(item, mouseEvent->pos()))) {
                 Q_EMIT mouseMoved(item);
             }
         }

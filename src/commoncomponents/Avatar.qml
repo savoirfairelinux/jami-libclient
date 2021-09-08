@@ -17,8 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
@@ -64,7 +64,7 @@ Item {
     }
 
     Connections {
-        target: ScreenInfo
+        target: CurrentScreenInfo
 
         function onDevicePixelRatioChanged() {
             image.updateSource()
@@ -94,7 +94,7 @@ Item {
         }
 
         opacity: status === Image.Ready
-        scale: Math.min(opacity + 0.5, 1.0)
+        scale: Math.min(image.opacity + 0.5, 1.0)
 
         Behavior on opacity {
             NumberAnimation {

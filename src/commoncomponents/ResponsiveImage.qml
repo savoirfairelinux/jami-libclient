@@ -16,8 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtGraphicalEffects 1.15
+import QtQuick
+import Qt5Compat.GraphicalEffects
 
 import net.jami.Constants 1.1
 import net.jami.Helpers 1.1
@@ -48,7 +48,7 @@ Item {
     height: Math.trunc(containerHeight * Math.sqrt(2) * 0.5) + 3 - padding
 
     Connections {
-        target: ScreenInfo
+        target: CurrentScreenInfo
 
         function onDevicePixelRatioChanged() {
             image.setSourceSize()

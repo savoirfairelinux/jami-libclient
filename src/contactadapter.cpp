@@ -49,18 +49,20 @@ ContactAdapter::getContactSelectableModel(int type)
     // Adjust filter.
     switch (listModeltype_) {
     case SmartListModel::Type::CONVERSATION:
-        selectableProxyModel_->setPredicate([this](const QModelIndex& index, const QRegExp&) {
-            return !defaultModerators_.contains(index.data(Role::URI).toString());
-        });
+        selectableProxyModel_->setPredicate(
+            [this](const QModelIndex& index, const QRegularExpression&) {
+                return !defaultModerators_.contains(index.data(Role::URI).toString());
+            });
         break;
 
     case SmartListModel::Type::CONFERENCE:
-        selectableProxyModel_->setPredicate([](const QModelIndex& index, const QRegExp&) {
+        selectableProxyModel_->setPredicate([](const QModelIndex& index, const QRegularExpression&) {
             return index.data(Role::Presence).toBool();
         });
         break;
     case SmartListModel::Type::TRANSFER:
-        selectableProxyModel_->setPredicate([this](const QModelIndex& index, const QRegExp& regexp) {
+        selectableProxyModel_->setPredicate([this](const QModelIndex& index,
+                                                   const QRegularExpression& regexp) {
             // Exclude current sip callee and filtered contact.
             bool match = true;
             const auto& conv = lrcInstance_->getConversationFromConvUid(
@@ -70,12 +72,13 @@ ContactAdapter::getContactSelectableModel(int type)
                                               ->getAccountInfo(lrcInstance_->get_currentAccountId())
                                               .contactModel->bestIdForContact(conv.participants[0]);
 
-                QRegExp matchExcept = QRegExp(QString("\\b(?!" + calleeDisplayId + "\\b)\\w+"));
-                match = matchExcept.indexIn(index.data(Role::BestId).toString()) != -1;
+                QRegularExpression matchExcept = QRegularExpression(
+                    QString("\\b(?!" + calleeDisplayId + "\\b)\\w+"));
+                match = matchExcept.match(index.data(Role::BestId).toString()).hasMatch();
             }
 
             if (match) {
-                match = regexp.indexIn(index.data(Role::BestId).toString()) != -1;
+                match = regexp.match(index.data(Role::BestId).toString()).hasMatch();
             }
             return match && !index.parent().isValid();
         });
@@ -95,13 +98,13 @@ ContactAdapter::setSearchFilter(const QString& filter)
         smartListModel_->setConferenceableFilter(filter);
     } else if (listModeltype_ == SmartListModel::Type::CONVERSATION) {
         selectableProxyModel_->setPredicate(
-            [this, filter](const QModelIndex& index, const QRegExp&) {
+            [this, filter](const QModelIndex& index, const QRegularExpression&) {
                 return (!defaultModerators_.contains(index.data(Role::URI).toString())
                         && index.data(Role::Title).toString().contains(filter));
             });
     }
-    selectableProxyModel_->setFilterRegExp(
-        QRegExp(filter, Qt::CaseInsensitive, QRegExp::FixedString));
+    selectableProxyModel_->setFilterRegularExpression(
+        QRegularExpression(filter, QRegularExpression::CaseInsensitiveOption));
 }
 
 void
@@ -190,9 +193,10 @@ ContactAdapter::contactSelected(int index)
 void
 ContactAdapter::connectSignals()
 {
-    connect(lrcInstance_->getCurrentContactModel(),
-            &ContactModel::bannedStatusChanged,
-            this,
-            &ContactAdapter::bannedStatusChanged,
-            Qt::UniqueConnection);
+    if (lrcInstance_->getCurrentContactModel())
+        connect(lrcInstance_->getCurrentContactModel(),
+                &ContactModel::bannedStatusChanged,
+                this,
+                &ContactAdapter::bannedStatusChanged,
+                Qt::UniqueConnection);
 }

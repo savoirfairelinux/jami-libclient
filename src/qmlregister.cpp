@@ -179,7 +179,7 @@ registerTypes(QQmlEngine* engine,
     QML_REGISTERSINGLETONTYPE_URL(NS_CONSTANTS, "qrc:/src/constant/JamiResources.qml", JamiResources);
     QML_REGISTERSINGLETONTYPE_URL(NS_CONSTANTS, "qrc:/src/constant/MsgSeq.qml", MsgSeq);
 
-    QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, screenInfo, "ScreenInfo")
+    QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, screenInfo, "CurrentScreenInfo")
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, lrcInstance, "LRCInstance")
     QML_REGISTERSINGLETONTYPE_POBJECT(NS_CONSTANTS, settingsManager, "AppSettingsManager")
 

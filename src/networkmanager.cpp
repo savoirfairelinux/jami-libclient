@@ -81,11 +81,7 @@ NetWorkManager::get(const QUrl& url, const DoneCallBack& doneCb, const QString& 
     Q_EMIT statusChanged(GetStatus::STARTED);
 
     connect(reply_,
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
             QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::errorOccurred),
-#else
-            QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error),
-#endif
             [this, doneCb, path](QNetworkReply::NetworkError error) {
                 reply_->disconnect();
                 reset(true);

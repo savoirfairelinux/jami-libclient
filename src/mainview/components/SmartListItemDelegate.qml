@@ -17,9 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1
@@ -190,6 +190,8 @@ ItemDelegate {
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.RightButton
-        onClicked: root.ListView.view.openContextMenuAt(mouse.x, mouse.y, root)
+        onClicked: function (mouse) {
+            root.ListView.view.openContextMenuAt(mouse.x, mouse.y, root)
+        }
     }
 }

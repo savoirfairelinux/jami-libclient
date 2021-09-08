@@ -1,5 +1,5 @@
 pragma Singleton
-import QtQml 2.15
+import QtQml
 QtObject {
     //readonly property int unknown: -1
     readonly property int single: 0

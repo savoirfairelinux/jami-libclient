@@ -16,11 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 import net.jami.Models 1.1
 import net.jami.Constants 1.1
+
+import "../../commoncomponents"
 
 Rectangle {
     id: root
@@ -30,7 +32,7 @@ Rectangle {
 
     color: JamiTheme.messageOutBgColor
 
-    ScrollView {
+    JamiFlickable {
         id: filesToSendContainerScrollView
 
         anchors.fill: root
@@ -38,16 +40,9 @@ Rectangle {
         contentHeight: root.height
         contentWidth: filesToSendContainerRow.width
 
-        ScrollBar.horizontal.visible: {
-            var ratio = filesToSendContainerRow.width / root.width
-            return ratio > 1
-        }
-        ScrollBar.horizontal.contentItem: Rectangle {
-            implicitHeight: 5
-            radius: width / 2
-            color: filesToSendContainerScrollView.ScrollBar.horizontal.pressed ?
-                       JamiTheme.darkGreyColor : JamiTheme.whiteColor
-        }
+        horizontalHandleColor:
+            filesToSendContainerScrollView.ScrollBar.horizontal.pressed ?
+                JamiTheme.darkGreyColor : JamiTheme.whiteColor
         ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
         Row {

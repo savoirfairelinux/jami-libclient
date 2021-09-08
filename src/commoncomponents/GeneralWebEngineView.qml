@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtWebEngine 1.10
-import QtWebChannel 1.15
+import QtQuick
+import QtWebEngine
+import QtWebChannel
 
 import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
@@ -50,14 +50,14 @@ WebEngineView {
         id: webViewChannel
     }
 
-    onNavigationRequested: {
+    onNavigationRequested: function (request) {
         if (request.navigationType === WebEngineView.LinkClickedNavigation) {
             MessagesAdapter.openUrl(request.url)
             request.action = WebEngineView.IgnoreRequest
         }
     }
 
-    onContextMenuRequested: {
+    onContextMenuRequested: function (request) {
         var needContextMenu = request.selectedText.length || request.isContentEditable
         if (!needContextMenu)
             request.accepted = true

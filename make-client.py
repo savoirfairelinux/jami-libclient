@@ -12,7 +12,7 @@ from enum import Enum
 # vs help
 win_sdk_default = '10.0.16299.0'
 win_toolset_default = '142'
-qt_version_default = '5.15.0'
+qt_version_default = '6.2.0'
 
 vs_where_path = os.path.join(
     os.environ['ProgramFiles(x86)'], 'Microsoft Visual Studio', 'Installer', 'vswhere.exe'
@@ -22,6 +22,7 @@ host_is_64bit = (False, True)[platform.machine().endswith('64')]
 this_dir = os.path.dirname(os.path.realpath(__file__))
 build_dir = os.path.join(this_dir, 'build')
 temp_path = os.environ['TEMP']
+openssl_include_dir = 'C:\\Qt\\Tools\\OpenSSL\\Win_x64\\include\\openssl'
 
 # project path
 jami_qt_project = os.path.join(build_dir, 'jami-qt.vcxproj')
@@ -214,20 +215,37 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
 
     qt_dir = os.path.join("C:\\", 'Qt', qtver)
     cmake_gen = getCMakeGenerator(getLatestVSVersion())
-    msvc_folder = 'msvc2019_64'
+    qt_major_version = getQtVersionNumber(qtver, QtVerison.Major)
+    qt_general_macro = 'Qt' + qt_major_version
+    msvc_folder = '\\msvc2019_64'
+
+    qt_cmake_dir = qt_dir + msvc_folder + '\\lib\\cmake\\'
+    cmake_prefix_path = qt_dir + msvc_folder
 
     qt_cmake_dir = os.path.join(qt_dir, msvc_folder, 'lib', 'cmake')
     cmake_prefix_path = os.path.join(qt_dir, msvc_folder)
     cmake_options = [
         '-DCMAKE_PREFIX_PATH=' + cmake_prefix_path,
-        '-DQt5_DIR=' + qt_cmake_dir + 'Qt5',
-        '-DQt5Core_DIR=' + qt_cmake_dir + 'Qt5Core',
-        '-DQt5Sql_DIR=' + qt_cmake_dir + 'Qt5Sql',
-        '-DQt5LinguistTools_DIR=' + qt_cmake_dir + 'Qt5LinguistTools',
-        '-DQt5Concurrent_DIR=' + qt_cmake_dir + 'Qt5Concurrent',
-        '-DQt5Gui_DIR=' + qt_cmake_dir + 'Qt5Gui',
-        '-DQt5Test_DIR=' + qt_cmake_dir + 'Qt5Test',
-        '-DQt5QuickTest_DIR=' + qt_cmake_dir + 'Qt5QuickTest',
+        '-DOPENSSL_INCLUDE_DIR=' + openssl_include_dir,
+        '-DQT_DIR=' + qt_dir + msvc_folder,
+        '-D' + qt_general_macro + '_DIR=' + qt_cmake_dir + qt_general_macro,
+        '-D' + qt_general_macro + 'Core_DIR=' + qt_cmake_dir + qt_general_macro + 'Core',
+        '-D' + qt_general_macro + 'Core5Compat_DIR=' + qt_cmake_dir + qt_general_macro + 'Core5Compat',
+        '-D' + qt_general_macro + 'WebEngineCore_DIR=' + qt_cmake_dir + qt_general_macro + 'WebEngineCore',
+        '-D' + qt_general_macro + 'WebEngineQuick_DIR=' + qt_cmake_dir + qt_general_macro + 'WebEngineQuick',
+        '-D' + qt_general_macro + 'WebChannel_DIR=' + qt_cmake_dir + qt_general_macro + 'WebChannel',
+        '-D' + qt_general_macro + 'WebEngineWidgets_DIR=' + qt_cmake_dir + qt_general_macro + 'WebEngineWidgets',
+        '-D' + qt_general_macro + 'Sql_DIR=' + qt_cmake_dir + qt_general_macro + 'Sql',
+        '-D' + qt_general_macro + 'LinguistTools_DIR=' + qt_cmake_dir + qt_general_macro + 'LinguistTools',
+        '-D' + qt_general_macro + 'Concurrent_DIR=' + qt_cmake_dir + qt_general_macro + 'Concurrent',
+        '-D' + qt_general_macro + 'Network_DIR=' + qt_cmake_dir + qt_general_macro + 'Network',
+        '-D' + qt_general_macro + 'NetworkAuth_DIR=' + qt_cmake_dir + qt_general_macro + 'NetworkAuth',
+        '-D' + qt_general_macro + 'Gui_DIR=' + qt_cmake_dir + qt_general_macro + 'Gui',
+        '-D' + qt_general_macro + 'Qml_DIR=' + qt_cmake_dir + qt_general_macro + 'Qml',
+        '-D' + qt_general_macro + 'QmlModels_DIR=' + qt_cmake_dir + qt_general_macro + 'QmlModels',
+        '-D' + qt_general_macro + 'Positioning_DIR=' + qt_cmake_dir + qt_general_macro + 'Positioning',
+        '-D' + qt_general_macro + 'Test_DIR=' + qt_cmake_dir + qt_general_macro + 'Test',
+        '-D' + qt_general_macro + 'QuickTest_DIR=' + qt_cmake_dir + qt_general_macro + 'QuickTest',
         '-DENABLE_TESTS=' + (str("ENABLE_TESTS") if test_building_type != TestBuilding.NoTests else ''),
         '-DCMAKE_SYSTEM_VERSION=' + sdk_version
     ]
@@ -383,6 +401,10 @@ def main():
         sys.exit(1)
 
     parsed_args = parse_args()
+
+    if int(getQtVersionNumber(parsed_args.qtver, QtVerison.Major)) < 6:
+        print('We currently only support Qt6')
+        sys.exit(1)
 
     test_building_type = TestBuilding.NoTests
 

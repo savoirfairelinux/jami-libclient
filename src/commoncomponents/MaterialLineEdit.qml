@@ -17,8 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 import net.jami.Constants 1.1
 
@@ -62,8 +62,8 @@ TextField {
         color: readOnly? "transparent" : backgroundColor
     }
 
-    onReleased: {
-        if (event.button == Qt.RightButton)
+    onReleased: function (event) {
+        if (event.button === Qt.RightButton)
             lineEditContextMenu.openMenuAt(event)
     }
 
@@ -73,7 +73,7 @@ TextField {
     // Use editingFinished when the info is saved by focus lost
     // (since losing focus will also emit editingFinished)
     // Use accepted when the info is not saved by focus lost
-    Keys.onPressed: {
+    Keys.onPressed: function (event) {
         if (event.key === Qt.Key_Enter ||
                 event.key === Qt.Key_Return) {
             if (loseFocusWhenEnterPressed)

@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1
@@ -340,7 +340,7 @@ Rectangle {
         width: mainViewSidePanelRect.width
         height: mainViewSidePanelRect.height
 
-        onItemSelected: {
+        onItemSelected: function (index) {
             settingsView.setSelected(index)
             if (sidePanelOnly)
                 sidePanelViewStack.push(settingsView, StackView.Immediate)
@@ -454,8 +454,12 @@ Rectangle {
     AboutPopUp {
         id: aboutPopUpDialog
 
-        height: Math.min(preferredHeight,
-                         mainView.height - JamiTheme.preferredMarginSize * 2)
+        onVisibleChanged: {
+            height = Qt.binding(function () {
+                return Math.min(preferredHeight,
+                                mainView.height - JamiTheme.preferredMarginSize * 2)
+            })
+        }
     }
 
     WelcomePageQrDialog {
@@ -511,14 +515,6 @@ Rectangle {
     }
 
     Shortcut {
-        sequence: "F10"
-        context: Qt.ApplicationShortcut
-        onActivated: {
-            shortcutsTable.open()
-        }
-    }
-
-    Shortcut {
         sequence: "F11"
         context: Qt.ApplicationShortcut
         onActivated: {
@@ -564,9 +560,5 @@ Rectangle {
         sequence: StandardKey.Quit
         context: Qt.ApplicationShortcut
         onActivated: Qt.quit()
-    }
-
-    KeyBoardShortcutTable {
-        id: shortcutsTable
     }
 }

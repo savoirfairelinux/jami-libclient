@@ -17,15 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
 
 import "components"
+import "../commoncomponents"
 import "../mainview/js/contactpickercreation.js" as ContactPickerCreation
 
 Rectangle {
@@ -129,7 +130,7 @@ Rectangle {
             onBackArrowClicked: root.settingsBackArrowClicked()
         }
 
-        Flickable {
+        JamiFlickable {
             id: settingsViewScrollView
 
             anchors.top: settingsHeader.bottom
@@ -138,10 +139,6 @@ Rectangle {
             height: settingsViewRect.height - settingsHeader.height
             width: settingsViewRect.width
 
-            maximumFlickVelocity: 1024
-            ScrollBar.vertical: ScrollBar { }
-
-            clip: true
             contentHeight: rightSettingsStackLayout.height
 
             StackLayout {
@@ -194,7 +191,7 @@ Rectangle {
                         leaveSettingsSlot(false)
                     }
 
-                    onAdvancedSettingsToggled: {
+                    onAdvancedSettingsToggled: function (settingsVisible) {
                         if (settingsVisible)
                             settingsViewScrollView.contentY = getAdvancedSettingsScrollPosition()
                         else

@@ -16,15 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
 
 import "../../commoncomponents"
 
-Flickable {
+JamiFlickable {
     id: root
 
     property alias text: textArea.text
@@ -57,15 +57,11 @@ Flickable {
         }
     }
 
-    ScrollBar.vertical: ScrollBar {
-        policy: contentHeight > height ? ScrollBar.AlwaysOn : ScrollBar.AsNeeded
-    }
-
     contentWidth: width
     contentHeight: textArea.implicitHeight
 
     interactive: true
-    clip: true
+    attachedFlickableMoving: contentHeight > height || root.moving
 
     function ensureVisible(r) {
         if (contentY >= r.y)
@@ -118,7 +114,7 @@ Flickable {
             color: JamiTheme.transparentColor
         }
 
-        onReleased: {
+        onReleased: function (event) {
             if (event.button == Qt.RightButton)
                 textAreaContextMenu.openMenuAt(event)
         }

@@ -32,6 +32,11 @@ static constexpr bool isBeta = false;
 #endif
 
 static constexpr int updatePeriod = 1000 * 60 * 60 * 24; // one day in millis
+static constexpr char downloadUrl[] = "https://dl.jami.net/windows";
+static constexpr char versionSubUrl[] = "/version";
+static constexpr char betaVersionSubUrl[] = "/beta/version";
+static constexpr char msiSubUrl[] = "/jami.release.x64.msi";
+static constexpr char betaMsiSubUrl[] = "/beta/jami.beta.x64.msi";
 
 UpdateManager::UpdateManager(const QString& url,
                              ConnectivityMonitor* cm,
@@ -39,7 +44,7 @@ UpdateManager::UpdateManager(const QString& url,
                              QObject* parent)
     : NetWorkManager(cm, parent)
     , lrcInstance_(instance)
-    , baseUrl_(url.isEmpty() ? "https://dl.jami.net/windows" : url.toLatin1())
+    , baseUrlString_(url.isEmpty() ? downloadUrl : url)
     , tempPath_(Utils::WinGetEnv("TEMP"))
     , updateTimer_(new QTimer(this))
 {
@@ -76,9 +81,8 @@ UpdateManager::checkForUpdates(bool quiet)
         connect(this, &NetWorkManager::errorOccured, this, &UpdateManager::updateCheckErrorOccurred);
 
     cleanUpdateFiles();
-    QUrl versionUrl {isBeta ? QUrl::fromEncoded(baseUrl_ + "/beta/version")
-                            : QUrl::fromEncoded(baseUrl_ + "/version")};
-
+    QUrl versionUrl {isBeta ? QUrl::fromUserInput(baseUrlString_ + betaVersionSubUrl)
+                            : QUrl::fromUserInput(baseUrlString_ + versionSubUrl)};
     get(versionUrl, [this, quiet](const QString& latestVersionString) {
         if (latestVersionString.isEmpty()) {
             qWarning() << "Error checking version";
@@ -122,8 +126,8 @@ UpdateManager::applyUpdates(bool beta)
         }
     });
 
-    QUrl downloadUrl {(beta || isBeta) ? QUrl::fromEncoded(baseUrl_ + "/beta/jami.beta.x64.msi")
-                                       : QUrl::fromEncoded(baseUrl_ + "/jami.release.x64.msi")};
+    QUrl downloadUrl {(beta || isBeta) ? QUrl::fromUserInput(baseUrlString_ + betaMsiSubUrl)
+                                       : QUrl::fromUserInput(baseUrlString_ + msiSubUrl)};
 
     get(
         downloadUrl,

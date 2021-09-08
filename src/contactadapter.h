@@ -42,7 +42,7 @@ class SelectableProxyModel final : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    using FilterPredicate = std::function<bool(const QModelIndex&, const QRegExp&)>;
+    using FilterPredicate = std::function<bool(const QModelIndex&, const QRegularExpression&)>;
 
     explicit SelectableProxyModel(QObject* parent = nullptr)
         : QSortFilterProxyModel(parent)
@@ -61,7 +61,7 @@ public:
     {
         // Accept all contacts in conversation list filtered with account type, except those in a call.
         auto index = sourceModel()->index(sourceRow, 0, sourceParent);
-        return filterPredicate_ ? filterPredicate_(index, filterRegExp()) : false;
+        return filterPredicate_ ? filterPredicate_(index, filterRegularExpression()) : false;
     }
 
     bool lessThan(const QModelIndex& left, const QModelIndex& right) const override

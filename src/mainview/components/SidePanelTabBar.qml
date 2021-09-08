@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick.Controls 2.15
+import QtQuick.Controls
 
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1

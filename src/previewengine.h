@@ -22,9 +22,7 @@
 #include "utils.h"
 
 #include <QtWebChannel>
-#include <QtWebEngine>
 #include <QtWebEngineCore>
-#include <QtWebEngine>
 #include <QWebEngineView>
 
 class PreviewEngine;

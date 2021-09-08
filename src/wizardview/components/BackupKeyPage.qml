@@ -17,10 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.15
-import Qt.labs.platform 1.1
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+import Qt.labs.platform
 
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1

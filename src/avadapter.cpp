@@ -129,7 +129,7 @@ AvAdapter::shareAllScreens()
 void
 AvAdapter::captureScreen(int screenNumber)
 {
-    QtConcurrent::run([this, screenNumber]() {
+    auto futureResult = QtConcurrent::run([this, screenNumber]() {
         QScreen* screen = QGuiApplication::screens().at(screenNumber);
         if (!screen)
             return;
@@ -149,7 +149,7 @@ AvAdapter::captureScreen(int screenNumber)
 void
 AvAdapter::captureAllScreens()
 {
-    QtConcurrent::run([this]() {
+    auto futureResult = QtConcurrent::run([this]() {
         auto screens = QGuiApplication::screens();
 
         QList<QPixmap> scrs;
@@ -338,7 +338,7 @@ AvAdapter::getScreenNumber() const
     // Get display
     QString display_env {getenv("DISPLAY")};
     if (!display_env.isEmpty()) {
-        auto list = display_env.split(':', QString::SplitBehavior::SkipEmptyParts);
+        auto list = display_env.split(':', Qt::SkipEmptyParts);
         // Should only be one display, so get the first one
         if (list.size() > 0) {
             display = list.at(0).toInt();

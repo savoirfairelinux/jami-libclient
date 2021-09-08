@@ -10,7 +10,7 @@
         <file>src/commoncomponents/PasswordDialog.qml</file>
         <file>src/commoncomponents/MaterialLineEdit.qml</file>
         <file>src/commoncomponents/PhotoboothView.qml</file>
-        <file>src/commoncomponents/ListViewJami.qml</file>
+        <file>src/commoncomponents/JamiListView.qml</file>
         <file>src/commoncomponents/DeleteAccountDialog.qml</file>
         <file>src/commoncomponents/CustomBorder.qml</file>
         <file>src/commoncomponents/PushButton.qml</file>
@@ -41,8 +41,6 @@
         <file>src/settingsview/components/AudioSettings.qml</file>
         <file>src/settingsview/components/VideoSettings.qml</file>
         <file>src/settingsview/components/GeneralSettingsPage.qml</file>
-        <file>src/settingsview/components/KeyBoardShortcutTable.qml</file>
-        <file>src/settingsview/components/KeyBoardShortcutKey.qml</file>
         <file>src/settingsview/components/PluginSettingsPage.qml</file>
         <file>src/settingsview/components/PluginListSettingsView.qml</file>
         <file>src/settingsview/components/PluginListPreferencesView.qml</file>
@@ -172,5 +170,8 @@
         <file>src/commoncomponents/DataTransferMessageDelegate.qml</file>
         <file>src/mainview/components/ScrollToBottomButton.qml</file>
         <file>src/commoncomponents/TypingDots.qml</file>
+        <file>src/commoncomponents/JamiScrollBar.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>src/commoncomponents/JamiFlickable.qml</file>
     </qresource>
 </RCC>

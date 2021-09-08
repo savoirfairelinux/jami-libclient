@@ -24,7 +24,7 @@
 
 class LRCInstance;
 
-class QuickImageProviderBase : public QObject, public QQuickImageProvider
+class QuickImageProviderBase : public QQuickImageProvider
 {
 public:
     QuickImageProviderBase(QQuickImageProvider::ImageType type,

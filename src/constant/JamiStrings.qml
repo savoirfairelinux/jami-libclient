@@ -19,7 +19,7 @@
 // JamiStrings as a singleton is to provide global strings entries.
 pragma Singleton
 
-import QtQuick 2.15
+import QtQuick
 
 import net.jami.Helpers 1.1
 

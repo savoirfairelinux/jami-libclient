@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 import net.jami.Constants 1.1
 
@@ -111,19 +111,18 @@ ComboBox {
     }
 
     popup: Popup {
+        id: popup
+
         y: root.height - 1
         width: root.width
         implicitHeight: contentItem.implicitHeight
         padding: 1
 
-        contentItem: ListView {
+        contentItem: JamiListView {
             id: listView
 
-            clip: true
-            implicitHeight: contentHeight
+            implicitHeight: popup.contentHeight
             model: root.delegateModel
-
-            ScrollBar.vertical: ScrollBar {}
         }
 
         background: Rectangle {

@@ -17,8 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.14
-import QtTest 1.2
+import QtQuick
+import QtTest
 
 import net.jami.Adapters 1.1
 

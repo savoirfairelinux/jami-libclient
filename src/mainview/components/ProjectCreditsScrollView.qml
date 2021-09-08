@@ -16,47 +16,49 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
 
-ScrollView {
-    id: projectCreditsScrollView
+import "../../commoncomponents"
 
-    clip: true
+Rectangle {
+    id: root
 
-    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+    radius: 5
+    border.color: JamiTheme.tabbarBorderColor
 
-    TextEdit {
-        id: projectCreditsTextArea
+    JamiFlickable {
+        id: projectCreditsFlickable
 
-        horizontalAlignment: Text.AlignHCenter
+        anchors.fill: parent
 
-        width: projectCreditsScrollView.width
+        contentHeight: projectCreditsTextArea.paintedHeight
 
-        selectByMouse: false
-        readOnly: true
-        wrapMode: Text.WordWrap
+        TextEdit {
+            id: projectCreditsTextArea
 
-        font.pointSize: JamiTheme.textFontSize
-        text: UtilsAdapter.getProjectCredits()
-        textFormat: TextEdit.RichText
+            horizontalAlignment: Text.AlignHCenter
 
-        MouseArea {
-            anchors.fill: parent
-            propagateComposedEvents: true
-            cursorShape: Qt.ArrowCursor
-            acceptedButtons: Qt.NoButton
+            width: projectCreditsFlickable.width
+
+            selectByMouse: false
+            readOnly: true
+            wrapMode: Text.WordWrap
+
+            font.pointSize: JamiTheme.textFontSize
+            text: UtilsAdapter.getProjectCredits()
+            textFormat: TextEdit.RichText
+
+            MouseArea {
+                anchors.fill: parent
+                propagateComposedEvents: true
+                cursorShape: Qt.ArrowCursor
+                acceptedButtons: Qt.NoButton
+            }
         }
-    }
-
-    background: Rectangle {
-        id: projectCreditsScrollViewBackground
-
-        radius: 5
-        border.color: JamiTheme.tabbarBorderColor
     }
 }

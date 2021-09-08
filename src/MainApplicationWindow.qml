@@ -20,12 +20,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls.Universal 2.15
-import QtGraphicalEffects 1.15
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1
@@ -40,55 +39,18 @@ import "commoncomponents"
 ApplicationWindow {
     id: root
 
-    property ApplicationWindow appWindow : root
-
-    // To facilitate reparenting of the callview during
-    // fullscreen mode, we need QQuickItem based object.
-    Item {
-        id: appContainer
-        anchors.fill: parent
-    }
-    property bool isFullScreen: false
-    visibility: !visible ?
-                   Window.Hidden : (isFullScreen ?
-                                        Window.FullScreen :
-                                        Window.Windowed)
-    function toggleFullScreen() {
-        isFullScreen = !isFullScreen
-    }
-
     enum LoadedSource {
         WizardView = 0,
         MainView,
         None
     }
 
-    Universal.theme: Universal.Light
+    property ApplicationWindow appWindow : root
+    property bool isFullScreen: false
 
-    title: JamiStrings.appTitle
-
-    width: {
-        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
-            return JamiTheme.wizardViewMinWidth
-        return JamiTheme.mainViewPreferredWidth
+    function toggleFullScreen() {
+        isFullScreen = !isFullScreen
     }
-    height: {
-        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
-            return JamiTheme.wizardViewMinHeight
-        return JamiTheme.mainViewPreferredHeight
-    }
-    minimumWidth: {
-        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
-            return JamiTheme.wizardViewMinWidth
-        return JamiTheme.mainViewMinWidth
-    }
-    minimumHeight: {
-        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
-            return JamiTheme.wizardViewMinHeight
-        return JamiTheme.mainViewMinHeight
-    }
-
-    visible: mainApplicationLoader.status === Loader.Ready
 
     function checkLoadedSource() {
         var sourceString = mainApplicationLoader.source.toString()
@@ -123,7 +85,45 @@ ApplicationWindow {
             hide()
     }
 
-    AccountMigrationDialog{
+    visibility: !visible ?
+                   Window.Hidden : (isFullScreen ?
+                                        Window.FullScreen :
+                                        Window.Windowed)
+
+    title: JamiStrings.appTitle
+
+    width: {
+        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
+            return JamiTheme.wizardViewMinWidth
+        return JamiTheme.mainViewPreferredWidth
+    }
+    height: {
+        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
+            return JamiTheme.wizardViewMinHeight
+        return JamiTheme.mainViewPreferredHeight
+    }
+    minimumWidth: {
+        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
+            return JamiTheme.wizardViewMinWidth
+        return JamiTheme.mainViewMinWidth
+    }
+    minimumHeight: {
+        if (checkLoadedSource() === MainApplicationWindow.LoadedSource.WizardView)
+            return JamiTheme.wizardViewMinHeight
+        return JamiTheme.mainViewMinHeight
+    }
+
+    visible: mainApplicationLoader.status === Loader.Ready
+
+    // To facilitate reparenting of the callview during
+    // fullscreen mode, we need QQuickItem based object.
+    Item {
+        id: appContainer
+
+        anchors.fill: parent
+    }
+
+    AccountMigrationDialog {
         id: accountMigrationDialog
 
         visible: false
@@ -162,17 +162,6 @@ ApplicationWindow {
                 UpdateManager.checkForUpdates(true)
                 UpdateManager.setAutoUpdateCheck(true)
             }
-        }
-    }
-
-    overlay.modal: ColorOverlay {
-        source: root.contentItem
-        color: "transparent"
-
-        // Color animation for overlay when pop up is shown.
-        ColorAnimation on color {
-            to: Qt.rgba(0, 0, 0, 0.33)
-            duration: 500
         }
     }
 
@@ -217,6 +206,17 @@ ApplicationWindow {
 
         function onDaemonReconnectFailed() {
             daemonReconnectPopup.connectionFailed = true
+        }
+    }
+
+    Overlay.modal: ColorOverlay {
+        source: root.contentItem
+        color: "transparent"
+
+        // Color animation for overlay when pop up is shown.
+        ColorAnimation on color {
+            to: Qt.rgba(0, 0, 0, 0.33)
+            duration: 500
         }
     }
 

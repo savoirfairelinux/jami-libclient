@@ -17,9 +17,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
 
 import net.jami.Adapters 1.1
 import net.jami.Models 1.1
@@ -76,10 +76,6 @@ Window {
 
     screen: JamiQmlUtils.mainApplicationScreen
 
-    modality: Qt.ApplicationModal
-
-    title: JamiStrings.selectScreen
-
     Rectangle {
         id: selectScreenWindowRect
 
@@ -87,7 +83,20 @@ Window {
 
         color: JamiTheme.backgroundColor
 
-        ScrollView {
+        Text {
+            id: screenListText
+
+            anchors.top: selectScreenWindowRect.top
+            anchors.topMargin: JamiTheme.preferredMarginSize
+            anchors.horizontalCenter: selectScreenWindowRect.horizontalCenter
+
+            font.pointSize: JamiTheme.textFontSize + 2
+            font.bold: true
+            text: JamiStrings.selectScreen
+            color: JamiTheme.textColor
+        }
+
+        JamiFlickable {
             id: screenSelectionScrollView
 
             anchors.topMargin: JamiTheme.preferredMarginSize
@@ -97,10 +106,7 @@ Window {
             height: selectScreenWindowRect.height -
                     (selectButton.height + JamiTheme.preferredMarginSize * 4)
 
-            clip: true
-
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            contentHeight: screenSelectionScrollViewColumn.implicitHeight
 
             Flow {
                 id: screenSelectionScrollViewFlow

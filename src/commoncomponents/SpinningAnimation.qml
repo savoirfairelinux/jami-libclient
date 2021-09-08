@@ -17,8 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtGraphicalEffects 1.15
+import QtQuick
+import Qt5Compat.GraphicalEffects
 
 Item {
     id: root

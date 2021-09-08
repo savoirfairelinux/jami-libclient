@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1
@@ -34,9 +34,9 @@ ProgressBar {
     onVisibleChanged: {
         if (visible) {
             rmsLevel = 0
-            AvAdapter.startAudioMeter(true)
+            AvAdapter.startAudioMeter()
         } else
-            AvAdapter.stopAudioMeter(true)
+            AvAdapter.stopAudioMeter()
     }
 
     function clamp(num, a, b) {

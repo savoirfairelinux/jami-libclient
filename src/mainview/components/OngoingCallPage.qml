@@ -18,10 +18,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1
@@ -151,12 +151,12 @@ Rectangle {
 
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
 
-                onDoubleClicked: {
+                onDoubleClicked: function (mouse) {
                     if (mouse.button === Qt.LeftButton)
                         callStackView.toggleFullScreen()
                 }
 
-                onClicked: {
+                onClicked: function (mouse) {
                     if (mouse.button === Qt.RightButton)
                         callOverlay.openCallViewContextMenuInPos(mouse.x, mouse.y)
                 }
@@ -223,7 +223,7 @@ Rectangle {
 
                         anchors.fill: previewRenderer
 
-                        onPressed: {
+                        onPressed: function (mouse) {
                             clickPos = Qt.point(mouse.x, mouse.y)
                         }
 
@@ -232,7 +232,7 @@ Rectangle {
                             previewMagneticSnap()
                         }
 
-                        onPositionChanged: {
+                        onPositionChanged: function (mouse) {
                             // Calculate mouse position relative change.
                             var delta = Qt.point(mouse.x - clickPos.x,
                                                  mouse.y - clickPos.y)

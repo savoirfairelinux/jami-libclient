@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtGraphicalEffects 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1
@@ -42,18 +42,17 @@ Popup {
     padding: 0
     modal: true
     Overlay.modal: Rectangle {
-        color: "transparent"
+        color: JamiTheme.transparentColor
     }
 
     contentItem: ColumnLayout {
         spacing: 0
-        ListView {
+
+        JamiListView {
             id: listView
 
             Layout.fillHeight: true
             Layout.preferredWidth: parent.width
-
-            clip: true
 
             model: CurrentAccountFilterModel
             delegate: AccountItemDelegate {
@@ -64,8 +63,6 @@ Popup {
                     LRCInstance.currentAccountId = ID
                 }
             }
-
-            ScrollBar.vertical: ScrollBar { }
         }
 
         // fake footer item as workaround for Qt 5.15 bug
@@ -114,8 +111,8 @@ Popup {
                 horizontalOffset: 3.0
                 verticalOffset: 3.0
                 radius: 16.0
-                samples: 16
                 color: JamiTheme.shadowColor
+                transparentBorder: true
             }
         }
     }

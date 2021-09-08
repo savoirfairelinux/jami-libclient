@@ -93,7 +93,7 @@ bool
 ConversationListProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
-    auto rx = filterRegExp();
+    auto rx = filterRegularExpression();
     auto uriStripper = URI(rx.pattern());
     bool stripScheme = (uriStripper.schemeType() < URI::SchemeType::COUNT__);
     FlagPack<URI::Section> flags = URI::Section::USER_INFO | URI::Section::HOSTNAME
@@ -118,16 +118,18 @@ ConversationListProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex& s
 
     // banned contacts require exact match
     if (index.data(Role::IsBanned).toBool()) {
-        if (!rx.isEmpty()) {
-            Q_FOREACH (const auto& filter, toFilter)
-                if (rx.exactMatch(filter)) {
+        if (!rx.isValid()) {
+            Q_FOREACH (const auto& filter, toFilter) {
+                auto matchResult = rx.match(filter);
+                if (matchResult.hasMatch() && matchResult.captured(0) == filter) {
                     match = true;
                     break;
                 }
+            }
         }
     } else {
         Q_FOREACH (const auto& filter, toFilter)
-            if (rx.indexIn(filter) != -1) {
+            if (rx.match(filter).hasMatch()) {
                 match = true;
                 break;
             }

@@ -21,6 +21,7 @@
 #pragma once
 
 #include "lrcinstance.h"
+#include "qtutils.h"
 
 #include <QFile>
 #include <QApplication>
@@ -41,24 +42,11 @@ class PreviewEngine;
 class ScreenInfo : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(double devicePixelRatio MEMBER devicePixelRatio_ NOTIFY devicePixelRatioChanged)
+    QML_PROPERTY(double, devicePixelRatio)
 public:
     void setCurrentFocusWindow(QWindow* window);
-    void setDevicePixelRatio(double ratio)
-    {
-        if (ratio != devicePixelRatio_) {
-            devicePixelRatio_ = ratio;
-
-            Q_EMIT devicePixelRatioChanged();
-        }
-    }
-
-Q_SIGNALS:
-    void devicePixelRatioChanged();
 
 private:
-    double devicePixelRatio_ {0.0};
-
     QMetaObject::Connection currentFocusWindowScreenConnection_;
     QMetaObject::Connection devicePixelRatioConnection_;
 

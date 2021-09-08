@@ -97,7 +97,7 @@ ScreenInfo::setCurrentFocusWindow(QWindow* window)
 {
     if (window && !currentFocusWindow_) {
         currentFocusWindow_ = window;
-        setDevicePixelRatio(currentFocusWindow_->screen()->devicePixelRatio());
+        set_devicePixelRatio(currentFocusWindow_->screen()->devicePixelRatio());
 
         disconnect(devicePixelRatioConnection_);
         disconnect(currentFocusWindowScreenConnection_);
@@ -105,11 +105,11 @@ ScreenInfo::setCurrentFocusWindow(QWindow* window)
         currentFocusWindowScreenConnection_
             = connect(currentFocusWindow_, &QWindow::screenChanged, [this] {
                   currentFocusWindowScreen_ = currentFocusWindow_->screen();
-                  setDevicePixelRatio(currentFocusWindowScreen_->devicePixelRatio());
+                  set_devicePixelRatio(currentFocusWindowScreen_->devicePixelRatio());
 
                   devicePixelRatioConnection_ = connect(
                       currentFocusWindowScreen_, &QScreen::physicalDotsPerInchChanged, [this] {
-                          setDevicePixelRatio(currentFocusWindowScreen_->devicePixelRatio());
+                          set_devicePixelRatio(currentFocusWindowScreen_->devicePixelRatio());
                       });
               });
     }
@@ -270,12 +270,14 @@ MainApplication::loadTranslations()
     QTranslator* qtTranslator_name = new QTranslator(this);
     if (locale_name != locale_lang) {
         if (qtTranslator_lang->load("qt_" + locale_lang,
-                                    QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+                                    QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
             installTranslator(qtTranslator_lang);
     }
-    qtTranslator_name->load("qt_" + locale_name,
-                            QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    installTranslator(qtTranslator_name);
+
+    if (qtTranslator_name->load("qt_" + locale_name,
+                                QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
+        installTranslator(qtTranslator_name);
+    }
 
     QTranslator* lrcTranslator_lang = new QTranslator(this);
     QTranslator* lrcTranslator_name = new QTranslator(this);

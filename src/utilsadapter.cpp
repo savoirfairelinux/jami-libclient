@@ -288,9 +288,11 @@ UtilsAdapter::getAbsPath(QString path)
     // contain 'file:///' for reasons we don't understand.
     // TODO: this logic can be refactored into the JamiFileDialog component.
 #ifdef Q_OS_WIN
-    return path.replace(QRegExp("^file:\\/{2,3}"), "").replace("\n", "").replace("\r", "");
+    return path.replace(QRegularExpression("^file:\\/{2,3}"), "").replace("\n", "").replace("\r", "");
 #else
-    return path.replace(QRegExp("^file:\\/{2,3}"), "/").replace("\n", "").replace("\r", "");
+    return path.replace(QRegularExpression("^file:\\/{2,3}"), "/")
+        .replace("\n", "")
+        .replace("\r", "");
 #endif
 }
 

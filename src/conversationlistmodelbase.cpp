@@ -95,7 +95,7 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
             if (!draft.isEmpty()) {
                 // Pencil Emoji
                 uint cp = 0x270F;
-                auto emojiString = QString::fromUcs4(&cp, 1);
+                auto emojiString = QString::fromUcs4(reinterpret_cast<char32_t*>(&cp), 1);
                 return emojiString + draft;
             }
         }
