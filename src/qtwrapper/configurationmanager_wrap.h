@@ -409,8 +409,7 @@ public Q_SLOTS: // METHODS
     // TODO: works?
     VectorUInt getActiveCodecList(const QString& accountID)
     {
-        return QVector<unsigned int>::fromStdVector(
-            DRing::getActiveCodecList(accountID.toStdString()));
+        return convertVectorUnsignedInt(DRing::getActiveCodecList(accountID.toStdString()));
     }
 
     QString getAddrFromInterfaceName(const QString& interface)
@@ -440,7 +439,7 @@ public Q_SLOTS: // METHODS
 
     VectorUInt getCodecList()
     {
-        return QVector<unsigned int>::fromStdVector(DRing::getCodecList());
+        return convertVectorUnsignedInt(DRing::getCodecList());
     }
 
     VectorMapStringString getContacts(const QString& accountID)
@@ -631,8 +630,7 @@ public Q_SLOTS: // METHODS
 
     void setActiveCodecList(const QString& accountID, VectorUInt& list)
     {
-        // const std::vector<unsigned int> converted = convertStringList(list);
-        DRing::setActiveCodecList(accountID.toStdString(), list.toStdVector());
+        DRing::setActiveCodecList(accountID.toStdString(), convertStdVectorUnsignedInt(list));
     }
 
     void setAgcState(bool enabled) { DRing::setAgcState(enabled); }
