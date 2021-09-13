@@ -2440,17 +2440,17 @@ Kopjojeni dhe jepuani shokëve!</translation>
         <translation>Hiqe pajisjen</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="61"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="62"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
         <translation>Që të ripohoni heqjen e kësaj pajisje, jepni fjalëkalimin e kësaj llogarie</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="105"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="106"/>
         <source>Remove</source>
         <translation>Hiqe</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="127"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="128"/>
         <source>Cancel</source>
         <translation>Anuloje</translation>
     </message>

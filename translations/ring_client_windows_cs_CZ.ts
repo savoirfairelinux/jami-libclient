@@ -2435,17 +2435,17 @@ Zkopírujte je a sdílejte je se svými přáteli!</translation>
         <translation>Odstranit zařízení</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="61"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="62"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
         <translation>Zadejte heslo k tomuto účtu pro potvrzení odebrání tohoto zařízení.</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="105"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="106"/>
         <source>Remove</source>
         <translation>Odstranit</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="127"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="128"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>

@@ -2433,17 +2433,17 @@ Deel deze met uw vrienden!</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="61"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="62"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
         <translation>Voer het wachtwoord van dit account in om het verwijderen van dit apparaat te bevestigen</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="105"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="106"/>
         <source>Remove</source>
         <translation>Verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="127"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="128"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>

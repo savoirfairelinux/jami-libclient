@@ -2439,17 +2439,17 @@ Másolja ki, és ossza meg barátaival!</translation>
         <translation>Eszköz eltávolítása</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="61"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="62"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
         <translation>Adja meg a fiók jelszót ehhez eszköz eltávolításának megerősítéséhez</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="105"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="106"/>
         <source>Remove</source>
         <translation>Eltávolítás</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="127"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="128"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>

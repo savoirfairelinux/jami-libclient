@@ -2435,17 +2435,17 @@ Copy and share it with your friends!</source>
         <translation>移除设备</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="61"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="62"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
         <translation>输入此账户的密码，以确认删除本设备</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="105"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="106"/>
         <source>Remove</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="127"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="128"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>

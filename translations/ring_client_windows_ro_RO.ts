@@ -1962,7 +1962,7 @@ să se conecteze pentru a sincroniza conversația.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="428"/>
         <source>Confirm new password</source>
-        <translation>Confirmă noua parolă</translation>
+        <translation>Confirmă parola nouă</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="429"/>
@@ -2439,17 +2439,17 @@ Copiază-l și distribuie-l prietenilor!</translation>
         <translation>Elimină aparatul</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="61"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="62"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
         <translation>Introdu parola acestui cont pentru a confirma eliminarea acestui aparat</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="105"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="106"/>
         <source>Remove</source>
         <translation>Elimină</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="127"/>
+        <location filename="../src/settingsview/components/RevokeDevicePasswordDialog.qml" line="128"/>
         <source>Cancel</source>
         <translation>Renunță</translation>
     </message>
