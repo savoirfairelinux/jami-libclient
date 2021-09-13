@@ -72,7 +72,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="218"/>
         <location filename="../src/authority/storagehelper.cpp" line="135"/>
-        <location filename="../src/authority/storagehelper.cpp" line="932"/>
+        <location filename="../src/authority/storagehelper.cpp" line="935"/>
         <source>Invitation received</source>
         <translation>Meghívás megérkezett</translation>
     </message>
@@ -84,14 +84,14 @@
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
         <location filename="../src/authority/storagehelper.cpp" line="132"/>
-        <location filename="../src/authority/storagehelper.cpp" line="930"/>
+        <location filename="../src/authority/storagehelper.cpp" line="933"/>
         <source>Contact added</source>
         <translation>Kapcsolat hozzáadva</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="109"/>
         <location filename="../src/authority/storagehelper.cpp" line="115"/>
-        <location filename="../src/authority/storagehelper.cpp" line="928"/>
+        <location filename="../src/authority/storagehelper.cpp" line="931"/>
         <source>Outgoing call</source>
         <translation>Kimenő hívás</translation>
     </message>
@@ -103,7 +103,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="117"/>
-        <location filename="../src/authority/storagehelper.cpp" line="926"/>
+        <location filename="../src/authority/storagehelper.cpp" line="929"/>
         <source>Missed outgoing call</source>
         <translation>Nem fogadott kimenő hívás</translation>
     </message>
@@ -115,7 +115,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="137"/>
-        <location filename="../src/authority/storagehelper.cpp" line="934"/>
+        <location filename="../src/authority/storagehelper.cpp" line="937"/>
         <source>Invitation accepted</source>
         <translation>Meghívás elfogadott</translation>
     </message>
@@ -621,22 +621,22 @@
 <context>
     <name>lrc::ContactModelPimpl</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="463"/>
+        <location filename="../src/contactmodel.cpp" line="474"/>
         <source>Searching…</source>
         <translation>Keresés…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="982"/>
+        <location filename="../src/contactmodel.cpp" line="993"/>
         <source>Invalid ID</source>
         <translation>Érvénytelen azonosító</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="985"/>
+        <location filename="../src/contactmodel.cpp" line="996"/>
         <source>Username not found</source>
         <translation>Felhasználónév nem található</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="988"/>
+        <location filename="../src/contactmodel.cpp" line="999"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Betekintés sikertelen…</translation>
     </message>
@@ -644,7 +644,7 @@
 <context>
     <name>lrc::api::ContactModel</name>
     <message>
-        <location filename="../src/contactmodel.cpp" line="424"/>
+        <location filename="../src/contactmodel.cpp" line="435"/>
         <source>Bad URI scheme</source>
         <translation>Rossz URI rendszer</translation>
     </message>
