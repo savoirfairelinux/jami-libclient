@@ -88,11 +88,11 @@ Control {
                 type: AudioDeviceModel.Type.Record
             }
             function accept(index) {
-                AvAdapter.stopAudioMeter(false)
+                AvAdapter.stopAudioMeter()
                 AVModel.setInputDevice(listModel.data(
                                        listModel.index(index, 0),
                                        AudioDeviceModel.RawDeviceName))
-                AvAdapter.startAudioMeter(false)
+                AvAdapter.startAudioMeter()
             }
         },
         Action {
@@ -105,11 +105,11 @@ Control {
                 type: AudioDeviceModel.Type.Playback
             }
             function accept(index) {
-                AvAdapter.stopAudioMeter(false)
+                AvAdapter.stopAudioMeter()
                 AVModel.setOutputDevice(listModel.data(
                                         listModel.index(index, 0),
                                         AudioDeviceModel.RawDeviceName))
-                AvAdapter.startAudioMeter(false)
+                AvAdapter.startAudioMeter()
             }
         },
         Action {

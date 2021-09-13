@@ -72,8 +72,8 @@ protected:
     // Stop sharing the screen or file
     Q_INVOKABLE void stopSharing();
 
-    Q_INVOKABLE void startAudioMeter(bool async);
-    Q_INVOKABLE void stopAudioMeter(bool async);
+    Q_INVOKABLE void startAudioMeter();
+    Q_INVOKABLE void stopAudioMeter();
 
 private Q_SLOTS:
     void onAudioDeviceEvent();

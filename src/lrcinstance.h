@@ -41,6 +41,7 @@
 #include "api/newcallmodel.h"
 
 #include <QObject>
+#include <QThreadPool>
 
 #include <memory>
 
@@ -113,8 +114,8 @@ public:
     const account::ConfProperties_t& getCurrAccConfig();
     int indexOf(const QString& convId);
 
-    void startAudioMeter(bool async);
-    void stopAudioMeter(bool async);
+    void startAudioMeter();
+    void stopAudioMeter();
 
     void monitor(bool continous);
 
@@ -138,5 +139,7 @@ private:
     MapStringString lastConferences_;
 
     conversation::Info invalid {};
+
+    QThreadPool* threadPool_;
 };
 Q_DECLARE_METATYPE(LRCInstance*)

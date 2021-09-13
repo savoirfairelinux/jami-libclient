@@ -225,15 +225,15 @@ AvAdapter::stopSharing()
 }
 
 void
-AvAdapter::startAudioMeter(bool async)
+AvAdapter::startAudioMeter()
 {
-    lrcInstance_->startAudioMeter(async);
+    lrcInstance_->startAudioMeter();
 }
 
 void
-AvAdapter::stopAudioMeter(bool async)
+AvAdapter::stopAudioMeter()
 {
-    lrcInstance_->stopAudioMeter(async);
+    lrcInstance_->stopAudioMeter();
 }
 
 void

@@ -36,7 +36,9 @@ LRCInstance::LRCInstance(migrateCallback willMigrateCb,
     : lrc_(std::make_unique<Lrc>(willMigrateCb, didMigrateCb, muteDring))
     , renderer_(std::make_unique<RenderManager>(lrc_->getAVModel()))
     , updateManager_(std::make_unique<UpdateManager>(updateUrl, connectivityMonitor, this))
+    , threadPool_(new QThreadPool(this))
 {
+    threadPool_->setMaxThreadCount(1);
     lrc_->holdConferences = false;
 
     connect(this, &LRCInstance::currentAccountIdChanged, [this] {
@@ -319,35 +321,25 @@ LRCInstance::subscribeToDebugReceived()
 }
 
 void
-LRCInstance::startAudioMeter(bool async)
+LRCInstance::startAudioMeter()
 {
-    auto f = [this] {
+    threadPool_->start([this] {
         if (!getActiveCalls().size()) {
             avModel().startAudioDevice();
         }
         avModel().setAudioMeterState(true);
-    };
-    if (async) {
-        QtConcurrent::run(f);
-    } else {
-        f();
-    }
+    });
 }
 
 void
-LRCInstance::stopAudioMeter(bool async)
+LRCInstance::stopAudioMeter()
 {
-    auto f = [this] {
+    threadPool_->start([this] {
         if (!getActiveCalls().size()) {
             avModel().stopAudioDevice();
         }
         avModel().setAudioMeterState(false);
-    };
-    if (async) {
-        QtConcurrent::run(f);
-    } else {
-        f();
-    }
+    });
 }
 
 QString
