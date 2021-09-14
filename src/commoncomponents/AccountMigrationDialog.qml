@@ -88,8 +88,6 @@ Window {
         accountID = accountsToMigrateListModel.data(accountsToMigrateListModel.index(
                                                         0, 0), AccountsToMigrateListModel.Account_ID)
 
-        avatarImg.updateImage(accountID)
-
         connectionMigrationEnded.enabled = false
         migrationPushButton.enabled = false
         stackedWidget.currentIndex = 0
@@ -284,11 +282,10 @@ Window {
                             color: "transparent"
 
                             Avatar {
-                                id: avatarImg
-
                                 anchors.fill: parent
                                 showPresenceIndicator: false
                                 mode: Avatar.Mode.Account
+                                imageId: accountID
                             }
                         }
                     }
