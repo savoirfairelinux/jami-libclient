@@ -400,9 +400,9 @@ MessagesAdapter::updateHistory(lrc::api::ConversationModel& conversationModel,
     auto conversationId = lrcInstance_->get_selectedConvUid();
     auto interactionsStr
         = interactionsToJsonArrayObject(conversationModel, conversationId, interactions).toUtf8();
-    QString s = QString::fromLatin1("updateHistory(%1, %2);")
-                    .arg(interactionsStr.constData())
-                    .arg(allLoaded);
+    QString s;
+    QTextStream out(&s);
+    out << "updateHistory(" << interactionsStr << ", " << (allLoaded? "true" : "false") << ");";
     QMetaObject::invokeMethod(qmlObj_, "webViewRunJavaScript", Q_ARG(QVariant, s));
     conversationModel.clearUnreadInteractions(conversationId);
 }
