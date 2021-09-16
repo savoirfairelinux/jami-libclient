@@ -30,6 +30,7 @@ file(GLOB_RECURSE
     ${PROJECT_SOURCE_DIR}/resources/*
 )
 include(FindPythonInterp)
+find_package(PythonInterp 3 REQUIRED)
 execute_process(
     COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/gen-resources.py
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
