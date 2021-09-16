@@ -282,7 +282,6 @@ BaseDialog {
                             id: exportedPIN
 
                             Layout.alignment: Qt.AlignHCenter
-                            Layout.preferredHeight: fieldLayoutHeight
                             Layout.preferredWidth: fieldLayoutWidth
 
                             text: JamiStrings.pin
