@@ -25,110 +25,36 @@ import net.jami.Models 1.1
 import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
 
-import "../wizardview/components"
+import "commoncomponents"
 
 // Account Migration Dialog for migrating account
+Rectangle {
+    id: root
 
-Window {
-    id: accountMigrationDialog
-
-    AccountsToMigrateListModel {
-        id: accountsToMigrateListModel
-
-        lrcInstance: LRCInstance
+    enum AccountMigrationStep {
+        PasswordEnter,
+        Synching
     }
 
-    property string accountID: ""
-    property string password: ""
+    property bool successState: true
 
-    property bool nonOperationClosing: true
-    property bool successState : true
+    // signal to redirect the page to main view
+    signal loaderSourceChangeRequested(int sourceToLoad)
 
-    signal accountMigrationFinished
+    function slotMigrationButtonClicked() {
+        stackedWidget.currentIndex = AccountMigrationView.AccountMigrationStep.Synching
 
-    function startAccountMigrationOfTopStack() {
-        passwordInputLineEdit.clear()
-        accountsToMigrateListModel.reset()
-
-        if (accountsToMigrateListModel.rowCount() <= 0) {
-            closeWithoutOperation()
-
-            return false
-        }
-
-        var managerUsername = accountsToMigrateListModel.data(accountsToMigrateListModel.index(
-                                                        0, 0), AccountsToMigrateListModel.ManagerUsername)
-        var managerUri = accountsToMigrateListModel.data(accountsToMigrateListModel.index(
-                                                        0, 0), AccountsToMigrateListModel.ManagerUri)
-        var username = accountsToMigrateListModel.data(accountsToMigrateListModel.index(
-                                                        0, 0), AccountsToMigrateListModel.Username)
-        var alias = accountsToMigrateListModel.data(accountsToMigrateListModel.index(
-                                                        0, 0), AccountsToMigrateListModel.Alias)
-
-        if (managerUri.length !== 0) {
-            managerUriInputLabel.text = managerUri
-        } else {
-            managerUriInputLabel.text = "N/A"
-        }
-
-        if (username.length !== 0) {
-            usernameInputLabel.text = username
-        } else if (managerUsername.length !== 0) {
-            usernameInputLabel.text = managerUsername
-        } else {
-            usernameInputLabel.text = "N/A"
-        }
-
-        if (alias.length !== 0) {
-            aliasInputLabel.text = alias
-        } else {
-            aliasInputLabel.text = "N/A"
-        }
-
-        accountID = accountsToMigrateListModel.data(accountsToMigrateListModel.index(
-                                                        0, 0), AccountsToMigrateListModel.Account_ID)
-
-        connectionMigrationEnded.enabled = false
-        migrationPushButton.enabled = false
-        stackedWidget.currentIndex = 0
-
-        successState = true
-        nonOperationClosing = true
-
-        accountMigrationDialog.show()
-        return true
+        AccountAdapter.setArchivePasswordAsync(
+                    CurrentAccountToMigrate.accountId, passwordInputLineEdit.text)
     }
 
-    function checkIfAccountMigrationFinishedAndClose() {
-        accountsToMigrateListModel.reset()
-        if (accountsToMigrateListModel.rowCount() > 0) {
-            startAccountMigrationOfTopStack()
-        } else {
-            accountMigrationFinished()
-            if (!nonOperationClosing) {
-                nonOperationClosing = true
-                accountMigrationDialog.close()
-            }
-        }
+    function slotDeleteButtonClicked() {
+        stackedWidget.currentIndex = AccountMigrationView.AccountMigrationStep.Synching
+
+        CurrentAccountToMigrate.removeCurrentAccountToMigrate()
     }
 
-    function acceptMigration() {
-        nonOperationClosing = false
-        accountsToMigrateListModel.dataChanged(accountsToMigrateListModel.index(0, 0),
-                                               accountsToMigrateListModel.index(
-                                               accountsToMigrateListModel.rowCount() - 1, 0))
-        checkIfAccountMigrationFinishedAndClose()
-    }
-
-    function refuseMigrationAndDeleteAccount() {
-        AccountAdapter.model.removeAccount(accountID)
-        acceptMigration()
-    }
-
-    function closeWithoutOperation() {
-        nonOperationClosing = false
-        accountMigrationDialog.close()
-    }
+    color: JamiTheme.backgroundColor
 
     Timer {
         id: timerFailureReturn
@@ -137,73 +63,46 @@ Window {
         repeat: false
 
         onTriggered: {
-            stackedWidget.currentIndex = 0
+            stackedWidget.currentIndex =
+                    AccountMigrationView.AccountMigrationStep.PasswordEnter
             successState = true
         }
     }
 
     Connections {
         id: connectionMigrationEnded
-        enabled: false
-        target: AccountAdapter.model
 
-        function onMigrationEnded(accountIdIn, ok) {
-            nonOperationClosing = true
-            connectionMigrationEnded.enabled = false
-            if (accountID !== accountIdIn) {
-                return
-            }
+        target: CurrentAccountToMigrate
+
+        function onMigrationEnded(ok) {
+            successState = ok
+
             if (ok) {
-                acceptMigration()
+                passwordInputLineEdit.clear()
+
+                stackedWidget.currentIndex =
+                        AccountMigrationView.AccountMigrationStep.PasswordEnter
             } else {
-                successState = false
                 timerFailureReturn.restart()
             }
         }
-    }
 
-    function slotMigrationButtonClicked() {
-        successState = true
-        stackedWidget.currentIndex = 1
+        function onCurrentAccountToMigrateRemoved() {
+            successState = true
+            passwordInputLineEdit.clear()
 
-        connectionMigrationEnded.enabled = true
-        AccountAdapter.setArchivePasswordAsync(accountID,password)
-    }
-
-    function slotDeleteButtonClicked() {
-        nonOperationClosing = false
-        refuseMigrationAndDeleteAccount()
-    }
-
-    onClosing: {
-        connectionMigrationEnded.enabled = false
-        stackedWidget.currentIndex = 0
-        accountID = ""
-        password = ""
-        passwordInputLineEdit.clear()
-        managerUriInputLabel.text = ""
-        usernameInputLabel.text = ""
-        aliasInputLabel.text = ""
-
-        if (nonOperationClosing) {
-            checkIfAccountMigrationFinishedAndClose()
+            stackedWidget.currentIndex =
+                    AccountMigrationView.AccountMigrationStep.PasswordEnter
         }
-        nonOperationClosing = true
-    }
 
-    visible: false
-
-    title: JamiStrings.authenticate
-    flags: Qt.WindowStaysOnTopHint
-
-    width: 600
-    height: 600
-    minimumWidth: 600
-    minimumHeight: 600
-
-    Component.onCompleted: {
-        setX(Screen.width / 2 - width / 2)
-        setY(Screen.height / 2 - height / 2)
+        function onAllMigrationsFinished() {
+            if (UtilsAdapter.getAccountListSize() === 0)
+                root.loaderSourceChangeRequested(
+                            MainApplicationWindow.LoadedSource.WizardView)
+            else
+                root.loaderSourceChangeRequested(
+                            MainApplicationWindow.LoadedSource.MainView)
+        }
     }
 
     ColumnLayout {
@@ -217,22 +116,14 @@ Window {
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignHCenter
 
-            currentIndex: 0
-
             // Index = 0
             Rectangle {
                 id: accountMigrationPage
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Layout.alignment: Qt.AlignHCenter
-
                 ColumnLayout {
                     spacing: 8
 
-                    width: stackedWidget.width
-                    height: stackedWidget.height
-                    Layout.alignment: Qt.AlignHCenter
+                    anchors.fill: accountMigrationPage
 
                     Label {
                         id: accountMigrationLabel
@@ -266,7 +157,7 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                     }
 
-                    Label {
+                    Avatar {
                         id: avatarLabel
 
                         Layout.preferredWidth: 200
@@ -274,19 +165,9 @@ Window {
 
                         Layout.alignment: Qt.AlignHCenter
 
-                        background: Rectangle {
-                            id: avatarLabelBackground
-
-                            anchors.fill: parent
-                            color: "transparent"
-
-                            Avatar {
-                                anchors.fill: parent
-                                showPresenceIndicator: false
-                                mode: Avatar.Mode.Account
-                                imageId: accountID
-                            }
-                        }
+                        showPresenceIndicator: false
+                        mode: Avatar.Mode.Account
+                        imageId: CurrentAccountToMigrate.accountId
                     }
 
                     GridLayout {
@@ -321,6 +202,13 @@ Window {
                             Layout.preferredWidth: JamiTheme.preferredFieldWidth
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
+                            text: {
+                                if (CurrentAccountToMigrate.alias.length !== 0) {
+                                    return CurrentAccountToMigrate.alias
+                                } else {
+                                    return JamiStrings.notAvailable
+                                }
+                            }
                             font.pointSize: JamiTheme.textFontSize
                             font.kerning: true
 
@@ -349,6 +237,15 @@ Window {
                             Layout.preferredWidth: JamiTheme.preferredFieldWidth
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
+                            text: {
+                                if (CurrentAccountToMigrate.username.length !== 0) {
+                                    return CurrentAccountToMigrate.username
+                                } else if (CurrentAccountToMigrate.managerUsername.length !== 0) {
+                                    return CurrentAccountToMigrate.managerUsername
+                                } else {
+                                    return JamiStrings.notAvailable
+                                }
+                            }
                             font.pointSize: JamiTheme.textFontSize
                             font.kerning: true
 
@@ -377,6 +274,13 @@ Window {
                             Layout.preferredWidth: JamiTheme.preferredFieldWidth
                             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
+                            text: {
+                                if (CurrentAccountToMigrate.managerUri.length !== 0) {
+                                    return CurrentAccountToMigrate.managerUri
+                                } else {
+                                    return JamiStrings.notAvailable
+                                }
+                            }
                             font.pointSize: JamiTheme.textFontSize
                             font.kerning: true
 
@@ -410,22 +314,15 @@ Window {
                             Layout.preferredHeight: 48
 
                             echoMode: TextInput.Password
-
                             placeholderText: JamiStrings.password
 
-                            onTextChanged: {
-                                migrationPushButton.enabled = text.length > 0
-                                password = text
-                            }
-
-                            onEditingFinished: {
-                                password = text
-                            }
+                            onAccepted: slotMigrationButtonClicked()
                         }
                     }
 
                     RowLayout {
                         spacing: 80
+
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignHCenter
                         Layout.bottomMargin: JamiTheme.preferredMarginSize
@@ -441,12 +338,11 @@ Window {
                             hoveredColor: JamiTheme.buttonTintedBlackHovered
                             pressedColor: JamiTheme.buttonTintedBlackPressed
                             outlined: true
+                            enabled: passwordInputLineEdit.text.length > 0
 
                             text: JamiStrings.authenticate
 
-                            onClicked: {
-                                slotMigrationButtonClicked()
-                            }
+                            onClicked: slotMigrationButtonClicked()
                         }
 
                         MaterialButton {
@@ -462,9 +358,7 @@ Window {
                             outlined: true
 
                             text: JamiStrings.deleteAccount
-                            onClicked: {
-                                slotDeleteButtonClicked()
-                            }
+                            onClicked: slotDeleteButtonClicked()
                         }
                     }
                 }
@@ -491,7 +385,24 @@ Window {
                         Layout.alignment: Qt.AlignHCenter
                         Layout.fillWidth: true
 
-                        Label {
+                        ResponsiveImage {
+                            id: errorLabel
+
+                            Layout.alignment: Qt.AlignHCenter
+
+                            Layout.preferredWidth: 200
+                            Layout.preferredHeight: 200
+
+                            containerHeight: Layout.preferredHeight
+                            containerWidth: Layout.preferredWidth
+
+                            visible: !successState
+
+                            source: JamiResources.round_remove_circle_24dp_svg
+                            color: JamiTheme.redColor
+                        }
+
+                        AnimatedImage {
                             id: spinnerLabel
 
                             Layout.alignment: Qt.AlignHCenter
@@ -499,29 +410,13 @@ Window {
                             Layout.preferredWidth: 200
                             Layout.preferredHeight: 200
 
-                            property string spinnerDisplyState: successState ? "spinnerLabel_Regular" : "spinnerLabel_Failure"
-                            onSpinnerDisplyStateChanged: {
-                                switch (spinnerDisplyState) {
-                                case "spinnerLabel_Regular":
-                                    background = Qt.createQmlObject("import QtQuick;
-                                                                        import \"qrc:/src/constant/\";
-                                                                        AnimatedImage {
-                                                                        source: JamiResources.jami_eclipse_spinner_gif
-                                                                        playing: true
-                                                                        paused: false
-                                                                        fillMode: Image.PreserveAspectFit
-                                                                        mipmap: true}", spinnerLabel)
-                                    break
-                                case "spinnerLabel_Failure":
-                                    background = Qt.createQmlObject("import QtQuick;
-                                                                        import \"qrc:/src/constant/\";
-                                                                        Image {
-                                                                        anchors.fill: parent;
-                                                                        source: JamiResources.error_outline_black_24dp_svg;
-                                                                        mipmap: true;}", spinnerLabel)
-                                    break
-                                }
-                            }
+                            visible: successState
+
+                            source: JamiResources.jami_eclipse_spinner_gif
+
+                            playing: successState
+                            fillMode: Image.PreserveAspectFit
+                            mipmap: true
                         }
                     }
 
@@ -532,9 +427,10 @@ Window {
                         Layout.fillWidth: true
                         Layout.bottomMargin: 80
 
-                        color: successState? "black" : "red"
-                        text: successState? JamiStrings.inProgress : JamiStrings.authenticationFailed
-                        font.pointSize: JamiTheme.textFontSize
+                        color: successState ? JamiTheme.textColor : JamiTheme.redColor
+                        text: successState ? JamiStrings.inProgress :
+                                             JamiStrings.authenticationFailed
+                        font.pointSize: JamiTheme.textFontSize + 5
                         font.kerning: true
 
                         horizontalAlignment: Text.AlignHCenter

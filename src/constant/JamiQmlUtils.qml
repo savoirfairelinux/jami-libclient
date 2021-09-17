@@ -28,6 +28,7 @@ Item {
 
     readonly property string mainViewLoadPath: "qrc:/src/mainview/MainView.qml"
     readonly property string wizardViewLoadPath: "qrc:/src/wizardview/WizardView.qml"
+    readonly property string accountMigrationViewLoadPath: "qrc:/src/AccountMigrationView.qml"
     readonly property string base64StringTitle: "data:image/png;base64,"
 
     property var mainApplicationScreen: ""

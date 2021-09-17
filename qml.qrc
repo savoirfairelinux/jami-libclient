@@ -15,7 +15,6 @@
         <file>src/commoncomponents/CustomBorder.qml</file>
         <file>src/commoncomponents/PushButton.qml</file>
         <file>src/commoncomponents/JamiFileDialog.qml</file>
-        <file>src/commoncomponents/AccountMigrationDialog.qml</file>
         <file>src/commoncomponents/MaterialButton.qml</file>
         <file>src/commoncomponents/ElidedTextLabel.qml</file>
         <file>src/commoncomponents/SpinnerButton.qml</file>
@@ -173,5 +172,6 @@
         <file>src/commoncomponents/JamiScrollBar.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>src/commoncomponents/JamiFlickable.qml</file>
+        <file>src/AccountMigrationView.qml</file>
     </qresource>
 </RCC>

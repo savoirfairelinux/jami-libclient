@@ -71,7 +71,7 @@ set(COMMON_SOURCES
     ${SRC_DIR}/pluginhandleritemlistmodel.cpp
     ${SRC_DIR}/preferenceitemlistmodel.cpp
     ${SRC_DIR}/mediacodeclistmodel.cpp
-    ${SRC_DIR}/accountstomigratelistmodel.cpp
+    ${SRC_DIR}/currentaccounttomigrate.cpp
     ${SRC_DIR}/audiodevicemodel.cpp
     ${SRC_DIR}/pluginlistpreferencemodel.cpp
     ${SRC_DIR}/audiomanagerlistmodel.cpp
@@ -125,7 +125,7 @@ set(COMMON_HEADERS
     ${SRC_DIR}/pluginhandleritemlistmodel.h
     ${SRC_DIR}/preferenceitemlistmodel.h
     ${SRC_DIR}/mediacodeclistmodel.h
-    ${SRC_DIR}/accountstomigratelistmodel.h
+    ${SRC_DIR}/currentaccounttomigrate.h
     ${SRC_DIR}/audiodevicemodel.h
     ${SRC_DIR}/pluginlistpreferencemodel.h
     ${SRC_DIR}/audiomanagerlistmodel.h

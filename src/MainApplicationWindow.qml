@@ -42,6 +42,7 @@ ApplicationWindow {
     enum LoadedSource {
         WizardView = 0,
         MainView,
+        AccountMigrationView,
         None
     }
 
@@ -63,16 +64,16 @@ ApplicationWindow {
         return MainApplicationWindow.LoadedSource.None
     }
 
-    function startAccountMigration(){
-        return accountMigrationDialog.startAccountMigrationOfTopStack()
-    }
-
-    function startClient(){
+    function startClient() {
         if (UtilsAdapter.getAccountListSize() !== 0) {
             mainApplicationLoader.setSource(JamiQmlUtils.mainViewLoadPath)
         } else {
             mainApplicationLoader.setSource(JamiQmlUtils.wizardViewLoadPath)
         }
+    }
+
+    function startAccountMigration() {
+        mainApplicationLoader.setSource(JamiQmlUtils.accountMigrationViewLoadPath)
     }
 
     function close(force = false) {
@@ -121,14 +122,6 @@ ApplicationWindow {
         id: appContainer
 
         anchors.fill: parent
-    }
-
-    AccountMigrationDialog {
-        id: accountMigrationDialog
-
-        visible: false
-
-        onAccountMigrationFinished: startClient()
     }
 
     DaemonReconnectPopup {
@@ -225,9 +218,11 @@ ApplicationWindow {
     onScreenChanged: JamiQmlUtils.mainApplicationScreen = root.screen
 
     Component.onCompleted: {
-        if(!startAccountMigration()){
+        if (CurrentAccountToMigrate.accountToMigrateListSize <= 0)
             startClient()
-        }
+        else
+            startAccountMigration()
+
         JamiQmlUtils.mainApplicationScreen = root.screen
 
         if (Qt.platform.os !== "windows")
