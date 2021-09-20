@@ -159,7 +159,10 @@ compressedAvatar(const QString& image)
     QByteArray bArray;
     QBuffer buffer(&bArray);
     buffer.open(QIODevice::WriteOnly);
-    qimage.scaled({128, 128}).save(&buffer, "JPEG", 90);
+
+    auto size = qMin(qimage.width(), qimage.height());
+    auto rect = QRect((qimage.width() - size) / 2, (qimage.height() - size) / 2, size, size);
+    qimage.copy(rect).scaled({size, size}, Qt::KeepAspectRatio).save(&buffer, "JPEG", 90);
     auto b64Img = bArray.toBase64().trimmed();
     return QString::fromLocal8Bit(b64Img.constData(), b64Img.length());
 }
