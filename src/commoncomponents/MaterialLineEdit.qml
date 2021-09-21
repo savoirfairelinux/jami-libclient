@@ -40,11 +40,12 @@ TextField {
     wrapMode: Text.Wrap
     readOnly: false
     selectByMouse: true
-    selectionColor: JamiTheme.placeHolderTextFontColor
+    selectionColor: JamiTheme.placeholderTextColor
 
     font.pointSize: JamiTheme.materialLineEditPointSize
     font.kerning: true
 
+    placeholderTextColor: JamiTheme.placeholderTextColor
     color: JamiTheme.textColor
 
     LineEditContextMenu {

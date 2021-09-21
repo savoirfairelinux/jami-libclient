@@ -60,7 +60,6 @@ Item {
     property color notificationRed: "#ff3b30"
     property color notificationBlue: "#31b7ff"
     property color unPresenceOrange: "orange"
-    property color placeHolderTextFontColor: "#767676"
     property color draftTextColor: "#cf5300"
     property color selectedTabColor: primaryForegroundColor
     property color filterBadgeColor: "#eed4d8"
@@ -99,9 +98,12 @@ Item {
     property color closeButtonLighterBlack: "#4c4c4c"
 
     // Jami switch
-    property color switchBackgroundBorderColor: "#cccccc"
-    property color switchBackgroundCheckedColor: primaryBackgroundColor
-    property color switchIndicatorBorderColor: "#999999"
+    property color switchBackgroundColor: darkTheme ? "#373737" : "#9f9f9f"
+    property color switchBackgroundCheckedColor: "#8dbaea"
+    property color switchHandleColor: darkTheme ? Qt.darker(lightGrey_, 2) : whiteColor
+    property color switchHandleCheckedColor: "#1b76d1"
+    property color switchHandleBorderColor: darkTheme ? whiteColor : Qt.darker(lightGrey_, 2)
+    property color switchHandleCheckedBorderColor: Qt.darker(lightGrey_, 3)
 
     // Call buttons
     property color acceptButtonGreen: "#4caf50"
@@ -158,7 +160,7 @@ Item {
     property color fileInTimestampColor: darkTheme ? "#999" : "#555"
     property color chatviewBgColor: darkTheme ? bgDarkMode_ : whiteColor
     property color bgInvitationRectColor: darkTheme ? "#222222" : whiteColor
-    property color placeholderTextColor: darkTheme ? "#2b2b2b" : "#d3d3d3"
+    property color placeholderTextColor: darkTheme ? "#7a7a7a" : "#767676"
     property color inviteHoverColor: darkTheme ? blackColor : whiteColor
     property color chatviewButtonColor: darkTheme ? whiteColor : blackColor
     property color bgTextInput: darkTheme ? "#060608" : whiteColor
@@ -270,10 +272,9 @@ Item {
     property real lineEditContextMenuSeparatorsHeight: 2
 
     // Jami switch
-    property real switchIndicatorRadius: 13
-    property real switchPreferredHeight: 18
+    property real switchIndicatorRadius: 30
+    property real switchPreferredHeight: 25
     property real switchPreferredWidth: 48
-    property real switchIndicatorPreferredHeight: 26
     property real switchIndicatorPreferredWidth: 26
 
     // Modal Popup

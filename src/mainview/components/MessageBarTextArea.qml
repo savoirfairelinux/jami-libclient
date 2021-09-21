@@ -84,9 +84,9 @@ JamiFlickable {
         renderType: Text.NativeRendering
         wrapMode: TextEdit.Wrap
         selectByMouse: true
-        selectionColor: JamiTheme.placeHolderTextFontColor
+        selectionColor: JamiTheme.placeholderTextColor
         textFormat: TextEdit.PlainText
-        placeholderTextColor: JamiTheme.placeHolderTextFontColor
+        placeholderTextColor: JamiTheme.placeholderTextColor
 
         cursorDelegate: Rectangle {
             visible: textArea.cursorVisible

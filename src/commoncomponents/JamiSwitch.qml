@@ -25,6 +25,8 @@ Switch {
     id: root
 
     indicator: Rectangle {
+        id: handleBackground
+
         implicitWidth: JamiTheme.switchPreferredWidth
         implicitHeight: JamiTheme.switchPreferredHeight
 
@@ -33,23 +35,26 @@ Switch {
 
         radius: JamiTheme.switchIndicatorRadius
 
-        color: root.checked ? JamiTheme.switchBackgroundCheckedColor : JamiTheme.whiteColor
-        border.color: root.checked ? JamiTheme.switchBackgroundCheckedColor :
-                                     JamiTheme.switchBackgroundBorderColor
+        color: root.checked ? JamiTheme.switchBackgroundCheckedColor :
+                              JamiTheme.switchBackgroundColor
+        border.color: handleBackground.color
 
         Rectangle {
+            id: handle
+
             x: root.checked ? parent.width - width : 0
             y: parent.height / 2 - height / 2
 
             width: JamiTheme.switchIndicatorPreferredWidth
-            height: JamiTheme.switchIndicatorPreferredHeight
+            height: JamiTheme.switchPreferredHeight
 
             radius: JamiTheme.switchIndicatorRadius
 
-            color: (root.down || root.focus) ? Qt.darker(JamiTheme.switchBackgroundBorderColor, 1.2) :
-                                               JamiTheme.whiteColor
-            border.color: root.checked ? JamiTheme.switchBackgroundCheckedColor :
-                                         JamiTheme.switchIndicatorBorderColor
+            color: root.checked ? JamiTheme.switchHandleCheckedColor :
+                                  JamiTheme.switchHandleColor
+            border.color: root.focus ? (root.checked ? JamiTheme.switchHandleCheckedBorderColor :
+                                                       JamiTheme.switchHandleBorderColor) :
+                                       JamiTheme.transparentColor
         }
     }
 

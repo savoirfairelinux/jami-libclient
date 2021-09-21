@@ -82,10 +82,10 @@ Rectangle {
         font.kerning: true
 
         selectByMouse: true
-        selectionColor: JamiTheme.placeHolderTextFontColor
+        selectionColor: JamiTheme.placeholderTextColor
 
         placeholderText: JamiStrings.contactSearchConversation
-        placeholderTextColor: JamiTheme.placeHolderTextFontColor
+        placeholderTextColor: JamiTheme.placeholderTextColor
 
         background: Rectangle {
             id: searchBarBackground
