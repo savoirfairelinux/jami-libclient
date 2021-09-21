@@ -544,6 +544,7 @@ Item {
     property string optionCancel: qsTr("Cancel")
     property string optionUpgrade: qsTr("Upgrade")
     property string optionLater: qsTr("Later")
+    property string optionDelete: qsTr("Delete")
 
     // Conference moderation
     property string setModerator: qsTr("Set moderator")

@@ -27,7 +27,7 @@ import net.jami.Constants 1.1
 
 import "../../commoncomponents"
 
-BaseDialog {
+BaseModalDialog {
     id: root
 
     property string registerdName : ""
@@ -36,224 +36,139 @@ BaseDialog {
 
     function openNameRegistrationDialog(registerNameIn) {
         registerdName = registerNameIn
-        lblRegistrationError.text = JamiStrings.somethingWentWrong
-        passwordEdit.clear()
 
         open()
-
-        if(AccountAdapter.hasPassword()){
-            stackedWidget.currentIndex = nameRegisterEnterPasswordPage.pageIndex
-            passwordEdit.forceActiveFocus()
-        } else {
-            startRegistration()
-        }
     }
 
-    function startRegistration() {
-        stackedWidget.currentIndex = nameRegisterSpinnerPage.pageIndex
-        spinnerMovie.visible = true
-
-        timerForStartRegistration.restart()
-    }
-
-    Timer {
-        id: timerForStartRegistration
-
-        interval: 100
-        repeat: false
-
-        onTriggered: {
-            AccountAdapter.model.registerName(LRCInstance.currentAccountId,
-                                              passwordEdit.text, registerdName)
-        }
-    }
-
-    Connections{
-        target: NameDirectory
-
-        function onNameRegistrationEnded(status, name) {
-            switch(status) {
-            case NameDirectory.RegisterNameStatus.SUCCESS:
-                accepted()
-                close()
-                return
-            case NameDirectory.RegisterNameStatus.WRONG_PASSWORD:
-                lblRegistrationError.text = JamiStrings.incorrectPassword
-                break
-            case NameDirectory.RegisterNameStatus.NETWORK_ERROR:
-                lblRegistrationError.text = JamiStrings.networkError
-                break
-            default:
-                break
-            }
-
-            stackedWidget.currentIndex = nameRegisterErrorPage.pageIndex
-        }
-    }
+    width: JamiTheme.preferredDialogWidth
+    height: JamiTheme.preferredDialogHeight
 
     title: JamiStrings.setUsername
 
-    contentItem: Rectangle {
-        id: nameRegistrationContentRect
+    popupContent: StackLayout {
+        id: stackedWidget
 
-        implicitWidth: JamiTheme.preferredDialogWidth
-        implicitHeight: JamiTheme.preferredDialogHeight
+        function startRegistration() {
+            stackedWidget.currentIndex = nameRegisterSpinnerPage.pageIndex
+            spinnerMovie.visible = true
 
-        color: JamiTheme.primaryBackgroundColor
+            timerForStartRegistration.restart()
+        }
 
-        StackLayout {
-            id: stackedWidget
+        Timer {
+            id: timerForStartRegistration
 
-            anchors.fill: parent
-            anchors.margins: JamiTheme.preferredMarginSize
+            interval: 100
+            repeat: false
 
-            // Index = 0
-            Item {
-                id: nameRegisterEnterPasswordPage
+            onTriggered: {
+                AccountAdapter.model.registerName(LRCInstance.currentAccountId,
+                                                  passwordEdit.text, registerdName)
+            }
+        }
 
-                readonly property int pageIndex: 0
+        Connections{
+            target: NameDirectory
 
-                ColumnLayout {
-                    anchors.fill: parent
+            function onNameRegistrationEnded(status, name) {
+                switch(status) {
+                case NameDirectory.RegisterNameStatus.SUCCESS:
+                    accepted()
+                    close()
+                    return
+                case NameDirectory.RegisterNameStatus.WRONG_PASSWORD:
+                    lblRegistrationError.text = JamiStrings.incorrectPassword
+                    break
+                case NameDirectory.RegisterNameStatus.NETWORK_ERROR:
+                    lblRegistrationError.text = JamiStrings.networkError
+                    break
+                default:
+                    break
+                }
 
+                stackedWidget.currentIndex = nameRegisterErrorPage.pageIndex
+            }
+        }
+
+        onVisibleChanged: {
+            if (visible) {
+                lblRegistrationError.text = JamiStrings.somethingWentWrong
+                passwordEdit.clear()
+
+                if (AccountAdapter.hasPassword()){
+                    stackedWidget.currentIndex = nameRegisterEnterPasswordPage.pageIndex
+                    passwordEdit.forceActiveFocus()
+                } else {
+                    startRegistration()
+                }
+            }
+        }
+
+        // Index = 0
+        Item {
+            id: nameRegisterEnterPasswordPage
+
+            readonly property int pageIndex: 0
+
+            ColumnLayout {
+                anchors.fill: parent
+
+                spacing: 16
+
+                Label {
+                    Layout.alignment: Qt.AlignCenter
+
+                    text: JamiStrings.enterAccountPassword
+                    color: JamiTheme.textColor
+                    font.pointSize: JamiTheme.textFontSize
+                    font.kerning: true
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                MaterialLineEdit {
+                    id: passwordEdit
+
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.preferredWidth: JamiTheme.preferredFieldWidth
+                    Layout.preferredHeight: 48
+
+                    echoMode: TextInput.Password
+                    placeholderText: JamiStrings.password
+
+                    onTextChanged: btnRegister.enabled = (text.length > 0)
+
+                    onAccepted: btnRegister.clicked()
+                }
+
+                RowLayout {
                     spacing: 16
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.fillWidth: true
 
-                    Label {
-                        Layout.alignment: Qt.AlignCenter
+                    MaterialButton {
+                        id: btnRegister
 
-                        text: JamiStrings.enterAccountPassword
-                        color: JamiTheme.textColor
-                        font.pointSize: JamiTheme.textFontSize
-                        font.kerning: true
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    MaterialLineEdit {
-                        id: passwordEdit
-
-                        Layout.alignment: Qt.AlignCenter
-                        Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                        Layout.preferredHeight: 48
-
-                        echoMode: TextInput.Password
-                        placeholderText: JamiStrings.password
-
-                        onTextChanged: btnRegister.enabled = (text.length > 0)
-
-                        onAccepted: btnRegister.clicked()
-                    }
-
-                    RowLayout {
-                        spacing: 16
                         Layout.alignment: Qt.AlignHCenter
-                        Layout.fillWidth: true
 
-                        MaterialButton {
-                            id: btnRegister
+                        preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                        preferredHeight: JamiTheme.preferredFieldHeight
 
-                            Layout.alignment: Qt.AlignHCenter
+                        color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
+                        hoveredColor: JamiTheme.buttonTintedBlackHovered
+                        pressedColor: JamiTheme.buttonTintedBlackPressed
+                        outlined: true
+                        enabled: false
 
-                            preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
-                            preferredHeight: JamiTheme.preferredFieldHeight
+                        text: JamiStrings.register
 
-                            color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
-                            hoveredColor: JamiTheme.buttonTintedBlackHovered
-                            pressedColor: JamiTheme.buttonTintedBlackPressed
-                            outlined: true
-                            enabled: false
-
-                            text: JamiStrings.register
-
-                            onClicked: startRegistration()
-                        }
-
-                        MaterialButton {
-                            id: btnCancel
-
-                            Layout.alignment: Qt.AlignHCenter
-
-                            preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
-                            preferredHeight: JamiTheme.preferredFieldHeight
-
-                            color: JamiTheme.buttonTintedBlack
-                            hoveredColor: JamiTheme.buttonTintedBlackHovered
-                            pressedColor: JamiTheme.buttonTintedBlackPressed
-                            outlined: true
-
-                            text: JamiStrings.optionCancel
-
-                            onClicked: close()
-                        }
-                    }
-                }
-            }
-
-            // Index = 1
-            Item {
-                id: nameRegisterSpinnerPage
-
-                readonly property int pageIndex: 1
-
-                ColumnLayout {
-                    anchors.fill: parent
-
-                    spacing: 16
-
-                    Label {
-                        Layout.alignment: Qt.AlignCenter
-
-                        text: JamiStrings.registeringName
-                        color: JamiTheme.textColor
-                        font.pointSize: JamiTheme.textFontSize
-                        font.kerning: true
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    AnimatedImage {
-                        id: spinnerMovie
-
-                        Layout.alignment: Qt.AlignCenter
-
-                        Layout.preferredWidth: 30
-                        Layout.preferredHeight: 30
-
-                        source: JamiResources.jami_rolling_spinner_gif
-                        playing: visible
-                        fillMode: Image.PreserveAspectFit
-                        mipmap: true
-                    }
-                }
-            }
-
-            // Index = 2
-            Item {
-                id: nameRegisterErrorPage
-
-                readonly property int pageIndex: 2
-
-                ColumnLayout {
-                    anchors.fill: parent
-
-                    spacing: 16
-
-                    Label {
-                        id: lblRegistrationError
-
-                        Layout.alignment: Qt.AlignCenter
-                        text: JamiStrings.somethingWentWrong
-                        font.pointSize: JamiTheme.textFontSize
-                        font.kerning: true
-                        color: JamiTheme.redColor
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                        onClicked: stackedWidget.startRegistration()
                     }
 
                     MaterialButton {
-                        id: btnClose
+                        id: btnCancel
 
-                        Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+                        Layout.alignment: Qt.AlignHCenter
 
                         preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
                         preferredHeight: JamiTheme.preferredFieldHeight
@@ -263,10 +178,92 @@ BaseDialog {
                         pressedColor: JamiTheme.buttonTintedBlackPressed
                         outlined: true
 
-                        text: JamiStrings.close
+                        text: JamiStrings.optionCancel
 
                         onClicked: close()
                     }
+                }
+            }
+        }
+
+        // Index = 1
+        Item {
+            id: nameRegisterSpinnerPage
+
+            readonly property int pageIndex: 1
+
+            ColumnLayout {
+                anchors.fill: parent
+
+                spacing: 16
+
+                Label {
+                    Layout.alignment: Qt.AlignCenter
+
+                    text: JamiStrings.registeringName
+                    color: JamiTheme.textColor
+                    font.pointSize: JamiTheme.textFontSize + 3
+                    font.kerning: true
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                AnimatedImage {
+                    id: spinnerMovie
+
+                    Layout.alignment: Qt.AlignCenter
+
+                    Layout.preferredWidth: 30
+                    Layout.preferredHeight: 30
+
+                    source: JamiResources.jami_rolling_spinner_gif
+                    playing: visible
+                    fillMode: Image.PreserveAspectFit
+                    mipmap: true
+                }
+            }
+        }
+
+        // Index = 2
+        Item {
+            id: nameRegisterErrorPage
+
+            readonly property int pageIndex: 2
+
+            ColumnLayout {
+                anchors.fill: parent
+
+                spacing: 16
+
+                Label {
+                    id: lblRegistrationError
+
+                    Layout.alignment: Qt.AlignCenter
+                    text: JamiStrings.somethingWentWrong
+                    font.pointSize: JamiTheme.textFontSize + 3
+                    font.kerning: true
+                    color: JamiTheme.redColor
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                MaterialButton {
+                    id: btnClose
+
+                    Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+                    Layout.bottomMargin: JamiTheme.preferredMarginSize
+
+                    preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                    preferredHeight: JamiTheme.preferredFieldHeight
+
+                    color: JamiTheme.buttonTintedBlack
+                    hoveredColor: JamiTheme.buttonTintedBlackHovered
+                    pressedColor: JamiTheme.buttonTintedBlackPressed
+                    outlined: true
+
+                    text: JamiStrings.close
+
+                    onClicked: close()
                 }
             }
         }

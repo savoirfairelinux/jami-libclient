@@ -25,7 +25,7 @@ import net.jami.Constants 1.1
 
 import "../../commoncomponents"
 
-BaseDialog {
+BaseModalDialog {
     id: root
 
     property string deviceId : ""
@@ -34,105 +34,100 @@ BaseDialog {
 
     function openRevokeDeviceDialog(deviceIdIn) {
         deviceId = deviceIdIn
-        passwordEdit.clear()
+
         open()
     }
 
-    title: qsTr("Remove device")
+    width: JamiTheme.preferredDialogWidth
+    height: JamiTheme.preferredDialogHeight
 
-    contentItem: Rectangle {
-        id: revokeDeviceContentRect
+    title: JamiStrings.removeDevice
 
-        color: JamiTheme.secondaryBackgroundColor
-        implicitWidth: JamiTheme.preferredDialogWidth
-        implicitHeight: JamiTheme.preferredDialogHeight
+    popupContent: ColumnLayout {
+        id: revokeDeviceContentColumnLayout
 
-        ColumnLayout {
-            anchors.centerIn: parent
-            anchors.fill: parent
-            anchors.margins: JamiTheme.preferredMarginSize
-            spacing: 16
+        spacing: 16
 
-            Label {
-                id: labelDeletion
+        Label {
+            id: labelDeletion
 
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: revokeDeviceContentRect.width - JamiTheme.preferredMarginSize * 2
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: revokeDeviceContentColumnLayout.width -
+                                   JamiTheme.preferredMarginSize * 2
 
-                color: JamiTheme.textColor
-                text: JamiStrings.confirmRemoval
-                font.pointSize: JamiTheme.textFontSize
-                font.kerning: true
-                wrapMode: Text.Wrap
+            text: JamiStrings.confirmRemoval
+            color: JamiTheme.textColor
+            font.pointSize: JamiTheme.textFontSize
+            font.kerning: true
+            wrapMode: Text.Wrap
 
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-            }
-
-            MaterialLineEdit {
-                id: passwordEdit
-
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                Layout.preferredHeight: visible ? 48 : 0
-
-                echoMode: TextInput.Password
-                placeholderText: JamiStrings.enterCurrentPassword
-
-                onTextChanged: {
-                    btnRemove.enabled = text.length > 0
-                }
-            }
-
-            RowLayout {
-                spacing: 16
-                Layout.alignment: Qt.AlignHCenter
-
-                Layout.fillWidth: true
-
-                MaterialButton {
-                    id: btnRemove
-
-                    Layout.alignment: Qt.AlignHCenter
-
-                    preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
-                    preferredHeight: JamiTheme.preferredFieldHeight
-
-                    color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
-                    hoveredColor: JamiTheme.buttonTintedBlackHovered
-                    pressedColor: JamiTheme.buttonTintedBlackPressed
-                    outlined: true
-                    enabled: false
-
-                    text: qsTr("Remove")
-
-                    onClicked: {
-                        revokeDeviceWithPassword(deviceId, passwordEdit.text)
-                        close()
-                    }
-                }
-
-                MaterialButton {
-                    id: btnCancel
-
-                    Layout.alignment: Qt.AlignHCenter
-
-                    preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
-                    preferredHeight: JamiTheme.preferredFieldHeight
-
-                    color: JamiTheme.buttonTintedBlack
-                    hoveredColor: JamiTheme.buttonTintedBlackHovered
-                    pressedColor: JamiTheme.buttonTintedBlackPressed
-                    outlined: true
-                    enabled: true
-
-                    text: qsTr("Cancel")
-
-                    onClicked: {
-                        close()
-                    }
-                }
-	    }
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
         }
+
+        MaterialLineEdit {
+            id: passwordEdit
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+            Layout.preferredHeight: visible ? 48 : 0
+
+            echoMode: TextInput.Password
+            placeholderText: JamiStrings.enterCurrentPassword
+
+            onVisibleChanged: passwordEdit.clear()
+
+            onTextChanged: {
+                btnRemove.enabled = text.length > 0
+            }
+        }
+
+        RowLayout {
+            spacing: 16
+            Layout.alignment: Qt.AlignHCenter
+
+            Layout.fillWidth: true
+
+            MaterialButton {
+                id: btnRemove
+
+                Layout.alignment: Qt.AlignHCenter
+
+                preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                preferredHeight: JamiTheme.preferredFieldHeight
+
+                color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
+                hoveredColor: JamiTheme.buttonTintedBlackHovered
+                pressedColor: JamiTheme.buttonTintedBlackPressed
+                outlined: true
+                enabled: false
+
+                text: qsTr("Remove")
+
+                onClicked: {
+                    revokeDeviceWithPassword(deviceId, passwordEdit.text)
+                    close()
+                }
+            }
+
+            MaterialButton {
+                id: btnCancel
+
+                Layout.alignment: Qt.AlignHCenter
+
+                preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                preferredHeight: JamiTheme.preferredFieldHeight
+
+                color: JamiTheme.buttonTintedBlack
+                hoveredColor: JamiTheme.buttonTintedBlackHovered
+                pressedColor: JamiTheme.buttonTintedBlackPressed
+                outlined: true
+                enabled: true
+
+                text: JamiStrings.optionCancel
+
+                onClicked: close()
+            }
+    }
     }
 }

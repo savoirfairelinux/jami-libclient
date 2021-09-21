@@ -21,8 +21,7 @@
         <file>src/commoncomponents/UsernameLineEdit.qml</file>
         <file>src/commoncomponents/Scaffold.qml</file>
         <file>src/commoncomponents/LineEditContextMenu.qml</file>
-        <file>src/commoncomponents/BaseDialog.qml</file>
-        <file>src/commoncomponents/ModalPopup.qml</file>
+        <file>src/commoncomponents/BaseModalDialog.qml</file>
         <file>src/commoncomponents/SimpleMessageDialog.qml</file>
         <file>src/commoncomponents/ResponsiveImage.qml</file>
         <file>src/commoncomponents/PresenceIndicator.qml</file>

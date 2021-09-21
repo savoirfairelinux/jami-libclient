@@ -54,6 +54,8 @@ Item {
     property color editBackgroundColor: darkTheme ? "#373737" : lightGrey_
     property color textColor: primaryForegroundColor
     property color tabbarBorderColor: darkTheme ? blackColor : "#e3e3e3"
+    property color popupOverlayColor: darkTheme ? Qt.rgba(255, 255, 255, 0.22) :
+                                                  Qt.rgba(0, 0, 0, 0.33)
 
     // Side panel
     property color presenceGreen: "#4cd964"
@@ -206,6 +208,7 @@ Item {
     property int smartListTransitionDuration: 120
 
     // Sizes
+    property real qrCodeImageSize: 256
     property real splitViewHandlePreferredWidth: 4
     property real indicatorFontSize: 6
     property real tinyFontSize: 7

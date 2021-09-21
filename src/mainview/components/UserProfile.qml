@@ -24,7 +24,7 @@ import net.jami.Constants 1.1
 
 import "../../commoncomponents"
 
-BaseDialog {
+BaseModalDialog {
     id: root
 
     property string convId
@@ -35,13 +35,14 @@ BaseDialog {
 
     property int preferredImgSize: 80
 
-    contentItem: Rectangle {
+    width: 480
+    height: 480
+
+    popupContent: Rectangle {
         id: userProfileContentRect
 
-        implicitWidth: 480
-        implicitHeight: 400
-
         color: JamiTheme.backgroundColor
+        radius: JamiTheme.modalPopupRadius
 
         GridLayout {
             id: userProfileDialogLayout
@@ -143,7 +144,7 @@ BaseDialog {
                     id: textMetricsContactDisplayNameText
                     font: contactDisplayName.font
                     text: registeredNameText
-                    elideWidth: userProfileContentRect.width-200
+                    elideWidth: userProfileContentRect.width - 200
                     elide: Qt.ElideMiddle
                 }
             }
@@ -236,9 +237,7 @@ BaseDialog {
 
                 text: JamiStrings.close
 
-                onClicked: {
-                    close()
-                }
+                onClicked: close()
             }
         }
     }

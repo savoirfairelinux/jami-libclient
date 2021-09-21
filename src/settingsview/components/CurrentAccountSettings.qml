@@ -101,7 +101,7 @@ Rectangle {
     PasswordDialog {
         id: passwordDialog
 
-        onDoneSignal: {
+        onDoneSignal: function (success, currentPurpose) {
             var title = success ? qsTr("Success") : qsTr("Error")
 
             var info

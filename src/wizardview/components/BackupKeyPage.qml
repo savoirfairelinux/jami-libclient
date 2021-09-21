@@ -59,8 +59,8 @@ Rectangle {
         buttonTitles: [JamiStrings.optionOk]
         buttonStyles: [SimpleMessageDialog.ButtonStyle.TintedBlue]
 
-        onVisibleChanged: {
-            if (title === JamiStrings.success && !visible)
+        onClosed: {
+            if (title === JamiStrings.success)
                 WizardViewStepModel.nextStep()
         }
     }
@@ -71,7 +71,9 @@ Rectangle {
         visible: false
         purpose: PasswordDialog.ExportAccount
 
-        onDoneSignal: showBackupStatusDialog(success)
+        onDoneSignal: function (success) {
+            showBackupStatusDialog(success)
+        }
     }
 
     // JamiFileDialog for exporting account

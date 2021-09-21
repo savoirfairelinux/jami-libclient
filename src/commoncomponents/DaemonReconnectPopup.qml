@@ -23,7 +23,7 @@ import QtQuick.Layouts
 import net.jami.Constants 1.1
 import net.jami.Models 1.1
 
-ModalPopup {
+BaseModalDialog {
     id: root
 
     property bool connectionFailed: false
@@ -31,73 +31,69 @@ ModalPopup {
 
     autoClose: false
 
-    contentItem: Rectangle {
-        id: contentRect
+    onPopupContentLoadStatusChanged: {
+        if (popupContentLoadStatus === Loader.Ready) {
+            root.height = Qt.binding(function() {
+                return popupContentLoader.item.implicitHeight + 50
+            })
+            root.width = Qt.binding(function() {
+                return popupContentLoader.item.implicitWidth + 50
+            })
+        }
+    }
 
-        implicitHeight: daemonReconnectPopupColumnLayout.implicitHeight + 50
+    popupContent: ColumnLayout {
+        id: daemonReconnectPopupColumnLayout
 
-        color: JamiTheme.secondaryBackgroundColor
+        spacing: 0
 
-        ColumnLayout {
-            id: daemonReconnectPopupColumnLayout
+        Text {
+            id: daemonReconnectPopupTextLabel
 
-            anchors.fill: parent
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+            Layout.topMargin: preferredMargin
 
-            spacing: 0
+            text: connectionFailed ? JamiStrings.reconnectionFailed :
+                                     JamiStrings.reconnectDaemon
+            font.pointSize: JamiTheme.textFontSize + 2
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            color: JamiTheme.textColor
+        }
 
-            Text {
-                id: daemonReconnectPopupTextLabel
+        AnimatedImage {
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+            Layout.preferredHeight: 30
+            Layout.preferredWidth: 30
+            Layout.bottomMargin: preferredMargin
 
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                Layout.topMargin: preferredMargin
+            visible: !connectionFailed
 
-                text: connectionFailed ? JamiStrings.reconnectionFailed :
-                                         JamiStrings.reconnectDaemon
-                font.pointSize: JamiTheme.textFontSize + 2
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                color: JamiTheme.textColor
+            source: JamiResources.jami_rolling_spinner_gif
 
-                Component.onCompleted: {
-                    contentRect.implicitWidth = JamiQmlUtils.getTextBoundingRect(
-                                font, text).width + 100
-                }
-            }
+            playing: true
+            paused: false
+            mipmap: true
+            smooth: true
+            fillMode: Image.PreserveAspectFit
+        }
 
-            AnimatedImage {
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
-                Layout.preferredHeight: 30
-                Layout.preferredWidth: 30
-                Layout.bottomMargin: preferredMargin
+        MaterialButton {
+            id: btnOk
 
-                visible: !connectionFailed
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
 
-                source: JamiResources.jami_rolling_spinner_gif
+            preferredWidth: JamiTheme.preferredFieldWidth / 2
 
-                playing: true
-                paused: false
-                mipmap: true
-                smooth: true
-                fillMode: Image.PreserveAspectFit
-            }
+            visible: connectionFailed
 
-            MaterialButton {
-                id: btnOk
+            text: JamiStrings.optionOk
+            color: JamiTheme.buttonTintedBlue
+            hoveredColor: JamiTheme.buttonTintedBlueHovered
+            pressedColor: JamiTheme.buttonTintedBluePressed
+            outlined: true
 
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
-
-                preferredWidth: JamiTheme.preferredFieldWidth / 2
-
-                visible: connectionFailed
-
-                text: qsTr("Ok")
-                color: JamiTheme.buttonTintedBlue
-                hoveredColor: JamiTheme.buttonTintedBlueHovered
-                pressedColor: JamiTheme.buttonTintedBluePressed
-                outlined: true
-
-                onClicked: Qt.quit()
-            }
+            onClicked: Qt.quit()
         }
     }
 }

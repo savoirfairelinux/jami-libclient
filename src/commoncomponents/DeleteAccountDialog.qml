@@ -26,7 +26,7 @@ import net.jami.Constants 1.1
 
 import "../commoncomponents"
 
-BaseDialog {
+BaseModalDialog {
     id: root
 
     property bool isSIP: {
@@ -42,140 +42,131 @@ BaseDialog {
 
     title: JamiStrings.deleteAccount
 
-    contentItem: Rectangle {
-        id: deleteAccountContentRect
+    width: JamiTheme.preferredDialogWidth
+    height: JamiTheme.preferredDialogHeight
 
-        implicitWidth: JamiTheme.preferredDialogWidth
-        implicitHeight: JamiTheme.preferredDialogHeight
-        color: JamiTheme.secondaryBackgroundColor
+    popupContent: ColumnLayout {
+        id: deleteAccountContentColumnLayout
 
-        ColumnLayout {
-            anchors.centerIn: parent
-            anchors.fill: parent
-            anchors.margins: JamiTheme.preferredMarginSize
+        Label {
+            id: labelDeletion
 
-            Label {
-                id: labelDeletion
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: deleteAccountContentColumnLayout.width -
+                                   JamiTheme.preferredMarginSize * 2
+
+            color: JamiTheme.textColor
+            text: JamiStrings.confirmDeleteQuestion
+
+            font.pointSize: JamiTheme.textFontSize
+            font.kerning: true
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.Wrap
+        }
+
+        Label {
+            id: labelBestId
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: deleteAccountContentColumnLayout.width -
+                                   JamiTheme.preferredMarginSize * 2
+
+            color: JamiTheme.textColor
+            text: CurrentAccount.bestName
+
+            font.pointSize: JamiTheme.textFontSize
+            font.kerning: true
+            font.bold: true
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.Wrap
+        }
+
+        Label {
+            id: labelAccountHash
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: deleteAccountContentColumnLayout.width -
+                                   JamiTheme.preferredMarginSize * 2
+
+            color: JamiTheme.textColor
+            text: CurrentAccount.uri
+
+            font.pointSize: JamiTheme.textFontSize
+            font.kerning: true
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.Wrap
+        }
+
+        Label {
+            id: labelWarning
+
+            visible: !isSIP
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: deleteAccountContentColumnLayout.width -
+                                   JamiTheme.preferredMarginSize * 2
+
+            text: JamiStrings.deleteAccountInfos
+
+            font.pointSize: JamiTheme.textFontSize
+            font.kerning: true
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            wrapMode: Text.Wrap
+
+            color: JamiTheme.redColor
+        }
+
+        RowLayout {
+            spacing: 16
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignCenter
+
+            MaterialButton {
+                id: btnDelete
 
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: deleteAccountContentRect.width -
-                                       JamiTheme.preferredMarginSize * 2
 
-                color: JamiTheme.textColor
-                text: JamiStrings.confirmDeleteQuestion
+                preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                preferredHeight: JamiTheme.preferredFieldHeight
 
-                font.pointSize: JamiTheme.textFontSize
-                font.kerning: true
+                color: JamiTheme.buttonTintedRed
+                hoveredColor: JamiTheme.buttonTintedRedHovered
+                pressedColor: JamiTheme.buttonTintedRedPressed
+                outlined: true
 
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                wrapMode: Text.Wrap
-            }
+                text: JamiStrings.optionDelete
 
-            Label {
-                id: labelBestId
-
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: deleteAccountContentRect.width -
-                                       JamiTheme.preferredMarginSize * 2
-
-                color: JamiTheme.textColor
-                text: CurrentAccount.bestName
-
-                font.pointSize: JamiTheme.textFontSize
-                font.kerning: true
-                font.bold: true
-
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                wrapMode: Text.Wrap
-            }
-
-            Label {
-                id: labelAccountHash
-
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: deleteAccountContentRect.width -
-                                       JamiTheme.preferredMarginSize * 2
-
-                color: JamiTheme.textColor
-                text: CurrentAccount.uri
-
-                font.pointSize: JamiTheme.textFontSize
-                font.kerning: true
-
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                wrapMode: Text.Wrap
-            }
-
-            Label {
-                id: labelWarning
-
-                visible: !isSIP
-
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: deleteAccountContentRect.width -
-                                       JamiTheme.preferredMarginSize * 2
-
-                text: JamiStrings.deleteAccountInfos
-
-                font.pointSize: JamiTheme.textFontSize
-                font.kerning: true
-
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                wrapMode: Text.Wrap
-
-                color: "red"
-            }
-
-            RowLayout {
-                spacing: 16
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignCenter
-
-                MaterialButton {
-                    id: btnDelete
-
-                    Layout.alignment: Qt.AlignHCenter
-
-                    preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
-                    preferredHeight: JamiTheme.preferredFieldHeight
-
-                    color: JamiTheme.buttonTintedRed
-                    hoveredColor: JamiTheme.buttonTintedRedHovered
-                    pressedColor: JamiTheme.buttonTintedRedPressed
-                    outlined: true
-
-                    text: qsTr("Delete")
-
-                    onClicked: {
-                        AccountAdapter.deleteCurrentAccount()
-                        accepted()
-                        close()
-                    }
+                onClicked: {
+                    AccountAdapter.deleteCurrentAccount()
+                    accepted()
+                    close()
                 }
+            }
 
-                MaterialButton {
-                    id: btnCancel
+            MaterialButton {
+                id: btnCancel
 
-                    Layout.alignment: Qt.AlignHCenter
+                Layout.alignment: Qt.AlignHCenter
 
-                    preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
-                    preferredHeight: JamiTheme.preferredFieldHeight
+                preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
+                preferredHeight: JamiTheme.preferredFieldHeight
 
-                    color: JamiTheme.buttonTintedBlack
-                    hoveredColor: JamiTheme.buttonTintedBlackHovered
-                    pressedColor: JamiTheme.buttonTintedBlackPressed
-                    outlined: true
+                color: JamiTheme.buttonTintedBlack
+                hoveredColor: JamiTheme.buttonTintedBlackHovered
+                pressedColor: JamiTheme.buttonTintedBlackPressed
+                outlined: true
 
-                    text: qsTr("Cancel")
+                text: JamiStrings.optionCancel
 
-                    onClicked: {
-                        close()
-                    }
-                }
+                onClicked: close()
             }
         }
     }

@@ -18,6 +18,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import Qt5Compat.GraphicalEffects
 
 import net.jami.Constants 1.1
@@ -28,6 +29,12 @@ Popup {
     // convient access to closePolicy
     property bool autoClose: true
     property alias backgroundColor: container.color
+    property alias title: titleText.text
+    property var popupContentLoader: containerSubContentLoader
+    property alias popupContentLoadStatus: containerSubContentLoader.status
+    property alias popupContent: containerSubContentLoader.sourceComponent
+    property int popupContentPreferredHeight: 0
+    property int popupContentPreferredWidth: 0
 
     parent: Overlay.overlay
 
@@ -37,20 +44,64 @@ Popup {
 
     modal: true
 
+    padding: 0
+
     // A popup is invisible until opened.
     visible: false
     closePolicy:  autoClose ?
                       (Popup.CloseOnEscape | Popup.CloseOnPressOutside) :
                       Popup.NoAutoClose
 
-    padding: 0
-
-    background: Rectangle {
+    Rectangle {
         id: container
 
+        anchors.fill: parent
+
+        ColumnLayout {
+            anchors.fill: parent
+
+            spacing: 0
+
+            Text {
+                id: titleText
+
+                Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                Layout.margins: text.length === 0 ? 0 : 10
+
+                Layout.preferredHeight: text.length === 0 ? 0 : contentHeight
+
+                font.pointSize: 12
+                color: JamiTheme.textColor
+            }
+
+            Loader {
+                id: containerSubContentLoader
+
+                Layout.alignment: Qt.AlignCenter
+
+                Layout.fillWidth: popupContentPreferredWidth === 0
+                Layout.fillHeight: popupContentPreferredHeight === 0
+                Layout.preferredHeight: popupContentPreferredHeight
+                Layout.preferredWidth: popupContentPreferredWidth
+            }
+        }
+
         radius: JamiTheme.modalPopupRadius
-        width: root.width
-        height: root.height
+        color: JamiTheme.secondaryBackgroundColor
+    }
+
+    background: Rectangle {
+        color: JamiTheme.transparentColor
+    }
+
+    Overlay.modal: Rectangle {
+        color: JamiTheme.transparentColor
+
+        // Color animation for overlay when pop up is shown.
+        ColorAnimation on color {
+            to: JamiTheme.popupOverlayColor
+            duration: 500
+        }
     }
 
     DropShadow {

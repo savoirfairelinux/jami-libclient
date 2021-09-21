@@ -23,7 +23,7 @@ import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
 
 // PasswordDialog for changing password and exporting account
-BaseDialog {
+BaseModalDialog {
     id: root
 
     enum PasswordEnteringPurpose {
@@ -40,52 +40,12 @@ BaseDialog {
     function openDialog(purposeIn, exportPathIn = "") {
         purpose = purposeIn
         path = exportPathIn
-        currentPasswordEdit.clear()
-        passwordEdit.clear()
-        confirmPasswordEdit.clear()
-        validatePassword()
+
         open()
     }
 
-    function validatePassword() {
-        switch (purpose) {
-        case PasswordDialog.ExportAccount:
-            btnConfirm.enabled = currentPasswordEdit.length > 0
-            break
-        case PasswordDialog.SetPassword:
-            btnConfirm.enabled = passwordEdit.length > 0 &&
-                    passwordEdit.text === confirmPasswordEdit.text
-            break
-        default:
-            btnConfirm.enabled = currentPasswordEdit.length > 0 &&
-                    passwordEdit.text === confirmPasswordEdit.text
-        }
-    }
-
-    function exportAccountQML() {
-        var success = false
-        if (path.length > 0) {
-            success = AccountAdapter.exportToFile(
-                        LRCInstance.currentAccountId,
-                        path,
-                        currentPasswordEdit.text)
-        }
-        doneSignal(success, purpose)
-        close()
-    }
-
-    function savePasswordQML() {
-        var success = false
-        success = AccountAdapter.savePassword(
-                    LRCInstance.currentAccountId,
-                    currentPasswordEdit.text,
-                    passwordEdit.text)
-        if (success) {
-            AccountAdapter.setArchiveHasPassword(passwordEdit.text.length !== 0)
-        }
-        doneSignal(success, purpose)
-        close()
-    }
+    height: JamiTheme.preferredDialogHeight
+    width: JamiTheme.preferredDialogWidth
 
     title: {
         switch(purpose){
@@ -98,131 +58,161 @@ BaseDialog {
         }
     }
 
-    Timer {
-        id: timerToOperate
+    popupContent: ColumnLayout {
+        id: popupContentColumnLayout
 
-        interval: 200
-        repeat: false
+        spacing: 0
 
-        onTriggered: {
-            if (purpose === PasswordDialog.ExportAccount) {
-                exportAccountQML()
-            } else {
-                savePasswordQML()
+        function validatePassword() {
+            switch (purpose) {
+            case PasswordDialog.ExportAccount:
+                btnConfirm.enabled = currentPasswordEdit.length > 0
+                break
+            case PasswordDialog.SetPassword:
+                btnConfirm.enabled = passwordEdit.length > 0 &&
+                        passwordEdit.text === confirmPasswordEdit.text
+                break
+            default:
+                btnConfirm.enabled = currentPasswordEdit.length > 0 &&
+                        passwordEdit.text === confirmPasswordEdit.text
             }
         }
-    }
 
-    contentItem: Rectangle {
-        id: passwordDialogContentRect
+        function exportAccountQML() {
+            var success = false
+            if (path.length > 0) {
+                success = AccountAdapter.exportToFile(
+                            LRCInstance.currentAccountId,
+                            path,
+                            currentPasswordEdit.text)
+            }
+            doneSignal(success, purpose)
+            close()
+        }
 
-        implicitWidth: JamiTheme.preferredDialogWidth
-        implicitHeight: JamiTheme.preferredDialogHeight
-        color: JamiTheme.secondaryBackgroundColor
+        function savePasswordQML() {
+            var success = false
+            success = AccountAdapter.savePassword(
+                        LRCInstance.currentAccountId,
+                        currentPasswordEdit.text,
+                        passwordEdit.text)
+            if (success) {
+                AccountAdapter.setArchiveHasPassword(passwordEdit.text.length !== 0)
+            }
+            doneSignal(success, purpose)
+            close()
+        }
 
-        ColumnLayout {
-            anchors.centerIn: parent
-            anchors.fill: parent
-            anchors.margins: JamiTheme.preferredMarginSize
+        onVisibleChanged: validatePassword()
 
-            MaterialLineEdit {
-                id: currentPasswordEdit
+        Timer {
+            id: timerToOperate
+
+            interval: 200
+            repeat: false
+
+            onTriggered: {
+                if (purpose === PasswordDialog.ExportAccount) {
+                    popupContentColumnLayout.exportAccountQML()
+                } else {
+                    popupContentColumnLayout.savePasswordQML()
+                }
+            }
+        }
+
+        MaterialLineEdit {
+            id: currentPasswordEdit
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+            Layout.preferredHeight: visible ? 48 : 0
+
+            visible: purpose === PasswordDialog.ChangePassword ||
+                     purpose === PasswordDialog.ExportAccount
+            echoMode: TextInput.Password
+            placeholderText: JamiStrings.enterCurrentPassword
+
+            onVisibleChanged: clear()
+
+            onTextChanged: popupContentColumnLayout.validatePassword()
+        }
+
+        MaterialLineEdit {
+            id: passwordEdit
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+            Layout.preferredHeight: visible ? 48 : 0
+
+            visible: purpose === PasswordDialog.ChangePassword ||
+                     purpose === PasswordDialog.SetPassword
+            echoMode: TextInput.Password
+            placeholderText: JamiStrings.enterNewPassword
+
+            onVisibleChanged: clear()
+
+            onTextChanged: popupContentColumnLayout.validatePassword()
+        }
+
+        MaterialLineEdit {
+            id: confirmPasswordEdit
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.preferredWidth: JamiTheme.preferredFieldWidth
+            Layout.preferredHeight: visible ? 48 : 0
+
+            visible: purpose === PasswordDialog.ChangePassword ||
+                     purpose === PasswordDialog.SetPassword
+            echoMode: TextInput.Password
+            placeholderText: JamiStrings.confirmNewPassword
+
+            onVisibleChanged: clear()
+
+            onTextChanged: popupContentColumnLayout.validatePassword()
+        }
+
+        RowLayout {
+            spacing: 16
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignCenter
+
+            MaterialButton {
+                id: btnConfirm
 
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                Layout.preferredHeight: visible ? 48 : 0
 
-                visible: purpose === PasswordDialog.ChangePassword ||
-                         purpose === PasswordDialog.ExportAccount
-                echoMode: TextInput.Password
-                placeholderText: JamiStrings.enterCurrentPassword
+                preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
 
-                onTextChanged: {
-                    validatePassword()
+                color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
+                hoveredColor: JamiTheme.buttonTintedBlackHovered
+                pressedColor: JamiTheme.buttonTintedBlackPressed
+                outlined: true
+                enabled: purpose === PasswordDialog.SetPassword
+
+                text: (purpose === PasswordDialog.ExportAccount) ? JamiStrings.exportAccount :
+                                                                  JamiStrings.change
+
+                onClicked: {
+                    btnConfirm.enabled = false
+                    timerToOperate.restart()
                 }
             }
 
-            MaterialLineEdit {
-                id: passwordEdit
+            MaterialButton {
+                id: btnCancel
 
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                Layout.preferredHeight: visible ? 48 : 0
 
-                visible: purpose === PasswordDialog.ChangePassword ||
-                         purpose === PasswordDialog.SetPassword
-                echoMode: TextInput.Password
+                preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
 
-                placeholderText: JamiStrings.enterNewPassword
+                color: JamiTheme.buttonTintedBlack
+                hoveredColor: JamiTheme.buttonTintedBlackHovered
+                pressedColor: JamiTheme.buttonTintedBlackPressed
+                outlined: true
 
-                onTextChanged: {
-                    validatePassword()
-                }
-            }
+                text: JamiStrings.optionCancel
 
-            MaterialLineEdit {
-                id: confirmPasswordEdit
-
-                Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: JamiTheme.preferredFieldWidth
-                Layout.preferredHeight: visible ? 48 : 0
-
-                visible: purpose === PasswordDialog.ChangePassword ||
-                         purpose === PasswordDialog.SetPassword
-                echoMode: TextInput.Password
-
-                placeholderText: JamiStrings.confirmNewPassword
-
-                onTextChanged: {
-                    validatePassword()
-                }
-            }
-
-            RowLayout {
-                spacing: 16
-                Layout.fillWidth: true
-                Layout.alignment: Qt.AlignCenter
-
-                MaterialButton {
-                    id: btnConfirm
-
-                    Layout.alignment: Qt.AlignHCenter
-
-                    preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
-
-                    color: enabled? JamiTheme.buttonTintedBlack : JamiTheme.buttonTintedGrey
-                    hoveredColor: JamiTheme.buttonTintedBlackHovered
-                    pressedColor: JamiTheme.buttonTintedBlackPressed
-                    outlined: true
-                    enabled: purpose === PasswordDialog.SetPassword
-
-                    text: (purpose === PasswordDialog.ExportAccount) ? JamiStrings.exportAccount :
-                                                                      JamiStrings.change
-
-                    onClicked: {
-                        btnConfirm.enabled = false
-                        timerToOperate.restart()
-                    }
-                }
-
-                MaterialButton {
-                    id: btnCancel
-
-                    Layout.alignment: Qt.AlignHCenter
-
-                    preferredWidth: JamiTheme.preferredFieldWidth / 2 - 8
-
-                    color: JamiTheme.buttonTintedBlack
-                    hoveredColor: JamiTheme.buttonTintedBlackHovered
-                    pressedColor: JamiTheme.buttonTintedBlackPressed
-                    outlined: true
-
-                    text: qsTr("Cancel")
-
-                    onClicked: {
-                        close()
-                    }
-                }
+                onClicked: close()
             }
         }
     }

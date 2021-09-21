@@ -48,7 +48,9 @@ ColumnLayout {
     RevokeDevicePasswordDialog{
         id: revokeDevicePasswordDialog
 
-        onRevokeDeviceWithPassword: deviceItemListModel.sourceModel.revokeDevice(idOfDevice, password)
+        onRevokeDeviceWithPassword: function(idOfDevice, password) {
+            deviceItemListModel.sourceModel.revokeDevice(idOfDevice, password)
+        }
     }
 
     SimpleMessageDialog {
@@ -121,6 +123,6 @@ ColumnLayout {
 
         text: JamiStrings.linkAnotherDevice
 
-        onClicked: linkDeviceDialog.openLinkDeviceDialog()
+        onClicked: linkDeviceDialog.open()
     }
 }
