@@ -62,9 +62,6 @@ public:
     // Delete current account
     Q_INVOKABLE void deleteCurrentAccount();
 
-    // Setting related
-    Q_INVOKABLE void passwordSetStatusMessageBox(bool success, QString title, QString infoToDisplay);
-
     // Conf property
     Q_INVOKABLE bool hasPassword();
     Q_INVOKABLE void setArchiveHasPassword(bool isHavePassword);

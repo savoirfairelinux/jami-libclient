@@ -334,6 +334,7 @@ AccountAdapter::setArchiveHasPassword(bool isHavePassword)
     confProps.archiveHasPassword = isHavePassword;
     lrcInstance_->accountModel().setAccountConfig(lrcInstance_->get_currentAccountId(), confProps);
 }
+
 bool
 AccountAdapter::exportToFile(const QString& accountId,
                              const QString& path,
@@ -350,14 +351,4 @@ AccountAdapter::setArchivePasswordAsync(const QString& accountID, const QString&
         config.archivePassword = password;
         lrcInstance_->accountModel().setAccountConfig(accountID, config);
     });
-}
-
-void
-AccountAdapter::passwordSetStatusMessageBox(bool success, QString title, QString infoToDisplay)
-{
-    if (success) {
-        QMessageBox::information(0, title, infoToDisplay);
-    } else {
-        QMessageBox::critical(0, title, infoToDisplay);
-    }
 }
