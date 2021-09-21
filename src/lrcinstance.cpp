@@ -39,7 +39,6 @@ LRCInstance::LRCInstance(migrateCallback willMigrateCb,
     , threadPool_(new QThreadPool(this))
 {
     threadPool_->setMaxThreadCount(1);
-    lrc_->holdConferences = false;
 
     connect(this, &LRCInstance::currentAccountIdChanged, [this] {
         // save to config, editing the accountlistmodel's underlying data
