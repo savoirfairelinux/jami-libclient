@@ -95,7 +95,7 @@
         <file>src/mainview/components/SidePanel.qml</file>
         <file>src/mainview/components/WelcomePage.qml</file>
         <file>src/mainview/components/ChatView.qml</file>
-        <file>src/mainview/components/MessageWebViewHeader.qml</file>
+        <file>src/mainview/components/ChatViewHeader.qml</file>
         <file>src/mainview/components/AccountComboBox.qml</file>
         <file>src/mainview/components/CallStackView.qml</file>
         <file>src/mainview/components/InitialCallPage.qml</file>

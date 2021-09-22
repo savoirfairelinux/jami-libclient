@@ -272,8 +272,8 @@ Item {
 
     // MessageWebView
     property real chatViewHairLineSize: 1
-    property real messageWebViewHeaderPreferredHeight: 64
     property real chatViewMaximumWidth: 900
+    property real chatViewHeaderPreferredHeight: 64
     property real chatViewFooterPreferredHeight: 50
     property real chatViewFooterMaximumHeight: 280
     property real chatViewFooterRowSpacing: 1

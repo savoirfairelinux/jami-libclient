@@ -52,13 +52,13 @@ Rectangle {
 
         spacing: 0
 
-        MessageWebViewHeader {
+        ChatViewHeader {
             id: messageWebViewHeader
 
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            Layout.preferredHeight: JamiTheme.messageWebViewHeaderPreferredHeight
-            Layout.maximumHeight: JamiTheme.messageWebViewHeaderPreferredHeight
+            Layout.preferredHeight: JamiTheme.chatViewHeaderPreferredHeight
+            Layout.maximumHeight: JamiTheme.chatViewHeaderPreferredHeight
 
             userAliasLabelText: headerUserAliasLabelText
             userUserNameLabelText: headerUserUserNameLabelText

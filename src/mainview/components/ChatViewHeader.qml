@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ * Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,9 +83,8 @@ Rectangle {
             Layout.alignment: Qt.AlignLeft | Qt.AlignTop
 
             // Width + margin.
-            Layout.preferredWidth: root.width
-                                   - backToWelcomeViewButton.width - buttonGroup.width - 45
             Layout.fillHeight: true
+            Layout.fillWidth: true
             Layout.topMargin: 7
             Layout.bottomMargin: 7
             Layout.leftMargin: 8
@@ -130,22 +130,17 @@ Rectangle {
             }
         }
 
-        Item {
+        RowLayout {
             id: buttonGroup
 
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-            Layout.preferredWidth: childrenRect.width + 18
-            Layout.preferredHeight: childrenRect.height
+            Layout.fillWidth: true
             Layout.rightMargin: 8
 
             PushButton {
                 id: startAAudioCallButton
 
                 visible: interactionButtonsVisibility
-
-                anchors.right: startAVideoCallButton.left
-                anchors.rightMargin: 8
-                anchors.verticalCenter: buttonGroup.verticalCenter
 
                 source: JamiResources.place_audiocall_24dp_svg
                 toolTipText: JamiStrings.placeAudioCall
@@ -160,13 +155,6 @@ Rectangle {
                 id: startAVideoCallButton
 
                 visible: interactionButtonsVisibility
-
-                anchors.right: selectPluginButton.visible ? selectPluginButton.left :
-                                   sendContactRequestButton.visible ?
-                                   sendContactRequestButton.left :
-                                   buttonGroup.right
-                anchors.rightMargin: 8
-                anchors.verticalCenter: buttonGroup.verticalCenter
 
                 source: JamiResources.videocam_24dp_svg
                 toolTipText: JamiStrings.placeVideoCall
@@ -183,12 +171,6 @@ Rectangle {
                 visible: PluginAdapter.chatHandlersListCount &&
                          interactionButtonsVisibility
 
-                anchors.right: sendContactRequestButton.visible ?
-                                   sendContactRequestButton.left :
-                                   buttonGroup.right
-                anchors.rightMargin: sendContactRequestButton.visible ? 8 : 16
-                anchors.verticalCenter: buttonGroup.verticalCenter
-
                 source: JamiResources.plugins_24dp_svg
                 toolTipText: JamiStrings.showPlugins
 
@@ -202,10 +184,6 @@ Rectangle {
                 id: sendContactRequestButton
 
                 visible: CurrentConversation.isTemporary
-
-                anchors.right: buttonGroup.right
-                anchors.rightMargin: 8
-                anchors.verticalCenter: buttonGroup.verticalCenter
 
                 source: JamiResources.add_people_24dp_svg
                 toolTipText: JamiStrings.addToConversations
