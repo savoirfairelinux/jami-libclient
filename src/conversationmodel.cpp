@@ -1023,7 +1023,9 @@ ConversationModel::title(const QString& conversationId) const
         // In this case, we can just display contact name
         return owner.contactModel->bestNameForContact(peer.at(0));
     }
-    // In this case, it depends if we have infos from daemon (TODO conferencesInfo() support)
+    if (conversation.infos["title"] != "") {
+        return conversation.infos["title"];
+    }
     // NOTE: Do not call any daemon method there as title() is called a lot for drawing
     QString title;
     auto idx = 0;
@@ -1039,6 +1041,17 @@ ConversationModel::title(const QString& conversationId) const
         }
     }
     return title;
+}
+
+QString
+ConversationModel::description(const QString& conversationId) const
+{
+    auto conversationOpt = getConversationForUid(conversationId);
+    if (!conversationOpt.has_value()) {
+        return {};
+    }
+    auto& conversation = conversationOpt->get();
+    return conversation.infos["description"];
 }
 
 void
@@ -2170,7 +2183,7 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
         for (int i = size - 1; i >= 0; --i) {
             // for (int i = 0; i < size; ++i) {
             auto message = messages[i];
-            if (message["type"].isEmpty()) {
+            if (message["type"].isEmpty() || message["type"] == "application/update-profile") {
                 continue;
             }
             if (message["type"] == "initial") {
@@ -2245,6 +2258,15 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
     try {
         auto& conversation = getConversationForUid(conversationId).get();
         if (message["type"].isEmpty()) {
+            return;
+        }
+        if (message["type"] == "application/update-profile") {
+            // Refresh infos
+            MapStringString details = ConfigurationManager::instance()
+                                          .conversationInfos(linked.owner.id, conversationId);
+            conversation.infos = details;
+            Q_EMIT linked.conversationUpdated(conversationId);
+            Q_EMIT linked.dataChanged(indexOf(conversationId));
             return;
         }
         if (message["type"] == "initial") {
@@ -2418,6 +2440,7 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
         conversation.participants = participants;
         const MapStringString& details = ConfigurationManager::instance()
                                              .conversationInfos(accountId, conversationId);
+        conversation.infos = details;
         conversation.mode = conversation::to_mode(details["mode"].toInt());
         conversation.isRequest = false;
         conversation.needsSyncing = false;
@@ -2771,6 +2794,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
                                          .conversationInfos(linked.owner.id, convId);
     auto mode = conversation::to_mode(details["mode"].toInt());
     conversation::Info conversation;
+    conversation.infos = details;
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
     QString lastRead;

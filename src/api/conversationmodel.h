@@ -372,6 +372,12 @@ public:
      * @return the title to display
      */
     QString title(const QString& conversationId) const;
+    /**
+     * Get conversation's description.
+     * @param conversationId
+     * @return the description to display
+     */
+    QString description(const QString& conversationId) const;
 
 Q_SIGNALS:
     /**
