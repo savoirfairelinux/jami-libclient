@@ -79,6 +79,8 @@ struct Info
     std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
 
+    MapStringString infos {};
+
     QString getCallId() const { return confId.isEmpty() ? callId : confId; }
 
     inline bool isLegacy() const { return mode == Mode::NON_SWARM; }
