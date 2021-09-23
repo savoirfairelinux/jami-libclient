@@ -800,10 +800,10 @@ ConversationModel::removeConversation(const QString& uid, bool banned)
         return;
     }
     if (conversation.isSwarm()) {
-        ConfigurationManager::instance().removeConversation(owner.id, uid);
-        pimpl_->eraseConversation(conversationIdx);
-        pimpl_->invalidateModel();
-        emit conversationRemoved(uid);
+        if (conversation.isRequest)
+            ConfigurationManager::instance().declineConversationRequest(owner.id, uid);
+        else
+            ConfigurationManager::instance().removeConversation(owner.id, uid);
 
         // Still some other conversation, do nothing else
         if (!banned && getConversationForPeerUri(peers.front()) != std::nullopt)
@@ -2713,6 +2713,7 @@ ConversationModelPimpl::addConversationRequest(const MapStringString& convReques
 
     conversation::Info conversation;
     conversation.uid = convId;
+    conversation.infos = convRequest;
     conversation.accountId = linked.owner.id;
     conversation.participants = {linked.owner.profileInfo.uri, peerUri};
     conversation.mode = mode;
