@@ -28,8 +28,6 @@ import "../../commoncomponents"
 TabBar {
     id: tabBar
 
-    currentIndex: 0
-
     enum TabIndex {
         Conversations,
         Requests
@@ -39,11 +37,12 @@ TabBar {
         ConversationsAdapter.filterRequests = (idx === SidePanelTabBar.Requests)
     }
 
+    currentIndex: 0
+
     FilterTabButton {
         id: conversationsTabButton
 
         down: !ConversationsAdapter.filterRequests
-        tabBar: parent
         labelText: JamiStrings.conversations
         onSelected: selectTab(SidePanelTabBar.Conversations)
         badgeCount: ConversationsAdapter.totalUnreadMessageCount
@@ -54,7 +53,6 @@ TabBar {
         id: requestsTabButton
 
         down: !conversationsTabButton.down
-        tabBar: parent
         labelText: JamiStrings.invitations
         onSelected: selectTab(SidePanelTabBar.Requests)
         badgeCount: ConversationsAdapter.pendingRequestCount

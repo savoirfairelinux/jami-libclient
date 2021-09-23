@@ -120,10 +120,7 @@ SpinningAnimation {
             anchors.rightMargin: 10
             anchors.verticalCenter: contentRect.verticalCenter
 
-            width: 40
-            height: 40
-            // To control the size of the svg
-            preferredSize: 50
+            preferredSize: 40
 
             pressedColor: JamiTheme.refuseRed
             hoveredColor: JamiTheme.refuseRed

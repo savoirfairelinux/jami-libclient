@@ -94,6 +94,7 @@ Rectangle {
         anchors.topMargin: visible ? 10 : 0
         width: sidePanelRect.width
         height: visible ? 42 : 0
+        contentHeight: visible ? 42 : 0
     }
 
     Rectangle {
@@ -145,7 +146,7 @@ Rectangle {
             id: searchResultsListView
 
             visible: count
-            opacity: visible ? 1 :0
+            opacity: visible ? 1 : 0
 
             Layout.topMargin: 10
             Layout.alignment: Qt.AlignTop

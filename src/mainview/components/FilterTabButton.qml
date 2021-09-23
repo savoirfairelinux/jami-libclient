@@ -28,7 +28,6 @@ import "../../commoncomponents"
 TabButton {
     id: root
 
-    property var tabBar: undefined
     property alias labelText: label.text
     property alias acceleratorSequence: accelerator.sequence
     property alias badgeCount: badge.count
@@ -37,18 +36,18 @@ TabButton {
     hoverEnabled: true
     onClicked: selected()
 
-    Rectangle {
-        id: rect
+     Rectangle {
+        id: contentRect
 
-        width: tabBar.width / 2 + 1
-        height: tabBar.height
+        anchors.fill: root
+
         color: root.hovered ?
                    JamiTheme.hoverColor :
                    JamiTheme.backgroundColor
 
         RowLayout {
-            anchors.horizontalCenter: rect.horizontalCenter
-            anchors.verticalCenter: rect.verticalCenter
+            anchors.horizontalCenter: contentRect.horizontalCenter
+            anchors.verticalCenter: contentRect.verticalCenter
 
             Text {
                 id: label
@@ -70,8 +69,8 @@ TabButton {
     }
 
     Rectangle {
-        width: rect.width
-        anchors.bottom: rect.bottom
+        width: contentRect.width
+        anchors.bottom: contentRect.bottom
         height: 2
         color: root.down ? JamiTheme.textColor : "transparent"
     }
@@ -79,7 +78,7 @@ TabButton {
     Shortcut {
         id: accelerator
         context: Qt.ApplicationShortcut
-        enabled: rect.visible
+        enabled: contentRect.visible
         onActivated: selected()
     }
 }

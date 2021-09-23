@@ -121,7 +121,7 @@ ComboBox {
         contentItem: JamiListView {
             id: listView
 
-            implicitHeight: popup.contentHeight
+            implicitHeight: contentHeight
             model: root.delegateModel
         }
 

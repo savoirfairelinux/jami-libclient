@@ -240,7 +240,7 @@ Item {
     property real participantCallInStatusOpacity: 0.77
     property int participantCallInAvatarSize: 60
     property int participantCallInNameFontSize: 11
-    property int participantCallInStatusFontSize: 7
+    property int participantCallInStatusFontSize: 8
     property int participantCallInStatusTextWidthLimit: 80
     property int participantCallInStatusTextWidth: 40
     property int mosaicButtonRadius: 5

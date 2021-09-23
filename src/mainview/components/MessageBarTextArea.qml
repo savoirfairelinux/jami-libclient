@@ -57,23 +57,16 @@ JamiFlickable {
         }
     }
 
-    contentWidth: width
-    contentHeight: textArea.implicitHeight
-
     interactive: true
     attachedFlickableMoving: contentHeight > height || root.moving
-
-    function ensureVisible(r) {
-        if (contentY >= r.y)
-            contentY = r.y
-        else if (contentY + height <= r.y + r.height)
-            contentY = r.y + r.height - height
-    }
 
     TextArea.flickable: TextArea {
         id: textArea
 
-        padding: 0
+        leftPadding: JamiTheme.scrollBarHandleSize
+        rightPadding: JamiTheme.scrollBarHandleSize
+        topPadding: 0
+        bottomPadding: 0
 
         verticalAlignment: TextEdit.AlignVCenter
 
@@ -81,7 +74,6 @@ JamiFlickable {
         font.hintingPreference: Font.PreferNoHinting
 
         color: JamiTheme.textColor
-        renderType: Text.NativeRendering
         wrapMode: TextEdit.Wrap
         selectByMouse: true
         selectionColor: JamiTheme.placeholderTextColor
@@ -109,13 +101,14 @@ JamiFlickable {
                 }
             }
         }
+
         background: Rectangle {
             border.width: 0
             color: JamiTheme.transparentColor
         }
 
         onReleased: function (event) {
-            if (event.button == Qt.RightButton)
+            if (event.button === Qt.RightButton)
                 textAreaContextMenu.openMenuAt(event)
         }
 
@@ -142,7 +135,5 @@ JamiFlickable {
                 }
             }
         }
-
-        onCursorRectangleChanged: root.ensureVisible(cursorRectangle)
     }
 }

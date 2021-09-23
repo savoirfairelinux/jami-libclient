@@ -36,4 +36,8 @@ MenuSeparator {
         implicitHeight: separatorPreferredHeight
         color: separatorColor
     }
+
+    background: Rectangle {
+        color: JamiTheme.backgroundColor
+    }
 }
