@@ -40,7 +40,7 @@ ColumnLayout {
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
 
-        text: qsTr("Name Server")
+        text: JamiStrings.nameServer
         color: JamiTheme.textColor
         elide: Text.ElideRight
     }
@@ -53,7 +53,7 @@ ColumnLayout {
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
         itemWidth: root.itemWidth
-        titleField: qsTr("Address")
+        titleField: JamiStrings.address
 
         textField: CurrentAccount.uri_RingNS
 

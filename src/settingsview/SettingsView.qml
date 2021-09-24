@@ -117,13 +117,13 @@ Rectangle {
             title: {
                 switch(selectedMenu){
                     case SettingsView.Account:
-                        return qsTr("Account Settings")
+                        return JamiStrings.accountSettingsTitle
                     case SettingsView.General:
-                        return qsTr("General")
+                        return JamiStrings.generalSettingsTitle
                     case SettingsView.Media:
                         return JamiStrings.avSettingsTitle
                     case SettingsView.Plugin:
-                        return qsTr("Plugin")
+                        return JamiStrings.pluginSettingsTitle
                 }
             }
 

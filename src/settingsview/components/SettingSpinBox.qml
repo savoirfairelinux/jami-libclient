@@ -63,7 +63,6 @@ RowLayout {
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
         Layout.alignment: Qt.AlignCenter
 
-        font.family: "Monospace"
         font.pointSize: JamiTheme.buttonFontSize
         font.kerning: true
 
@@ -75,8 +74,9 @@ RowLayout {
         hoverEnabled: true
 
         background: Rectangle {
-            border.color: enabled ? root.borderColor : "transparent"
+            border.color: enabled ? root.borderColor : JamiTheme.transparentColor
             color: JamiTheme.editBackgroundColor
+            radius: JamiTheme.primaryRadius
         }
 
         onEditingFinished: newValue()

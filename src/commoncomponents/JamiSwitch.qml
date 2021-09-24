@@ -24,6 +24,18 @@ import net.jami.Constants 1.1
 Switch {
     id: root
 
+    property alias toolTipText: toolTip.text
+
+    hoverEnabled: true
+
+    MaterialToolTip {
+        id: toolTip
+
+        parent: root
+        visible: hovered && (toolTipText.length > 0)
+        delay: Qt.styleHints.mousePressAndHoldInterval
+    }
+
     indicator: Rectangle {
         id: handleBackground
 

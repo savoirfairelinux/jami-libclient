@@ -134,6 +134,9 @@ Item {
     property string videoCodecs: qsTr("Video Codecs")
     property string audioCodecs: qsTr("Audio Codecs")
 
+    // AdvancedNameServerSettings
+    property string nameServer: qsTr("Name Server")
+
     // AdvancedSDPSettings
     property string sdpSettingsTitle: qsTr("SDP Session Negotiation (ICE Fallback)")
     property string sdpSettingsSubtitle: qsTr("Only used during negotiation in case ICE is not supported")
@@ -152,9 +155,12 @@ Item {
 
     // SettingsHeader
     property string back: qsTr("Back")
-
-    // AVSettingsPage
+    property string accountSettingsTitle: qsTr("Account Settings")
+    property string accountSettingsMenuTitle: qsTr("Account")
+    property string generalSettingsTitle: qsTr("General")
+    property string pluginSettingsTitle: qsTr("Plugin")
     property string avSettingsTitle: qsTr("Audio and Video Settings")
+    property string avSettingsMenuTitle: qsTr("Audio/Video")
 
     // AudioSettings
     property string audio: qsTr("Audio")

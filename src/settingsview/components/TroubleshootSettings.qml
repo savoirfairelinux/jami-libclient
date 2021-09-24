@@ -25,15 +25,12 @@ import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
 
 import "../../commoncomponents"
+import "../js/logviewwindowcreation.js" as LogViewWindowCreation
 
 ColumnLayout {
     id: root
 
     property int itemWidth
-
-    LogsView {
-        id: logsView
-    }
 
     Label {
         Layout.fillWidth: true
@@ -80,7 +77,10 @@ ColumnLayout {
 
             text: JamiStrings.troubleshootButton
 
-            onClicked: logsView.open()
+            onClicked: {
+                LogViewWindowCreation.createlogViewWindowObject()
+                LogViewWindowCreation.showLogViewWindow()
+            }
         }
     }
 }

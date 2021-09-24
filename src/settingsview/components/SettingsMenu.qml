@@ -32,13 +32,13 @@ Rectangle {
     signal itemSelected(int index)
 
     Component.onCompleted: {
-        listModel.append({ 'type': SettingsView.Account, 'name': qsTr("Account"),
+        listModel.append({ 'type': SettingsView.Account, 'name': JamiStrings.accountSettingsMenuTitle,
                          'iconSource': JamiResources.account_24dp_svg})
-        listModel.append({ 'type': SettingsView.General, 'name': qsTr("General"),
+        listModel.append({ 'type': SettingsView.General, 'name': JamiStrings.generalSettingsTitle,
                          'iconSource': JamiResources.gear_black_24dp_svg})
-        listModel.append({ 'type': SettingsView.Media, 'name': qsTr("Audio/Video"),
+        listModel.append({ 'type': SettingsView.Media, 'name': JamiStrings.avSettingsMenuTitle,
                          'iconSource': JamiResources.media_black_24dp_svg})
-        listModel.append({ 'type': SettingsView.Plugin, 'name': qsTr("Plugin"),
+        listModel.append({ 'type': SettingsView.Plugin, 'name': JamiStrings.pluginSettingsTitle,
                          'iconSource': JamiResources.plugin_settings_black_24dp_svg})
     }
 
@@ -68,8 +68,8 @@ Rectangle {
 
                 Component.onCompleted: checked = type === SettingsView.Account
 
-                width: root.width
-                height: 64
+                preferredHeight: 64
+                preferredWidth: root.width
                 preferredMargin: 24
 
                 buttonText: name

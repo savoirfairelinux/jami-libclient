@@ -81,26 +81,17 @@ MaterialLineEdit {
         }
     }
 
-    Image {
+    ResponsiveImage {
         id: lineEditImage
 
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
-        anchors.rightMargin: 16
-
-        width: 24
-        height: 24
+        anchors.rightMargin: JamiTheme.preferredMarginSize / 2
 
         visible: nameRegistrationState !== UsernameLineEdit.NameRegistrationState.SEARCHING
         source: nameRegistrationState === UsernameLineEdit.NameRegistrationState.SEARCHING ?
                     "" : __iconSource
-        layer {
-            enabled: true
-            effect: ColorOverlay {
-                id: overlay
-                color: borderColor
-            }
-        }
+        color: borderColor
     }
 
     AnimatedImage {

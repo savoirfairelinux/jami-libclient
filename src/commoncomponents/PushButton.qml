@@ -36,6 +36,8 @@ AbstractButton {
     // Shape will default to a 15px circle
     // but can be sized accordingly.
     property int preferredSize: 30
+    property int preferredHeight: 0
+    property int preferredWidth: 0
     property int preferredMargin: 16
     // Note the radius will default to preferredSize
     property alias radius: background.radius
@@ -71,8 +73,8 @@ AbstractButton {
     property alias imagePadding: image.padding
     property alias imageOffset: image.offset
 
-    width: preferredSize
-    height: preferredSize
+    width: preferredWidth ? preferredWidth : preferredSize
+    height: preferredHeight ? preferredHeight : preferredSize
 
     checkable: false
     checked: false
@@ -99,8 +101,8 @@ AbstractButton {
         anchors.leftMargin: textContent.text ? preferredMargin : 0
         anchors.verticalCenter: root.verticalCenter
 
-        containerHeight: preferredSize
-        containerWidth: preferredSize
+        containerWidth: preferredWidth ? preferredWidth : preferredSize
+        containerHeight: preferredHeight ? preferredHeight : preferredSize
 
         source: {
             if (checkable && checkedImageSource)

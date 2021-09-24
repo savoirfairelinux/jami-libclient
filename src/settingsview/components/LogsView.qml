@@ -26,7 +26,7 @@ import net.jami.Constants 1.1
 
 import "../../commoncomponents"
 
-Dialog {
+Window {
     id: root
 
     property bool cancelPressed: false
@@ -45,6 +45,10 @@ Dialog {
     function monitor(continuous) {
         UtilsAdapter.monitor(continuous)
     }
+
+    title: JamiStrings.logsViewTitle
+    width: 600
+    height: 500
 
     Connections {
         target: UtilsAdapter
@@ -87,37 +91,25 @@ Dialog {
         hasOpened = true
     }
 
-    title: JamiStrings.logsViewTitle
-    width: 800
-    height: 700
-    standardButtons: Dialog.NoButton
-
     ColumnLayout {
+        anchors.fill: parent
 
-        Layout.alignment: Qt.AlignHCenter
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        anchors.centerIn: parent
-        height: root.height
-        width: root.width
+        spacing: 0
 
         Rectangle {
             id: buttonRectangleBackground
 
-            Layout.fillWidth: true
-            Layout.fillHeight: true
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.preferredHeight: JamiTheme.preferredFieldHeight * 2
 
-            color: JamiTheme.backgroundColor
-
-            border.color: color
             border.width: 0
-            height: JamiTheme.preferredFieldHeight * 2
+            color: JamiTheme.backgroundColor
+            radius: JamiTheme.modalPopupRadius
 
             RowLayout {
                 id: buttons
 
-                Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
                 anchors.centerIn: parent
 
                 ToggleSwitch {
@@ -230,55 +222,51 @@ Dialog {
             }
         }
 
-        Rectangle {
-            id: flickableRectangleBackground
-            property alias text: logsText.text
+        JamiFlickable {
+            id: scrollView
 
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            color: JamiTheme.primaryBackgroundColor
-            border.color: color
-            border.width: 6
-            height: root.height - buttonRectangleBackground.height
+            interactive: true
+            attachedFlickableMoving: contentHeight > height || scrollView.moving
 
-            ScrollView {
-                id: scrollView
+            TextArea.flickable: TextArea {
+                id: logsText
 
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                anchors.fill: flickableRectangleBackground
+                font.pointSize: JamiTheme.textFontSize
+                font.hintingPreference: Font.PreferNoHinting
 
-                TextArea {
-                    id: logsText
+                readOnly: true
+                color: JamiTheme.textColor
+                wrapMode: TextArea.Wrap
+                selectByMouse: true
 
-                    readOnly: true
-                    text: ""
-                    color: JamiTheme.textColor
-                    wrapMode: TextArea.Wrap
-                    selectByMouse: true
+                background: Rectangle {
+                    border.width: 0
+                    color: JamiTheme.transparentColor
+                }
 
-                    MouseArea {
-                        anchors.fill: logsText
-                        acceptedButtons: Qt.RightButton
-                        hoverEnabled: true
+                MouseArea {
+                    anchors.fill: logsText
+                    acceptedButtons: Qt.RightButton
+                    hoverEnabled: true
 
-                        onClicked: {
-                            selectBeginning = logsText.selectionStart
-                            selectEnd = logsText.selectionEnd
-                            rightClickMenu.open()
-                            logsText.select(selectBeginning, selectEnd)
-                        }
+                    onClicked: {
+                        selectBeginning = logsText.selectionStart
+                        selectEnd = logsText.selectionEnd
+                        rightClickMenu.open()
+                        logsText.select(selectBeginning, selectEnd)
+                    }
 
-                        Menu {
-                            id: rightClickMenu
+                    Menu {
+                        id: rightClickMenu
 
-                            MenuItem {
-                                text: JamiStrings.logsViewCopy
-                                onTriggered: {
-                                    logsText.copy()
-                                }
+                        MenuItem {
+                            text: JamiStrings.logsViewCopy
+                            onTriggered: {
+                                logsText.copy()
                             }
                         }
                     }

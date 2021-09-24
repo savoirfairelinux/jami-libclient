@@ -59,6 +59,7 @@ RowLayout {
 
         Layout.alignment: Qt.AlignCenter
         Layout.preferredWidth: itemWidth
+        Layout.preferredHeight: root.height
 
         font.pointSize: JamiTheme.settingsFontSize
         font.kerning: true

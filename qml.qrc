@@ -172,5 +172,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>src/commoncomponents/JamiFlickable.qml</file>
         <file>src/AccountMigrationView.qml</file>
+        <file>src/settingsview/js/logviewwindowcreation.js</file>
     </qresource>
 </RCC>
