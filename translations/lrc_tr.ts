@@ -72,7 +72,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="218"/>
         <location filename="../src/authority/storagehelper.cpp" line="135"/>
-        <location filename="../src/authority/storagehelper.cpp" line="935"/>
+        <location filename="../src/authority/storagehelper.cpp" line="938"/>
         <source>Invitation received</source>
         <translation>Davetiye alındı</translation>
     </message>
@@ -84,14 +84,14 @@
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
         <location filename="../src/authority/storagehelper.cpp" line="132"/>
-        <location filename="../src/authority/storagehelper.cpp" line="933"/>
+        <location filename="../src/authority/storagehelper.cpp" line="936"/>
         <source>Contact added</source>
         <translation>Kişi eklendi</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="109"/>
         <location filename="../src/authority/storagehelper.cpp" line="115"/>
-        <location filename="../src/authority/storagehelper.cpp" line="931"/>
+        <location filename="../src/authority/storagehelper.cpp" line="934"/>
         <source>Outgoing call</source>
         <translation>Giden arama</translation>
     </message>
@@ -103,7 +103,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="117"/>
-        <location filename="../src/authority/storagehelper.cpp" line="929"/>
+        <location filename="../src/authority/storagehelper.cpp" line="932"/>
         <source>Missed outgoing call</source>
         <translation>Yanıtsız giden arama</translation>
     </message>
@@ -115,7 +115,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="137"/>
-        <location filename="../src/authority/storagehelper.cpp" line="937"/>
+        <location filename="../src/authority/storagehelper.cpp" line="940"/>
         <source>Invitation accepted</source>
         <translation>Davetiye alındı</translation>
     </message>
