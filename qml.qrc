@@ -173,5 +173,9 @@
         <file>src/commoncomponents/JamiFlickable.qml</file>
         <file>src/AccountMigrationView.qml</file>
         <file>src/settingsview/js/logviewwindowcreation.js</file>
+        <file>src/mainview/js/keyboardshortcuttablecreation.js</file>
+        <file>src/mainview/components/KeyboardShortcutTable.qml</file>
+        <file>src/mainview/components/KeyboardShortcutKeyDelegate.qml</file>
+        <file>src/mainview/components/KeyboardShortcutTabButton.qml</file>
     </qresource>
 </RCC>

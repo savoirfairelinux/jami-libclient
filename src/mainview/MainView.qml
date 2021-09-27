@@ -31,6 +31,8 @@ import "../wizardview"
 import "../settingsview"
 import "../settingsview/components"
 
+import "js/keyboardshortcuttablecreation.js" as KeyboardShortcutTableCreation
+
 Rectangle {
     id: mainView
 
@@ -511,6 +513,15 @@ Rectangle {
                 toggleSettingsView()
             }
             settingsMenu.btnPluginSettings.clicked()
+        }
+    }
+
+    Shortcut {
+        sequence: "F10"
+        context: Qt.ApplicationShortcut
+        onActivated: {
+            KeyboardShortcutTableCreation.createKeyboardShortcutTableWindowObject()
+            KeyboardShortcutTableCreation.showKeyboardShortcutTableWindow()
         }
     }
 

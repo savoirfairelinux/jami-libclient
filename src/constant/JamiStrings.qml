@@ -418,6 +418,13 @@ Item {
     // Recording Settings
     property string tipRecordFolder: qsTr("Select a record directory")
 
+    // KeyboardShortCutTable
+    property string keyboardShortcutTableWindowTitle: qsTr("Keyboard Shortcut Table")
+    property string generalKeyboardShortcuts: qsTr("General")
+    property string conversationKeyboardShortcuts: qsTr("Conversation")
+    property string callKeyboardShortcuts: qsTr("Call")
+    property string settingsKeyboardShortcuts: qsTr("Settings")
+
     // View Logs
     property string logsViewTitle: qsTr("Debug")
     property string logsViewShowStats: qsTr("Show Stats")

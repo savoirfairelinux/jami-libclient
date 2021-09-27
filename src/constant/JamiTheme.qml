@@ -346,6 +346,11 @@ Item {
     // JamiScrollBar
     property int scrollBarHandleSize: 6
 
+    //KeyboardShortcutTable
+    property int titleRectMargin: 25
+    property int keyboardShortcutTabBarSize: 24
+    property int keyboardShortcutDelegateSize: 50
+
     // Main application spec
     property real mainViewMinWidth: 332
     property real mainViewMinHeight: 500
