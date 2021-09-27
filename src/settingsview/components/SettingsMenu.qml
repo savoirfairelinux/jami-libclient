@@ -30,6 +30,7 @@ Rectangle {
     id: root
 
     signal itemSelected(int index)
+    signal buttonSelectedManually(int index)
 
     Component.onCompleted: {
         listModel.append({ 'type': SettingsView.Account, 'name': JamiStrings.accountSettingsMenuTitle,
@@ -46,6 +47,8 @@ Rectangle {
     color: JamiTheme.backgroundColor
 
     ButtonGroup {
+        id: buttonGroup
+
         buttons: buttons.children
         onCheckedButtonChanged: itemSelected(checkedButton.menuType)
     }
@@ -64,7 +67,18 @@ Rectangle {
             model: ListModel { id: listModel }
 
             PushButton {
+                id: pushButton
+
                 property int menuType: type
+
+                Connections {
+                    target: root
+
+                    function onButtonSelectedManually(index) {
+                        if (pushButton.menuType === index)
+                            buttonGroup.checkedButton = pushButton
+                    }
+                }
 
                 Component.onCompleted: checked = type === SettingsView.Account
 
