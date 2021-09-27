@@ -518,7 +518,7 @@ Window {
                                                                         import \"qrc:/src/constant/\";
                                                                         Image {
                                                                         anchors.fill: parent;
-                                                                        source: JamiResources.baseline_error_outline_24dp_svg;
+                                                                        source: JamiResources.error_outline_black_24dp_svg;
                                                                         mipmap: true;}", spinnerLabel)
                                     break
                                 }

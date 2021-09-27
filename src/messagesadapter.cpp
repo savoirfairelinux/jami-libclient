@@ -196,7 +196,7 @@ MessagesAdapter::acceptFile(const QString& interactionId)
 }
 
 void
-MessagesAdapter::refuseFile(const QString& interactionId)
+MessagesAdapter::cancelFile(const QString& interactionId)
 {
     const auto convUid = lrcInstance_->get_selectedConvUid();
     lrcInstance_->getCurrentConversationModel()->cancelTransfer(convUid, interactionId);
@@ -238,6 +238,50 @@ MessagesAdapter::onPaste()
         // avoid string escape problems
         Q_EMIT newTextPasted();
     }
+}
+
+QString
+MessagesAdapter::getStatusString(int status)
+{
+    switch (static_cast<interaction::Status>(status)) {
+    case interaction::Status::SENDING:
+        return QObject::tr("Sending");
+    case interaction::Status::FAILURE:
+        return QObject::tr("Failure");
+    case interaction::Status::SUCCESS:
+        return QObject::tr("Sent");
+    case interaction::Status::TRANSFER_CREATED:
+        return QObject::tr("Connecting");
+    case interaction::Status::TRANSFER_ACCEPTED:
+        return QObject::tr("Accept");
+    case interaction::Status::TRANSFER_CANCELED:
+        return QObject::tr("Canceled");
+    case interaction::Status::TRANSFER_ERROR:
+    case interaction::Status::TRANSFER_UNJOINABLE_PEER:
+        return QObject::tr("Unable to make contact");
+    case interaction::Status::TRANSFER_ONGOING:
+        return QObject::tr("Ongoing");
+    case interaction::Status::TRANSFER_AWAITING_PEER:
+        return QObject::tr("Waiting for contact");
+    case interaction::Status::TRANSFER_AWAITING_HOST:
+        return QObject::tr("Incoming transfer");
+    case interaction::Status::TRANSFER_TIMEOUT_EXPIRED:
+        return QObject::tr("Timed out waiting for contact");
+    case interaction::Status::TRANSFER_FINISHED:
+        return QObject::tr("Finished");
+    default:
+        return {};
+    }
+}
+
+QVariantMap
+MessagesAdapter::getTransferStats(const QString& msgId, int status)
+{
+    Q_UNUSED(status)
+    auto convModel = lrcInstance_->getCurrentConversationModel();
+    lrc::api::datatransfer::Info info = {};
+    convModel->getTransferInfo(lrcInstance_->get_selectedConvUid(), msgId, info);
+    return {{"totalSize", qint64(info.totalSize)}, {"progress", qint64(info.progress)}};
 }
 
 void
@@ -371,18 +415,53 @@ MessagesAdapter::onMessageLinkified(const QString& messageId, const QString& lin
 }
 
 bool
-MessagesAdapter::isImage(const QString& message)
+MessagesAdapter::isLocalImage(const QString& msg)
 {
-    QRegularExpression pattern("[^\\s]+(.*?)\\.(jpg|jpeg|png)$",
-                               QRegularExpression::CaseInsensitiveOption);
-    QRegularExpressionMatch match = pattern.match(message);
-    return match.hasMatch();
+    QImageReader reader;
+    reader.setDecideFormatFromContent(true);
+    reader.setFileName(msg);
+    return !reader.read().isNull();
+}
+
+QVariantMap
+MessagesAdapter::getMediaInfo(const QString& msg)
+{
+    auto filePath = QFileInfo(msg).absoluteFilePath();
+    static const QString html
+        = "<body style='margin:0;padding:0;'>"
+          "<%1 style='width:100%;height:%2;outline:none;background-color:#f1f3f4;"
+          "object-fit:cover;' "
+          "controls controlsList='nodownload' src='file://%3' type='%4'/></body>";
+    if (isLocalImage(msg)) {
+        return {{"isImage", true}};
+    }
+    QRegularExpression vPattern("[^\\s]+(.*?)\\.(avi|mov|webm|webp|rmvb)$",
+                                QRegularExpression::CaseInsensitiveOption);
+    QString type = vPattern.match(filePath).captured(2);
+    if (!type.isEmpty()) {
+        return {
+            {"isVideo", true},
+            {"html", html.arg("video", "100%", filePath, "video/" + type)},
+        };
+    } else {
+        QRegularExpression aPattern("[^\\s]+(.*?)\\.(ogg|flac|wav|mpeg|mp3)$",
+                                    QRegularExpression::CaseInsensitiveOption);
+        type = aPattern.match(filePath).captured(2);
+        if (!type.isEmpty()) {
+            return {
+                {"isVideo", false},
+                {"html", html.arg("audio", "54px", filePath, "audio/" + type)},
+            };
+        }
+    }
+    return {};
 }
 
 bool
-MessagesAdapter::isAnimatedImage(const QString& msg)
+MessagesAdapter::isRemoteImage(const QString& msg)
 {
-    QRegularExpression pattern("[^\\s]+(.*?)\\.(gif|apng|webp|avif|flif)$",
+    // TODO: test if all these open in the AnimatedImage component
+    QRegularExpression pattern("[^\\s]+(.*?)\\.(jpg|jpeg|png|gif|apng|webp|avif|flif)$",
                                QRegularExpression::CaseInsensitiveOption);
     QRegularExpressionMatch match = pattern.match(msg);
     return match.hasMatch();

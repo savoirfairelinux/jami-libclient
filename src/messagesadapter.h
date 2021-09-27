@@ -44,7 +44,8 @@ public:
     {
         auto index = sourceModel()->index(sourceRow, 0, sourceParent);
         auto type = sourceModel()->data(index, MessageList::Role::Type).toInt();
-        return static_cast<interaction::Type>(type) != interaction::Type::MERGE;
+        auto hasBody = !sourceModel()->data(index, MessageList::Role::Body).toString().isEmpty();
+        return static_cast<interaction::Type>(type) != interaction::Type::MERGE && hasBody;
     };
 
     bool lessThan(const QModelIndex& left, const QModelIndex& right) const override
@@ -92,18 +93,21 @@ protected:
     Q_INVOKABLE void sendMessage(const QString& message);
     Q_INVOKABLE void sendFile(const QString& message);
     Q_INVOKABLE void acceptFile(const QString& arg);
-    Q_INVOKABLE void refuseFile(const QString& arg);
+    Q_INVOKABLE void cancelFile(const QString& arg);
     Q_INVOKABLE void openUrl(const QString& url);
     Q_INVOKABLE void openFile(const QString& arg);
     Q_INVOKABLE void retryInteraction(const QString& interactionId);
     Q_INVOKABLE void deleteInteraction(const QString& interactionId);
     Q_INVOKABLE void copyToDownloads(const QString& interactionId, const QString& displayName);
     Q_INVOKABLE void userIsComposing(bool isComposing);
-    Q_INVOKABLE bool isImage(const QString& msg);
-    Q_INVOKABLE bool isAnimatedImage(const QString& msg);
+    Q_INVOKABLE bool isLocalImage(const QString& msg);
+    Q_INVOKABLE QVariantMap getMediaInfo(const QString& msg);
+    Q_INVOKABLE bool isRemoteImage(const QString& msg);
     Q_INVOKABLE QString getFormattedTime(const quint64 timestamp);
     Q_INVOKABLE void parseMessageUrls(const QString& messageId, const QString& msg);
     Q_INVOKABLE void onPaste();
+    Q_INVOKABLE QString getStatusString(int status);
+    Q_INVOKABLE QVariantMap getTransferStats(const QString& messageId, int);
 
     // Run corrsponding js functions, c++ to qml.
     void setMessagesImageContent(const QString& path, bool isBased64 = false);

@@ -163,5 +163,8 @@
         <file>src/mainview/components/ReadOnlyFooter.qml</file>
         <file>src/commoncomponents/MessageDelegate.qml</file>
         <file>src/mainview/components/MessageListView.qml</file>
+        <file>src/commoncomponents/MessageBubble.qml</file>
+        <file>src/constant/MsgSeq.qml</file>
+        <file>src/commoncomponents/SBSMessageBase.qml</file>
     </qresource>
 </RCC>
