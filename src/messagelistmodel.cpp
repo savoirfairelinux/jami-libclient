@@ -348,6 +348,8 @@ MessageListModel::dataForItem(item_t item, int indexRow, int role) const
         return QVariant(item.second.linkPreviewInfo);
     case Role::Linkified:
         return QVariant(item.second.linkified);
+    case Role::TransferName:
+        return QVariant(item.second.commit["displayName"]);
     default:
         return {};
     }
@@ -397,6 +399,37 @@ MessageListModel::linkifyMessage(const QString& messageId, const QString& linkif
     interactions_[index].second.body = linkified;
     interactions_[index].second.linkified = true;
     Q_EMIT dataChanged(modelIndex, modelIndex, {Role::Body, Role::Linkified});
+}
+
+void
+MessageListModel::emitBeginResetModel()
+{
+    Q_EMIT beginResetModel();
+}
+
+void
+MessageListModel::emitEndResetModel()
+{
+    Q_EMIT endResetModel();
+}
+
+void
+MessageListModel::emitDataChanged(iterator it, VectorInt roles)
+{
+    auto index = std::distance(begin(), it);
+    QModelIndex modelIndex = QAbstractListModel::index(index, 0);
+    Q_EMIT dataChanged(modelIndex, modelIndex, roles);
+}
+
+void
+MessageListModel::emitDataChanged(const QString& msgId, VectorInt roles)
+{
+    int index = getIndexOfMessage(msgId);
+    if (index == -1) {
+        return;
+    }
+    QModelIndex modelIndex = QAbstractListModel::index(index, 0);
+    Q_EMIT dataChanged(modelIndex, modelIndex, roles);
 }
 
 } // namespace lrc

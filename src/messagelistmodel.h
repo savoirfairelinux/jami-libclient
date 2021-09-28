@@ -42,7 +42,8 @@ struct Info;
     X(IsRead) \
     X(Commit) \
     X(LinkPreviewInfo) \
-    X(Linkified)
+    X(Linkified) \
+    X(TransferName)
 
 namespace MessageList {
 Q_NAMESPACE
@@ -105,6 +106,15 @@ public:
     int getIndexOfMessage(const QString& messageId) const;
     void addHyperlinkInfo(const QString& messageId, const QVariantMap& info);
     void linkifyMessage(const QString& messageId, const QString& linkified);
+
+    // use these if the underlying data model is changed from conversationmodel
+    // Note: this is not ideal, and this class should be refactored into a proper
+    // view model and absorb the interaction management logic to avoid exposing
+    // these emission wrappers
+    void emitBeginResetModel();
+    void emitEndResetModel();
+    void emitDataChanged(iterator it, VectorInt roles = {});
+    void emitDataChanged(const QString& msgId, VectorInt roles = {});
 
 protected:
     using Role = MessageList::Role;
