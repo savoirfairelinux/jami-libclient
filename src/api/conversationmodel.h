@@ -289,7 +289,7 @@ public:
 
     void getTransferInfo(const QString& conversationId,
                          const QString& interactionId,
-                         api::datatransfer::Info& info);
+                         api::datatransfer::Info& info) const;
     /**
      * @param convUid, uid of the conversation
      * @return the number of unread messages for the conversation
