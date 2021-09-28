@@ -1578,9 +1578,8 @@ ConversationModel::declineConversationRequest(const QString& conversationId, boo
         return;
     }
     auto& conversation = conversationOpt->get();
-    // for non-swarm and one-to-one conversation remove contact.
-    if (conversation.mode == conversation::Mode::ONE_TO_ONE
-        || conversation.mode == conversation::Mode::NON_SWARM) {
+    // for non-swarm conversation remove conversation.
+    if (conversation.isLegacy()) {
         removeConversation(conversationId, banned);
     } else {
         ConfigurationManager::instance().declineConversationRequest(owner.id, conversationId);
@@ -2364,6 +2363,12 @@ ConversationModelPimpl::slotConversationRequestDeclined(const QString& accountId
     auto conversationIndex = indexOf(convId);
     if (accountId != linked.owner.id || conversationIndex < 0)
         return;
+    auto& conversation = conversations.at(conversationIndex);
+    // Remove contact from daemon for one_to_one
+    auto& peers = peersForConversation(conversation);
+    if (!peers.empty() && conversation.mode == conversation::Mode::ONE_TO_ONE) {
+        linked.owner.contactModel->removeContact(peers.front());
+    }
     eraseConversation(conversationIndex);
     Q_EMIT linked.conversationRemoved(convId);
     Q_EMIT linked.modelChanged();
