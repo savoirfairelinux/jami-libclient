@@ -1579,8 +1579,7 @@ ConversationModel::declineConversationRequest(const QString& conversationId, boo
     }
     auto& conversation = conversationOpt->get();
     // for non-swarm and one-to-one conversation remove contact.
-    if (conversation.mode == conversation::Mode::ONE_TO_ONE
-        || conversation.mode == conversation::Mode::NON_SWARM) {
+    if (conversation.mode == conversation::Mode::NON_SWARM) {
         removeConversation(conversationId, banned);
     } else {
         ConfigurationManager::instance().declineConversationRequest(owner.id, conversationId);
