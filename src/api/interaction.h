@@ -252,6 +252,7 @@ struct Info
     MapStringString commit;
     QVariantMap linkPreviewInfo = {};
     bool linkified = false;
+    QVariantMap transferStats = {};
 
     Info() {}
 
