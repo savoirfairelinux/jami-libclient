@@ -22,6 +22,30 @@
       },
       "revId": "8ebfeb79902a5d89e3cf15bb2eb519b306d2cff9",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18099a19_614047a5",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1001,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-09-29T23:17:52Z",
+      "side": 1,
+      "message": "Scenario: \n 1. receive request one_to_one\n 2. ban request with removeContact function\n 3. after restart getConversationRequests contains this request\nSame result with https://review.jami.net/c/jami-daemon/+/19273.",
+      "parentUuid": "963afe96_7169a888",
+      "range": {
+        "startLine": 990,
+        "startChar": 22,
+        "endLine": 1001,
+        "endChar": 21
+      },
+      "revId": "8ebfeb79902a5d89e3cf15bb2eb519b306d2cff9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
