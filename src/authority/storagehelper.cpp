@@ -218,14 +218,20 @@ void
 setProfile(const QString& accountId, const api::profile::Info& profileInfo, const bool isPeer)
 {
     auto vcard = vcard::profileToVcard(profileInfo);
-    QFile file(profileVcardPath(accountId, isPeer ? profileInfo.uri : ""));
+    auto path = profileVcardPath(accountId, isPeer ? profileInfo.uri : "");
+    QLockFile lf(path);
+    QFile file(path);
+    lf.lock();
     if (!file.open(QIODevice::WriteOnly)) {
+        lf.unlock();
         qWarning().noquote() << "Can't open file for writing: " << file.fileName();
         return;
     }
     QTextStream in(&file);
     in.setCodec("UTF-8");
     in << vcard;
+    file.close();
+    lf.unlock();
 }
 } // namespace vcard
 
@@ -1038,7 +1044,11 @@ migrateAccountDb(const QString& accountId,
                               isRingAccount ? profile::Type::JAMI : profile::Type::SIP};
     }
     auto accountVcard = profileToVcard(accountProfileInfo, accountId);
-    auto profileFilePath = accountLocalPath + "profile" + ".vcf";
+    QDir dir;
+    if (!dir.exists(accountLocalPath)) {
+        dir.mkpath(accountLocalPath);
+    }
+    auto profileFilePath = accountLocalPath + "profile.vcf";
     QFile file(profileFilePath);
     if (!file.open(QIODevice::WriteOnly)) {
         throw std::runtime_error("Can't open file: " + profileFilePath.toStdString());
