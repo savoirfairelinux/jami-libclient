@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "400e7ae1_8dedb16e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-09-29T14:30:23Z",
+      "side": 1,
+      "message": "Didn\u0027t test, but just opened questions. Overall seems ok\n\n(also typo in the commit message)",
+      "revId": "4a412eebeccb8c9aabbd8e742400a235fa922004",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "072b0064_99bd1a77",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4056,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-09-29T14:30:23Z",
+      "side": 1,
+      "message": "imho we can start to think to multi-participants swarm here.\nIn this case we should planify to be able to display progress per peer\n\nBut it\u0027s ok to ignore this for now.",
+      "range": {
+        "startLine": 4056,
+        "startChar": 44,
+        "endLine": 4056,
+        "endChar": 78
+      },
+      "revId": "4a412eebeccb8c9aabbd8e742400a235fa922004",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7c39bc3_b603f0a8",
+        "filename": "src/messagelistmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-09-29T14:30:23Z",
+      "side": 1,
+      "message": "maybe the transfer id should be stored?",
+      "range": {
+        "startLine": 353,
+        "startChar": 23,
+        "endLine": 354,
+        "endChar": 22
+      },
+      "revId": "4a412eebeccb8c9aabbd8e742400a235fa922004",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c766a66_fe3244a6",
+        "filename": "src/messagelistmodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-09-29T14:30:23Z",
+      "side": 1,
+      "message": "not related to this patch, but this should be removed",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 15
+      },
+      "revId": "4a412eebeccb8c9aabbd8e742400a235fa922004",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
