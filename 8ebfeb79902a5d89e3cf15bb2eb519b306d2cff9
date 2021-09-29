@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "963afe96_7169a888",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1001,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-09-29T21:40:38Z",
+      "side": 1,
+      "message": "un-necessary, banned contacts MUST not be in requests. isRequest should not be there is the contact is banned. What is the scenario?\n\nAlso do you use this stack: https://review.jami.net/c/jami-daemon/+/19273 ?",
+      "range": {
+        "startLine": 990,
+        "startChar": 22,
+        "endLine": 1001,
+        "endChar": 21
+      },
+      "revId": "8ebfeb79902a5d89e3cf15bb2eb519b306d2cff9",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
