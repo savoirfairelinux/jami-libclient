@@ -276,6 +276,8 @@ void
 NewAccountModel::setAlias(const QString& accountId, const QString& alias)
 {
     auto& accountInfo = pimpl_->getAccountInfo(accountId);
+    if (accountInfo.profileInfo.alias == alias)
+        return;
     accountInfo.profileInfo.alias = alias;
 
     authority::storage::createOrUpdateProfile(accountInfo.id, accountInfo.profileInfo);
@@ -287,6 +289,8 @@ void
 NewAccountModel::setAvatar(const QString& accountId, const QString& avatar)
 {
     auto& accountInfo = pimpl_->getAccountInfo(accountId);
+    if (accountInfo.profileInfo.avatar == avatar)
+        return;
     accountInfo.profileInfo.avatar = avatar;
 
     authority::storage::createOrUpdateProfile(accountInfo.id, accountInfo.profileInfo);
