@@ -920,11 +920,17 @@ ContactModelPimpl::addToContacts(const QString& contactUri,
     // create a vcard if necessary
     profile::Info profileInfo {contactUri, {}, displayName, linked.owner.profileInfo.type};
     auto contactInfo = storage::buildContactFromProfile(linked.owner.id, contactUri, type);
-    if (!profileInfo.alias.isEmpty())
+    auto updateProfile = false;
+    if (!profileInfo.alias.isEmpty() && contactInfo.profileInfo.alias != profileInfo.alias) {
+        updateProfile = true;
         contactInfo.profileInfo.alias = profileInfo.alias;
-    if (!profileInfo.avatar.isEmpty())
+    }
+    if (!profileInfo.avatar.isEmpty() && contactInfo.profileInfo.avatar != profileInfo.avatar) {
+        updateProfile = true;
         contactInfo.profileInfo.avatar = profileInfo.avatar;
-    storage::vcard::setProfile(linked.owner.id, contactInfo.profileInfo, true);
+    }
+    if (updateProfile)
+        storage::vcard::setProfile(linked.owner.id, contactInfo.profileInfo, true);
 
     contactInfo.isBanned = banned;
     contactInfo.conversationId = conversationId;
