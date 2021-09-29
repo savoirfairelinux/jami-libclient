@@ -988,7 +988,17 @@ ConversationModel::pendingRequestCount() const
     int pendingRequestCount = 0;
     std::for_each(pimpl_->conversations.begin(),
                   pimpl_->conversations.end(),
-                  [&pendingRequestCount](const auto& c) { pendingRequestCount += c.isRequest; });
+                  [&pendingRequestCount, this](const auto& c) {
+                      auto& peers = pimpl_->peersForConversation(c);
+                      try {
+                          if (peers.size() > 0
+                              && owner.contactModel->getContact(peers.front()).isBanned) {
+                              return;
+                          }
+                      } catch (...) {
+                      }
+                      pendingRequestCount += c.isRequest;
+                  });
     return pendingRequestCount;
 }
 
