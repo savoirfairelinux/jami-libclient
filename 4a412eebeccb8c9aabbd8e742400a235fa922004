@@ -138,6 +138,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "1465a46d_5e6001fc",
+        "filename": "src/messagelistmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-09-30T19:00:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2761b979_1340dd5a",
+      "range": {
+        "startLine": 353,
+        "startChar": 23,
+        "endLine": 354,
+        "endChar": 22
+      },
+      "revId": "4a412eebeccb8c9aabbd8e742400a235fa922004",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "3c766a66_fe3244a6",
         "filename": "src/messagelistmodel.h",
         "patchSetId": 1
