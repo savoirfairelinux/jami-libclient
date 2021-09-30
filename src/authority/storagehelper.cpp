@@ -163,7 +163,14 @@ compressedAvatar(const QString& image)
 
     auto size = qMin(qimage.width(), qimage.height());
     auto rect = QRect((qimage.width() - size) / 2, (qimage.height() - size) / 2, size, size);
-    qimage.copy(rect).scaled({size, size}, Qt::KeepAspectRatio).save(&buffer, "JPEG", 90);
+    auto quality = 88;    // Same as android, between 80 and 90 jpeg compression changes a lot
+    auto maxSize = 16000; // Because 16*3 (rgb) = 48k, which is a valid size for the DHT
+    auto scale = 1;
+    while (size * size > maxSize) {
+        size /= 2;
+        scale *= 2;
+    }
+    qimage.copy(rect).scaled({size, size}, Qt::KeepAspectRatio).save(&buffer, "JPEG", quality);
     auto b64Img = bArray.toBase64().trimmed();
     return QString::fromLocal8Bit(b64Img.constData(), b64Img.length());
 }
