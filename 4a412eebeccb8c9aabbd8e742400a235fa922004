@@ -112,6 +112,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "2761b979_1340dd5a",
+        "filename": "src/messagelistmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-09-30T01:26:52Z",
+      "side": 1,
+      "message": "in fact, it\u0027s in the commit message, so already there",
+      "parentUuid": "7373a41e_88b64736",
+      "range": {
+        "startLine": 353,
+        "startChar": 23,
+        "endLine": 354,
+        "endChar": 22
+      },
+      "revId": "4a412eebeccb8c9aabbd8e742400a235fa922004",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3c766a66_fe3244a6",
