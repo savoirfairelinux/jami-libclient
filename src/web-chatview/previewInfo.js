@@ -27,11 +27,11 @@ SOFTWARE.*/
  */
 
 function getTitle(doc){
-    const og_title = doc.querySelector("meta[property=\"og:title\"]")
+    const og_title = doc.querySelector('meta[property="og:title"]')
     if (og_title !== null && og_title.content.length > 0) {
         return og_title.content
     }
-    const twitter_title = doc.querySelector("meta[name=\"twitter:title\"]")
+    const twitter_title = doc.querySelector('meta[name="twitter:title"]')
     if (twitter_title !== null && twitter_title.content.length > 0) {
         return twitter_title.content
     }
@@ -60,22 +60,23 @@ function getTitle(doc){
  * @returns a description of the webpage
  */
 function getDescription(doc){
-    const og_description = doc.querySelector("meta[property=\"og:description\"]")
+    const og_description = doc.querySelector('meta[property="og:description"]')
     if (og_description !== null && og_description.content.length > 0) {
         return og_description.content
     }
-    const twitter_description = doc.querySelector("meta[name=\"twitter:description\"]")
+    const twitter_description = doc.querySelector('meta[name="twitter:description"]')
     if (twitter_description !== null && twitter_description.content.length > 0) {
         return twitter_description.content
     }
-    const meta_description = doc.querySelector("meta[name=\"description\"]")
+    const meta_description = doc.querySelector('meta[name="description"]')
     if (meta_description !== null && meta_description.content.length > 0) {
         return meta_description.content
     }
     var all_paragraphs = doc.querySelectorAll("p")
     let first_visible_paragraph = null
     for (var i = 0; i < all_paragraphs.length; i++) {
-        if ( all_paragraphs[i].offsetParent !== null && !all_paragraphs[i].childElementCount != 0 ) {
+        if (all_paragraphs[i].offsetParent !== null &&
+                !all_paragraphs[i].childElementCount !== 0) {
             first_visible_paragraph = all_paragraphs[i].textContent
             break
         }
@@ -89,15 +90,15 @@ function getDescription(doc){
  * @returns the image representing the url or null if no such image was found
  */
 function getImage(doc) {
-    const og_image = doc.querySelector("meta[property=\"og:image\"]")
+    const og_image = doc.querySelector('meta[property="og:image"]')
     if (og_image !== null && og_image.content.length > 0){
         return og_image.content
     }
-    const image_rel_link = doc.querySelector("link[rel=\"image_src\"]")
+    const image_rel_link = doc.querySelector('link[rel="image_src"]')
     if (image_rel_link !== null && image_rel_link.href.length > 0){
         return image_rel_link.href
     }
-    const twitter_img = doc.querySelector("meta[name=\"twitter:image\"]")
+    const twitter_img = doc.querySelector('meta[name="twitter:image"]')
     if (twitter_img !== null && twitter_img.content.length > 0) {
         return twitter_img.content
     }
