@@ -801,6 +801,9 @@ ConversationModel::removeConversation(const QString& uid, bool banned)
     }
     if (conversation.isSwarm()) {
         ConfigurationManager::instance().removeConversation(owner.id, uid);
+        pimpl_->eraseConversation(conversationIdx);
+        pimpl_->invalidateModel();
+        emit conversationRemoved(uid);
 
         // Still some other conversation, do nothing else
         if (!banned && getConversationForPeerUri(peers.front()) != std::nullopt)
