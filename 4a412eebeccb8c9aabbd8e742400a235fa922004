@@ -41,6 +41,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ce26b22_09c202fb",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4056,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-09-30T01:24:39Z",
+      "side": 1,
+      "message": "right. i think we can get away with forcing an interaction status change, and making a property dirty based on that, thus invoking a query in response to timer event status updates from conversation model. so, might be able to remove TransferStats",
+      "parentUuid": "072b0064_99bd1a77",
+      "range": {
+        "startLine": 4056,
+        "startChar": 44,
+        "endLine": 4056,
+        "endChar": 78
+      },
+      "revId": "4a412eebeccb8c9aabbd8e742400a235fa922004",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7c39bc3_b603f0a8",
@@ -64,6 +88,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "7373a41e_88b64736",
+        "filename": "src/messagelistmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-09-30T01:24:39Z",
+      "side": 1,
+      "message": "will we need to display or manipulate it in the list view? or you mean store it in the info struct?",
+      "parentUuid": "f7c39bc3_b603f0a8",
+      "range": {
+        "startLine": 353,
+        "startChar": 23,
+        "endLine": 354,
+        "endChar": 22
+      },
+      "revId": "4a412eebeccb8c9aabbd8e742400a235fa922004",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3c766a66_fe3244a6",
@@ -77,6 +125,30 @@
       "writtenOn": "2021-09-29T14:30:23Z",
       "side": 1,
       "message": "not related to this patch, but this should be removed",
+      "range": {
+        "startLine": 42,
+        "startChar": 4,
+        "endLine": 42,
+        "endChar": 15
+      },
+      "revId": "4a412eebeccb8c9aabbd8e742400a235fa922004",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a4589cc_ae1d4c4d",
+        "filename": "src/messagelistmodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-09-30T01:24:39Z",
+      "side": 1,
+      "message": "ack",
+      "parentUuid": "3c766a66_fe3244a6",
       "range": {
         "startLine": 42,
         "startChar": 4,
