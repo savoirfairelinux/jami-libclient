@@ -8,7 +8,7 @@
 
 Jami provides all its users a universal communication tool, autonomous, free, secure and built on a distributed architecture thus requiring no authority or central server to function.
 
-`jami-qt` is the cross platform client for [Jami](https://jami.net/). For now, it's mainly used for the Windows platform and is not tested on other platforms.
+`jami-qt` is the cross platform client for [Jami](https://jami.net/).
 
 For more information about the jami project, see the following:
 
