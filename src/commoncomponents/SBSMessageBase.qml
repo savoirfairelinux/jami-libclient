@@ -25,7 +25,7 @@ import net.jami.Models 1.1
 import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
 
-ColumnLayout {
+Control {
     id: root
 
     property alias avatarBlockWidth: avatarBlock.width
@@ -39,77 +39,99 @@ ColumnLayout {
     property int seq
     property string author
     property string formattedTime
+    property string hoveredLink
 
     readonly property real senderMargin: 64
     readonly property real avatarSize: 32
     readonly property real msgRadius: 18
-    readonly property real hMargin: 12
+    readonly property real hPadding: 12
 
-    anchors.left: parent.left
-    anchors.right: parent.right
-    anchors.leftMargin: hMargin
-    anchors.rightMargin: hMargin
-    spacing: 2
+    width: ListView.view ? ListView.view.width : 0
+    height: mainColumnLayout.implicitHeight
 
-    RowLayout {
-        Layout.preferredHeight: innerContent.height + root.extraHeight
-        Layout.topMargin: (seq === MsgSeq.first || seq === MsgSeq.single) ? 6 : 0
-        spacing: 0
-        Item {
-            id: avatarBlock
-            Layout.preferredWidth: isOutgoing ? 0 : avatar.width + hMargin
-            Layout.preferredHeight: isOutgoing ? 0 : bubble.height
-            Avatar {
-                id: avatar
-                visible: !isOutgoing && (seq === MsgSeq.last || seq === MsgSeq.single)
-                anchors.bottom: parent.bottom
-                width: avatarSize
-                height: avatarSize
-                imageId: author
-                showPresenceIndicator: false
-                mode: Avatar.Mode.Contact
+    rightPadding: hPadding
+    leftPadding: hPadding
+
+    contentItem: ColumnLayout {
+        id: mainColumnLayout
+
+        anchors.centerIn: parent
+
+        width: parent.width
+
+        spacing: 2
+
+        RowLayout {
+            Layout.preferredHeight: innerContent.height + root.extraHeight
+            Layout.topMargin: (seq === MsgSeq.first || seq === MsgSeq.single) ? 6 : 0
+            spacing: 0
+            Item {
+                id: avatarBlock
+                Layout.preferredWidth: isOutgoing ? 0 : avatar.width + hPadding
+                Layout.preferredHeight: isOutgoing ? 0 : bubble.height
+                Avatar {
+                    id: avatar
+                    visible: !isOutgoing && (seq === MsgSeq.last || seq === MsgSeq.single)
+                    anchors.bottom: parent.bottom
+                    width: avatarSize
+                    height: avatarSize
+                    imageId: author
+                    showPresenceIndicator: false
+                    mode: Avatar.Mode.Contact
+                }
+            }
+            Item {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Column {
+                    id: innerContent
+                    width: parent.width
+                    // place actual content here
+                }
+                MessageBubble {
+                    id: bubble
+                    z:-1
+                    out: isOutgoing
+                    type: seq
+                    color: isOutgoing ?
+                               JamiTheme.messageOutBgColor :
+                               JamiTheme.messageInBgColor
+                    radius: msgRadius
+                    anchors.right: isOutgoing ? parent.right : undefined
+                    width: innerContent.childrenRect.width
+                    height: innerContent.childrenRect.height + (visible ? root.extraHeight : 0)
+                }
             }
         }
         Item {
+            id: infoCell
+
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            Column {
-                id: innerContent
-                width: parent.width
-                // place actual content here
-            }
-            MessageBubble {
-                id: bubble
-                z:-1
-                out: isOutgoing
-                type: seq
-                color: isOutgoing ?
-                           JamiTheme.messageOutBgColor :
-                           JamiTheme.messageInBgColor
-                radius: msgRadius
-                anchors.right: isOutgoing ? parent.right : undefined
-                width: innerContent.childrenRect.width
-                height: innerContent.childrenRect.height + (visible ? root.extraHeight : 0)
+            Layout.preferredHeight: childrenRect.height
+
+            Label {
+                text: formattedTime
+                color: JamiTheme.timestampColor
+                visible: showTime || seq === MsgSeq.last
+                height: visible * implicitHeight
+                font.pointSize: 9
+
+                anchors.right: !isOutgoing ? undefined : parent.right
+                anchors.rightMargin: 8
+                anchors.left: isOutgoing ? undefined : parent.left
+                anchors.leftMargin: avatarBlockWidth + 6
             }
         }
     }
-    Item {
-        id: infoCell
 
-        Layout.preferredWidth: parent.width
-        Layout.preferredHeight: childrenRect.height
-
-        Label {
-            text: formattedTime
-            color: JamiTheme.timestampColor
-            visible: showTime || seq === MsgSeq.last
-            height: visible * implicitHeight
-            font.pointSize: 9
-
-            anchors.right: !isOutgoing ? undefined : parent.right
-            anchors.rightMargin: 8
-            anchors.left: isOutgoing ? undefined : parent.left
-            anchors.leftMargin: avatarBlockWidth + 6
+    MouseArea {
+        id: itemMouseArea
+        anchors.fill: parent
+        z: -1
+        acceptedButtons: Qt.LeftButton
+        onClicked: {
+            if (root.hoveredLink)
+                Qt.openUrlExternally(root.hoveredLink)
         }
     }
 }

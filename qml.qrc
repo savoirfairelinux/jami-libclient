@@ -161,10 +161,12 @@
         <file>src/commoncomponents/BackButton.qml</file>
         <file>src/commoncomponents/JamiSwitch.qml</file>
         <file>src/mainview/components/ReadOnlyFooter.qml</file>
-        <file>src/commoncomponents/MessageDelegate.qml</file>
+        <file>src/commoncomponents/TextMessageDelegate.qml</file>
         <file>src/mainview/components/MessageListView.qml</file>
         <file>src/commoncomponents/MessageBubble.qml</file>
         <file>src/constant/MsgSeq.qml</file>
         <file>src/commoncomponents/SBSMessageBase.qml</file>
+        <file>src/commoncomponents/GeneratedMessageDelegate.qml</file>
+        <file>src/commoncomponents/DataTransferMessageDelegate.qml</file>
     </qresource>
 </RCC>

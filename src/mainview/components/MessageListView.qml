@@ -20,6 +20,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import Qt.labs.qmlmodels 1.0
 
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1
@@ -29,6 +30,118 @@ import "../../commoncomponents"
 
 ListView {
     id: root
+
+    function getDistanceToBottom() {
+        const scrollDiff = ScrollBar.vertical.position -
+                         (1.0 - ScrollBar.vertical.size)
+        return Math.abs(scrollDiff) * contentHeight
+    }
+
+    function loadMoreMsgsIfNeeded() {
+        if (atYBeginning && !CurrentConversation.allMessagesLoaded)
+            MessagesAdapter.loadMoreMessages()
+    }
+
+    // sequencing/timestamps (2-sided style)
+    function computeTimestampVisibility(item, itemIndex) {
+        if (root === undefined)
+            return
+        var nItem = root.itemAtIndex(itemIndex - 1)
+        if (nItem && itemIndex !== root.count - 1) {
+            item.showTime = (nItem.timestamp - item.timestamp) > 60 &&
+                    nItem.formattedTime !== item.formattedTime
+        } else {
+            item.showTime = true
+            var pItem = root.itemAtIndex(itemIndex + 1)
+            if (pItem) {
+                pItem.showTime = (item.timestamp - pItem.timestamp) > 60 &&
+                        pItem.formattedTime !== item.formattedTime
+            }
+        }
+    }
+
+    function computeSequencing(computeItem, computeItemIndex) {
+        if (root === undefined)
+            return
+        var cItem = {
+            'author': computeItem.author,
+            'showTime': computeItem.showTime
+        }
+        var pItem = root.itemAtIndex(computeItemIndex + 1)
+        var nItem = root.itemAtIndex(computeItemIndex - 1)
+
+        let isSeq = (item0, item1) =>
+            item0.author === item1.author && !item0.showTime
+
+        let setSeq = function (newSeq, item) {
+            if (item === undefined)
+                computeItem.seq = newSeq
+            else
+                item.seq = newSeq
+        }
+
+        let rAdjustSeq = function (item) {
+            if (item.seq === MsgSeq.last)
+                item.seq = MsgSeq.middle
+            else if (item.seq === MsgSeq.single)
+                setSeq(MsgSeq.first, item)
+        }
+
+        let adjustSeq = function (item) {
+            if (item.seq === MsgSeq.first)
+                item.seq = MsgSeq.middle
+            else if (item.seq === MsgSeq.single)
+                setSeq(MsgSeq.last, item)
+        }
+
+        if (pItem && !nItem) {
+            if (!isSeq(pItem, cItem)) {
+                computeItem.seq = MsgSeq.single
+            } else {
+                computeItem.seq = MsgSeq.last
+                rAdjustSeq(pItem)
+            }
+        } else if (nItem && !pItem) {
+            if (!isSeq(cItem, nItem)) {
+                computeItem.seq = MsgSeq.single
+            } else {
+                setSeq(MsgSeq.first)
+                adjustSeq(nItem)
+            }
+        } else if (!nItem && !pItem) {
+            computeItem.seq = MsgSeq.single
+        } else {
+            if (isSeq(pItem, nItem)) {
+                if (isSeq(pItem, cItem)) {
+                    computeItem.seq = MsgSeq.middle
+                } else {
+                    computeItem.seq = MsgSeq.single
+
+                    if (pItem.seq === MsgSeq.first)
+                        pItem.seq = MsgSeq.single
+                    else if (item.seq === MsgSeq.middle)
+                        pItem.seq = MsgSeq.last
+
+                    if (nItem.seq === MsgSeq.last)
+                        nItem.seq = MsgSeq.single
+                    else if (nItem.seq === MsgSeq.middle)
+                        nItem.seq = MsgSeq.first
+                }
+            } else {
+                if (!isSeq(pItem, cItem)) {
+                    computeItem.seq = MsgSeq.first
+                    adjustSeq(pItem)
+                } else {
+                    computeItem.seq = MsgSeq.last
+                    rAdjustSeq(nItem)
+                }
+            }
+        }
+
+        if (computeItem.seq === MsgSeq.last) {
+            computeItem.showTime = true
+        }
+    }
 
     // fade-in mechanism
     Component.onCompleted: fadeAnimation.start()
@@ -74,134 +187,63 @@ ListView {
 
     model: MessagesAdapter.messageListModel
 
-    delegate: MessageDelegate {
-        // sequencing/timestamps (2-sided style)
-        function computeTimestampVisibility() {
-            if (listView === undefined)
-                return
-            var nItem = listView.itemAtIndex(index - 1)
-            if (nItem && index !== listView.count - 1) {
-                showTime = (nItem.timestamp - timestamp) > 60 &&
-                        nItem.formattedTime !== formattedTime
-            } else {
-                showTime = true
-                var pItem = listView.itemAtIndex(index + 1)
-                if (pItem) {
-                    pItem.showTime = (timestamp - pItem.timestamp) > 60 &&
-                            pItem.formattedTime !== formattedTime
-                }
-            }
-        }
+    delegate: DelegateChooser {
+        id: delegateChooser
 
-        function computeSequencing() {
-            if (listView === undefined)
-                return
-            var cItem = {
-                'author': author,
-                'isGenerated': isGenerated,
-                'showTime': showTime
-            }
-            var pItem = listView.itemAtIndex(index + 1)
-            var nItem = listView.itemAtIndex(index - 1)
-
-            let isSeq = (item0, item1) =>
-                item0.author === item1.author &&
-                !(item0.isGenerated || item1.isGenerated) &&
-                !item0.showTime
-
-            let setSeq = function (newSeq, item) {
-                if (item === undefined)
-                    seq = isGenerated ? MsgSeq.single : newSeq
-                else
-                    item.seq = item.isGenerated ? MsgSeq.single : newSeq
-            }
-
-            let rAdjustSeq = function (item) {
-                if (item.seq === MsgSeq.last)
-                    item.seq = MsgSeq.middle
-                else if (item.seq === MsgSeq.single)
-                    setSeq(MsgSeq.first, item)
-            }
-
-            let adjustSeq = function (item) {
-                if (item.seq === MsgSeq.first)
-                    item.seq = MsgSeq.middle
-                else if (item.seq === MsgSeq.single)
-                    setSeq(MsgSeq.last, item)
-            }
-
-            if (pItem && !nItem) {
-                if (!isSeq(pItem, cItem)) {
-                    seq = MsgSeq.single
-                } else {
-                    seq = MsgSeq.last
-                    rAdjustSeq(pItem)
-                }
-            } else if (nItem && !pItem) {
-                if (!isSeq(cItem, nItem)) {
-                    seq = MsgSeq.single
-                } else {
-                    setSeq(MsgSeq.first)
-                    adjustSeq(nItem)
-                }
-            } else if (!nItem && !pItem) {
-                seq = MsgSeq.single
-            } else {
-                if (isSeq(pItem, nItem)) {
-                    if (isSeq(pItem, cItem)) {
-                        seq = MsgSeq.middle
+        role: "Type"
+        DelegateChoice {
+            roleValue: Interaction.Type.TEXT
+            TextMessageDelegate {
+                Component.onCompleted: {
+                    if (index) {
+                        computeTimestampVisibility(this, index)
+                        computeSequencing(this, index)
                     } else {
-                        seq = MsgSeq.single
-
-                        if (pItem.seq === MsgSeq.first)
-                            pItem.seq = MsgSeq.single
-                        else if (item.seq === MsgSeq.middle)
-                            pItem.seq = MsgSeq.last
-
-                        if (nItem.seq === MsgSeq.last)
-                            nItem.seq = MsgSeq.single
-                        else if (nItem.seq === MsgSeq.middle)
-                            nItem.seq = MsgSeq.first
-                    }
-                } else {
-                    if (!isSeq(pItem, cItem)) {
-                        seq = MsgSeq.first
-                        adjustSeq(pItem)
-                    } else {
-                        seq = MsgSeq.last
-                        rAdjustSeq(nItem)
+                        Qt.callLater(computeTimestampVisibility, this, index)
+                        Qt.callLater(computeSequencing, this, index)
                     }
                 }
             }
-
-            if (seq === MsgSeq.last) {
-                showTime = true
+        }
+        DelegateChoice {
+            roleValue: Interaction.Type.CALL
+            GeneratedMessageDelegate {
+                Component.onCompleted: {
+                    if (index)
+                        computeTimestampVisibility(this, index)
+                    else
+                        Qt.callLater(computeTimestampVisibility, this, index)
+                }
             }
         }
-
-        Component.onCompleted: {
-            if (index) {
-                computeTimestampVisibility()
-                computeSequencing()
-            } else {
-                Qt.callLater(computeTimestampVisibility)
-                Qt.callLater(computeSequencing)
+        DelegateChoice {
+            roleValue: Interaction.Type.CONTACT
+            GeneratedMessageDelegate {
+                Component.onCompleted: {
+                    if (index)
+                        computeTimestampVisibility(this, index)
+                    else
+                        Qt.callLater(computeTimestampVisibility, this, index)
+                }
             }
         }
-    }
-
-    function getDistanceToBottom() {
-        const scrollDiff = ScrollBar.vertical.position -
-                         (1.0 - ScrollBar.vertical.size)
-        return Math.abs(scrollDiff) * contentHeight
+        DelegateChoice {
+            roleValue: Interaction.Type.DATA_TRANSFER
+            DataTransferMessageDelegate {
+                Component.onCompleted: {
+                    if (index) {
+                        computeTimestampVisibility(this, index)
+                        computeSequencing(this, index)
+                    } else {
+                        Qt.callLater(computeTimestampVisibility, this, index)
+                        Qt.callLater(computeSequencing, this, index)
+                    }
+                }
+            }
+        }
     }
 
     onAtYBeginningChanged: loadMoreMsgsIfNeeded()
-
-    function loadMoreMsgsIfNeeded() {
-        if (atYBeginning && !CurrentConversation.allMessagesLoaded)
-            MessagesAdapter.loadMoreMessages()
-    }
 
     Connections {
         target: MessagesAdapter
