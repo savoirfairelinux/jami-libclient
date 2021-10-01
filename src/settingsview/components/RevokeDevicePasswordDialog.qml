@@ -59,7 +59,8 @@ BaseDialog {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.preferredWidth: revokeDeviceContentRect.width - JamiTheme.preferredMarginSize * 2
 
-                text: qsTr("Enter this account's password to confirm the removal of this device")
+                color: JamiTheme.textColor
+                text: JamiStrings.confirmRemoval
                 font.pointSize: JamiTheme.textFontSize
                 font.kerning: true
                 wrapMode: Text.Wrap

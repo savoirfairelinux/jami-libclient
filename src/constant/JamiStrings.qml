@@ -426,6 +426,7 @@ Item {
     // PasswordDialog
     property string enterPassword: qsTr("Enter the password")
     property string enterCurrentPassword: qsTr("Enter current password")
+    property string confirmRemoval: qsTr("Enter this account's password to confirm the removal of this device")
     property string enterNewPassword: qsTr("Enter new password")
     property string confirmNewPassword: qsTr("Confirm new password")
     property string change: qsTr("Change")
