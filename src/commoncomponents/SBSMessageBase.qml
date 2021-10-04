@@ -61,7 +61,7 @@ Control {
 
         anchors.centerIn: parent
 
-        width: parent.width
+        width: parent.width - hPadding * 2
 
         spacing: 2
 

@@ -185,10 +185,15 @@ Loader {
                                        JamiTheme.messageInTxtColor
                             MouseArea {
                                 anchors.fill: parent
-                                propagateComposedEvents: true
                                 cursorShape: canOpen ?
                                                  Qt.PointingHandCursor :
                                                  Qt.ArrowCursor
+                                onClicked: function (mouse) {
+                                    dataTransferItem.hoveredLink = canOpen ?
+                                                ("file:///" + Body) : ""
+                                    if (dataTransferItem.hoveredLink)
+                                        Qt.openUrlExternally(dataTransferItem.hoveredLink)
+                                }
                             }
                         }
                         Label {

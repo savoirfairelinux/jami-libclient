@@ -40,6 +40,7 @@ TextField {
     wrapMode: Text.Wrap
     readOnly: false
     selectByMouse: true
+    mouseSelectionMode: TextInput.SelectCharacters
     selectionColor: JamiTheme.placeholderTextColor
 
     font.pointSize: JamiTheme.materialLineEditPointSize

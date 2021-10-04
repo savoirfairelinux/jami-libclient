@@ -21,7 +21,7 @@ import QtQuick.Controls
 
 import net.jami.Constants 1.1
 
-Label {
+TextEdit {
     id: root
 
     property string eText : ""
@@ -37,6 +37,9 @@ Label {
     horizontalAlignment: Text.AlignLeft
     verticalAlignment: Text.AlignVCenter
     color: JamiTheme.textColor
+
+    readOnly: true
+    selectByMouse: true
 
     TextMetrics {
         id: elided

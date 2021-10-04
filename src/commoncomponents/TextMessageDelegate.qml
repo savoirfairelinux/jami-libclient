@@ -67,8 +67,6 @@ SBSMessageBase {
         },
         Loader {
             id: extraContent
-            width: sourceComponent.width
-            height: sourceComponent.height
             anchors.right: isOutgoing ? parent.right : undefined
             property real minSize: 192
             property real maxSize: 320
