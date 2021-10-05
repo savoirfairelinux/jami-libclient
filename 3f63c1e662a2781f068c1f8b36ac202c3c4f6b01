@@ -24,6 +24,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1808aa0_f542926f",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1345,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-10-05T20:33:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce8813f2_3bd95ec9",
+      "range": {
+        "startLine": 1326,
+        "startChar": 0,
+        "endLine": 1345,
+        "endChar": 1
+      },
+      "revId": "3f63c1e662a2781f068c1f8b36ac202c3c4f6b01",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b38b03f_1dd33da7",
@@ -47,6 +71,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6dc3f0e_992da0f7",
+        "filename": "src/messagelistmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-10-05T20:33:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b38b03f_1dd33da7",
+      "range": {
+        "startLine": 162,
+        "startChar": 4,
+        "endLine": 164,
+        "endChar": 5
+      },
+      "revId": "3f63c1e662a2781f068c1f8b36ac202c3c4f6b01",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1bfc293d_ba2df410",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-10-05T20:03:33Z",
       "side": 1,
       "message": "leaveN",
+      "range": {
+        "startLine": 90,
+        "startChar": 20,
+        "endLine": 90,
+        "endChar": 43
+      },
+      "revId": "3f63c1e662a2781f068c1f8b36ac202c3c4f6b01",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "564700e4_78318a9a",
+        "filename": "src/messagelistmodel.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 633
+      },
+      "writtenOn": "2021-10-05T20:33:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bfc293d_ba2df410",
       "range": {
         "startLine": 90,
         "startChar": 20,
