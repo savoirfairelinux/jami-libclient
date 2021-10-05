@@ -428,3 +428,22 @@ LRCInstance::getCurrentCallId()
         return QString();
     }
 }
+
+QString
+LRCInstance::get_selectedConvUid()
+{
+    return selectedConvUid_;
+}
+
+void
+LRCInstance::set_selectedConvUid(QString selectedConvUid)
+{
+    if (selectedConvUid_ != selectedConvUid) {
+        auto& accInfo = accountModel().getAccountInfo(get_currentAccountId());
+        auto& convModel = accInfo.conversationModel;
+        convModel->clearInteractionsCache(selectedConvUid_);
+
+        selectedConvUid_ = selectedConvUid;
+        Q_EMIT selectedConvUidChanged();
+    }
+}

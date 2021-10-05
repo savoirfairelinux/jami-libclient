@@ -55,7 +55,8 @@ using getConvPredicate = std::function<bool(const conversation::Info& conv)>;
 class LRCInstance : public QObject
 {
     Q_OBJECT
-    QML_PROPERTY(QString, selectedConvUid)
+    Q_PROPERTY(QString selectedConvUid READ get_selectedConvUid WRITE set_selectedConvUid NOTIFY
+                   selectedConvUidChanged)
     QML_PROPERTY(QString, currentAccountId)
     QML_RO_PROPERTY(lrc::api::profile::Type, currentAccountType)
     QML_PROPERTY(bool, currentAccountAvatarSet)
@@ -123,8 +124,13 @@ public:
     bool hasActiveCall(bool withVideo = false);
     VectorString getConferenceSubcalls(const QString& callId);
 
+    QString get_selectedConvUid();
+
+    void set_selectedConvUid(QString selectedConvUid = "");
+
 Q_SIGNALS:
     void accountListChanged();
+    void selectedConvUidChanged();
     void restoreAppRequested();
     void notificationClicked();
     void quitEngineRequested();
@@ -136,6 +142,7 @@ private:
     std::unique_ptr<RenderManager> renderer_;
     std::unique_ptr<UpdateManager> updateManager_;
 
+    QString selectedConvUid_;
     MapStringString contentDrafts_;
     MapStringString lastConferences_;
 
