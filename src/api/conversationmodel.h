@@ -259,6 +259,11 @@ public:
      */
     void clearInteractionFromConversation(const QString& convId, const QString& interactionId);
     /**
+     * Clear the cache for interactions in the conversation
+     * @param convId
+     */
+    void clearInteractionsCache(const QString& convId);
+    /**
      * Retry to send a message. In fact, will delete the previous interaction and resend a new one.
      * @param convId
      * @param interactionId
