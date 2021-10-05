@@ -294,7 +294,7 @@ Loader {
                             anchors.right: isOutgoing ? parent.right : undefined
                             property real minSize: 192
                             property real maxSize: 256
-                            cache: true
+                            cache: false
                             fillMode: Image.PreserveAspectCrop
                             mipmap: true
                             antialiasing: true

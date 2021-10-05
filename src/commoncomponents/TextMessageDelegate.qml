@@ -86,7 +86,7 @@ SBSMessageBase {
                 }
                 AnimatedImage {
                     id: img
-                    cache: true
+                    cache: false
                     source: isRemoteImage ?
                                 LinkPreviewInfo.url :
                                 (hasImage ? LinkPreviewInfo.image : "")
