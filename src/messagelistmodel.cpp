@@ -157,9 +157,11 @@ MessageListModel::size() const
 }
 
 void
-MessageListModel::clear()
+MessageListModel::clear(bool leaveTheLastInteraction)
 {
-    interactions_.clear();
+    for (size_t i = 0; i < interactions_.size() - leaveTheLastInteraction ? 1 : 0; i++) {
+        interactions_.removeFirst();
+    }
 }
 
 bool
