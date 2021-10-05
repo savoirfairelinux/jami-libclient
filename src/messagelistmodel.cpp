@@ -157,9 +157,9 @@ MessageListModel::size() const
 }
 
 void
-MessageListModel::clear()
+MessageListModel::clear(int leaveN)
 {
-    interactions_.clear();
+    interactions_.erase(interactions_.begin(), std::prev(interactions_.end(), leaveN));
 }
 
 bool

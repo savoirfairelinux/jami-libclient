@@ -1325,6 +1325,27 @@ ConversationModel::clearInteractionFromConversation(const QString& convId,
 }
 
 void
+ConversationModel::clearInteractionsCache(const QString& convId)
+{
+    auto conversationIdx = pimpl_->indexOf(convId);
+    if (conversationIdx == -1)
+        return;
+
+    try {
+        auto& conversation = pimpl_->conversations.at(conversationIdx);
+        {
+            std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
+            conversation.interactions->clear(1);
+        }
+        conversation.allMessagesLoaded = false;
+        conversation.lastMessageUid = conversation.interactions->last().first;
+    } catch (const std::out_of_range& e) {
+        qDebug() << "can't find interaction from conversation: " << e.what();
+        return;
+    }
+}
+
+void
 ConversationModel::retryInteraction(const QString& convId, const QString& interactionId)
 {
     auto conversationIdx = pimpl_->indexOf(convId);
