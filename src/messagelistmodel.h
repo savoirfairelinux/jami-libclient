@@ -87,7 +87,7 @@ public:
     constIterator begin() const;
     reverseIterator rbegin();
     int size() const;
-    void clear();
+    void clear(bool leaveTheLastInteraction = false);
     bool empty() const;
     interaction::Info at(const QString& intId) const;
     QPair<QString, interaction::Info> front() const;
