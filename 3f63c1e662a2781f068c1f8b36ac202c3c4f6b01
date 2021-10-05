@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ce8813f2_3bd95ec9",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1345,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-10-05T20:05:30Z",
+      "side": 1,
+      "message": "lastMessageUid may need to be adjusted ??",
+      "range": {
+        "startLine": 1326,
+        "startChar": 0,
+        "endLine": 1345,
+        "endChar": 1
+      },
+      "revId": "3f63c1e662a2781f068c1f8b36ac202c3c4f6b01",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4b38b03f_1dd33da7",
         "filename": "src/messagelistmodel.cpp",
         "patchSetId": 3
