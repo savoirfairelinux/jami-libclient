@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b347b70_f1554cff",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1335,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2021-10-06T02:05:45Z",
+      "side": 1,
+      "message": "perhaps this lock could be placed within the try block just before:\nconversation.interactions-\u003eclear(1);\nbut it\u0027s so rarely locked...",
+      "range": {
+        "startLine": 1335,
+        "startChar": 8,
+        "endLine": 1335,
+        "endChar": 74
+      },
+      "revId": "0bc0434432de88580a33843f9337654df4c0dfd0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
