@@ -153,15 +153,6 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
-    bool hasCameraStarted()
-    {
-#ifdef ENABLE_VIDEO
-        return DRing::hasCameraStarted();
-#else
-        return false;
-#endif
-    }
-
     void setDefaultDevice(const QString& name)
     {
 #ifdef ENABLE_VIDEO

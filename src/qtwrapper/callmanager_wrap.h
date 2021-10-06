@@ -290,12 +290,6 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
-    QStringList getDisplayNames(const QString& confID)
-    {
-        QStringList temp = convertStringList(DRing::getDisplayNames(confID.toStdString()));
-        return temp;
-    }
-
     bool getIsRecording(const QString& callID)
     {
         // TODO: match API
