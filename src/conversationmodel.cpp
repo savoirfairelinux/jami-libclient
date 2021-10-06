@@ -2152,11 +2152,14 @@ ConversationModelPimpl::sort(const conversation::Info& convA, const conversation
 void
 ConversationModelPimpl::sendContactRequest(const QString& contactUri)
 {
-    auto contact = linked.owner.contactModel->getContact(contactUri);
-    auto isNotUsed = contact.profileInfo.type == profile::Type::TEMPORARY
-                     || contact.profileInfo.type == profile::Type::PENDING;
-    if (isNotUsed)
-        linked.owner.contactModel->addContact(contact);
+    try {
+        auto contact = linked.owner.contactModel->getContact(contactUri);
+        auto isNotUsed = contact.profileInfo.type == profile::Type::TEMPORARY
+                         || contact.profileInfo.type == profile::Type::PENDING;
+        if (isNotUsed)
+            linked.owner.contactModel->addContact(contact);
+    } catch (std::out_of_range& e) {
+    }
 }
 void
 ConversationModelPimpl::slotConversationLoaded(uint32_t,
