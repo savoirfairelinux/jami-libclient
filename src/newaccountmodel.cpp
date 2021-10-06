@@ -221,7 +221,7 @@ NewAccountModel::setAccountEnabled(const QString& accountId, bool enabled) const
     accountInfo.enabled = enabled;
     ConfigurationManager::instance().sendRegister(accountId, enabled);
 }
-
+#pragma optimize("", off)
 void
 NewAccountModel::setAccountConfig(const QString& accountId,
                                   const account::ConfProperties_t& confProperties) const
@@ -265,7 +265,7 @@ NewAccountModel::setAccountConfig(const QString& accountId,
     }
     configurationManager.setAccountDetails(accountId, details);
 }
-
+#pragma optimize("", on)
 account::ConfProperties_t
 NewAccountModel::getAccountConfig(const QString& accountId) const
 {
@@ -818,6 +818,7 @@ account::Info::fromDetails(const MapStringString& details)
     confProperties.mailbox = details[ConfProperties::MAILBOX];
     confProperties.dtmfType = details[ConfProperties::DTMF_TYPE];
     confProperties.autoAnswer = toBool(details[ConfProperties::AUTOANSWER]);
+    confProperties.receiveCallWhenBusy = toBool(details[ConfProperties::RECEIVECALLWHENBUSY]);
     confProperties.sendReadReceipt = toBool(details[ConfProperties::SENDREADRECEIPT]);
     confProperties.isRendezVous = toBool(details[ConfProperties::ISRENDEZVOUS]);
     confProperties.activeCallLimit = toInt(details[ConfProperties::ACTIVE_CALL_LIMIT]);
@@ -942,6 +943,7 @@ account::ConfProperties_t::toDetails() const
     details[ConfProperties::MAILBOX] = this->mailbox;
     details[ConfProperties::DTMF_TYPE] = this->dtmfType;
     details[ConfProperties::AUTOANSWER] = toQString(this->autoAnswer);
+    details[ConfProperties::RECEIVECALLWHENBUSY] = toQString(this->receiveCallWhenBusy);
     details[ConfProperties::SENDREADRECEIPT] = toQString(this->sendReadReceipt);
     details[ConfProperties::ISRENDEZVOUS] = toQString(this->isRendezVous);
     details[ConfProperties::ACTIVE_CALL_LIMIT] = toQString(this->activeCallLimit);

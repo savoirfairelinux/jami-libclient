@@ -82,6 +82,7 @@ struct ConfProperties_t
     QString mailbox;
     QString dtmfType;
     bool autoAnswer;
+    bool receiveCallWhenBusy;
     bool sendReadReceipt;
     bool isRendezVous;
     int activeCallLimit;
