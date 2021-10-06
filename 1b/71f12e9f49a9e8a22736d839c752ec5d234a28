@@ -1,0 +1,7 @@
+Verified+1: Jenkins CI <jenkins@ring-packaging.cx>
+Code-Review+2: Ming Rui Zhang <mingrui.zhang@savoirfairelinux.com>
+Submitted-by: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
+Submitted-at: Wed, 06 Oct 2021 14:59:25 -0400
+Reviewed-on: https://review.jami.net/c/jami-libclient/+/19402
+Project: jami-libclient
+Branch: refs/heads/master
