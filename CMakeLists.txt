@@ -29,7 +29,12 @@ file(GLOB_RECURSE
     RES_FILES CONFIGURE_DEPENDS
     ${PROJECT_SOURCE_DIR}/resources/*
 )
-include(FindPythonInterp)
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.12.0")
+    include(FindPython3)
+    find_package (Python3 COMPONENTS Interpreter)
+else()
+    include(FindPythonInterp)
+endif()
 execute_process(
     COMMAND ${PYTHON_EXECUTABLE} ${PROJECT_SOURCE_DIR}/gen-resources.py
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
