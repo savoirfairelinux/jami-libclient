@@ -1333,12 +1333,14 @@ ConversationModel::clearInteractionsCache(const QString& convId)
 
     try {
         auto& conversation = pimpl_->conversations.at(conversationIdx);
-        {
-            std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
-            conversation.interactions->clear(1);
+        if (!conversation.isRequest && !conversation.needsSyncing && conversation.isSwarm()) {
+            {
+                std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
+                conversation.interactions->clear(1);
+            }
+            conversation.allMessagesLoaded = false;
+            conversation.lastMessageUid = conversation.interactions->last().first;
         }
-        conversation.allMessagesLoaded = false;
-        conversation.lastMessageUid = conversation.interactions->last().first;
     } catch (const std::out_of_range& e) {
         qDebug() << "can't find interaction from conversation: " << e.what();
         return;
