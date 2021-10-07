@@ -168,5 +168,6 @@
         <file>src/commoncomponents/SBSMessageBase.qml</file>
         <file>src/commoncomponents/GeneratedMessageDelegate.qml</file>
         <file>src/commoncomponents/DataTransferMessageDelegate.qml</file>
+        <file>src/mainview/components/ScrollToBottomButton.qml</file>
     </qresource>
 </RCC>

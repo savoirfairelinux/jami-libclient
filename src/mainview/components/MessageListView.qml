@@ -261,4 +261,16 @@ ListView {
             }
         }
     }
+
+    ScrollToBottomButton {
+        id: scrollToBottomButton
+
+        anchors.bottom: root.bottom
+        anchors.bottomMargin: JamiTheme.chatViewScrollToBottomButtonBottomMargin
+        anchors.horizontalCenter: root.horizontalCenter
+
+        activeStateTrigger: Math.abs(root.contentY) > root.height * 2
+        onClicked: root.ScrollBar.vertical.position =
+                   1.0 - root.ScrollBar.vertical.size
+    }
 }

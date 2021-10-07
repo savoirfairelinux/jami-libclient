@@ -282,6 +282,7 @@ Item {
     property real chatViewFooterButtonRadius: 5
     property real chatViewFooterFileContainerPreferredHeight: 150
     property real chatViewFooterTextAreaMaximumHeight: 130
+    property real chatViewScrollToBottomButtonBottomMargin: 8
 
     // MessageWebView File Transfer Container
     property real filesToSendContainerSpacing: 5

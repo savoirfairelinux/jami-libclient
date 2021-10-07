@@ -255,6 +255,9 @@ Item {
     property string showPlugins: qsTr("Show available plugins")
     property string addToConversations: qsTr("Add to conversations")
 
+    // Chatview footer
+    property string jumpToLatest: qsTr("Jump to latest")
+
     // ConnectToAccountManager
     property string enterJAMSURL: qsTr("Enter Jami Account Management Server (JAMS) URL")
     property string required: qsTr("Required")
