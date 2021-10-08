@@ -151,6 +151,7 @@ ColumnLayout {
                                   - marginSize / 2
 
             onSendMessagesRequired: root.sendMessageButtonClicked()
+            onTextChanged: MessagesAdapter.userIsComposing(text ? true : false)
         }
 
         PushButton {

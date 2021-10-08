@@ -111,7 +111,8 @@ Control {
 
         MouseArea {
             anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
+            cursorShape: root.opacity ? Qt.PointingHandCursor :
+                                        Qt.ArrowCursor
 
             onClicked: root.clicked()
         }

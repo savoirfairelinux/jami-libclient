@@ -79,7 +79,7 @@ Item {
         }
     }
 
-    TextMetrics {
+    Text {
         id: globalTextMetrics
     }
 
@@ -87,6 +87,6 @@ Item {
         globalTextMetrics.font = font
         globalTextMetrics.text = text
 
-        return globalTextMetrics.boundingRect
+        return Qt.size(globalTextMetrics.contentWidth, globalTextMetrics.contentHeight)
     }
 }

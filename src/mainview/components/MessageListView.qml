@@ -273,4 +273,84 @@ ListView {
         onClicked: root.ScrollBar.vertical.position =
                    1.0 - root.ScrollBar.vertical.size
     }
+
+    header: Control {
+        id: typeIndicatorContainer
+
+        topPadding: 3
+
+        width: root.width
+        height: typeIndicatorNameText.contentHeight + topPadding
+
+        visible: MessagesAdapter.currentConvComposingList.length
+
+        TypingDots {
+            id: typingDots
+
+            anchors.left: typeIndicatorContainer.left
+            anchors.leftMargin: 5
+            anchors.verticalCenter: typeIndicatorContainer.verticalCenter
+        }
+
+        Text {
+            id: typeIndicatorNameText
+
+            anchors.left: typingDots.right
+            anchors.leftMargin: 5
+            anchors.verticalCenter: typeIndicatorContainer.verticalCenter
+
+            width: {
+                var textSize = text ? JamiQmlUtils.getTextBoundingRect(font, text).width : 0
+                var typingContentWidth = typingDots.width + typingDots.anchors.leftMargin
+                                       + typeIndicatorNameText.anchors.leftMargin
+                                       + typeIndicatorEndingText.contentWidth
+                return Math.min(typeIndicatorContainer.width - 5 - typingContentWidth, textSize)
+            }
+
+            font.pointSize: 8
+            font.bold: Font.DemiBold
+            elide: Text.ElideRight
+            color: JamiTheme.textColor
+            text: {
+                var finalText = ""
+                var nameList = MessagesAdapter.currentConvComposingList
+
+                if (nameList.length > 4)
+                    return ""
+                if (nameList.length === 1)
+                    return nameList[0]
+
+                for (var i = 0; i < nameList.length; i++) {
+                    finalText += nameList[i]
+
+                    if (i === nameList.length - 2)
+                        finalText += JamiStrings.typeIndicatorAnd
+                    else if (i !== nameList.length - 1)
+                        finalText += ", "
+                }
+
+                return finalText
+            }
+        }
+
+        Text {
+            id: typeIndicatorEndingText
+
+            anchors.left: typeIndicatorNameText.right
+            anchors.verticalCenter: typeIndicatorContainer.verticalCenter
+
+            font.pointSize: 8
+            color: JamiTheme.textColor
+            text: {
+                var nameList = MessagesAdapter.currentConvComposingList
+
+                if (nameList.length > 4)
+                    return JamiStrings.typeIndicatorMax
+                if (nameList.length === 1)
+                    return JamiStrings.typeIndicatorSingle.replace("{}", "")
+
+                return JamiStrings.typeIndicatorPlural.replace("{}", "")
+            }
+        }
+    }
 }

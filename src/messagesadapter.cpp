@@ -54,6 +54,7 @@ MessagesAdapter::MessagesAdapter(AppSettingsManager* settingsManager,
         const auto& conversation = lrcInstance_->getConversationFromConvUid(convId);
         filteredMsgListModel_->setSourceModel(conversation.interactions.get());
         set_messageListModel(QVariant::fromValue(filteredMsgListModel_));
+        set_currentConvComposingList({});
     });
 
     connect(previewEngine_, &PreviewEngine::infoReady, this, &MessagesAdapter::onPreviewInfoReady);
@@ -112,6 +113,12 @@ MessagesAdapter::connectConversationModel()
                      &ConversationModel::conversationMessagesLoaded,
                      this,
                      &MessagesAdapter::onConversationMessagesLoaded,
+                     Qt::UniqueConnection);
+
+    QObject::connect(currentConversationModel,
+                     &ConversationModel::composingStatusChanged,
+                     this,
+                     &MessagesAdapter::onComposingStatusChanged,
                      Qt::UniqueConnection);
 }
 
@@ -412,6 +419,22 @@ MessagesAdapter::onMessageLinkified(const QString& messageId, const QString& lin
     const QString& accId = lrcInstance_->get_currentAccountId();
     auto& conversation = lrcInstance_->getConversationFromConvUid(convId, accId);
     conversation.interactions->linkifyMessage(messageId, linkified);
+}
+
+void
+MessagesAdapter::onComposingStatusChanged(const QString& convId,
+                                          const QString& contactUri,
+                                          bool isComposing)
+{
+    if (lrcInstance_->get_selectedConvUid() == convId) {
+        auto name = lrcInstance_->getCurrentContactModel()->bestNameForContact(contactUri);
+        if (isComposing)
+            currentConvComposingList_.append(name);
+        else
+            currentConvComposingList_.removeOne(name);
+
+        Q_EMIT currentConvComposingListChanged();
+    }
 }
 
 bool

@@ -60,6 +60,7 @@ class MessagesAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
     QML_RO_PROPERTY(QVariant, messageListModel)
+    QML_RO_PROPERTY(QList<QString>, currentConvComposingList)
 
 public:
     explicit MessagesAdapter(AppSettingsManager* settingsManager,
@@ -121,6 +122,9 @@ private Q_SLOTS:
     void onPreviewInfoReady(QString messageIndex, QVariantMap urlInMessage);
     void onConversationMessagesLoaded(uint32_t requestId, const QString& convId);
     void onMessageLinkified(const QString& messageId, const QString& linkified);
+    void onComposingStatusChanged(const QString& convId,
+                                  const QString& contactUri,
+                                  bool isComposing);
 
 private:
     AppSettingsManager* settingsManager_;

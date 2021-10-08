@@ -169,5 +169,6 @@
         <file>src/commoncomponents/GeneratedMessageDelegate.qml</file>
         <file>src/commoncomponents/DataTransferMessageDelegate.qml</file>
         <file>src/mainview/components/ScrollToBottomButton.qml</file>
+        <file>src/commoncomponents/TypingDots.qml</file>
     </qresource>
 </RCC>

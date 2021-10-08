@@ -172,6 +172,10 @@ Item {
     // Files To Send Container
     property color removeFileButtonColor: Qt.rgba(96, 95, 97, 0.5)
 
+    // TypingDots
+    property color typingDotsNormalColor: darkTheme ? "#686b72" : "lightgrey"
+    property color typingDotsEnlargeColor: darkTheme ? "white" : Qt.darker("lightgrey", 3.0)
+
     // Font.
     property color faddedFontColor: darkTheme? "#c0c0c0" : "#a0a0a0"
     property color faddedLastInteractionFontColor: darkTheme ? "#c0c0c0" : "#505050"
@@ -283,6 +287,11 @@ Item {
     property real chatViewFooterFileContainerPreferredHeight: 150
     property real chatViewFooterTextAreaMaximumHeight: 130
     property real chatViewScrollToBottomButtonBottomMargin: 8
+
+    // TypingDots
+    property real typingDotsAnimationInterval: 500
+    property real typingDotsRadius: 30
+    property real typingDotsSize: 8
 
     // MessageWebView File Transfer Container
     property real filesToSendContainerSpacing: 5

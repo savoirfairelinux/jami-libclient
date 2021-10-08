@@ -257,6 +257,10 @@ Item {
 
     // Chatview footer
     property string jumpToLatest: qsTr("Jump to latest")
+    property string typeIndicatorSingle: qsTr("{} is typing…")
+    property string typeIndicatorPlural: qsTr("{} are typing…")
+    property string typeIndicatorMax: qsTr("Several people are typing…")
+    property string typeIndicatorAnd: qsTr(" and ")
 
     // ConnectToAccountManager
     property string enterJAMSURL: qsTr("Enter Jami Account Management Server (JAMS) URL")
