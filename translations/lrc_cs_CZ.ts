@@ -2,7 +2,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="393"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="387"/>
         <source>Me</source>
         <translation>Já</translation>
     </message>

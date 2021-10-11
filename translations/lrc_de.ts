@@ -2,7 +2,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/qtwrapper/callmanager_wrap.h" line="393"/>
+        <location filename="../src/qtwrapper/callmanager_wrap.h" line="387"/>
         <source>Me</source>
         <translation>lch</translation>
     </message>
@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt hat die Unterhaltung verlassen.</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
@@ -470,7 +470,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>In Downloads kopieren</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
@@ -480,22 +480,22 @@
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>hat Ihnen eine Gesprächsanfrage gesendet.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Hallo, möchten Sie an der Unterhaltung teilnehmen?</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Sie haben die Gesprächsanfrage angenommen.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Wir warten auf ein anderes Gerät, um das Gespräch zu synchronisieren.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
