@@ -91,7 +91,7 @@ public:
 
     // Getters
     virtual bool isRendering() const;
-    virtual lrc::api::video::Frame currentFrame() const = 0;
+    virtual lrc::api::video::Frame* currentFrame() const = 0;
     virtual QSize size() const;
     virtual QMutex* mutex() const;
     virtual ColorSpace colorSpace() const = 0;

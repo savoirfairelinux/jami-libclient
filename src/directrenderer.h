@@ -50,7 +50,7 @@ public:
     const DRing::SinkTarget& target() const;
     const DRing::AVSinkTarget& avTarget() const;
     virtual ColorSpace colorSpace() const override;
-    virtual lrc::api::video::Frame currentFrame() const override;
+    virtual lrc::api::video::Frame* currentFrame() const override;
     virtual std::unique_ptr<AVFrame, void (*)(AVFrame*)> currentAVFrame() const override;
     void configureTarget(bool useAVFrame);
 
