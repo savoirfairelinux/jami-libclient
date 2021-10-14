@@ -359,7 +359,7 @@ ShmRenderer::fps() const
 }
 
 /// Get frame data pointer from shared memory
-lrc::api::video::Frame
+lrc::api::video::Frame*
 ShmRenderer::currentFrame() const
 {
     if (not isRendering())
@@ -368,7 +368,7 @@ ShmRenderer::currentFrame() const
     QMutexLocker lk {mutex()};
     if (d_ptr->getNewFrame(false)) {
         if (auto frame_ptr = Video::Renderer::d_ptr->m_pFrame)
-            return std::move(*frame_ptr);
+            return *frame_ptr;
     }
     return {};
 }

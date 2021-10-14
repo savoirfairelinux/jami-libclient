@@ -53,7 +53,7 @@ public:
 
     // Getters
     int fps() const;
-    virtual lrc::api::video::Frame currentFrame() const override;
+    virtual lrc::api::video::Frame* currentFrame() const override;
     virtual ColorSpace colorSpace() const override;
 
     // Setters

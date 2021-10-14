@@ -56,6 +56,7 @@ public:
     DRing::AVSinkTarget av_target;
     mutable QMutex directmutex;
     mutable DRing::SinkTarget::FrameBufferPtr daemonFramePtr_;
+    mutable lrc::api::video::Frame* qtFrame = new lrc::api::video::Frame();
     std::unique_ptr<AVFrame, void (*)(AVFrame*)> avframe;
 
 private:
@@ -119,8 +120,8 @@ Video::DirectRendererPrivate::requestFrameBuffer(std::size_t bytes)
     QMutexLocker lk(q_ptr->mutex());
     if (not daemonFramePtr_)
         daemonFramePtr_.reset(new DRing::FrameBuffer);
-    daemonFramePtr_->storage.resize(bytes);
-    daemonFramePtr_->ptr = daemonFramePtr_->storage.data();
+    delete[] daemonFramePtr_->ptr;
+    daemonFramePtr_->ptr = new uint8_t[bytes];
     daemonFramePtr_->ptrSize = bytes;
     return std::move(daemonFramePtr_);
 }
@@ -175,7 +176,7 @@ Video::DirectRenderer::currentAVFrame() const
     return std::move(d_ptr->avframe);
 }
 
-lrc::api::video::Frame
+lrc::api::video::Frame*
 Video::DirectRenderer::currentFrame() const
 {
     if (not isRendering())
@@ -185,14 +186,14 @@ Video::DirectRenderer::currentFrame() const
     if (not d_ptr->daemonFramePtr_)
         return {};
 
-    lrc::api::video::Frame frame;
-    frame.storage = std::move(d_ptr->daemonFramePtr_->storage);
-    frame.ptr = frame.storage.data();
-    frame.size = frame.storage.size();
-    frame.height = d_ptr->daemonFramePtr_->height;
-    frame.width = d_ptr->daemonFramePtr_->width;
+    if (d_ptr->qtFrame) {
+        d_ptr->qtFrame->ptr = d_ptr->daemonFramePtr_->ptr;
+        d_ptr->qtFrame->size = d_ptr->daemonFramePtr_->ptrSize;
+        d_ptr->qtFrame->height = d_ptr->daemonFramePtr_->height;
+        d_ptr->qtFrame->width = d_ptr->daemonFramePtr_->width;
+    }
 
-    return std::move(frame);
+    return d_ptr->qtFrame;
 }
 
 const DRing::SinkTarget&
