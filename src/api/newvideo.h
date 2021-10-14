@@ -65,7 +65,6 @@ struct Frame
 {
     uint8_t* ptr {nullptr};
     std::size_t size {0};
-    std::vector<uint8_t> storage {};
     // Next variables are currently used with DirectRenderer only
     unsigned int height {0};
     unsigned int width {0};
@@ -124,7 +123,7 @@ public:
     /**
      * @return current rendered frame
      */
-    Frame currentFrame() const;
+    Frame* currentFrame() const;
 
 #if defined(ENABLE_LIBWRAP)
     /**

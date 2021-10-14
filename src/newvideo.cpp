@@ -138,18 +138,11 @@ Renderer::getId() const
     return pimpl_->id_;
 }
 
-Frame
+Frame*
 Renderer::currentFrame() const
 {
     // TODO(sblin) remove Video::Frame when deleting old models.
-    auto frame = pimpl_->renderer->currentFrame();
-    Frame result;
-    result.ptr = frame.ptr;
-    result.size = frame.size;
-    result.storage = frame.storage;
-    result.height = frame.height;
-    result.width = frame.width;
-    return result;
+    return pimpl_->renderer->currentFrame();
 }
 
 #if defined(ENABLE_LIBWRAP)
