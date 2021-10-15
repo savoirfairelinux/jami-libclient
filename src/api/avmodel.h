@@ -194,7 +194,7 @@ public:
      * Start a local recorder and return it path.
      * @param audioOnly
      */
-    Q_INVOKABLE QString startLocalRecorder(const bool& audioOnly) const;
+    Q_INVOKABLE QString startLocalMediaRecorder(const QString& videoInputId) const;
     /**
      * Get the current recording path
      * @return recording path
@@ -237,12 +237,15 @@ public:
     Q_INVOKABLE void setRecordQuality(const int& quality) const;
     /**
      * Start preview renderer. This will start the camera
+     * @param resource
+     * @return sinkId
      */
-    Q_INVOKABLE void startPreview();
+    Q_INVOKABLE QString startPreview(const QString& resource);
     /**
      * Stop preview renderer and the camera.
+     * @param resource
      */
-    Q_INVOKABLE void stopPreview();
+    Q_INVOKABLE void stopPreview(const QString& resource);
     /**
      * Get a renderer from a call
      * @param id the callid or "local"

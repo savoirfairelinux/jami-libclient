@@ -162,33 +162,23 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
-    void startCamera()
+    std::string openVideoInput(const std::string& resource)
     {
 #ifdef ENABLE_VIDEO
-        DRing::startCamera();
+        return DRing::openVideoInput(resource);
 #endif
     }
 
-    void stopCamera()
+    void closeVideoInput(const std::string& resource)
     {
 #ifdef ENABLE_VIDEO
-        DRing::stopCamera();
+        DRing::closeVideoInput(resource);
 #endif
     }
 
     void startAudioDevice() { DRing::startAudioDevice(); }
 
     void stopAudioDevice() { DRing::stopAudioDevice(); }
-
-    bool switchInput(const QString& resource)
-    {
-#ifdef ENABLE_VIDEO
-        return DRing::switchInput(resource.toStdString());
-#else
-        Q_UNUSED(resource)
-        return false;
-#endif
-    }
 
     void registerSinkTarget(const QString& sinkID, const DRing::SinkTarget& target)
     {
@@ -219,9 +209,10 @@ public Q_SLOTS: // METHODS
 
     void stopLocalRecorder(const QString& path) { DRing::stopLocalRecorder(path.toStdString()); }
 
-    QString startLocalRecorder(bool audioOnly, const QString& path)
+    QString startLocalMediaRecorder(const QString& videoInputId, const QString& path)
     {
-        return QString::fromStdString(DRing::startLocalRecorder(audioOnly, path.toStdString()));
+        return QString::fromStdString(
+            DRing::startLocalMediaRecorder(videoInputId.toStdString(), path.toStdString()));
     }
 
     MapStringString getRenderer(const QString& id)
