@@ -46,7 +46,7 @@ class FrameWrapper final : public QObject
     Q_OBJECT;
 
 public:
-    FrameWrapper(AVModel& avModel, const QString& id = video::PREVIEW_RENDERER_ID);
+    FrameWrapper(AVModel& avModel, const QString& id);
     ~FrameWrapper();
 
     /*
@@ -81,6 +81,11 @@ public:
 
     void frameMutexUnlock();
 
+    const QString getId()
+    {
+        return id_;
+    }
+
 Q_SIGNALS:
     /*
      * Emitted once in slotRenderingStarted.
@@ -103,17 +108,17 @@ public Q_SLOTS:
      * Used to listen to AVModel::rendererStarted.
      * @param id of the renderer
      */
-    void slotRenderingStarted(const QString& id = video::PREVIEW_RENDERER_ID);
+    void slotRenderingStarted(const QString& id);
     /*
      * Used to listen to AVModel::frameUpdated.
      * @param id of the renderer
      */
-    void slotFrameUpdated(const QString& id = video::PREVIEW_RENDERER_ID);
+    void slotFrameUpdated(const QString& id);
     /*
      * Used to listen to AVModel::renderingStopped.
      * @param id of the renderer
      */
-    void slotRenderingStopped(const QString& id = video::PREVIEW_RENDERER_ID);
+    void slotRenderingStopped(const QString& id);
 
 private:
     /*
@@ -180,18 +185,14 @@ public:
     using DrawFrameCallback = std::function<void(QImage*)>;
 
     /*
-     * Check if the preview is active.
-     */
-    bool isPreviewing();
-    /*
      * Start capturing and rendering preview frames.
      * @param force if the capture device should be started
      */
-    void startPreviewing(bool force = false);
+    const QString startPreviewing(const QString& id, bool force = false);
     /*
      * Stop capturing.
      */
-    void stopPreviewing();
+    void stopPreviewing(const QString& id);
     /*
      * Add and connect a distant renderer for a given id
      * to a FrameWrapper object
@@ -215,25 +216,9 @@ public:
      * Get the most recently rendered preview frame as a QImage (none thread safe).
      * @return the rendered preview image
      */
-    QImage* getPreviewFrame();
+    QImage* getPreviewFrame(const QString& id = "");
 
 Q_SIGNALS:
-
-    /*
-     * Emitted when the preview the preview is started.
-     */
-    void previewFrameStarted();
-
-    /*
-     * Emitted when the preview has a new frame ready.
-     */
-    void previewFrameUpdated();
-
-    /*
-     * Emitted when the preview is stopped.
-     */
-    void previewRenderingStopped();
-
     /*
      * Emitted when a distant renderer has a new frame ready for a given id.
      */
@@ -245,11 +230,6 @@ Q_SIGNALS:
     void distantRenderingStopped(const QString& id);
 
 private:
-    /*
-     * One preview frame.
-     */
-    std::unique_ptr<FrameWrapper> previewFrameWrapper_;
-
     /*
      * Distant for each call/conf/conversation.
      */

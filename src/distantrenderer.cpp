@@ -34,14 +34,14 @@ DistantRenderer::DistantRenderer(QQuickItem* parent)
             connect(lrcInstance_->renderer(),
                     &RenderManager::distantFrameUpdated,
                     [this](const QString& id) {
-                        if (distantRenderId_ == id)
+                        if (rendererId_ == id)
                             update(QRect(0, 0, width(), height()));
                     });
 
             connect(lrcInstance_->renderer(),
                     &RenderManager::distantRenderingStopped,
                     [this](const QString& id) {
-                        if (distantRenderId_ == id)
+                        if (rendererId_ == id)
                             update(QRect(0, 0, width(), height()));
                     });
         }
@@ -53,7 +53,7 @@ DistantRenderer::~DistantRenderer() {}
 void
 DistantRenderer::setRendererId(const QString& id)
 {
-    distantRenderId_ = id;
+    rendererId_ = id;
     // Note: Force a paint to update frame as we change the renderer
     update(QRect(0, 0, width(), height()));
 }
@@ -61,7 +61,16 @@ DistantRenderer::setRendererId(const QString& id)
 QString
 DistantRenderer::rendererId()
 {
-    return distantRenderId_;
+    return rendererId_;
+}
+
+QString
+DistantRenderer::takePhoto(int size)
+{
+    if (auto previewImage = lrcInstance_->renderer()->getPreviewFrame(rendererId_)) {
+        return Utils::byteArrayToBase64String(Utils::QImageToByteArray(previewImage->copy()));
+    }
+    return {};
 }
 
 int
@@ -91,7 +100,7 @@ DistantRenderer::getScaledHeight() const
 void
 DistantRenderer::paint(QPainter* painter)
 {
-    lrcInstance_->renderer()->drawFrame(distantRenderId_, [this, painter](QImage* distantImage) {
+    lrcInstance_->renderer()->drawFrame(rendererId_, [this, painter](QImage* distantImage) {
         if (distantImage) {
             painter->setRenderHint(QPainter::Antialiasing);
             painter->setRenderHint(QPainter::SmoothPixmapTransform);

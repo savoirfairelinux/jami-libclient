@@ -39,13 +39,14 @@ Item {
     height: boothLayout.height
 
     function startBooth() {
-        AvAdapter.startPreviewing(false)
+        preview.deviceId = VideoDevices.getDefaultDevice()
+        preview.rendererId = VideoDevices.startDevice(preview.deviceId)
         isPreviewing = true
     }
 
     function stopBooth(){
         if (!AccountAdapter.hasVideoCall()) {
-            AvAdapter.stopPreviewing()
+        VideoDevices.stopDevice(preview.deviceId)
         }
         isPreviewing = false
     }
@@ -134,6 +135,9 @@ Item {
 
                 anchors.fill: parent
                 anchors.margins: 1
+
+                property string deviceId: VideoDevices.getDefaultDevice()
+                rendererId: ""
 
                 visible: isPreviewing
                 lrcInstance: LRCInstance

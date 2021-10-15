@@ -170,6 +170,9 @@ public:
     Q_INVOKABLE QVariant getScreenSharingFpsModel();
 
     Q_INVOKABLE void setDefaultDevice(int index, bool useSourceModel = false);
+    Q_INVOKABLE const QString getDefaultDevice();
+    Q_INVOKABLE QString startDevice(const QString& deviceId, bool force = false);
+    Q_INVOKABLE void stopDevice(const QString& deviceId, bool force = false);
     Q_INVOKABLE void setDefaultDeviceRes(int index);
     Q_INVOKABLE void setDefaultDeviceFps(int index);
     Q_INVOKABLE void setDisplayFPS(const QString& fps);
@@ -209,4 +212,6 @@ private:
 
     constexpr static const char DEVICE_DESKTOP[] = "desktop";
     constexpr static const char CHANNEL_DEFAULT[] = "default";
+
+    bool deviceOpen_ {false};
 };

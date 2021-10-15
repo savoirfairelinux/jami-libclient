@@ -19,8 +19,6 @@
 
 #include "previewrenderer.h"
 
-#include "lrcinstance.h"
-
 PreviewRenderer::PreviewRenderer(QQuickItem* parent)
     : QQuickPaintedItem(parent)
 {
@@ -32,9 +30,9 @@ PreviewRenderer::PreviewRenderer(QQuickItem* parent)
     connect(this, &PreviewRenderer::lrcInstanceChanged, [this] {
         if (lrcInstance_)
             previewFrameUpdatedConnection_ = connect(lrcInstance_->renderer(),
-                                                     &RenderManager::previewFrameUpdated,
-                                                     [this]() {
-                                                         if (isVisible())
+                                                     &RenderManager::distantFrameUpdated,
+                                                     [this](const QString& id) {
+                                                         if (rendererId_ == id && isVisible())
                                                              update(QRect(0, 0, width(), height()));
                                                      });
     });
@@ -48,39 +46,38 @@ PreviewRenderer::~PreviewRenderer()
 void
 PreviewRenderer::paint(QPainter* painter)
 {
-    lrcInstance_->renderer()
-        ->drawFrame(lrc::api::video::PREVIEW_RENDERER_ID, [this, painter](QImage* previewImage) {
-            if (previewImage) {
-                painter->setRenderHint(QPainter::Antialiasing);
-                painter->setRenderHint(QPainter::SmoothPixmapTransform);
+    lrcInstance_->renderer()->drawFrame(rendererId_, [this, painter](QImage* previewImage) {
+        if (previewImage) {
+            painter->setRenderHint(QPainter::Antialiasing);
+            painter->setRenderHint(QPainter::SmoothPixmapTransform);
 
-                auto aspectRatio = static_cast<qreal>(previewImage->width())
-                                   / static_cast<qreal>(previewImage->height());
-                auto previewHeight = height();
-                auto previewWidth = previewHeight * aspectRatio;
+            auto aspectRatio = static_cast<qreal>(previewImage->width())
+                               / static_cast<qreal>(previewImage->height());
+            auto previewHeight = height();
+            auto previewWidth = previewHeight * aspectRatio;
 
-                /* Instead of setting fixed size, we could get an x offset for the preview
-                 * but this would render the horizontal spacers in the parent widget useless.
-                 * e.g.
-                 * auto parent = qobject_cast<QWidget*>(this->parent());
-                 * auto xPos = (parent->width() - previewWidth) / 2;
-                 * setGeometry(QRect(QPoint(xPos, this->pos().y()),
-                 *             QSize(previewWidth, previewHeight)));
-                 */
-                setWidth(previewWidth);
-                setHeight(previewHeight);
+            /* Instead of setting fixed size, we could get an x offset for the preview
+             * but this would render the horizontal spacers in the parent widget useless.
+             * e.g.
+             * auto parent = qobject_cast<QWidget*>(this->parent());
+             * auto xPos = (parent->width() - previewWidth) / 2;
+             * setGeometry(QRect(QPoint(xPos, this->pos().y()),
+             *             QSize(previewWidth, previewHeight)));
+             */
+            setWidth(previewWidth);
+            setHeight(previewHeight);
 
-                // If the given size is empty, this function returns a null image.
-                QImage scaledPreview;
-                scaledPreview = previewImage->scaled(size().toSize(),
-                                                     Qt::KeepAspectRatio,
-                                                     Qt::SmoothTransformation);
-                painter->drawImage(QRect(0, 0, scaledPreview.width(), scaledPreview.height()),
-                                   scaledPreview);
-            } else {
-                paintBackground(painter);
-            }
-        });
+            // If the given size is empty, this function returns a null image.
+            QImage scaledPreview;
+            scaledPreview = previewImage->scaled(size().toSize(),
+                                                 Qt::KeepAspectRatio,
+                                                 Qt::SmoothTransformation);
+            painter->drawImage(QRect(0, 0, scaledPreview.width(), scaledPreview.height()),
+                               scaledPreview);
+        } else {
+            paintBackground(painter);
+        }
+    });
 }
 
 void
@@ -103,18 +100,17 @@ VideoCallPreviewRenderer::~VideoCallPreviewRenderer() {}
 void
 VideoCallPreviewRenderer::paint(QPainter* painter)
 {
-    lrcInstance_->renderer()
-        ->drawFrame(lrc::api::video::PREVIEW_RENDERER_ID, [this, painter](QImage* previewImage) {
-            if (previewImage) {
-                auto scalingFactor = static_cast<qreal>(previewImage->height())
-                                     / static_cast<qreal>(previewImage->width());
-                setProperty("previewImageScalingFactor", scalingFactor);
-                QImage scaledPreview;
-                scaledPreview = previewImage->scaled(size().toSize(), Qt::KeepAspectRatio);
-                painter->drawImage(QRect(0, 0, scaledPreview.width(), scaledPreview.height()),
-                                   scaledPreview);
-            }
-        });
+    lrcInstance_->renderer()->drawFrame(get_rendererId(), [this, painter](QImage* previewImage) {
+        if (previewImage) {
+            auto scalingFactor = static_cast<qreal>(previewImage->height())
+                                 / static_cast<qreal>(previewImage->width());
+            setProperty("previewImageScalingFactor", scalingFactor);
+            QImage scaledPreview;
+            scaledPreview = previewImage->scaled(size().toSize(), Qt::KeepAspectRatio);
+            painter->drawImage(QRect(0, 0, scaledPreview.width(), scaledPreview.height()),
+                               scaledPreview);
+        }
+    });
 }
 
 PhotoboothPreviewRender::PhotoboothPreviewRender(QQuickItem* parent)
@@ -123,7 +119,7 @@ PhotoboothPreviewRender::PhotoboothPreviewRender(QQuickItem* parent)
     connect(this, &PreviewRenderer::lrcInstanceChanged, [this] {
         if (lrcInstance_)
             connect(lrcInstance_->renderer(),
-                    &RenderManager::previewRenderingStopped,
+                    &RenderManager::distantRenderingStopped,
                     this,
                     &PhotoboothPreviewRender::renderingStopped,
                     Qt::UniqueConnection);
@@ -133,7 +129,7 @@ PhotoboothPreviewRender::PhotoboothPreviewRender(QQuickItem* parent)
 QString
 PhotoboothPreviewRender::takePhoto(int size)
 {
-    if (auto previewImage = lrcInstance_->renderer()->getPreviewFrame()) {
+    if (auto previewImage = lrcInstance_->renderer()->getPreviewFrame(get_rendererId())) {
         return Utils::byteArrayToBase64String(Utils::QImageToByteArray(previewImage->copy()));
     }
     return {};
@@ -144,14 +140,13 @@ PhotoboothPreviewRender::paint(QPainter* painter)
 {
     painter->setRenderHint(QPainter::Antialiasing, true);
 
-    lrcInstance_->renderer()
-        ->drawFrame(lrc::api::video::PREVIEW_RENDERER_ID, [this, painter](QImage* previewImage) {
-            if (previewImage) {
-                QImage scaledPreview;
-                scaledPreview = Utils::getCirclePhoto(*previewImage,
-                                                      height() <= width() ? height() : width());
-                painter->drawImage(QRect(0, 0, scaledPreview.width(), scaledPreview.height()),
-                                   scaledPreview);
-            }
-        });
+    lrcInstance_->renderer()->drawFrame(get_rendererId(), [this, painter](QImage* previewImage) {
+        if (previewImage) {
+            QImage scaledPreview;
+            scaledPreview = Utils::getCirclePhoto(*previewImage,
+                                                  height() <= width() ? height() : width());
+            painter->drawImage(QRect(0, 0, scaledPreview.width(), scaledPreview.height()),
+                               scaledPreview);
+        }
+    });
 }

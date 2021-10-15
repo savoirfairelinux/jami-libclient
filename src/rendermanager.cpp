@@ -31,9 +31,7 @@ FrameWrapper::FrameWrapper(AVModel& avModel, const QString& id)
 
 FrameWrapper::~FrameWrapper()
 {
-    if (id_ == video::PREVIEW_RENDERER_ID) {
-        avModel_.stopPreview();
-    }
+    avModel_.stopPreview(id_);
 }
 
 void
@@ -194,65 +192,40 @@ FrameWrapper::slotRenderingStopped(const QString& id)
 
 RenderManager::RenderManager(AVModel& avModel)
     : avModel_(avModel)
-{
-    previewFrameWrapper_ = std::make_unique<FrameWrapper>(avModel_);
-
-    QObject::connect(previewFrameWrapper_.get(),
-                     &FrameWrapper::renderingStarted,
-                     [this](const QString& id) {
-                         Q_UNUSED(id);
-                         Q_EMIT previewFrameStarted();
-                     });
-
-    QObject::connect(previewFrameWrapper_.get(),
-                     &FrameWrapper::frameUpdated,
-                     [this](const QString& id) {
-                         Q_UNUSED(id);
-                         Q_EMIT previewFrameUpdated();
-                     });
-    QObject::connect(previewFrameWrapper_.get(),
-                     &FrameWrapper::renderingStopped,
-                     [this](const QString& id) {
-                         Q_UNUSED(id);
-                         Q_EMIT previewRenderingStopped();
-                     });
-
-    previewFrameWrapper_->connectStartRendering();
-}
+{}
 
 RenderManager::~RenderManager()
 {
-    previewFrameWrapper_.reset();
-
     for (auto& dfw : distantFrameWrapperMap_) {
         dfw.second.reset();
     }
 }
 
-bool
-RenderManager::isPreviewing()
+void
+RenderManager::stopPreviewing(const QString& id)
 {
-    return previewFrameWrapper_->isRendering();
+    auto dfwIt = distantFrameWrapperMap_.find(id);
+    if (dfwIt != distantFrameWrapperMap_.end()) {
+        dfwIt->second->stopRendering();
+        avModel_.stopPreview(id);
+    }
 }
 
-void
-RenderManager::stopPreviewing()
+const QString
+RenderManager::startPreviewing(const QString& id, bool force)
 {
-    previewFrameWrapper_->stopRendering();
-    avModel_.stopPreview();
-}
+    auto dfwIt = distantFrameWrapperMap_.find(id);
+    if (dfwIt != distantFrameWrapperMap_.end()) {
+        if (dfwIt->second->isRendering() && !force) {
+            return dfwIt->second->getId();
+        }
 
-void
-RenderManager::startPreviewing(bool force)
-{
-    if (previewFrameWrapper_->isRendering() && !force) {
-        return;
+        if (dfwIt->second->isRendering()) {
+            avModel_.stopPreview(id);
+        }
+        return avModel_.startPreview(id);
     }
-
-    if (previewFrameWrapper_->isRendering()) {
-        avModel_.stopPreview();
-    }
-    avModel_.startPreview();
+    return "";
 }
 
 void
@@ -328,24 +301,21 @@ RenderManager::removeDistantRenderer(const QString& id)
 void
 RenderManager::drawFrame(const QString& id, DrawFrameCallback cb)
 {
-    if (id == lrc::api::video::PREVIEW_RENDERER_ID) {
-        if (previewFrameWrapper_->frameMutexTryLock()) {
-            cb(previewFrameWrapper_->getFrame());
-            previewFrameWrapper_->frameMutexUnlock();
-        }
-    } else {
-        auto dfwIt = distantFrameWrapperMap_.find(id);
-        if (dfwIt != distantFrameWrapperMap_.end()) {
-            if (dfwIt->second->frameMutexTryLock()) {
-                cb(dfwIt->second->getFrame());
-                dfwIt->second->frameMutexUnlock();
-            }
+    auto dfwIt = distantFrameWrapperMap_.find(id);
+    if (dfwIt != distantFrameWrapperMap_.end()) {
+        if (dfwIt->second->frameMutexTryLock()) {
+            cb(dfwIt->second->getFrame());
+            dfwIt->second->frameMutexUnlock();
         }
     }
 }
 
 QImage*
-RenderManager::getPreviewFrame()
+RenderManager::getPreviewFrame(const QString& id)
 {
-    return previewFrameWrapper_->getFrame();
+    auto dfwIt = distantFrameWrapperMap_.find(id);
+    if (dfwIt != distantFrameWrapperMap_.end()) {
+        return dfwIt->second->getFrame();
+    }
+    return {};
 }

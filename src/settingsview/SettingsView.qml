@@ -41,8 +41,6 @@ Rectangle {
     onVisibleChanged: {
         if(visible){
             setSelected(selectedMenu,true)
-        } else {
-            AvAdapter.stopPreviewing()
         }
     }
 
@@ -69,7 +67,6 @@ Rectangle {
 
     // slots
     function leaveSettingsSlot(showMainView) {
-        AvAdapter.stopPreviewing()
         settingsViewRect.stopBooth()
         if (showMainView)
             settingsViewNeedToShowMainView()

@@ -59,7 +59,8 @@ Rectangle {
         updateState(RecordBox.States.INIT)
 
         if (isVideo) {
-            AvAdapter.startPreviewing(false)
+            previewWidget.deviceId = VideoDevices.getDefaultDevice()
+            previewWidget.rendererId = VideoDevices.startDevice(previewWidget.deviceId)
             previewAvailable = true
         }
     }
@@ -79,8 +80,8 @@ Rectangle {
     }
 
     function closeRecorder() {
-        if (isVideo && AvAdapter.isPreviewing()) {
-            AvAdapter.stopPreviewing()
+        if (isVideo) {
+            VideoDevices.stopDevice(previewWidget.deviceId)
         }
         stopRecording()
         visible = false
@@ -104,7 +105,7 @@ Rectangle {
 
     function startRecording() {
         timer.start()
-        pathRecorder = AVModel.startLocalRecorder(!isVideo)
+        pathRecorder = AVModel.startLocalMediaRecorder(VideoDevices.getDefaultDevice())
         if (pathRecorder == "") {
             timer.stop()
         }
@@ -251,6 +252,8 @@ Rectangle {
 
             anchors.fill: rectBox
             anchors.centerIn: rectBox
+            property string deviceId: VideoDevices.getDefaultDevice()
+            rendererId: VideoDevices.getDefaultDevice()
 
             lrcInstance: LRCInstance
 

@@ -37,7 +37,8 @@ ColumnLayout {
 
     function startPreviewing(force = false) {
         if (root.visible) {
-            AvAdapter.startPreviewing(force)
+            previewWidget.deviceId = VideoDevices.getDefaultDevice()
+            previewWidget.rendererId = VideoDevices.startDevice(previewWidget.deviceId, force)
             previewAvailable = true
         }
     }
@@ -63,7 +64,7 @@ ColumnLayout {
             if (previewWidget.visible)
                 startPreviewing(true)
         } else {
-            AvAdapter.stopPreviewing()
+            VideoDevices.stopDevice(previewWidget.deviceId)
         }
     }
 
@@ -134,7 +135,7 @@ ColumnLayout {
 
         onActivated: {
             // TODO: start and stop preview logic in here should be in LRC
-            AvAdapter.stopPreviewing()
+            VideoDevices.stopDevice(previewWidget.deviceId)
             VideoDevices.setDefaultDevice(modelIndex)
             startPreviewing()
         }
@@ -215,10 +216,12 @@ ColumnLayout {
 
         color: JamiTheme.primaryForegroundColor
 
-        PreviewRenderer {
+        DistantRenderer {
             id: previewWidget
 
             anchors.fill: rectBox
+            property string deviceId: VideoDevices.getDefaultDevice()
+            rendererId: VideoDevices.getDefaultDevice()
 
             lrcInstance: LRCInstance
 

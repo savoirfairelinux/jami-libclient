@@ -654,6 +654,17 @@ CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
     bool isConferenceCall = !convInfo.confId.isEmpty()
                             || (convInfo.confId.isEmpty() && call->participantsInfos.size() != 0);
     bool isGrid = call->layout == lrc::api::call::Layout::GRID;
+    QString previewId {};
+    if (!isAudioOnly && !isVideoMuted && call->status == lrc::api::call::Status::IN_PROGRESS) {
+        for (const auto& media : call->mediaList) {
+            if (media["MEDIA_TYPE"] == "MEDIA_TYPE_VIDEO") {
+                if (media["ENABLED"] == "true" && media["MUTED"] == "false") {
+                    previewId = media["SOURCE"];
+                    break;
+                }
+            }
+        }
+    }
 
     Q_EMIT updateOverlay(isPaused,
                          isAudioOnly,
@@ -661,7 +672,8 @@ CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
                          isVideoMuted,
                          accInfo.profileInfo.type == lrc::api::profile::Type::SIP,
                          isConferenceCall,
-                         isGrid);
+                         isGrid,
+                         previewId);
 }
 
 void

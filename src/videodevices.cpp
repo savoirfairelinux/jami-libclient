@@ -278,6 +278,40 @@ VideoDevices::setDefaultDevice(int index, bool useSourceModel)
     updateData();
 }
 
+const QString
+VideoDevices::getDefaultDevice()
+{
+    auto idx = devicesSourceModel_->getCurrentIndex();
+    auto rendererId = QString("camera://")
+                      + devicesSourceModel_
+                            ->data(devicesSourceModel_->index(idx, 0),
+                                   VideoInputDeviceModel::DeviceId)
+                            .toString();
+    return rendererId;
+}
+
+#pragma optimize("", off)
+QString
+VideoDevices::startDevice(const QString& deviceId, bool force)
+{
+    if (deviceId.isEmpty())
+        return {};
+    lrcInstance_->renderer()->addDistantRenderer(deviceId);
+    deviceOpen_ = true;
+    return lrcInstance_->renderer()->startPreviewing(deviceId, force);
+}
+
+void
+VideoDevices::stopDevice(const QString& deviceId, bool force)
+{
+    if (!deviceId.isEmpty() && (!lrcInstance_->hasActiveCall(true) || force)) {
+        lrcInstance_->renderer()->stopPreviewing(deviceId);
+        lrcInstance_->renderer()->removeDistantRenderer(deviceId);
+        deviceOpen_ = false;
+    }
+}
+#pragma optimize("", on)
+
 void
 VideoDevices::setDefaultDeviceRes(int index)
 {
@@ -349,6 +383,24 @@ VideoDevices::updateData()
             }
         }
 
+        if (deviceOpen_ && defaultId_ != defaultDeviceSettings.id) {
+            auto callId = lrcInstance_->getCurrentCallId();
+            if (!callId.isEmpty()) {
+                auto callId = lrcInstance_->getCurrentCallId();
+                auto callInfos = lrcInstance_->getCallInfo(callId,
+                                                           lrcInstance_->get_currentAccountId());
+                for (const auto& media : callInfos->mediaList) {
+                    if (media["MUTED"] == "false" && media["ENABLED"] == "true"
+                        && media["SOURCE"] == getDefaultDevice()) {
+                        /*lrcInstance_->avModel().switchInputTo("camera://" +
+                           defaultDeviceSettings.id, callId);*/
+                        // startDevice("camera://" + defaultDeviceSettings.id);
+                        break;
+                    }
+                }
+            }
+        }
+
         set_defaultChannel(defaultDeviceSettings.channel);
         set_defaultId(defaultDeviceSettings.id);
         set_defaultName(defaultDeviceSettings.name);
@@ -405,7 +457,7 @@ VideoDevices::onVideoDeviceEvent()
         auto& avModel = lrcInstance_->avModel();
         if (currentDeviceListSize == 0) {
             avModel.switchInputTo({}, callId);
-            avModel.stopPreview();
+            avModel.stopPreview(this->getDefaultDevice());
         } else if (deviceEvent == DeviceEvent::Removed) {
             avModel.switchInputTo(defaultDevice, callId);
         }
@@ -427,15 +479,18 @@ VideoDevices::onVideoDeviceEvent()
         }
 
         Q_EMIT deviceListChanged(currentDeviceListSize);
-    } else if (lrcInstance_->renderer()->isPreviewing()) {
+    } else if (deviceOpen_) {
         updateData();
 
         // Use QueuedConnection to make sure that it happens at the event loop of current device
         Utils::oneShotConnect(
             lrcInstance_->renderer(),
-            &RenderManager::previewRenderingStopped,
+            &RenderManager::distantRenderingStopped,
             this,
-            [cb] { cb(); },
+            [this, cb](const QString& id) {
+                if (this->getDefaultDevice() == id)
+                    cb();
+            },
             Qt::QueuedConnection);
     } else {
         cb();

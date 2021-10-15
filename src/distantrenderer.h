@@ -43,6 +43,7 @@ public:
     Q_INVOKABLE int getYOffset() const;
     Q_INVOKABLE double getScaledWidth() const;
     Q_INVOKABLE double getScaledHeight() const;
+    Q_INVOKABLE QString takePhoto(int size);
 
 Q_SIGNALS:
     void offsetChanged();
@@ -58,7 +59,7 @@ private:
     /*
      * Unique DistantRenderId for each call.
      */
-    QString distantRenderId_;
+    QString rendererId_;
     int xOffset_ {0};
     int yOffset_ {0};
     double scaledWidth_ {0};

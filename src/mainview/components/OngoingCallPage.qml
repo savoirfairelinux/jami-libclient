@@ -42,6 +42,15 @@ Rectangle {
     property bool isAudioOnly: false
     property alias callId: distantRenderer.rendererId
     property var linkedWebview: null
+    property string callPreviewId: ""
+
+    onCallPreviewIdChanged: {
+        testLog("\n\n CHANGING CALLPREVIEWID" + root.callPreviewId + " " + previewRenderer.rendererId + " \n\n")
+    }
+
+    function testLog(txt) {
+        console.log(this, txt)
+    }
 
     color: "black"
 
@@ -182,6 +191,14 @@ Rectangle {
                     visible: !callOverlay.isAudioOnly && !callOverlay.isConferenceCall && !callOverlay.isVideoMuted && !callOverlay.isPaused &&
                              ((VideoDevices.listSize !== 0 && AvAdapter.currentRenderingDeviceType === Video.DeviceType.CAMERA) || AvAdapter.currentRenderingDeviceType !== Video.DeviceType.CAMERA )
 
+                    rendererId: root.callPreviewId
+
+                    onVisibleChanged: {
+                        if (!visible) {
+                            VideoDevices.stopDevice(rendererId, true)
+                        }
+                    }
+
                     width: Math.max(callPageMainRect.width / 5, JamiTheme.minimumPreviewWidth)
                     x: callPageMainRect.width - previewRenderer.width - previewMargin
                     y: previewMarginYTop
@@ -274,6 +291,14 @@ Rectangle {
 
                         function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
                                                  isSIP, isConferenceCall, isGrid, previewId) {
+                            if (previewId != "") {
+                                if (root.callPreviewId != previewId)
+                                    VideoDevices.stopDevice(root.callPreviewId, true)
+                                VideoDevices.startDevice(previewId)
+                            } else {
+                                VideoDevices.stopDevice(root.callPreviewId, true)
+                            }
+                            root.callPreviewId = previewId
                             callOverlay.showOnHoldImage(isPaused)
                             root.isAudioOnly = isAudioOnly
                             audioCallPageRectCentralRect.visible = !isPaused && root.isAudioOnly

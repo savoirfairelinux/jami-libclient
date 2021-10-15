@@ -77,9 +77,6 @@ protected:
     // TODO: to be removed
     Q_INVOKABLE bool getHardwareAcceleration();
     Q_INVOKABLE void setHardwareAcceleration(bool accelerate);
-    Q_INVOKABLE bool isPreviewing();
-    Q_INVOKABLE void startPreviewing(bool force = false);
-    Q_INVOKABLE void stopPreviewing();
 
 private Q_SLOTS:
     void onAudioDeviceEvent();

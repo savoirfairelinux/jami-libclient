@@ -101,7 +101,8 @@ Q_SIGNALS:
                        bool isVideoMuted,
                        bool isSIP,
                        bool isConferenceCall,
-                       bool isGrid);
+                       bool isGrid,
+                       const QString& previewId);
     void remoteRecordingChanged(const QStringList& peers, bool state);
     void eraseRemoteRecording();
 

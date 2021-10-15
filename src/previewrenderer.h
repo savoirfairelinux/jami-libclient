@@ -21,7 +21,7 @@
 
 #include <QtQuick>
 
-class LRCInstance;
+#include "lrcinstance.h"
 
 /*
  * Use QQuickPaintedItem so that QPainter apis can be used.
@@ -31,6 +31,7 @@ class PreviewRenderer : public QQuickPaintedItem
 {
     Q_OBJECT
     Q_PROPERTY(LRCInstance* lrcInstance MEMBER lrcInstance_ NOTIFY lrcInstanceChanged)
+    QML_PROPERTY(QString, rendererId);
 
 public:
     explicit PreviewRenderer(QQuickItem* parent = nullptr);
@@ -78,7 +79,7 @@ public:
     Q_INVOKABLE QString takePhoto(int size);
 
 Q_SIGNALS:
-    void renderingStopped();
+    void renderingStopped(const QString id);
 
 private:
     void paint(QPainter* painter) override final;
