@@ -290,8 +290,8 @@ AVModel::setDeviceSettings(video::Settings& settings)
     if (pimpl_->renderers_[video::PREVIEW_RENDERER_ID]) {
         if (pimpl_->renderers_[video::PREVIEW_RENDERER_ID]->isRendering()
             && pimpl_->renderers_.size() == 1) {
-            stopPreview();
-            startPreview();
+            stopPreview(video::PREVIEW_RENDERER_ID);
+            startPreview(video::PREVIEW_RENDERER_ID);
         }
     }
 }
@@ -450,10 +450,10 @@ AVModel::stopLocalRecorder(const QString& path) const
 }
 
 QString
-AVModel::startLocalRecorder(const bool& audioOnly) const
+AVModel::startLocalMediaRecorder(const QString& videoInputId) const
 {
     const QString path = pimpl_->getRecordingPath();
-    const QString finalPath = VideoManager::instance().startLocalRecorder(audioOnly, path);
+    const QString finalPath = VideoManager::instance().startLocalMediaRecorder(videoInputId, path);
     return finalPath;
 }
 
@@ -514,16 +514,16 @@ AVModel::useAVFrame(bool useAVFrame)
     }
 }
 
-void
-AVModel::startPreview()
+QString
+AVModel::startPreview(const QString& resource)
 {
-    VideoManager::instance().startCamera();
+    return QString(VideoManager::instance().openVideoInput(resource.toStdString()).c_str());
 }
 
 void
-AVModel::stopPreview()
+AVModel::stopPreview(const QString& resource)
 {
-    VideoManager::instance().stopCamera();
+    VideoManager::instance().closeVideoInput(resource.toStdString());
 }
 
 const video::Renderer&
@@ -547,7 +547,7 @@ AVModel::setInputFile(const QString& uri, const QString& callId)
                                          .arg(QUrl(uri).toLocalFile())
                                    : DRing::Media::VideoProtocolPrefix::NONE;
     if (callId.isEmpty()) {
-        VideoManager::instance().switchInput(resource);
+        VideoManager::instance().openVideoInput(resource.toStdString());
     } else {
         CallManager::instance().switchInput(callId, resource);
     }
@@ -591,7 +591,7 @@ AVModel::switchInputTo(const QString& id, const QString& callId)
         resource = QString(DRing::Media::VideoProtocolPrefix::NONE);
     }
     if (callId.isEmpty()) {
-        VideoManager::instance().switchInput(resource);
+        VideoManager::instance().openVideoInput(resource.toStdString());
     } else {
         CallManager::instance().switchInput(callId, resource);
     }
