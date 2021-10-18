@@ -1262,7 +1262,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="259"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Skoči na konec</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="262"/>
@@ -2418,12 +2418,12 @@ Kopirajte ga in delite s prijatelji!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="248"/>
         <source>Sending</source>
-        <translation type="unfinished"/>
+        <translation>Pošiljanje</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="250"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>Ni uspelo</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
@@ -2433,17 +2433,17 @@ Kopirajte ga in delite s prijatelji!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Povezovanje</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="256"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Sprejmi</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="258"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>Preklicano</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="261"/>
@@ -2473,7 +2473,7 @@ Kopirajte ga in delite s prijatelji!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="271"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Končano</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
@@ -2483,7 +2483,7 @@ Kopirajte ga in delite s prijatelji!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
         <source>one day ago</source>
-        <translation type="unfinished"/>
+        <translation>pred enim dnevom</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
@@ -2493,7 +2493,7 @@ Kopirajte ga in delite s prijatelji!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
         <source>one hour ago</source>
-        <translation type="unfinished"/>
+        <translation>pred eno uro</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
@@ -2503,7 +2503,7 @@ Kopirajte ga in delite s prijatelji!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>ravnokar</translation>
     </message>
 </context>
 <context>

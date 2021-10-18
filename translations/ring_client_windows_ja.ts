@@ -2416,7 +2416,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="248"/>
         <source>Sending</source>
-        <translation type="unfinished"/>
+        <translation>送信中</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="250"/>
@@ -2431,17 +2431,17 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>接続中</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="256"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>受け入れ</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="258"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>キャンセルしました</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="261"/>
@@ -2471,7 +2471,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="271"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>通話終了</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
@@ -2481,7 +2481,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
         <source>one day ago</source>
-        <translation type="unfinished"/>
+        <translation>1 日前</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
@@ -2491,7 +2491,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
         <source>one hour ago</source>
-        <translation type="unfinished"/>
+        <translation>1 時間前</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
@@ -2501,7 +2501,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>ちょうど今</translation>
     </message>
 </context>
 <context>

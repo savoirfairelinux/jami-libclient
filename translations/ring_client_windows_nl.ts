@@ -2416,12 +2416,12 @@ Deel deze met uw vrienden!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="248"/>
         <source>Sending</source>
-        <translation type="unfinished"/>
+        <translation>Bezig met versturen</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="250"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>Fout</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
@@ -2431,17 +2431,17 @@ Deel deze met uw vrienden!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Verbinden</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="256"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Accepteren</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="258"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>Geannuleerd</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="261"/>
@@ -2471,7 +2471,7 @@ Deel deze met uw vrienden!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="271"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Beëindigd</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
@@ -2481,7 +2481,7 @@ Deel deze met uw vrienden!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
         <source>one day ago</source>
-        <translation type="unfinished"/>
+        <translation>een dag geleden</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
@@ -2491,7 +2491,7 @@ Deel deze met uw vrienden!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
         <source>one hour ago</source>
-        <translation type="unfinished"/>
+        <translation>een uur geleden</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
@@ -2501,7 +2501,7 @@ Deel deze met uw vrienden!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>zonet</translation>
     </message>
 </context>
 <context>

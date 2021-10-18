@@ -1262,7 +1262,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="259"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>跳转至最新</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="262"/>
@@ -2418,12 +2418,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="248"/>
         <source>Sending</source>
-        <translation type="unfinished"/>
+        <translation>发送中</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="250"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>失败</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
@@ -2433,47 +2433,47 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>正在连接</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="256"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>接收</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="258"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>已取消</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="261"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>无法联系</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="263"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>正在进行</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="265"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>正在等待联系人</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="267"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>入站传送</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="269"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>等待联系人超时</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="271"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>完成</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
@@ -2483,7 +2483,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
         <source>one day ago</source>
-        <translation type="unfinished"/>
+        <translation>一天前</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
@@ -2493,7 +2493,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
         <source>one hour ago</source>
-        <translation type="unfinished"/>
+        <translation>一小时前</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
@@ -2503,7 +2503,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>刚才</translation>
     </message>
 </context>
 <context>

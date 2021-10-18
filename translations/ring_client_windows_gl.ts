@@ -1263,7 +1263,7 @@ Jami vai pechar.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="259"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Ir á última</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="262"/>
@@ -2418,12 +2418,12 @@ Copiao e compárteo coas túas amizades!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="248"/>
         <source>Sending</source>
-        <translation type="unfinished"/>
+        <translation>Enviando</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="250"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>Fallo</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
@@ -2433,47 +2433,47 @@ Copiao e compárteo coas túas amizades!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Conectando</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="256"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="258"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>Cancelado</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="261"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posible contactar</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="263"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>Saínte</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="265"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Agardando polo contacto</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="267"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Transferencia entrante</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="269"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Caducou a espera polo contacto</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="271"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Rematada</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
@@ -2483,7 +2483,7 @@ Copiao e compárteo coas túas amizades!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
         <source>one day ago</source>
-        <translation type="unfinished"/>
+        <translation>fai un día</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
@@ -2493,7 +2493,7 @@ Copiao e compárteo coas túas amizades!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
         <source>one hour ago</source>
-        <translation type="unfinished"/>
+        <translation>fai unha hora</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
@@ -2503,7 +2503,7 @@ Copiao e compárteo coas túas amizades!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>xusto agora</translation>
     </message>
 </context>
 <context>

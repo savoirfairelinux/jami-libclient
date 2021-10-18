@@ -2415,12 +2415,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="248"/>
         <source>Sending</source>
-        <translation type="unfinished"/>
+        <translation>שולח</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="250"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>כישלון</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
@@ -2430,12 +2430,12 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>מתחבר</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="256"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>לקבל</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="258"/>
@@ -2480,7 +2480,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
         <source>one day ago</source>
-        <translation type="unfinished"/>
+        <translation>לפני יום</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
@@ -2490,7 +2490,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
         <source>one hour ago</source>
-        <translation type="unfinished"/>
+        <translation>לפני שעה</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>

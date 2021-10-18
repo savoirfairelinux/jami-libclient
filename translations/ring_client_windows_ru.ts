@@ -1729,7 +1729,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="442"/>
         <source>Stop taking photo</source>
-        <translation type="unfinished"/>
+        <translation>Прекратить фотографировать</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="443"/>
@@ -2432,7 +2432,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
         <source>Sent</source>
-        <translation type="unfinished"/>
+        <translation>Отправлено</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
@@ -2482,7 +2482,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
         <source>%1 days ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 дней назад</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
@@ -2492,7 +2492,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
         <source>%1 hours ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 часов назад</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
@@ -2502,7 +2502,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
         <source>%1 minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 минут назад</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>

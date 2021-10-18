@@ -1856,7 +1856,7 @@ Jami se va închide acum.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="560"/>
         <source>%1 has sent you a request for a conversation.</source>
-        <translation>%1 ți-a trimis o invitație la conversație.</translation>
+        <translation>%1 ți-a trimis o invitație la o conversație.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="561"/>
@@ -2432,7 +2432,7 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
         <source>Sent</source>
-        <translation type="unfinished"/>
+        <translation>Trimis</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
@@ -2482,7 +2482,7 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
         <source>%1 days ago</source>
-        <translation type="unfinished"/>
+        <translation>acum %1 zile</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
@@ -2492,7 +2492,7 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
         <source>%1 hours ago</source>
-        <translation type="unfinished"/>
+        <translation>acum %1 ore</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
@@ -2502,7 +2502,7 @@ Copiază-l și distribuie-l prietenilor!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
         <source>%1 minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>acum %1 minute</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>

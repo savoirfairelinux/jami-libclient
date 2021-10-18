@@ -2421,7 +2421,7 @@ Nukopijuokite ir dalinkitės juo su draugais!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="250"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>Nesėkmė</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
@@ -2431,17 +2431,17 @@ Nukopijuokite ir dalinkitės juo su draugais!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Sujungiama</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="256"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Priimti</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="258"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>Atsisakyta</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="261"/>
@@ -2471,7 +2471,7 @@ Nukopijuokite ir dalinkitės juo su draugais!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="271"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Užbaigta</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
@@ -2481,7 +2481,7 @@ Nukopijuokite ir dalinkitės juo su draugais!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
         <source>one day ago</source>
-        <translation type="unfinished"/>
+        <translation>prieš vieną dieną</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
@@ -2491,7 +2491,7 @@ Nukopijuokite ir dalinkitės juo su draugais!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
         <source>one hour ago</source>
-        <translation type="unfinished"/>
+        <translation>prieš vieną valandą</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
@@ -2501,7 +2501,7 @@ Nukopijuokite ir dalinkitės juo su draugais!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>ką tik</translation>
     </message>
 </context>
 <context>

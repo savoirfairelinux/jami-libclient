@@ -1263,7 +1263,7 @@ Jami tani do të mbyllet.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="259"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Hidhu te më i riu</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="262"/>
@@ -2423,12 +2423,12 @@ Kopjojeni dhe jepuani shokëve!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="248"/>
         <source>Sending</source>
-        <translation type="unfinished"/>
+        <translation>Po dërgohet</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="250"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>Dështim</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
@@ -2438,77 +2438,77 @@ Kopjojeni dhe jepuani shokëve!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Po lidhet</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="256"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Pranoje</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="258"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>U anulua</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="261"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>S’arrihet të vendoset kontakt</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="263"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>Në punë e sipër</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="265"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Po pritet për kontakt</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="267"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Shpërngulje ardhëse</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="269"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Mbaroi koha duke pritur për kontakt</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="271"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Përfundoi</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
         <source>%1 days ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 ditë më parë</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
         <source>one day ago</source>
-        <translation type="unfinished"/>
+        <translation>një ditë më parë</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
         <source>%1 hours ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 orë më parë</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
         <source>one hour ago</source>
-        <translation type="unfinished"/>
+        <translation>një orë më parë</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
         <source>%1 minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 minuta më parë</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>mu tani</translation>
     </message>
 </context>
 <context>

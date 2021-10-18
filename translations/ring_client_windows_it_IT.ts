@@ -1263,7 +1263,7 @@ Jami ora si chiuderà.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="259"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Vai all&apos;ultimo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="262"/>
@@ -2423,92 +2423,92 @@ Copia e condividi con i tuoi amici!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="248"/>
         <source>Sending</source>
-        <translation type="unfinished"/>
+        <translation>Invio in corso</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="250"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>Fallito</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
         <source>Sent</source>
-        <translation type="unfinished"/>
+        <translation>Inviato</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Collegamento</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="256"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Accetta</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="258"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>Annullato</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="261"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile prendere contatto</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="263"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>In corso</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="265"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>In attesa di contatto</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="267"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Trasferimento in entrata</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="269"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Tempo scaduto in attesa di contatto</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="271"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Finito</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
         <source>%1 days ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 giorni fa</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
         <source>one day ago</source>
-        <translation type="unfinished"/>
+        <translation>un giorno fa</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
         <source>%1 hours ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 ore fa</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
         <source>one hour ago</source>
-        <translation type="unfinished"/>
+        <translation>un&apos;ora fa</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
         <source>%1 minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 minuti fa</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>ora</translation>
     </message>
 </context>
 <context>

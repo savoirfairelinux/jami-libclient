@@ -523,7 +523,7 @@ Jami şimdi kapatılacak.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="113"/>
         <source>Registration expiration time (seconds)</source>
-        <translation type="unfinished"/>
+        <translation>Kaydolma bitimi süresi (saniye)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="127"/>
@@ -553,7 +553,7 @@ Jami şimdi kapatılacak.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="181"/>
         <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation type="unfinished"/>
+        <translation>Hesabınız yalnızca bu cihazda bulunmaktadır. Cihazınızı kaybederseniz veya uygulamayı kaldırırsanız hesabınız silinir ve kurtarılamaz. Hesabınızı şimdi ya da daha sonra yedekleyebilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="36"/>
@@ -564,12 +564,12 @@ Jami şimdi kapatılacak.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="211"/>
         <source>Pause call</source>
-        <translation type="unfinished"/>
+        <translation>Aramayı duraklat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="212"/>
         <source>Resume call</source>
-        <translation type="unfinished"/>
+        <translation>Aramayı sürdür</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="213"/>
@@ -609,7 +609,7 @@ Jami şimdi kapatılacak.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="331"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation type="unfinished"/>
+        <translation>Hesabınız yedeklenmediyse veya başka bir aygıta eklenmediyse, hesabınız ve kayıtlı adınız geri alınamaz bir şekilde kaybolacaktır.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="344"/>
@@ -736,27 +736,27 @@ Jami şimdi kapatılacak.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="33"/>
         <source>Accept in audio</source>
-        <translation type="unfinished"/>
+        <translation>Sesli olarak kabul et</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="34"/>
         <source>Accept in video</source>
-        <translation type="unfinished"/>
+        <translation>Görüntülü olarak kabul et</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="43"/>
         <source>You are viewing a conversation where all participants other than you have left. New interactions will not be possible.</source>
-        <translation type="unfinished"/>
+        <translation>Sizin dışınızdaki tüm katılımcıların ayrıldığı bir konuşmayı görüntülüyorsunuz. Yeni etkileşimler mümkün olmayacaktır.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="44"/>
         <source>Start new conversation</source>
-        <translation type="unfinished"/>
+        <translation>Yeni konuşma başlat</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="81"/>
         <source>Chat Settings</source>
-        <translation type="unfinished"/>
+        <translation>Sohbet Ayarları</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="82"/>
@@ -766,7 +766,7 @@ Jami şimdi kapatılacak.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="83"/>
         <source>Send and receive receipts indicating that a message have been displayed</source>
-        <translation type="unfinished"/>
+        <translation>Bir mesajın görüntülendiğini belirten bildirimleri gönderin ve alın</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="108"/>
@@ -831,7 +831,7 @@ Jami şimdi kapatılacak.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="125"/>
         <source>Allow IP Auto Rewrite</source>
-        <translation type="unfinished"/>
+        <translation>Otomatik IP Yeniden Yazmaya(IP Auto Rewrite) İzin Ver</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="126"/>
@@ -1056,7 +1056,7 @@ Jami şimdi kapatılacak.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="197"/>
         <source>Reinstate as contact</source>
-        <translation type="unfinished"/>
+        <translation>Kişi olarak eski durumuna getir</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="198"/>
@@ -1076,7 +1076,7 @@ Jami şimdi kapatılacak.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="203"/>
         <source>are recording</source>
-        <translation type="unfinished"/>
+        <translation>kaydediyor</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="204"/>
@@ -1218,7 +1218,7 @@ Jami şimdi kapatılacak.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="246"/>
         <source>Select sharing method</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım yöntemini seçin</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="247"/>
@@ -2260,7 +2260,7 @@ Kopyalayın ve arkadaşlarınızla paylaşın!</translation>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="138"/>
         <source>Open window</source>
-        <translation type="unfinished"/>
+        <translation>Pencere aç</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/KeyBoardShortcutTable.qml" line="146"/>
@@ -2283,17 +2283,17 @@ Kopyalayın ve arkadaşlarınızla paylaşın!</translation>
     <message>
         <location filename="../src/mainapplication.cpp" line="428"/>
         <source>E&amp;xit</source>
-        <translation type="unfinished"/>
+        <translation>Ç&amp;ıkış Yap</translation>
     </message>
     <message>
         <location filename="../src/mainapplication.cpp" line="430"/>
         <source>&amp;Quit</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kapat</translation>
     </message>
     <message>
         <location filename="../src/mainapplication.cpp" line="436"/>
         <source>&amp;Show Jami</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Jami&apos;yi Göster</translation>
     </message>
 </context>
 <context>
@@ -2430,7 +2430,7 @@ Kopyalayın ve arkadaşlarınızla paylaşın!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
         <source>Sent</source>
-        <translation type="unfinished"/>
+        <translation>Gönderildi</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
@@ -2480,7 +2480,7 @@ Kopyalayın ve arkadaşlarınızla paylaşın!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
         <source>%1 days ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 gün önce</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
@@ -2490,7 +2490,7 @@ Kopyalayın ve arkadaşlarınızla paylaşın!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
         <source>%1 hours ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 saat önce</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
@@ -2500,7 +2500,7 @@ Kopyalayın ve arkadaşlarınızla paylaşın!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
         <source>%1 minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 dakika önce</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>

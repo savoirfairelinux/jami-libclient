@@ -2416,7 +2416,7 @@ Copiatz-lo e partejatz-lo a vòstres amics !</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="248"/>
         <source>Sending</source>
-        <translation type="unfinished"/>
+        <translation>Mandadís</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="250"/>
@@ -2431,12 +2431,12 @@ Copiatz-lo e partejatz-lo a vòstres amics !</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Connexion</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="256"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Acceptar</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="258"/>
@@ -2501,7 +2501,7 @@ Copiatz-lo e partejatz-lo a vòstres amics !</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>Ara meteis</translation>
     </message>
 </context>
 <context>

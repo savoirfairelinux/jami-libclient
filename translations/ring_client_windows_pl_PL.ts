@@ -2431,12 +2431,12 @@ Skopiuj i podziel się nią z przyjaciółmi!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Łączenie</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="256"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Akceptuj</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="258"/>
@@ -2471,7 +2471,7 @@ Skopiuj i podziel się nią z przyjaciółmi!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="271"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>Zakończono</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>

@@ -2433,7 +2433,7 @@ Copia e condividi con i tuoi amici!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="252"/>
         <source>Sent</source>
-        <translation type="unfinished"/>
+        <translation>Inviato</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="254"/>
@@ -2483,7 +2483,7 @@ Copia e condividi con i tuoi amici!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="480"/>
         <source>%1 days ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 giorni fa</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="482"/>
@@ -2493,7 +2493,7 @@ Copia e condividi con i tuoi amici!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="485"/>
         <source>%1 hours ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 ore fa</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="487"/>
@@ -2503,7 +2503,7 @@ Copia e condividi con i tuoi amici!</translation>
     <message>
         <location filename="../src/messagesadapter.cpp" line="490"/>
         <source>%1 minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>%1 minuti fa</translation>
     </message>
     <message>
         <location filename="../src/messagesadapter.cpp" line="491"/>
