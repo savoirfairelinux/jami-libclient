@@ -189,7 +189,7 @@ MainApplication::init()
             connectivityMonitor_.get(),
             results[opts::MUTEDAEMON].toBool());
 
-#ifdef Q_OS_UNIX
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
     using namespace Interfaces;
     GlobalInstances::setDBusErrorHandler(std::make_unique<DBusErrorHandler>());
     auto dBusErrorHandlerQObject = dynamic_cast<QObject*>(&GlobalInstances::dBusErrorHandler());

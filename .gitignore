@@ -30,3 +30,6 @@ build-local/
 # auto-gen files
 resources.qrc
 src/constant/JamiResources.qml
+
+# macOS
+.DS_Store

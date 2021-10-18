@@ -69,9 +69,18 @@ PreviewRenderer::paint(QPainter* painter)
 
             // If the given size is empty, this function returns a null image.
             QImage scaledPreview;
-            scaledPreview = previewImage->scaled(size().toSize(),
-                                                 Qt::KeepAspectRatio,
-                                                 Qt::SmoothTransformation);
+#if defined(Q_OS_MACOS)
+
+            scaledPreview = previewImage
+                                ->scaled(size().toSize(),
+                                         Qt::KeepAspectRatio,
+                                         Qt::SmoothTransformation)
+                                .rgbSwapped();
+#else
+                scaledPreview = previewImage->scaled(size().toSize(),
+                                                     Qt::KeepAspectRatio,
+                                                     Qt::SmoothTransformation);
+#endif
             painter->drawImage(QRect(0, 0, scaledPreview.width(), scaledPreview.height()),
                                scaledPreview);
         } else {
@@ -106,7 +115,11 @@ VideoCallPreviewRenderer::paint(QPainter* painter)
                                  / static_cast<qreal>(previewImage->width());
             setProperty("previewImageScalingFactor", scalingFactor);
             QImage scaledPreview;
-            scaledPreview = previewImage->scaled(size().toSize(), Qt::KeepAspectRatio);
+#if defined(Q_OS_MACOS)
+            scaledPreview = previewImage->scaled(size().toSize(), Qt::KeepAspectRatio).rgbSwapped();
+#else
+                scaledPreview = previewImage->scaled(size().toSize(), Qt::KeepAspectRatio);
+#endif
             painter->drawImage(QRect(0, 0, scaledPreview.width(), scaledPreview.height()),
                                scaledPreview);
         }
@@ -130,7 +143,12 @@ QString
 PhotoboothPreviewRender::takePhoto(int size)
 {
     if (auto previewImage = lrcInstance_->renderer()->getPreviewFrame(get_rendererId())) {
+#if defined(Q_OS_MACOS)
+        return Utils::byteArrayToBase64String(
+            Utils::QImageToByteArray(previewImage->copy().rgbSwapped()));
+#else
         return Utils::byteArrayToBase64String(Utils::QImageToByteArray(previewImage->copy()));
+#endif
     }
     return {};
 }
@@ -143,8 +161,15 @@ PhotoboothPreviewRender::paint(QPainter* painter)
     lrcInstance_->renderer()->drawFrame(get_rendererId(), [this, painter](QImage* previewImage) {
         if (previewImage) {
             QImage scaledPreview;
+#if defined(Q_OS_MACOS)
+
             scaledPreview = Utils::getCirclePhoto(*previewImage,
-                                                  height() <= width() ? height() : width());
+                                                  height() <= width() ? height() : width())
+                                .rgbSwapped();
+#else
+                scaledPreview = Utils::getCirclePhoto(*previewImage,
+                                                      height() <= width() ? height() : width());
+#endif
             painter->drawImage(QRect(0, 0, scaledPreview.width(), scaledPreview.height()),
                                scaledPreview);
         }

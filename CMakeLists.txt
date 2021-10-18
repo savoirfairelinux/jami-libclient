@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.11)
 
 project(jami-qt)
 
@@ -22,6 +22,18 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
 
 set(QML_RESOURCES ${PROJECT_SOURCE_DIR}/resources.qrc)
 set(QML_RESOURCES_QML ${PROJECT_SOURCE_DIR}/qml.qrc)
+
+if (APPLE)
+    include(FetchContent)
+    FetchContent_Declare(
+        libqrencode
+        GIT_REPOSITORY https://github.com/fukuchi/libqrencode.git
+        GIT_TAG v4.1.1
+    )
+    FetchContent_Populate(libqrencode)
+    add_subdirectory(${libqrencode_SOURCE_DIR} ${libqrencode_BINARY_DIR})
+    include_directories(${libqrencode_SOURCE_DIR})
+endif()
 
 # Resource auto-gen
 # check files in the resource directory and force a reconfigure if it changes
@@ -253,7 +265,7 @@ if(MSVC)
     include_directories(${DRING_SRC_PATH}
                         ${LRC_SRC_PATH}
                         ${QRENCODE})
-else()
+elseif (NOT APPLE)
     list(APPEND COMMON_SOURCES
                 ${SRC_DIR}/xrectsel.c
                 ${SRC_DIR}/dbuserrorhandler.cpp)
@@ -335,6 +347,42 @@ else()
     find_library(ringclient ringclient ${LRCLIBDIR} NO_DEFAULT_PATH)
     find_library(qrencode qrencode)
     find_library(X11 X11)
+else()
+    if(NOT DEFINED LRC)
+        if(EXISTS ${PROJECT_SOURCE_DIR}/../install/lrc)
+            set(LRC ${PROJECT_SOURCE_DIR}/../install/lrc)
+        endif()
+    endif()
+    if(DEFINED LRC)
+        if(EXISTS ${LRC}/include/libringclient)
+            set(LRC_SRC_PATH ${LRC}/include/libringclient)
+        else()
+            set(LRC_SRC_PATH ${LRC}/src)
+        endif()
+        if(NOT DEFINED LRCLIB)
+            set(LRCLIB ${LRC})
+        endif()
+        find_library(ringclient ringclient
+            PATHS ${LRCLIB}
+            PATH_SUFFIXES lib build build-local NO_DEFAULT_PATH)
+        set(LRC_LIB_NAME ${ringclient})
+    else()
+        find_package(LibRingClient REQUIRED)
+        if (LibRingClient_FOUND)
+            set(LRC_SRC_PATH ${LIB_RING_CLIENT_INCLUDE_DIR})
+            set(LRC_LIB_NAME ${LIB_RING_CLIENT_LIBRARY})
+        else()
+            message("lrc not found!")
+        endif()
+    endif()
+
+    message("Will expect lrc headers in ${LRC_SRC_PATH}")
+
+    include_directories(${LRC_SRC_PATH})
+
+    set(JAMI_DATA_PREFIX "${CMAKE_INSTALL_PREFIX}/share")
+
+    find_library(ringclient ringclient ${LRCLIBDIR} NO_DEFAULT_PATH)
 endif()
 
 # Qt find package
@@ -441,7 +489,7 @@ if(MSVC)
 
     # executable name
     set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Jami")
-else()
+elseif (NOT APPLE)
     target_link_libraries(${PROJECT_NAME} PRIVATE
                           ${QML_LIBS}
                           ${LRC_LIB_NAME}
@@ -552,6 +600,33 @@ else()
 
     add_custom_target(uninstall
         COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+else()
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+                          ${QML_LIBS}
+                          ${LRC_LIB_NAME}
+                          qrencode)
+
+     # translations
+     if(Qt${QT_VERSION_MAJOR}LinguistTools_FOUND)
+         message("Releasing and copying translation files")
+         file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/ring/translations/")
+         file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/share/libringclient/translations/")
+         file(GLOB TS_CLIENT_FILES ${PROJECT_SOURCE_DIR}/translations/*.ts)
+         file(GLOB TS_LRC_FILES ${LRC}/translations/*.ts)
+         set_source_files_properties(${TS_CLIENT_FILES} PROPERTIES OUTPUT_LOCATION
+                                     "${CMAKE_BINARY_DIR}/share/ring/translations")
+         set_source_files_properties(${TS_LRC_FILES} PROPERTIES OUTPUT_LOCATION
+                                     "${CMAKE_BINARY_DIR}/share/libringclient/translations")
+
+         qt_add_translation(QM_CLIENT_FILES ${TS_CLIENT_FILES})
+         qt_add_translation(QM_LRC_FILES ${TS_LRC_FILES})
+         target_sources(${PROJECT_NAME} PRIVATE ${QM_CLIENT_FILES})
+         target_sources(${PROJECT_NAME} PRIVATE ${QM_LRC_FILES})
+         install(DIRECTORY "${CMAKE_BINARY_DIR}/share/ring/translations/"
+                            DESTINATION ${CMAKE_INSTALL_PREFIX}/share/ring/translations)
+         install(DIRECTORY "${CMAKE_BINARY_DIR}/share/libringclient/translations/"
+                            DESTINATION ${CMAKE_INSTALL_PREFIX}/share/libringclient/translations)
+      endif()
 endif()
 
 

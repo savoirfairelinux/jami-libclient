@@ -104,10 +104,18 @@ DistantRenderer::paint(QPainter* painter)
         if (distantImage) {
             painter->setRenderHint(QPainter::Antialiasing);
             painter->setRenderHint(QPainter::SmoothPixmapTransform);
+#if defined(Q_OS_MACOS)
 
+            auto scaledDistant = distantImage
+                                     ->scaled(size().toSize(),
+                                              Qt::KeepAspectRatio,
+                                              Qt::SmoothTransformation)
+                                     .rgbSwapped();
+#else
             auto scaledDistant = distantImage->scaled(size().toSize(),
                                                       Qt::KeepAspectRatio,
                                                       Qt::SmoothTransformation);
+#endif
             auto tempScaledWidth = static_cast<int>(scaledWidth_ * 1000);
             auto tempScaledHeight = static_cast<int>(scaledHeight_ * 1000);
             auto tempXOffset = xOffset_;
