@@ -650,7 +650,7 @@ CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
     bool isPaused = call->status == lrc::api::call::Status::PAUSED;
     bool isAudioOnly = call->isAudioOnly && !isPaused;
     bool isAudioMuted = call->audioMuted && (call->status != lrc::api::call::Status::PAUSED);
-    bool isVideoMuted = call->videoMuted && !isPaused && !call->isAudioOnly;
+    bool isVideoMuted = call->videoMuted && !isPaused;
     bool isRecording = isRecordingThisCall();
     bool isConferenceCall = !convInfo.confId.isEmpty()
                             || (convInfo.confId.isEmpty() && call->participantsInfos.size() != 0);
@@ -959,7 +959,7 @@ CallAdapter::holdThisCallToggle()
 }
 
 void
-CallAdapter::muteThisCallToggle()
+CallAdapter::muteThisCallToggle(bool mute)
 {
     const auto callId = lrcInstance_->getCallIdForConversationUid(convUid_, accountId_);
     if (callId.isEmpty() || !lrcInstance_->getCurrentCallModel()->hasCall(callId)) {
@@ -967,7 +967,11 @@ CallAdapter::muteThisCallToggle()
     }
     auto* callModel = lrcInstance_->getCurrentCallModel();
     if (callModel->hasCall(callId)) {
-        callModel->requestMediaChange(callId, "audio_0");
+        callModel->requestMediaChange(callId,
+                                      "audio_0",
+                                      lrcInstance_->avModel().getCurrentVideoCaptureDevice(),
+                                      lrc::api::NewCallModel::MediaRequestType::CAMERA,
+                                      mute);
     }
 }
 
@@ -985,7 +989,7 @@ CallAdapter::recordThisCallToggle()
 }
 
 void
-CallAdapter::videoPauseThisCallToggle()
+CallAdapter::videoPauseThisCallToggle(bool mute)
 {
     const auto callId = lrcInstance_->getCallIdForConversationUid(convUid_, accountId_);
     if (callId.isEmpty() || !lrcInstance_->getCurrentCallModel()->hasCall(callId)) {
@@ -993,7 +997,11 @@ CallAdapter::videoPauseThisCallToggle()
     }
     auto* callModel = lrcInstance_->getCurrentCallModel();
     if (callModel->hasCall(callId)) {
-        callModel->requestMediaChange(callId, "video_0");
+        callModel->requestMediaChange(callId,
+                                      "video_0",
+                                      lrcInstance_->avModel().getCurrentVideoCaptureDevice(),
+                                      lrc::api::NewCallModel::MediaRequestType::CAMERA,
+                                      mute);
         // media label should come from qml
         // also thi function can me emrged with "muteThisCallToggle"
     }

@@ -156,7 +156,7 @@ Control {
     property list<Action> primaryActions: [
         Action {
             id: muteAudioAction
-            onTriggered: CallAdapter.muteThisCallToggle()
+            onTriggered: CallAdapter.muteThisCallToggle(!isAudioMuted)
             checkable: true
             icon.source: checked ?
                              JamiResources.mic_off_24dp_svg :
@@ -175,7 +175,7 @@ Control {
         },
         Action {
             id: muteVideoAction
-            onTriggered: CallAdapter.videoPauseThisCallToggle()
+            onTriggered: CallAdapter.videoPauseThisCallToggle(!isVideoMuted)
             checkable: true
             icon.source: checked ?
                              JamiResources.videocam_off_24dp_svg :
@@ -237,17 +237,17 @@ Control {
         Action {
             id: shareAction
             onTriggered: {
-                if (AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY)
+                if (AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY || AvAdapter.currentRenderingDeviceType === Video.DeviceType.FILE)
                     root.stopSharingClicked()
                 else
                     root.shareScreenClicked()
             }
-            icon.source: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
+            icon.source: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY || AvAdapter.currentRenderingDeviceType === Video.DeviceType.FILE ?
                              JamiResources.share_stop_black_24dp_svg :
                              JamiResources.share_screen_black_24dp_svg
-            icon.color: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
+            icon.color: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY || AvAdapter.currentRenderingDeviceType === Video.DeviceType.FILE ?
                             "red" : "white"
-            text: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY ?
+            text: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY || AvAdapter.currentRenderingDeviceType === Video.DeviceType.FILE ?
                       JamiStrings.stopSharing :
                       JamiStrings.shareScreen
             property real size: 34
@@ -308,7 +308,7 @@ Control {
             CallOverlayModel.addSecondaryControl(callTransferAction)
         }
         CallOverlayModel.addSecondaryControl(chatAction)
-        if (!isAudioOnly && !isSIP)
+        if (!isSIP)
             CallOverlayModel.addSecondaryControl(shareAction)
         CallOverlayModel.addSecondaryControl(recordAction)
         CallOverlayModel.addSecondaryControl(pluginsAction)

@@ -69,9 +69,9 @@ public:
     Q_INVOKABLE bool isModerator(const QString& uri = {}) const;
     Q_INVOKABLE bool isCurrentModerator() const;
     Q_INVOKABLE void holdThisCallToggle();
-    Q_INVOKABLE void muteThisCallToggle();
+    Q_INVOKABLE void muteThisCallToggle(bool mute);
     Q_INVOKABLE void recordThisCallToggle();
-    Q_INVOKABLE void videoPauseThisCallToggle();
+    Q_INVOKABLE void videoPauseThisCallToggle(bool mute);
     Q_INVOKABLE bool isRecordingThisCall();
     Q_INVOKABLE QVariantList getConferencesInfos();
     Q_INVOKABLE void muteParticipant(const QString& uri, const bool state);

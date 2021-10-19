@@ -101,8 +101,7 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: stopSharing
 
-            canTrigger: !isAudioOnly
-                        && AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY
+            canTrigger: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY
                         && !isSIP
             itemName: JamiStrings.stopSharing
             iconSource: JamiResources.share_stop_black_24dp_svg
@@ -114,8 +113,7 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: shareScreen
 
-            canTrigger: !isAudioOnly
-                        && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY
+            canTrigger: AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY
                         && !isSIP
             itemName: JamiStrings.shareScreen
             iconSource: JamiResources.share_screen_black_24dp_svg
@@ -131,8 +129,7 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: shareScreenArea
 
-            canTrigger: !isAudioOnly
-                        && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY
+            canTrigger: AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY
                         && !isSIP
             itemName: JamiStrings.shareScreenArea
             iconSource: JamiResources.share_screen_black_24dp_svg
@@ -148,7 +145,7 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: shareFile
 
-            canTrigger: !isAudioOnly && !isSIP
+            canTrigger: !isSIP
             itemName: JamiStrings.shareFile
             iconSource: JamiResources.insert_photo_24dp_svg
             onClicked: {
