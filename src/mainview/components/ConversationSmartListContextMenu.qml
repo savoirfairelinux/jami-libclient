@@ -44,13 +44,14 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: startVideoCallItem
 
-            canTrigger: !hasCall && !readOnly
+            canTrigger: CurrentAccount.videoEnabled_Video && !hasCall && !readOnly
             itemName: JamiStrings.startVideoCall
             iconSource: JamiResources.videocam_24dp_svg
             onClicked: {
                 LRCInstance.selectConversation(responsibleConvUid,
                                                responsibleAccountId)
-                CallAdapter.placeCall()
+                if (CurrentAccount.videoEnabled_Video)
+                    CallAdapter.placeCall()
             }
         },
         GeneralMenuItem {

@@ -158,7 +158,7 @@ ItemDelegate {
     onClicked: ListView.view.model.select(index)
     onDoubleClicked: {
         ListView.view.model.select(index)
-        if (LRCInstance.currentAccountType === Profile.Type.SIP)
+        if (LRCInstance.currentAccountType === Profile.Type.SIP || !CurrentAccount.videoEnabled_Video)
             CallAdapter.placeAudioOnlyCall()
         else {
             if (!CurrentConversation.readOnly) {

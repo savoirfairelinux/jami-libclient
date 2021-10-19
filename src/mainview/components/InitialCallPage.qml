@@ -42,11 +42,34 @@ Rectangle {
     ListModel {
         id: incomingControlsModel
         Component.onCompleted: {
-            append({"type": "refuse", "image": JamiResources.round_close_24dp_svg})
-            append({"type": "mic", "image" : JamiResources.place_audiocall_24dp_svg})
-            append({"type": "cam", "image" : JamiResources.videocam_24dp_svg})
+            fillIncomingControls()
         }
     }
+
+    Connections {
+        target: CurrentAccount
+
+        function onVideoEnabledVideoChanged() {
+            fillIncomingControls()
+        }
+    }
+
+    Connections {
+        target: VideoDevices
+
+        function onListSizeChanged() {
+            fillIncomingControls()
+        }
+    }
+
+    function fillIncomingControls() {
+            incomingControlsModel.clear()
+            incomingControlsModel.append({"type": "refuse", "image": JamiResources.round_close_24dp_svg})
+            incomingControlsModel.append({"type": "mic", "image" : JamiResources.place_audiocall_24dp_svg})
+            if (CurrentAccount.videoEnabled_Video && VideoDevices.listSize !== 0)
+                incomingControlsModel.append({"type": "cam", "image" : JamiResources.videocam_24dp_svg})
+    }
+
     ListModel {
         id: outgoingControlsModel
         Component.onCompleted: {

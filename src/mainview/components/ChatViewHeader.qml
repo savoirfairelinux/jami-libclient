@@ -154,7 +154,7 @@ Rectangle {
             PushButton {
                 id: startAVideoCallButton
 
-                visible: interactionButtonsVisibility
+                visible: CurrentAccount.videoEnabled_Video && interactionButtonsVisibility
 
                 source: JamiResources.videocam_24dp_svg
                 toolTipText: JamiStrings.placeVideoCall
@@ -162,7 +162,9 @@ Rectangle {
                 normalColor: JamiTheme.chatviewBgColor
                 imageColor: JamiTheme.chatviewButtonColor
 
-                onClicked: CallAdapter.placeCall()
+                onClicked: {
+                    CallAdapter.placeCall()
+                }
             }
 
             PushButton {

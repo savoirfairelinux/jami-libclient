@@ -302,6 +302,11 @@ Control {
         function onLocalHandRaisedChanged() { reset() }
         function onIsConferenceCallChanged() { reset() }
     }
+    Connections {
+        target: CurrentAccount
+
+        function onVideoEnabledVideoChanged() { reset() }
+    }
 
     function reset() {
         CallOverlayModel.clearControls()
@@ -309,7 +314,9 @@ Control {
         // centered controls
         CallOverlayModel.addPrimaryControl(muteAudioAction)
         CallOverlayModel.addPrimaryControl(hangupAction)
-        CallOverlayModel.addPrimaryControl(muteVideoAction)
+
+        if (CurrentAccount.videoEnabled_Video)
+            CallOverlayModel.addPrimaryControl(muteVideoAction)
 
         // overflow controls
         CallOverlayModel.addSecondaryControl(audioOutputAction)
@@ -325,7 +332,7 @@ Control {
             CallOverlayModel.addSecondaryControl(callTransferAction)
         }
         CallOverlayModel.addSecondaryControl(chatAction)
-        if (!isSIP)
+        if (CurrentAccount.videoEnabled_Video && !isSIP)
             CallOverlayModel.addSecondaryControl(shareAction)
         CallOverlayModel.addSecondaryControl(recordAction)
         CallOverlayModel.addSecondaryControl(pluginsAction)

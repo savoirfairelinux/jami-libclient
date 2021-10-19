@@ -66,6 +66,9 @@ ColumnLayout {
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                enabled: CurrentAccount.videoEnabled_Video
+
+                opacity: enabled ? 1.0 : 0.5
 
                 mediaType: MediaSettings.VIDEO
             }

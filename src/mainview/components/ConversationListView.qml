@@ -157,8 +157,11 @@ ListView {
     Shortcut {
         sequence: "Ctrl+Shift+X"
         context: Qt.ApplicationShortcut
-        enabled: root.visible
-        onActivated: CallAdapter.placeCall()
+        enabled: CurrentAccount.videoEnabled_Video && root.visible
+        onActivated: {
+            if (CurrentAccount.videoEnabled_Video)
+                CallAdapter.placeCall()
+        }
     }
 
     Shortcut {
