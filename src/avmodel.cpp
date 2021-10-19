@@ -537,27 +537,11 @@ AVModel::getRenderer(const QString& id) const
     return *pimpl_->renderers_[id];
 }
 
-void
-AVModel::setInputFile(const QString& uri, const QString& callId)
+QString
+AVModel::getDisplay(int idx, int x, int y, int w, int h)
 {
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-    auto resource = !uri.isEmpty() ? QString("%1%2%3")
-                                         .arg(DRing::Media::VideoProtocolPrefix::FILE)
-                                         .arg(sep)
-                                         .arg(QUrl(uri).toLocalFile())
-                                   : DRing::Media::VideoProtocolPrefix::NONE;
-    if (callId.isEmpty()) {
-        VideoManager::instance().switchInput(resource);
-    } else {
-        CallManager::instance().switchInput(callId, resource);
-    }
-}
-
-void
-AVModel::setDisplay(int idx, int x, int y, int w, int h, const QString& callId)
-{
-    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-    auto resource = QString("%1%2:%3+%4,%5 %6x%7")
+    return QString("%1%2:%3+%4,%5 %6x%7")
                         .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
                         .arg(sep)
                         .arg(idx)
@@ -565,11 +549,6 @@ AVModel::setDisplay(int idx, int x, int y, int w, int h, const QString& callId)
                         .arg(y)
                         .arg(w)
                         .arg(h);
-    if (callId.isEmpty()) {
-        VideoManager::instance().switchInput(resource);
-    } else {
-        CallManager::instance().switchInput(callId, resource);
-    }
 }
 
 void
