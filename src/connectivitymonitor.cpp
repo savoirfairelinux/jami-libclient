@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined(_WIN32) && !defined(__APPLE__)
+#ifndef _WIN32
 #include <glib.h>
 #include <gio/gio.h>
 #ifdef USE_LIBNM
@@ -164,19 +164,6 @@ ConnectivityMonitor::~ConnectivityMonitor()
 {
     destroy();
     CoUninitialize();
-}
-#elif defined(Q_OS_MACOS)
-ConnectivityMonitor::ConnectivityMonitor(QObject* parent)
-    : QObject(parent)
-{}
-bool
-ConnectivityMonitor::isOnline()
-{
-    return false;
-}
-ConnectivityMonitor::~ConnectivityMonitor()
-{
-    qDebug() << "Destroying connectivity monitor";
 }
 #else
 #ifdef USE_LIBNM

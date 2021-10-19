@@ -67,7 +67,6 @@ set(COMMON_SOURCES
     ${SRC_DIR}/smartlistmodel.cpp
     ${SRC_DIR}/utils.cpp
     ${SRC_DIR}/rendermanager.cpp
-    ${SRC_DIR}/connectivitymonitor.cpp
     ${SRC_DIR}/mainapplication.cpp
     ${SRC_DIR}/messagesadapter.cpp
     ${SRC_DIR}/accountadapter.cpp
@@ -218,6 +217,8 @@ if (${QT_VERSION_MAJOR} STRLESS 6)
 endif()
 
 if(MSVC)
+    list(APPEND COMMON_SOURCES
+                ${SRC_DIR}/connectivitymonitor.cpp)
     # preprocessor defines
     add_definitions(-DUNICODE -DQT_NO_DEBUG -DNDEBUG)
 
@@ -268,7 +269,8 @@ if(MSVC)
 elseif (NOT APPLE)
     list(APPEND COMMON_SOURCES
                 ${SRC_DIR}/xrectsel.c
-                ${SRC_DIR}/dbuserrorhandler.cpp)
+                ${SRC_DIR}/dbuserrorhandler.cpp
+                ${SRC_DIR}/connectivitymonitor.cpp)
     list(APPEND COMMON_HEADERS
                 ${SRC_DIR}/dbuserrorhandler.h
                 ${SRC_DIR}/xrectsel.h)
@@ -348,6 +350,9 @@ elseif (NOT APPLE)
     find_library(qrencode qrencode)
     find_library(X11 X11)
 else()
+    list(APPEND COMMON_SOURCES
+                ${SRC_DIR}/connectivitymonitor.mm)
+    find_package(PkgConfig REQUIRED)
     if(NOT DEFINED LRC)
         if(EXISTS ${PROJECT_SOURCE_DIR}/../install/lrc)
             set(LRC ${PROJECT_SOURCE_DIR}/../install/lrc)
@@ -383,6 +388,7 @@ else()
     set(JAMI_DATA_PREFIX "${CMAKE_INSTALL_PREFIX}/share")
 
     find_library(ringclient ringclient ${LRCLIBDIR} NO_DEFAULT_PATH)
+    find_library(SYSTEM_CONFIGURATUION SystemConfiguration)
 endif()
 
 # Qt find package
@@ -604,6 +610,7 @@ else()
     target_link_libraries(${PROJECT_NAME} PRIVATE
                           ${QML_LIBS}
                           ${LRC_LIB_NAME}
+                          ${SYSTEM_CONFIGURATUION}
                           qrencode)
 
      # translations
