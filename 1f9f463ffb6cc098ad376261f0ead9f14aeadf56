@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f613eb7a_268c621a",
+        "filename": "src/newaccountmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-10-19T15:45:30Z",
+      "side": 1,
+      "message": "why?",
+      "range": {
+        "startLine": 224,
+        "startChar": 12,
+        "endLine": 224,
+        "endChar": 24
+      },
+      "revId": "1f9f463ffb6cc098ad376261f0ead9f14aeadf56",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
