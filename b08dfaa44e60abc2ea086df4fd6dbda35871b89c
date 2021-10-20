@@ -46,6 +46,30 @@
       },
       "revId": "b08dfaa44e60abc2ea086df4fd6dbda35871b89c",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0fcda9b4_6cb38846",
+        "filename": "src/api/avmodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-10-20T16:16:21Z",
+      "side": 0,
+      "message": "marked as deprecated.\nGetDisplay  is used client-side prior calling requestmediachange. The prior returns the proper resource name to be passed down to the latter.",
+      "parentUuid": "626cf8ab_500a774f",
+      "range": {
+        "startLine": 253,
+        "startChar": 7,
+        "endLine": 278,
+        "endChar": 13
+      },
+      "revId": "b08dfaa44e60abc2ea086df4fd6dbda35871b89c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
