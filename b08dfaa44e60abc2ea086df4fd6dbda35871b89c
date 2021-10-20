@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74ed1443_6710c2a8",
+        "filename": "src/api/avmodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-10-20T15:01:16Z",
+      "side": 0,
+      "message": "can we remove those two methods in another patch? This will break compilation for client-gnome and macOS, and adding getDisplay and improve requestMediaChange seems to be two different things.",
+      "range": {
+        "startLine": 253,
+        "startChar": 7,
+        "endLine": 278,
+        "endChar": 13
+      },
+      "revId": "b08dfaa44e60abc2ea086df4fd6dbda35871b89c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
