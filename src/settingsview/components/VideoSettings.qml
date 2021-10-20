@@ -120,6 +120,7 @@ ColumnLayout {
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
         enabled: VideoDevices.listSize !== 0
+        opacity: enabled ? 1.0 : 0.5
 
         fontPointSize: JamiTheme.settingsFontSize
         widthOfComboBox: itemWidth
@@ -147,6 +148,7 @@ ColumnLayout {
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
         enabled: VideoDevices.listSize !== 0
+        opacity: enabled ? 1.0 : 0.5
 
         widthOfComboBox: itemWidth
         fontPointSize: JamiTheme.settingsFontSize
@@ -168,6 +170,7 @@ ColumnLayout {
         Layout.leftMargin: JamiTheme.preferredMarginSize
 
         enabled: VideoDevices.listSize !== 0
+        opacity: enabled ? 1.0 : 0.5
 
         widthOfComboBox: itemWidth
         fontPointSize: JamiTheme.settingsFontSize
@@ -200,6 +203,8 @@ ColumnLayout {
     Rectangle {
         id: rectBox
 
+        visible: VideoDevices.listSize !== 0
+
         Layout.alignment: Qt.AlignHCenter
         Layout.preferredHeight: width * aspectRatio
 
@@ -217,7 +222,6 @@ ColumnLayout {
 
             lrcInstance: LRCInstance
 
-            visible: VideoDevices.listSize !== 0
             layer.enabled: true
             layer.effect: OpacityMask {
                 maskSource: rectBox
@@ -239,5 +243,45 @@ ColumnLayout {
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
+    }
+
+    ElidedTextLabel {
+        id: screenSharingSetTitle
+        visible: screenSharingFPSComboBoxSetting.modelSize > 0
+        Layout.fillWidth: true
+        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+
+        eText: JamiStrings.screenSharing
+        fontSize: JamiTheme.headerFontSize
+        maxWidth: itemWidth * 2
+    }
+
+    SettingsComboBox {
+        id: screenSharingFPSComboBoxSetting
+
+        visible: modelSize > 0
+
+        Layout.fillWidth: true
+        Layout.preferredHeight: JamiTheme.preferredFieldHeight
+        Layout.leftMargin: JamiTheme.preferredMarginSize
+        Layout.bottomMargin: JamiTheme.preferredMarginSize
+
+        widthOfComboBox: itemWidth
+        fontPointSize: JamiTheme.settingsFontSize
+
+        tipText: JamiStrings.selectScreenSharingFPS
+        labelText: JamiStrings.fps
+        currentSelectionText: VideoDevices.screenSharingDefaultFps.toString()
+        placeholderText: VideoDevices.screenSharingDefaultFps.toString()
+        comboModel: ListModel { id: screenSharingFpsModel }
+        role: "FPS"
+        Component.onCompleted: {
+            var elements = VideoDevices.getScreenSharingFpsModel()
+            for (var item in elements) {
+                screenSharingFpsModel.append({"FPS": elements[item]})
+            }
+        }
+
+        onActivated: VideoDevices.setDisplayFPS(screenSharingFpsModel.get(modelIndex).FPS)
     }
 }

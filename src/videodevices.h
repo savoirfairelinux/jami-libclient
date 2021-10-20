@@ -153,6 +153,7 @@ class VideoDevices : public QObject
     QML_RO_PROPERTY(QString, defaultName)
     QML_RO_PROPERTY(QString, defaultRes)
     QML_RO_PROPERTY(int, defaultFps)
+    QML_PROPERTY(int, screenSharingDefaultFps)
 
 public:
     explicit VideoDevices(LRCInstance* lrcInstance, QObject* parent = nullptr);
@@ -166,10 +167,12 @@ public:
 
     Q_INVOKABLE QVariant fpsFilterModel();
     Q_INVOKABLE QVariant fpsSourceModel();
+    Q_INVOKABLE QVariant getScreenSharingFpsModel();
 
     Q_INVOKABLE void setDefaultDevice(int index, bool useSourceModel = false);
     Q_INVOKABLE void setDefaultDeviceRes(int index);
     Q_INVOKABLE void setDefaultDeviceFps(int index);
+    Q_INVOKABLE void setDisplayFPS(const QString& fps);
 
     const lrc::api::video::ResRateList& get_defaultResRateList();
     void set_defaultResRateList(lrc::api::video::ResRateList resRateList);
@@ -202,4 +205,8 @@ private:
 
     lrc::api::video::ResRateList defaultResRateList_;
     lrc::api::video::FrameratesList defaultFpsList_;
+    lrc::api::video::FrameratesList desktopfpsSourceModel_;
+
+    constexpr static const char DEVICE_DESKTOP[] = "desktop";
+    constexpr static const char CHANNEL_DEFAULT[] = "default";
 };

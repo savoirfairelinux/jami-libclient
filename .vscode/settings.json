@@ -5,6 +5,7 @@
         "string": "cpp",
         "string_view": "cpp",
         "ranges": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "xstring": "cpp"
     }
 }

@@ -35,6 +35,7 @@ RowLayout {
     property alias enabled: comboBoxOfLayout.enabled
     property alias fontPointSize: comboBoxOfLayout.font.pointSize
     property alias modelIndex: comboBoxOfLayout.currentIndex
+    property alias modelSize: comboBoxOfLayout.count
 
     property int heightOfLayout: 30
     property int widthOfComboBox: 50

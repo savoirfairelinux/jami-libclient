@@ -206,6 +206,14 @@ VideoDevices::VideoDevices(LRCInstance* lrcInstance, QObject* parent)
             this,
             &VideoDevices::onVideoDeviceEvent);
 
+    auto displaySettings = lrcInstance_->avModel().getDeviceSettings(DEVICE_DESKTOP);
+
+    auto desktopfpsSource = lrcInstance_->avModel().getDeviceCapabilities(DEVICE_DESKTOP);
+    if (desktopfpsSource.contains(CHANNEL_DEFAULT) && !desktopfpsSource[CHANNEL_DEFAULT].empty()) {
+        desktopfpsSourceModel_ = desktopfpsSource[CHANNEL_DEFAULT][0].second;
+        if (desktopfpsSourceModel_.indexOf(displaySettings.rate) >= 0)
+            set_screenSharingDefaultFps(displaySettings.rate);
+    }
     updateData();
 }
 
@@ -306,6 +314,22 @@ VideoDevices::setDefaultDeviceFps(int index)
 }
 
 void
+VideoDevices::setDisplayFPS(const QString& fps)
+{
+    auto settings = lrcInstance_->avModel().getDeviceSettings(DEVICE_DESKTOP);
+    settings.id = DEVICE_DESKTOP;
+    settings.rate = fps.toInt();
+    lrcInstance_->avModel().setDeviceSettings(settings);
+    set_screenSharingDefaultFps(fps.toInt());
+}
+
+QVariant
+VideoDevices::getScreenSharingFpsModel()
+{
+    return QVariant::fromValue(desktopfpsSourceModel_.toList());
+}
+
+void
 VideoDevices::updateData()
 {
     set_listSize(lrcInstance_->avModel().getDevices().size());
@@ -315,7 +339,7 @@ VideoDevices::updateData()
         auto defaultDeviceSettings = lrcInstance_->avModel().getDeviceSettings(defaultDevice);
         auto defaultDeviceCap = lrcInstance_->avModel().getDeviceCapabilities(defaultDevice);
         auto currentResRateList = defaultDeviceCap[defaultDeviceSettings.channel.isEmpty()
-                                                       ? "default"
+                                                       ? CHANNEL_DEFAULT
                                                        : defaultDeviceSettings.channel];
         lrc::api::video::FrameratesList fpsList;
 
