@@ -3181,16 +3181,18 @@ ConversationModelPimpl::addOrUpdateCallMessage(const QString& callId,
     auto msgId = storage::addOrUpdateMessage(db, conv_it->uid, msg, callId);
     // now set the formatted call message string in memory only
     msg.body = storage::getCallInteractionString(uriString, duration);
-    auto interactionIt = conv_it->interactions->find(msgId);
-    auto newInteraction = interactionIt == conv_it->interactions->end();
-    if (newInteraction) {
-        conv_it->lastMessageUid = msgId;
+    bool newInteraction = false;
+    {
         std::lock_guard<std::mutex> lk(interactionsLocks[conv_it->uid]);
-        conv_it->interactions->emplace(msgId, msg);
-    } else {
-        std::lock_guard<std::mutex> lk(interactionsLocks[conv_it->uid]);
-        interactionIt->second = msg;
-        conv_it->interactions->emitDataChanged(interactionIt);
+        auto interactionIt = conv_it->interactions->find(msgId);
+        newInteraction = interactionIt == conv_it->interactions->end();
+        if (newInteraction) {
+            conv_it->lastMessageUid = msgId;
+            conv_it->interactions->emplace(msgId, msg);
+        } else {
+            interactionIt->second = msg;
+            conv_it->interactions->emitDataChanged(interactionIt);
+        }
     }
 
     if (newInteraction)
