@@ -47,23 +47,28 @@ public:
         using DRing::CallSignal;
 
         callHandlers = {
-            exportable_callback<CallSignal::StateChange>(
-                [this](const std::string& callID, const std::string& state, int code) {
-                    LOG_DRING_SIGNAL3("callStateChanged",
-                                      QString(callID.c_str()),
-                                      QString(state.c_str()),
-                                      code);
-                    Q_EMIT callStateChanged(QString(callID.c_str()), QString(state.c_str()), code);
-                }),
+            exportable_callback<CallSignal::StateChange>([this](const std::string& accountId,
+                                                                const std::string& callId,
+                                                                const std::string& state,
+                                                                int code) {
+                LOG_DRING_SIGNAL3("callStateChanged",
+                                  QString(callId.c_str()),
+                                  QString(state.c_str()),
+                                  code);
+                Q_EMIT callStateChanged(QString(accountId.c_str()),
+                                        QString(callId.c_str()),
+                                        QString(state.c_str()),
+                                        code);
+            }),
             exportable_callback<CallSignal::MediaNegotiationStatus>(
-                [this](const std::string& callID,
+                [this](const std::string& callId,
                        const std::string& event,
                        const std::vector<std::map<std::string, std::string>>& mediaList) {
                     LOG_DRING_SIGNAL3("mediaNegotiationStatus",
-                                      QString(callID.c_str()),
+                                      QString(callId.c_str()),
                                       QString(event.c_str()),
                                       convertVecMap(mediaList));
-                    Q_EMIT mediaNegotiationStatus(QString(callID.c_str()),
+                    Q_EMIT mediaNegotiationStatus(QString(callId.c_str()),
                                                   QString(event.c_str()),
                                                   convertVecMap(mediaList));
                 }),
@@ -93,95 +98,108 @@ public:
                                            urgentCount);
                 }),
             exportable_callback<CallSignal::IncomingMessage>(
-                [this](const std::string& callID,
+                [this](const std::string& accountId,
+                       const std::string& callId,
                        const std::string& from,
                        const std::map<std::string, std::string>& message) {
-                    LOG_DRING_SIGNAL3("incomingMessage",
-                                      QString(callID.c_str()),
+                    LOG_DRING_SIGNAL4("incomingMessage",
+                                      QString(accountId.c_str()),
+                                      QString(callId.c_str()),
                                       QString(from.c_str()),
                                       convertMap(message));
-                    Q_EMIT incomingMessage(QString(callID.c_str()),
+                    Q_EMIT incomingMessage(QString(accountId.c_str()),
+                                           QString(callId.c_str()),
                                            QString(from.c_str()),
                                            convertMap(message));
                 }),
-            exportable_callback<CallSignal::IncomingCall>([this](const std::string& accountID,
-                                                                 const std::string& callID,
+            exportable_callback<CallSignal::IncomingCall>([this](const std::string& accountId,
+                                                                 const std::string& callId,
                                                                  const std::string& from) {
                 LOG_DRING_SIGNAL3("incomingCall",
-                                  QString(accountID.c_str()),
-                                  QString(callID.c_str()),
+                                  QString(accountId.c_str()),
+                                  QString(callId.c_str()),
                                   QString(from.c_str()));
-                Q_EMIT incomingCall(QString(accountID.c_str()),
-                                    QString(callID.c_str()),
+                Q_EMIT incomingCall(QString(accountId.c_str()),
+                                    QString(callId.c_str()),
                                     QString(from.c_str()));
             }),
             exportable_callback<CallSignal::IncomingCallWithMedia>(
-                [this](const std::string& accountID,
-                       const std::string& callID,
+                [this](const std::string& accountId,
+                       const std::string& callId,
                        const std::string& from,
                        const std::vector<std::map<std::string, std::string>>& mediaList) {
                     LOG_DRING_SIGNAL4("incomingCallWithMedia",
-                                      QString(accountID.c_str()),
-                                      QString(callID.c_str()),
+                                      QString(accountId.c_str()),
+                                      QString(callId.c_str()),
                                       QString(from.c_str()),
                                       convertVecMap(mediaList));
-                    Q_EMIT incomingCallWithMedia(QString(accountID.c_str()),
-                                                 QString(callID.c_str()),
+                    Q_EMIT incomingCallWithMedia(QString(accountId.c_str()),
+                                                 QString(callId.c_str()),
                                                  QString(from.c_str()),
                                                  convertVecMap(mediaList));
                 }),
             exportable_callback<CallSignal::MediaChangeRequested>(
-                [this](const std::string& accountID,
-                       const std::string& callID,
+                [this](const std::string& accountId,
+                       const std::string& callId,
                        const std::vector<std::map<std::string, std::string>>& mediaList) {
                     LOG_DRING_SIGNAL3("mediaChangeRequested",
-                                      QString(accountID.c_str()),
-                                      QString(callID.c_str()),
+                                      QString(accountId.c_str()),
+                                      QString(callId.c_str()),
                                       convertVecMap(mediaList));
-                    Q_EMIT mediaChangeRequested(QString(accountID.c_str()),
-                                                QString(callID.c_str()),
+                    Q_EMIT mediaChangeRequested(QString(accountId.c_str()),
+                                                QString(callId.c_str()),
                                                 convertVecMap(mediaList));
                 }),
             exportable_callback<CallSignal::RecordPlaybackFilepath>(
-                [this](const std::string& callID, const std::string& filepath) {
+                [this](const std::string& callId, const std::string& filepath) {
                     LOG_DRING_SIGNAL2("recordPlaybackFilepath",
-                                      QString(callID.c_str()),
+                                      QString(callId.c_str()),
                                       QString(filepath.c_str()));
-                    Q_EMIT recordPlaybackFilepath(QString(callID.c_str()),
+                    Q_EMIT recordPlaybackFilepath(QString(callId.c_str()),
                                                   QString(filepath.c_str()));
                 }),
-            exportable_callback<CallSignal::ConferenceCreated>([this](const std::string& confID) {
-                LOG_DRING_SIGNAL("conferenceCreated", QString(confID.c_str()));
-                Q_EMIT conferenceCreated(QString(confID.c_str()));
-            }),
-            exportable_callback<CallSignal::ConferenceChanged>(
-                [this](const std::string& confID, const std::string& state) {
-                    LOG_DRING_SIGNAL2("conferenceChanged",
-                                      QString(confID.c_str()),
-                                      QString(state.c_str()));
-                    Q_EMIT conferenceChanged(QString(confID.c_str()), QString(state.c_str()));
+            exportable_callback<CallSignal::ConferenceCreated>(
+                [this](const std::string& accountId, const std::string& confId) {
+                    LOG_DRING_SIGNAL2("conferenceCreated",
+                                      QString(accountId.c_str()),
+                                      QString(confId.c_str()));
+                    Q_EMIT conferenceCreated(QString(accountId.c_str()), QString(confId.c_str()));
                 }),
+            exportable_callback<CallSignal::ConferenceChanged>([this](const std::string& accountId,
+                                                                      const std::string& confId,
+                                                                      const std::string& state) {
+                LOG_DRING_SIGNAL3("conferenceChanged",
+                                  QString(accountId.c_str()),
+                                  QString(confId.c_str()),
+                                  QString(state.c_str()));
+                Q_EMIT conferenceChanged(QString(accountId.c_str()),
+                                         QString(confId.c_str()),
+                                         QString(state.c_str()));
+            }),
             exportable_callback<CallSignal::UpdatePlaybackScale>([this](const std::string& filepath,
                                                                         int position,
                                                                         int size) {
                 LOG_DRING_SIGNAL3("updatePlaybackScale", QString(filepath.c_str()), position, size);
                 Q_EMIT updatePlaybackScale(QString(filepath.c_str()), position, size);
             }),
-            exportable_callback<CallSignal::ConferenceRemoved>([this](const std::string& confID) {
-                LOG_DRING_SIGNAL("conferenceRemoved", QString(confID.c_str()));
-                Q_EMIT conferenceRemoved(QString(confID.c_str()));
-            }),
-            exportable_callback<CallSignal::RecordingStateChanged>([this](const std::string& callID,
+            exportable_callback<CallSignal::ConferenceRemoved>(
+                [this](const std::string& accountId, const std::string& confId) {
+                    LOG_DRING_SIGNAL2("conferenceRemoved",
+                                      QString(accountId.c_str()),
+                                      QString(confId.c_str()));
+                    Q_EMIT conferenceRemoved(QString(accountId.c_str()), QString(confId.c_str()));
+                }),
+            exportable_callback<CallSignal::RecordingStateChanged>([this](const std::string& callId,
                                                                           bool recordingState) {
-                LOG_DRING_SIGNAL2("recordingStateChanged", QString(callID.c_str()), recordingState);
-                Q_EMIT recordingStateChanged(QString(callID.c_str()), recordingState);
+                LOG_DRING_SIGNAL2("recordingStateChanged", QString(callId.c_str()), recordingState);
+                Q_EMIT recordingStateChanged(QString(callId.c_str()), recordingState);
             }),
             exportable_callback<CallSignal::RtcpReportReceived>(
-                [this](const std::string& callID, const std::map<std::string, int>& report) {
+                [this](const std::string& callId, const std::map<std::string, int>& report) {
                     LOG_DRING_SIGNAL2("onRtcpReportReceived",
-                                      QString(callID.c_str()),
+                                      QString(callId.c_str()),
                                       convertStringInt(report));
-                    Q_EMIT onRtcpReportReceived(QString(callID.c_str()), convertStringInt(report));
+                    Q_EMIT onRtcpReportReceived(QString(callId.c_str()), convertStringInt(report));
                 }),
             exportable_callback<CallSignal::OnConferenceInfosUpdated>(
                 [this](const std::string& confId,
@@ -191,19 +209,19 @@ public:
                                       convertVecMap(infos));
                     Q_EMIT onConferenceInfosUpdated(QString(confId.c_str()), convertVecMap(infos));
                 }),
-            exportable_callback<CallSignal::PeerHold>([this](const std::string& callID, bool state) {
-                LOG_DRING_SIGNAL2("peerHold", QString(callID.c_str()), state);
-                Q_EMIT peerHold(QString(callID.c_str()), state);
+            exportable_callback<CallSignal::PeerHold>([this](const std::string& callId, bool state) {
+                LOG_DRING_SIGNAL2("peerHold", QString(callId.c_str()), state);
+                Q_EMIT peerHold(QString(callId.c_str()), state);
             }),
             exportable_callback<CallSignal::AudioMuted>(
-                [this](const std::string& callID, bool state) {
-                    LOG_DRING_SIGNAL2("audioMuted", QString(callID.c_str()), state);
-                    Q_EMIT audioMuted(QString(callID.c_str()), state);
+                [this](const std::string& callId, bool state) {
+                    LOG_DRING_SIGNAL2("audioMuted", QString(callId.c_str()), state);
+                    Q_EMIT audioMuted(QString(callId.c_str()), state);
                 }),
             exportable_callback<CallSignal::VideoMuted>(
-                [this](const std::string& callID, bool state) {
-                    LOG_DRING_SIGNAL2("videoMuted", QString(callID.c_str()), state);
-                    Q_EMIT videoMuted(QString(callID.c_str()), state);
+                [this](const std::string& callId, bool state) {
+                    LOG_DRING_SIGNAL2("videoMuted", QString(callId.c_str()), state);
+                    Q_EMIT videoMuted(QString(callId.c_str()), state);
                 }),
             exportable_callback<CallSignal::SmartInfo>(
                 [this](const std::map<std::string, std::string>& info) {
@@ -211,12 +229,12 @@ public:
                     Q_EMIT smartInfo(convertMap(info));
                 }),
             exportable_callback<CallSignal::RemoteRecordingChanged>(
-                [this](const std::string& callID, const std::string& contactId, bool state) {
+                [this](const std::string& callId, const std::string& contactId, bool state) {
                     LOG_DRING_SIGNAL3("remoteRecordingChanged",
-                                      QString(callID.c_str()),
+                                      QString(callId.c_str()),
                                       QString(contactId.c_str()),
                                       state);
-                    Q_EMIT remoteRecordingChanged(QString(callID.c_str()),
+                    Q_EMIT remoteRecordingChanged(QString(callId.c_str()),
                                                   QString(contactId.c_str()),
                                                   state);
                 })};
@@ -227,141 +245,188 @@ public:
     bool isValid() { return true; }
 
 public Q_SLOTS: // METHODS
-    bool accept(const QString& callID) { return DRing::accept(callID.toStdString()); }
-
-    bool addMainParticipant(const QString& confID)
+    bool accept(const QString& accountId, const QString& callId)
     {
-        return DRing::addMainParticipant(confID.toStdString());
+        return DRing::accept(accountId.toStdString(), callId.toStdString());
     }
 
-    bool addParticipant(const QString& callID, const QString& confID)
+    bool addMainParticipant(const QString& accountId, const QString& confId)
     {
-        return DRing::addParticipant(callID.toStdString(), confID.toStdString());
+        return DRing::addMainParticipant(accountId.toStdString(), confId.toStdString());
     }
 
-    bool attendedTransfer(const QString& transferID, const QString& targetID)
+    bool addParticipant(const QString& accountId,
+                        const QString& callId,
+                        const QString& account2Id,
+                        const QString& confId)
     {
-        return DRing::attendedTransfer(transferID.toStdString(), targetID.toStdString());
+        return DRing::addParticipant(accountId.toStdString(),
+                                     callId.toStdString(),
+                                     account2Id.toStdString(),
+                                     confId.toStdString());
     }
 
-    void createConfFromParticipantList(const QStringList& participants)
+    bool attendedTransfer(const QString& accountId,
+                          const QString& transferId,
+                          const QString& targetId)
     {
-        DRing::createConfFromParticipantList(convertStringList(participants));
+        return DRing::attendedTransfer(accountId.toStdString(),
+                                       transferId.toStdString(),
+                                       targetId.toStdString());
     }
 
-    bool detachParticipant(const QString& callID)
+    void createConfFromParticipantList(const QString& accountId, const QStringList& participants)
     {
-        return DRing::detachParticipant(callID.toStdString());
+        DRing::createConfFromParticipantList(accountId.toStdString(),
+                                             convertStringList(participants));
     }
 
-    MapStringString getCallDetails(const QString& callID)
+    bool detachParticipant(const QString& accountId, const QString& callId)
     {
-        MapStringString temp = convertMap(DRing::getCallDetails(callID.toStdString()));
+        return DRing::detachParticipant(accountId.toStdString(), callId.toStdString());
+    }
+
+    MapStringString getCallDetails(const QString& accountId, const QString& callId)
+    {
+        MapStringString temp = convertMap(
+            DRing::getCallDetails(accountId.toStdString(), callId.toStdString()));
         return temp;
     }
 
-    QStringList getCallList()
+    QStringList getCallList(const QString& accountId)
     {
-        QStringList temp = convertStringList(DRing::getCallList());
+        QStringList temp = convertStringList(DRing::getCallList(accountId.toStdString()));
         return temp;
     }
 
-    MapStringString getConferenceDetails(const QString& callID)
+    MapStringString getConferenceDetails(const QString& accountId, const QString& callId)
     {
-        MapStringString temp = convertMap(DRing::getConferenceDetails(callID.toStdString()));
+        MapStringString temp = convertMap(
+            DRing::getConferenceDetails(accountId.toStdString(), callId.toStdString()));
         return temp;
     }
 
-    VectorMapStringString getConferenceInfos(const QString& confId)
+    VectorMapStringString getConferenceInfos(const QString& accountId, const QString& confId)
     {
-        VectorMapStringString temp = convertVecMap(DRing::getConferenceInfos(confId.toStdString()));
+        VectorMapStringString temp = convertVecMap(
+            DRing::getConferenceInfos(accountId.toStdString(), confId.toStdString()));
         return temp;
     }
 
-    QString getConferenceId(const QString& callID)
+    QString getConferenceId(const QString& accountId, const QString& callId)
     {
-        QString temp(DRing::getConferenceId(callID.toStdString()).c_str());
+        QString temp(DRing::getConferenceId(accountId.toStdString(), callId.toStdString()).c_str());
         return temp;
     }
 
-    QStringList getConferenceList()
+    QStringList getConferenceList(const QString& accountId)
     {
-        QStringList temp = convertStringList(DRing::getConferenceList());
+        QStringList temp = convertStringList(DRing::getConferenceList(accountId.toStdString()));
         return temp;
     }
 
-    bool getIsRecording(const QString& callID)
+    bool getIsRecording(const QString& accountId, const QString& callId)
     {
-        // TODO: match API
-        return DRing::getIsRecording(callID.toStdString());
+        return DRing::getIsRecording(accountId.toStdString(), callId.toStdString());
     }
 
-    QStringList getParticipantList(const QString& confID)
+    QStringList getParticipantList(const QString& accountId, const QString& confId)
     {
-        QStringList temp = convertStringList(DRing::getParticipantList(confID.toStdString()));
+        QStringList temp = convertStringList(
+            DRing::getParticipantList(accountId.toStdString(), confId.toStdString()));
         return temp;
     }
 
-    bool hangUp(const QString& callID) { return DRing::hangUp(callID.toStdString()); }
-
-    bool hangUpConference(const QString& confID)
+    bool hangUp(const QString& accountId, const QString& callId)
     {
-        return DRing::hangUpConference(confID.toStdString());
+        return DRing::hangUp(accountId.toStdString(), callId.toStdString());
     }
 
-    bool hold(const QString& callID) { return DRing::hold(callID.toStdString()); }
-
-    bool holdConference(const QString& confID)
+    bool hangUpConference(const QString& accountId, const QString& confId)
     {
-        return DRing::holdConference(confID.toStdString());
+        return DRing::hangUpConference(accountId.toStdString(), confId.toStdString());
     }
 
-    bool isConferenceParticipant(const QString& callID)
+    bool hold(const QString& accountId, const QString& callId)
     {
-        return DRing::isConferenceParticipant(callID.toStdString());
+        return DRing::hold(accountId.toStdString(), callId.toStdString());
     }
 
-    bool joinConference(const QString& sel_confID, const QString& drag_confID)
+    bool holdConference(const QString& accountId, const QString& confId)
     {
-        return DRing::joinConference(sel_confID.toStdString(), drag_confID.toStdString());
+        return DRing::holdConference(accountId.toStdString(), confId.toStdString());
     }
 
-    bool joinParticipant(const QString& sel_callID, const QString& drag_callID)
+    bool isConferenceParticipant(const QString& accountId, const QString& callId)
     {
-        return DRing::joinParticipant(sel_callID.toStdString(), drag_callID.toStdString());
+        return DRing::isConferenceParticipant(accountId.toStdString(), callId.toStdString());
     }
 
-    QString placeCall(const QString& accountID, const QString& to)
+    bool joinConference(const QString& accountId,
+                        const QString& sel_confId,
+                        const QString& account2Id,
+                        const QString& drag_confId)
     {
-        QString temp(DRing::placeCall(accountID.toStdString(), to.toStdString()).c_str());
+        return DRing::joinConference(accountId.toStdString(),
+                                     sel_confId.toStdString(),
+                                     account2Id.toStdString(),
+                                     drag_confId.toStdString());
+    }
+
+    bool joinParticipant(const QString& accountId,
+                         const QString& sel_callId,
+                         const QString& account2Id,
+                         const QString& drag_callId)
+    {
+        return DRing::joinParticipant(accountId.toStdString(),
+                                      sel_callId.toStdString(),
+                                      account2Id.toStdString(),
+                                      drag_callId.toStdString());
+    }
+
+    QString placeCall(const QString& accountId, const QString& to)
+    {
+        QString temp(DRing::placeCall(accountId.toStdString(), to.toStdString()).c_str());
         return temp;
     }
 
     // MULTISTREAM FUNCTIONS
-    QString placeCallWithMedia(const QString& accountID,
+    QString placeCallWithMedia(const QString& accountId,
                                const QString& to,
                                const VectorMapStringString& mediaList)
     {
-        QString temp(DRing::placeCallWithMedia(accountID.toStdString(),
+        QString temp(DRing::placeCallWithMedia(accountId.toStdString(),
                                                to.toStdString(),
                                                convertVecMap(mediaList))
                          .c_str());
         return temp;
     }
 
-    bool requestMediaChange(const QString& callID, const VectorMapStringString& mediaList)
+    bool requestMediaChange(const QString& accountId,
+                            const QString& callId,
+                            const VectorMapStringString& mediaList)
     {
-        return DRing::requestMediaChange(callID.toStdString(), convertVecMap(mediaList));
+        return DRing::requestMediaChange(accountId.toStdString(),
+                                         callId.toStdString(),
+                                         convertVecMap(mediaList));
     }
 
-    bool acceptWithMedia(const QString& callID, const VectorMapStringString& mediaList)
+    bool acceptWithMedia(const QString& accountId,
+                         const QString& callId,
+                         const VectorMapStringString& mediaList)
     {
-        return DRing::acceptWithMedia(callID.toStdString(), convertVecMap(mediaList));
+        return DRing::acceptWithMedia(accountId.toStdString(),
+                                      callId.toStdString(),
+                                      convertVecMap(mediaList));
     }
 
-    bool answerMediaChangeRequest(const QString& callID, const VectorMapStringString& mediaList)
+    bool answerMediaChangeRequest(const QString& accountId,
+                                  const QString& callId,
+                                  const VectorMapStringString& mediaList)
     {
-        return DRing::answerMediaChangeRequest(callID.toStdString(), convertVecMap(mediaList));
+        return DRing::answerMediaChangeRequest(accountId.toStdString(),
+                                               callId.toStdString(),
+                                               convertVecMap(mediaList));
     }
     // END OF MULTISTREAM FUNCTIONS
 
@@ -369,11 +434,18 @@ public Q_SLOTS: // METHODS
 
     void recordPlaybackSeek(double value) { DRing::recordPlaybackSeek(value); }
 
-    bool refuse(const QString& callID) { return DRing::refuse(callID.toStdString()); }
-
-    void sendTextMessage(const QString& callID, const QMap<QString, QString>& message, bool isMixed)
+    bool refuse(const QString& accountId, const QString& callId)
     {
-        DRing::sendTextMessage(callID.toStdString(),
+        return DRing::refuse(accountId.toStdString(), callId.toStdString());
+    }
+
+    void sendTextMessage(const QString& accountId,
+                         const QString& callId,
+                         const QMap<QString, QString>& message,
+                         bool isMixed)
+    {
+        DRing::sendTextMessage(accountId.toStdString(),
+                               callId.toStdString(),
                                convertMap(message),
                                QObject::tr("Me").toStdString(),
                                isMixed);
@@ -389,56 +461,96 @@ public Q_SLOTS: // METHODS
 
     void stopRecordedFilePlayback() { DRing::stopRecordedFilePlayback(); }
 
-    bool toggleRecording(const QString& callID)
+    bool toggleRecording(const QString& accountId, const QString& callId)
     {
-        return DRing::toggleRecording(callID.toStdString());
+        return DRing::toggleRecording(accountId.toStdString(), callId.toStdString());
     }
 
-    bool transfer(const QString& callID, const QString& to)
+    bool transfer(const QString& accountId, const QString& callId, const QString& to)
     {
-        return DRing::transfer(callID.toStdString(), to.toStdString());
+        return DRing::transfer(accountId.toStdString(), callId.toStdString(), to.toStdString());
     }
 
-    bool unhold(const QString& callID) { return DRing::unhold(callID.toStdString()); }
-
-    bool unholdConference(const QString& confID)
+    bool unhold(const QString& accountId, const QString& callId)
     {
-        return DRing::unholdConference(confID.toStdString());
+        return DRing::unhold(accountId.toStdString(), callId.toStdString());
     }
 
-    bool muteLocalMedia(const QString& callid, const QString& mediaType, bool mute)
+    bool unholdConference(const QString& accountId, const QString& confId)
     {
-        return DRing::muteLocalMedia(callid.toStdString(), mediaType.toStdString(), mute);
+        return DRing::unholdConference(accountId.toStdString(), confId.toStdString());
+    }
+
+    bool muteLocalMedia(const QString& accountId,
+                        const QString& callId,
+                        const QString& mediaType,
+                        bool mute)
+    {
+        return DRing::muteLocalMedia(accountId.toStdString(),
+                                     callId.toStdString(),
+                                     mediaType.toStdString(),
+                                     mute);
     }
 
     void startSmartInfo(int refresh) { DRing::startSmartInfo(refresh); }
 
     void stopSmartInfo() { DRing::stopSmartInfo(); }
 
-    void setConferenceLayout(const QString& confId, int layout)
+    void setConferenceLayout(const QString& accountId, const QString& confId, int layout)
     {
-        DRing::setConferenceLayout(confId.toStdString(), layout);
+        DRing::setConferenceLayout(accountId.toStdString(), confId.toStdString(), layout);
     }
 
-    void setActiveParticipant(const QString& confId, const QString& callId)
+    void setActiveParticipant(const QString& accountId, const QString& confId, const QString& callId)
     {
-        DRing::setActiveParticipant(confId.toStdString(), callId.toStdString());
+        DRing::setActiveParticipant(accountId.toStdString(),
+                                    confId.toStdString(),
+                                    callId.toStdString());
     }
 
-    bool switchInput(const QString& callId, const QString& resource)
+    bool switchInput(const QString& accountId, const QString& callId, const QString& resource)
     {
 #ifdef ENABLE_VIDEO
-        return DRing::switchInput(callId.toStdString(), resource.toStdString());
+        return DRing::switchInput(accountId.toStdString(),
+                                  callId.toStdString(),
+                                  resource.toStdString());
 #else
+        Q_UNUSED(accountId)
         Q_UNUSED(callId)
         Q_UNUSED(resource)
         return false;
 #endif
     }
 
-    void setModerator(const QString& confId, const QString& peerId, const bool& state)
+    void setModerator(const QString& accountId,
+                      const QString& confId,
+                      const QString& peerId,
+                      const bool& state)
     {
-        DRing::setModerator(confId.toStdString(), peerId.toStdString(), state);
+        DRing::setModerator(accountId.toStdString(),
+                            confId.toStdString(),
+                            peerId.toStdString(),
+                            state);
+    }
+
+    void muteParticipant(const QString& accountId,
+                         const QString& confId,
+                         const QString& peerId,
+                         const bool& state)
+    {
+        DRing::muteParticipant(accountId.toStdString(),
+                               confId.toStdString(),
+                               peerId.toStdString(),
+                               state);
+    }
+
+    void hangupParticipant(const QString& accountId,
+                           const QString& confId,
+                           const QString& participant)
+    {
+        DRing::hangupParticipant(accountId.toStdString(),
+                                 confId.toStdString(),
+                                 participant.toStdString());
     }
 
     void raiseParticipantHand(const QString& accountId,
@@ -452,47 +564,43 @@ public Q_SLOTS: // METHODS
                                     state);
     }
 
-    void muteParticipant(const QString& confId, const QString& peerId, const bool& state)
-    {
-        DRing::muteParticipant(confId.toStdString(), peerId.toStdString(), state);
-    }
-
-    void hangupParticipant(const QString& confId, const QString& participant)
-    {
-        DRing::hangupParticipant(confId.toStdString(), participant.toStdString());
-    }
-
 Q_SIGNALS: // SIGNALS
-    void callStateChanged(const QString& callID, const QString& state, int code);
-    void mediaNegotiationStatus(const QString& callID,
+    void callStateChanged(const QString& accountId,
+                          const QString& callId,
+                          const QString& state,
+                          int code);
+    void mediaNegotiationStatus(const QString& callId,
                                 const QString& event,
                                 const VectorMapStringString& mediaList);
     void transferFailed();
     void transferSucceeded();
     void recordPlaybackStopped(const QString& filepath);
     void voiceMailNotify(const QString& accountId, int newCount, int oldCount, int urgentCount);
-    void incomingMessage(const QString& callID, const QString& from, const MapStringString& message);
-    void incomingCall(const QString& accountID, const QString& callID, const QString& from);
-    void incomingCallWithMedia(const QString& accountID,
-                               const QString& callID,
+    void incomingMessage(const QString& accountId,
+                         const QString& callId,
+                         const QString& from,
+                         const MapStringString& message);
+    void incomingCall(const QString& accountId, const QString& callId, const QString& from);
+    void incomingCallWithMedia(const QString& accountId,
+                               const QString& callId,
                                const QString& from,
                                const VectorMapStringString& mediaList);
-    void mediaChangeRequested(const QString& accountID,
-                              const QString& callID,
+    void mediaChangeRequested(const QString& accountId,
+                              const QString& callId,
                               const VectorMapStringString& mediaList);
-    void recordPlaybackFilepath(const QString& callID, const QString& filepath);
-    void conferenceCreated(const QString& confID);
-    void conferenceChanged(const QString& confID, const QString& state);
+    void recordPlaybackFilepath(const QString& callId, const QString& filepath);
+    void conferenceCreated(const QString& accountId, const QString& confId);
+    void conferenceChanged(const QString& accountId, const QString& confId, const QString& state);
     void updatePlaybackScale(const QString& filepath, int position, int size);
-    void conferenceRemoved(const QString& confID);
-    void recordingStateChanged(const QString& callID, bool recordingState);
-    void onRtcpReportReceived(const QString& callID, MapStringInt report);
+    void conferenceRemoved(const QString& accountId, const QString& confId);
+    void recordingStateChanged(const QString& callId, bool recordingState);
+    void onRtcpReportReceived(const QString& callId, MapStringInt report);
     void onConferenceInfosUpdated(const QString& confId, VectorMapStringString infos);
-    void audioMuted(const QString& callID, bool state);
-    void videoMuted(const QString& callID, bool state);
-    void peerHold(const QString& callID, bool state);
+    void audioMuted(const QString& callId, bool state);
+    void videoMuted(const QString& callId, bool state);
+    void peerHold(const QString& callId, bool state);
     void smartInfo(const MapStringString& info);
-    void remoteRecordingChanged(const QString& callID,
+    void remoteRecordingChanged(const QString& callId,
                                 const QString& peerNumber,
                                 bool remoteRecordingState);
 };

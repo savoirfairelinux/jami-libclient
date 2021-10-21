@@ -162,17 +162,17 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
-    std::string openVideoInput(const std::string& resource)
+    QString openVideoInput(const QString& resource)
     {
 #ifdef ENABLE_VIDEO
-        return DRing::openVideoInput(resource);
+        return DRing::openVideoInput(resource.toStdString()).c_str();
 #endif
     }
 
-    void closeVideoInput(const std::string& resource)
+    void closeVideoInput(const QString& resource)
     {
 #ifdef ENABLE_VIDEO
-        DRing::closeVideoInput(resource);
+        DRing::closeVideoInput(resource.toStdString());
 #endif
     }
 
