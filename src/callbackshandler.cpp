@@ -459,9 +459,12 @@ CallbacksHandler::slotMediaChangeRequested(const QString& accountId,
 }
 
 void
-CallbacksHandler::slotCallStateChanged(const QString& callId, const QString& state, int code)
+CallbacksHandler::slotCallStateChanged(const QString& accountId,
+                                       const QString& callId,
+                                       const QString& state,
+                                       int code)
 {
-    emit callStateChanged(callId, state, code);
+    emit callStateChanged(accountId, callId, state, code);
 }
 
 void
@@ -503,7 +506,8 @@ CallbacksHandler::slotRegistrationStateChanged(const QString& accountId,
 }
 
 void
-CallbacksHandler::slotIncomingMessage(const QString& callId,
+CallbacksHandler::slotIncomingMessage(const QString& accountId,
+                                      const QString& callId,
                                       const QString& from,
                                       const MapStringString& interaction)
 {
@@ -522,30 +526,37 @@ CallbacksHandler::slotIncomingMessage(const QString& callId,
             auto pieces1 = pieces0[1].split(",");
             auto pieces2 = pieces1[1].split("=");
             auto pieces3 = pieces1[2].split("=");
-            emit incomingVCardChunk(callId, from2, pieces2[1].toInt(), pieces3[1].toInt(), e.second);
+            emit incomingVCardChunk(accountId,
+                                    callId,
+                                    from2,
+                                    pieces2[1].toInt(),
+                                    pieces3[1].toInt(),
+                                    e.second);
         } else if (e.first.contains(
                        "text/plain")) { // we consider it as an usual message interaction
-            emit incomingCallMessage(callId, from2, e.second);
+            emit incomingCallMessage(accountId, callId, from2, e.second);
         }
     }
 }
 
 void
-CallbacksHandler::slotConferenceCreated(const QString& callId)
+CallbacksHandler::slotConferenceCreated(const QString& accountId, const QString& callId)
 {
-    emit conferenceCreated(callId);
+    emit conferenceCreated(accountId, callId);
 }
 
 void
-CallbacksHandler::slotConferenceChanged(const QString& callId, const QString& state)
+CallbacksHandler::slotConferenceChanged(const QString& accountId,
+                                        const QString& callId,
+                                        const QString& state)
 {
-    slotCallStateChanged(callId, state, 0);
+    slotCallStateChanged(accountId, callId, state, 0);
 }
 
 void
-CallbacksHandler::slotConferenceRemoved(const QString& callId)
+CallbacksHandler::slotConferenceRemoved(const QString& accountId, const QString& callId)
 {
-    emit conferenceRemoved(callId);
+    emit conferenceRemoved(accountId, callId);
 }
 
 void

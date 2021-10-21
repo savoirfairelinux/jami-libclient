@@ -311,11 +311,15 @@ public Q_SLOTS:
                                const MapStringString& payloads);
     /**
      * Listen from CallbacksHandler for new messages in a SIP call
+     * @param accountId account linked to the interaction
      * @param callId call linked to the interaction
      * @param from author uri
      * @param body of the message
      */
-    void slotIncomingCallMessage(const QString& callId, const QString& from, const QString& body);
+    void slotIncomingCallMessage(const QString& accountId,
+                                 const QString& callId,
+                                 const QString& from,
+                                 const QString& body);
     /**
      * Listen from CallModel when a call is added to a conference
      * @param callId
@@ -324,9 +328,10 @@ public Q_SLOTS:
     void slotCallAddedToConference(const QString& callId, const QString& confId);
     /**
      * Listen from CallbacksHandler when a conference is deleted.
+     * @param accountId
      * @param confId
      */
-    void slotConferenceRemoved(const QString& confId);
+    void slotConferenceRemoved(const QString& accountId, const QString& confId);
     /**
      * Listen for when a contact is composing
      * @param accountId
@@ -420,7 +425,7 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
     auto currentConfId = pimpl_->conversations.at(conversationIdx).confId;
     auto currentCallId = pimpl_->conversations.at(conversationIdx).callId;
     auto calls = pimpl_->lrc.getCalls();
-    auto conferences = pimpl_->lrc.getConferences();
+    auto conferences = pimpl_->lrc.getConferences(owner.id);
     auto& conversations = pimpl_->conversations;
     auto currentAccountID = pimpl_->linked.owner.id;
     // add contacts for current account
@@ -463,8 +468,8 @@ ConversationModel::getConferenceableConversations(const QString& convId, const Q
 
     // filter out calls from conference
     for (const auto& c : conferences) {
-        for (const auto& subcal : pimpl_->lrc.getConferenceSubcalls(c)) {
-            auto position = std::find(calls.begin(), calls.end(), subcal);
+        for (const auto& subcall : owner.callModel->getConferenceSubcalls(c)) {
+            auto position = std::find(calls.begin(), calls.end(), subcall);
             if (position != calls.end()) {
                 calls.erase(position);
             }
@@ -737,7 +742,7 @@ ConversationModel::selectConversation(const QString& uid) const
         if (!conversation.confId.isEmpty() && owner.confProperties.isRendezVous) {
             // If we are on a rendez vous account and we select the conversation,
             // attach to the call.
-            CallManager::instance().unholdConference(conversation.confId);
+            CallManager::instance().unholdConference(owner.id, conversation.confId);
         }
 
         if (not callEnded and not conversation.confId.isEmpty()) {
@@ -1108,7 +1113,7 @@ ConversationModel::sendMessage(const QString& uid, const QString& body, const QS
             auto status = interaction::Status::SENDING;
             auto convId = newConv.uid;
 
-            QStringList callLists = CallManager::instance().getCallList(); // no auto
+            QStringList callLists = CallManager::instance().getCallList(""); // no auto
             // workaround: sometimes, it may happen that the daemon delete a call, but lrc
             // don't. We check if the call is
             //             still valid every time the user want to send a message.
@@ -3226,11 +3231,12 @@ ConversationModelPimpl::slotNewAccountMessage(const QString& accountId,
 }
 
 void
-ConversationModelPimpl::slotIncomingCallMessage(const QString& callId,
+ConversationModelPimpl::slotIncomingCallMessage(const QString& accountId,
+                                                const QString& callId,
                                                 const QString& from,
                                                 const QString& body)
 {
-    if (not linked.owner.callModel->hasCall(callId))
+    if (accountId != linked.owner.id || !linked.owner.callModel->hasCall(callId))
         return;
 
     auto& call = linked.owner.callModel->getCall(callId);
@@ -3318,7 +3324,8 @@ ConversationModelPimpl::slotCallAddedToConference(const QString& callId, const Q
             conversation.confId = confId;
             invalidateModel();
             // Refresh the conference status only if attached
-            MapStringString confDetails = CallManager::instance().getConferenceDetails(confId);
+            MapStringString confDetails = CallManager::instance()
+                                              .getConferenceDetails(linked.owner.id, confId);
             if (confDetails["STATE"] == "ACTIVE_ATTACHED")
                 emit linked.selectConversation(conversation.uid);
         }
@@ -3449,8 +3456,10 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
 }
 
 void
-ConversationModelPimpl::slotConferenceRemoved(const QString& confId)
+ConversationModelPimpl::slotConferenceRemoved(const QString& accountId, const QString& confId)
 {
+    if (accountId != linked.owner.id)
+        return;
     // Get conversation
     for (auto& i : conversations) {
         if (i.confId == confId) {
