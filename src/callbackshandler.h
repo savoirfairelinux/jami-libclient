@@ -124,11 +124,15 @@ Q_SIGNALS:
                               const VectorMapStringString& mediaList);
     /**
      * Connect this signal to know when a call is updated
+     * @param accountId
      * @param callId the call id
      * @param state the new state
      * @param code
      */
-    void callStateChanged(const QString& callId, const QString& state, int code);
+    void callStateChanged(const QString& accountId,
+                          const QString& callId,
+                          const QString& state,
+                          int code);
     /**
      * Connect this signal to know when a call medias are available
      * @param callId the call id
@@ -184,12 +188,13 @@ Q_SIGNALS:
      * Connect this signal to know when a new conference is created
      * @param callId of the conference
      */
-    void conferenceCreated(const QString& callId);
+    void conferenceCreated(const QString& accountId, const QString& callId);
     /**
      * Connect this signal to know when a conference is removed
+     * @param accountId
      * @param callId of the conference
      */
-    void conferenceRemoved(const QString& callId);
+    void conferenceRemoved(const QString& accountId, const QString& callId);
     /**
      * Connect this signal to know when a message sent get a new status
      * @param accountId, account linked
@@ -460,11 +465,15 @@ private Q_SLOTS:
                                   const VectorMapStringString& mediaList);
     /**
      * Emit callStateChanged
+     * @param accountId
      * @param callId the call which changes.
      * @param state the new state
      * @param code unused for now
      */
-    void slotCallStateChanged(const QString& callId, const QString& state, int code);
+    void slotCallStateChanged(const QString& accountId,
+                              const QString& callId,
+                              const QString& state,
+                              int code);
     /**
      * Emit mediaNegotiationStatus
      * @param callId the call which changes.
@@ -486,20 +495,25 @@ private Q_SLOTS:
                              const QMap<QString, QString>& interaction);
     /**
      * Emit conferenceCreated
+     * @param accountId
      * @param callId of the conference
      */
-    void slotConferenceCreated(const QString& callId);
+    void slotConferenceCreated(const QString& accountId, const QString& callId);
     /**
      * Emit conferenceRemove
+     * @param accountId
      * @param callId of the conference
      */
-    void slotConferenceRemoved(const QString& callId);
+    void slotConferenceRemoved(const QString& accountId, const QString& callId);
     /**
      * Call slotCallStateChanged
+     * @param accountId
      * @param callId of the conference
      * @param state, new state
      */
-    void slotConferenceChanged(const QString& callId, const QString& state);
+    void slotConferenceChanged(const QString& accountId,
+                               const QString& callId,
+                               const QString& state);
     /**
      * Emit accountMessageStatusChanged
      * @param accountId, account linked

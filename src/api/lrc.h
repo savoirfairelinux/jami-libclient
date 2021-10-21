@@ -95,6 +95,11 @@ public:
     static VectorString activeCalls();
 
     /**
+     * Close all active calls and conferences
+     */
+    void hangupCallsAndConferences();
+
+    /**
      * Helper: get call list from daemon
      */
     static VectorString getCalls();
@@ -102,12 +107,7 @@ public:
     /**
      * Helper: get conference list from daemon
      */
-    static VectorString getConferences();
-
-    /**
-     * Helper: get subcalls list for a conference from daemon
-     */
-    static VectorString getConferenceSubcalls(const QString& cid);
+    static VectorString getConferences(const QString& accountId = "");
 
     /**
      * Preference

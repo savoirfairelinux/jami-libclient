@@ -39,6 +39,7 @@
 
 // LRC
 #include "api/call.h"
+#include "api/lrc.h"
 #include "callbackshandler.h"
 #include "dbus/callmanager.h"
 #include "dbus/configurationmanager.h"
@@ -517,13 +518,13 @@ AVModel::useAVFrame(bool useAVFrame)
 QString
 AVModel::startPreview(const QString& resource)
 {
-    return QString(VideoManager::instance().openVideoInput(resource.toStdString()).c_str());
+    return QString(VideoManager::instance().openVideoInput(resource));
 }
 
 void
 AVModel::stopPreview(const QString& resource)
 {
-    VideoManager::instance().closeVideoInput(resource.toStdString());
+    VideoManager::instance().closeVideoInput(resource);
 }
 
 const video::Renderer&
@@ -535,89 +536,6 @@ AVModel::getRenderer(const QString& id) const
         throw std::out_of_range("Can't find renderer " + id.toStdString());
     }
     return *pimpl_->renderers_[id];
-}
-
-void
-AVModel::setInputFile(const QString& uri, const QString& callId)
-{
-    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-    auto resource = !uri.isEmpty() ? QString("%1%2%3")
-                                         .arg(DRing::Media::VideoProtocolPrefix::FILE)
-                                         .arg(sep)
-                                         .arg(QUrl(uri).toLocalFile())
-                                   : DRing::Media::VideoProtocolPrefix::NONE;
-    if (callId.isEmpty()) {
-        VideoManager::instance().openVideoInput(resource.toStdString());
-    } else {
-        CallManager::instance().switchInput(callId, resource);
-    }
-}
-
-void
-AVModel::setDisplay(int idx, int x, int y, int w, int h, const QString& callId)
-{
-    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-    auto resource = QString("%1%2:%3+%4,%5 %6x%7")
-                        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
-                        .arg(sep)
-                        .arg(idx)
-                        .arg(x)
-                        .arg(y)
-                        .arg(w)
-                        .arg(h);
-    if (callId.isEmpty()) {
-        VideoManager::instance().openVideoInput(resource.toStdString());
-    } else {
-        CallManager::instance().switchInput(callId, resource);
-    }
-}
-
-void
-AVModel::switchInputTo(const QString& id, const QString& callId)
-{
-    QString resource;
-    auto devices = getDevices();
-    auto deviceAvailable = std::find(std::begin(devices), std::end(devices), id);
-    if (deviceAvailable != devices.end()) {
-        QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-        resource = QString("%1%2%3").arg(DRing::Media::VideoProtocolPrefix::CAMERA).arg(sep).arg(id);
-    } else {
-        resource = QString(DRing::Media::VideoProtocolPrefix::NONE);
-    }
-    if (callId.isEmpty()) {
-        VideoManager::instance().openVideoInput(resource.toStdString());
-    } else {
-        CallManager::instance().switchInput(callId, resource);
-    }
-}
-
-video::RenderedDevice
-AVModel::getCurrentRenderedDevice(const QString& call_id) const
-{
-    video::RenderedDevice result;
-    MapStringString callDetails;
-    QStringList conferences = CallManager::instance().getConferenceList();
-    if (conferences.indexOf(call_id) != -1) {
-        callDetails = CallManager::instance().getConferenceDetails(call_id);
-    } else {
-        callDetails = CallManager::instance().getCallDetails(call_id);
-    }
-    if (!callDetails.contains("VIDEO_SOURCE")) {
-        return result;
-    }
-    auto source = callDetails["VIDEO_SOURCE"];
-    auto sourceSize = source.size();
-    if (source.startsWith("camera://")) {
-        result.type = video::DeviceType::CAMERA;
-        result.name = source.right(sourceSize - QString("camera://").size());
-    } else if (source.startsWith("file://")) {
-        result.type = video::DeviceType::FILE;
-        result.name = source.right(sourceSize - QString("file://").size());
-    } else if (source.startsWith("display://")) {
-        result.type = video::DeviceType::DISPLAY;
-        result.name = source.right(sourceSize - QString("display://").size());
-    }
-    return result;
 }
 
 void
@@ -680,8 +598,13 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
             }
         }
     };
-    restartRenderers(CallManager::instance().getCallList());
-    restartRenderers(CallManager::instance().getConferenceList());
+    restartRenderers(CallManager::instance().getCallList(""));
+    auto confIds = lrc::api::Lrc::getConferences();
+    QStringList list;
+    foreach (QString confId, confIds) {
+        list << confId;
+    }
+    restartRenderers(list);
     if (startedPreview)
         restartRenderers({"local"});
     currentVideoCaptureDevice_ = VideoManager::instance().getDefaultDevice();
@@ -736,7 +659,7 @@ AVModelPimpl::stopCameraAndQuit(int)
 {
     if (SIZE_RENDERER == 1) {
         // This will stop the preview if needed (not in a call).
-        VideoManager::instance().stopCamera();
+        VideoManager::instance().closeVideoInput(video::PREVIEW_RENDERER_ID);
         // HACK: this sleep is just here to let the camera stop and
         // avoid immediate raise
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
