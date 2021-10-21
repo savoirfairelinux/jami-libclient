@@ -31,6 +31,7 @@
 #include "api/newaccountmodel.h"
 #include "authority/storagehelper.h"
 #include "dbus/callmanager.h"
+#include "dbus/videomanager.h"
 #include "vcard.h"
 #include "video/renderer.h"
 #include "typedefs.h"
@@ -131,7 +132,6 @@ public:
     void sendProfile(const QString& callId);
 
     NewCallModel::CallInfoMap calls;
-    Lrc& lrc_;
     const CallbacksHandler& callbacksHandler;
     const NewCallModel& linked;
     const BehaviorController& behaviorController;
@@ -162,6 +162,8 @@ public:
     bool manageCurrentCall_ {true};
     QString currentCall_ {};
 
+    Lrc& lrc;
+
     QList<call::PendingConferenceeInfo> pendingConferencees_;
 
 public Q_SLOTS:
@@ -189,11 +191,15 @@ public Q_SLOTS:
                                   const VectorMapStringString& mediaList);
     /**
      * Listen from CallbacksHandler when a call got a new state
+     * @param accountId
      * @param callId
      * @param state the new state
      * @param code unused
      */
-    void slotCallStateChanged(const QString& callId, const QString& state, int code);
+    void slotCallStateChanged(const QString& accountId,
+                              const QString& callId,
+                              const QString& state,
+                              int code);
     /**
      * Listen from CallbacksHandler when a call medias are ready
      * @param callId
@@ -205,13 +211,15 @@ public Q_SLOTS:
                                     const VectorMapStringString& mediaList);
     /**
      * Listen from CallbacksHandler when a VCard chunk is incoming
+     * @param accountId
      * @param callId
      * @param from
      * @param part
      * @param numberOfParts
      * @param payload
      */
-    void slotincomingVCardChunk(const QString& callId,
+    void slotincomingVCardChunk(const QString& accountId,
+                                const QString& callId,
                                 const QString& from,
                                 int part,
                                 int numberOfParts,
@@ -220,7 +228,7 @@ public Q_SLOTS:
      * Listen from CallbacksHandler when a conference is created.
      * @param callId
      */
-    void slotConferenceCreated(const QString& callId);
+    void slotConferenceCreated(const QString& accountId, const QString& callId);
     /**
      * Listen from CallbacksHandler when a voice mail notice is incoming
      * @param accountId
@@ -285,7 +293,7 @@ NewCallModel::getConferenceFromURI(const QString& uri) const
 {
     for (const auto& call : pimpl_->calls) {
         if (call.second->type == call::Type::CONFERENCE) {
-            QStringList callList = CallManager::instance().getParticipantList(call.first);
+            QStringList callList = CallManager::instance().getParticipantList(owner.id, call.first);
             foreach (const auto& callId, callList) {
                 try {
                     if (pimpl_->calls.find(callId) != pimpl_->calls.end()
@@ -298,6 +306,18 @@ NewCallModel::getConferenceFromURI(const QString& uri) const
         }
     }
     throw std::out_of_range("No call at URI " + uri.toStdString());
+}
+
+VectorString
+NewCallModel::getConferenceSubcalls(const QString& confId)
+{
+    QStringList callList = CallManager::instance().getParticipantList(owner.id, confId);
+    VectorString result;
+    result.reserve(callList.size());
+    foreach (const auto& callId, callList) {
+        result.push_back(callId);
+    }
+    return result;
 }
 
 const call::Info&
@@ -398,7 +418,7 @@ NewCallModel::requestMediaChange(const QString& callId,
                                         .arg(QUrl(uri).toLocalFile())
                                   : DRing::Media::VideoProtocolPrefix::NONE;
         if (callInfo->type == call::Type::CONFERENCE) {
-            CallManager::instance().switchInput(callId, resource);
+            CallManager::instance().switchInput(owner.id, callId, resource);
             return;
         }
         if (!resource.isEmpty())
@@ -410,7 +430,7 @@ NewCallModel::requestMediaChange(const QString& callId,
         // Screen/window sharing
         resource = uri;
         if (callInfo->type == call::Type::CONFERENCE) {
-            CallManager::instance().switchInput(callId, resource);
+            CallManager::instance().switchInput(owner.id, callId, resource);
             return;
         }
         srctype = MediaAttributeValue::SRC_TYPE_DISPLAY;
@@ -426,11 +446,13 @@ NewCallModel::requestMediaChange(const QString& callId,
 
         if (callInfo->type == call::Type::CONFERENCE) {
             if (mediaLabel.contains("audio_0")) {
-                CallManager::instance().muteLocalMedia(callId,
+                CallManager::instance().muteLocalMedia(owner.id,
+                                                       callId,
                                                        DRing::Media::Details::MEDIA_TYPE_AUDIO,
                                                        !callInfo->audioMuted && mute);
             } else if (mediaLabel.contains("video_0")) {
-                CallManager::instance().muteLocalMedia(callId,
+                CallManager::instance().muteLocalMedia(owner.id,
+                                                       callId,
                                                        DRing::Media::Details::MEDIA_TYPE_VIDEO,
                                                        !callInfo->videoMuted && mute);
             }
@@ -470,7 +492,7 @@ NewCallModel::requestMediaChange(const QString& callId,
                                           {MediaAttributeKey::LABEL, mediaLabel}};
         proposedList.push_back(mediaAttribute);
     }
-    CallManager::instance().requestMediaChange(callId, proposedList);
+    CallManager::instance().requestMediaChange(owner.id, callId, proposedList);
     // If media existed and its mute state was changed here, then we should
     // update the mediaList because we will not receive signal
     // mediaNegotiationStatus
@@ -494,9 +516,9 @@ NewCallModel::accept(const QString& callId) const
         if (!callInfo)
             return;
         if (callInfo->mediaList.empty())
-            CallManager::instance().accept(callId);
+            CallManager::instance().accept(owner.id, callId);
         else
-            CallManager::instance().acceptWithMedia(callId, callInfo->mediaList);
+            CallManager::instance().acceptWithMedia(owner.id, callId, callInfo->mediaList);
     } catch (...) {
     }
 }
@@ -509,16 +531,16 @@ NewCallModel::hangUp(const QString& callId) const
     auto& call = pimpl_->calls[callId];
 
     if (call->status == call::Status::INCOMING_RINGING) {
-        CallManager::instance().refuse(callId);
+        CallManager::instance().refuse(owner.id, callId);
         return;
     }
 
     switch (call->type) {
     case call::Type::DIALOG:
-        CallManager::instance().hangUp(callId);
+        CallManager::instance().hangUp(owner.id, callId);
         break;
     case call::Type::CONFERENCE:
-        CallManager::instance().hangUpConference(callId);
+        CallManager::instance().hangUpConference(owner.id, callId);
         break;
     case call::Type::INVALID:
     default:
@@ -531,13 +553,13 @@ NewCallModel::refuse(const QString& callId) const
 {
     if (!hasCall(callId))
         return;
-    CallManager::instance().refuse(callId);
+    CallManager::instance().refuse(owner.id, callId);
 }
 
 void
 NewCallModel::toggleAudioRecord(const QString& callId) const
 {
-    CallManager::instance().toggleRecording(callId);
+    CallManager::instance().toggleRecording(owner.id, callId);
 }
 
 void
@@ -560,15 +582,15 @@ NewCallModel::togglePause(const QString& callId) const
 
     if (call->status == call::Status::PAUSED) {
         if (call->type == call::Type::DIALOG) {
-            CallManager::instance().unhold(callId);
+            CallManager::instance().unhold(owner.id, callId);
         } else {
-            CallManager::instance().unholdConference(callId);
+            CallManager::instance().unholdConference(owner.id, callId);
         }
     } else if (call->status == call::Status::IN_PROGRESS) {
         if (call->type == call::Type::DIALOG)
-            CallManager::instance().hold(callId);
+            CallManager::instance().hold(owner.id, callId);
         else {
-            CallManager::instance().holdConference(callId);
+            CallManager::instance().holdConference(owner.id, callId);
         }
     }
 }
@@ -593,13 +615,13 @@ NewCallModel::setQuality(const QString& callId, const double quality) const
 void
 NewCallModel::transfer(const QString& callId, const QString& to) const
 {
-    CallManager::instance().transfer(callId, to);
+    CallManager::instance().transfer(owner.id, callId, to);
 }
 
 void
 NewCallModel::transferToCall(const QString& callId, const QString& callIdDest) const
 {
-    CallManager::instance().attendedTransfer(callId, callIdDest);
+    CallManager::instance().attendedTransfer(owner.id, callId, callIdDest);
 }
 
 void
@@ -630,7 +652,7 @@ NewCallModel::joinCalls(const QString& callIdA, const QString& callIdB) const
     }
 
     if (call1.type == call::Type::CONFERENCE && call2.type == call::Type::CONFERENCE) {
-        bool joined = CallManager::instance().joinConference(callIdA, callIdB);
+        bool joined = CallManager::instance().joinConference(owner.id, callIdA, callIdB);
 
         if (!joined) {
             qWarning() << "Conference: " << callIdA << " couldn't join conference " << callIdB;
@@ -652,10 +674,10 @@ NewCallModel::joinCalls(const QString& callIdA, const QString& callIdB) const
         auto call = call1.type == call::Type::CONFERENCE ? callIdB : callIdA;
         auto conf = call1.type == call::Type::CONFERENCE ? callIdA : callIdB;
         // Unpause conference if conference was not active
-        CallManager::instance().unholdConference(conf);
+        CallManager::instance().unholdConference(owner.id, conf);
         auto accountCall = call1.type == call::Type::CONFERENCE ? accountIdCall2 : accountIdCall1;
 
-        bool joined = CallManager::instance().addParticipant(call, conf);
+        bool joined = CallManager::instance().addParticipant(owner.id, call, conf);
         if (!joined) {
             qWarning() << "Call: " << call << " couldn't join conference " << conf;
             return;
@@ -665,7 +687,7 @@ NewCallModel::joinCalls(const QString& callIdA, const QString& callIdB) const
             try {
                 auto& accountInfo = owner.accountModel->getAccountInfo(accountCall);
                 if (accountInfo.callModel->hasCall(call)) {
-                    accountInfo.callModel->pimpl_->slotConferenceCreated(conf);
+                    accountInfo.callModel->pimpl_->slotConferenceCreated(owner.id, conf);
                 }
             } catch (...) {
             }
@@ -682,7 +704,7 @@ NewCallModel::joinCalls(const QString& callIdA, const QString& callIdB) const
             }
         }
     } else {
-        CallManager::instance().joinParticipant(callIdA, callIdB);
+        CallManager::instance().joinParticipant(owner.id, callIdA, callIdB);
         // NOTE: This will trigger slotConferenceCreated.
     }
 }
@@ -725,7 +747,7 @@ NewCallModel::isRecording(const QString& callId) const
 {
     if (!hasCall(callId))
         return false;
-    return CallManager::instance().getIsRecording(callId);
+    return CallManager::instance().getIsRecording(owner.id, callId);
 }
 
 QString
@@ -744,12 +766,101 @@ NewCallModel::getPendingConferencees()
     return pimpl_->pendingConferencees_;
 }
 
+video::RenderedDevice
+NewCallModel::getCurrentRenderedDevice(const QString& call_id) const
+{
+    video::RenderedDevice result;
+    MapStringString callDetails;
+    QStringList conferences = CallManager::instance().getConferenceList(owner.id);
+    if (conferences.indexOf(call_id) != -1) {
+        callDetails = CallManager::instance().getConferenceDetails(owner.id, call_id);
+    } else {
+        callDetails = CallManager::instance().getCallDetails(owner.id, call_id);
+    }
+    if (!callDetails.contains("VIDEO_SOURCE")) {
+        return result;
+    }
+    auto source = callDetails["VIDEO_SOURCE"];
+    auto sourceSize = source.size();
+    if (source.startsWith("camera://")) {
+        result.type = video::DeviceType::CAMERA;
+        result.name = source.right(sourceSize - QString("camera://").size());
+    } else if (source.startsWith("file://")) {
+        result.type = video::DeviceType::FILE;
+        result.name = source.right(sourceSize - QString("file://").size());
+    } else if (source.startsWith("display://")) {
+        result.type = video::DeviceType::DISPLAY;
+        result.name = source.right(sourceSize - QString("display://").size());
+    }
+    return result;
+}
+
+void
+NewCallModel::setInputFile(const QString& uri, const QString& callId)
+{
+    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+    auto resource = !uri.isEmpty() ? QString("%1%2%3")
+                                         .arg(DRing::Media::VideoProtocolPrefix::FILE)
+                                         .arg(sep)
+                                         .arg(QUrl(uri).toLocalFile())
+                                   : DRing::Media::VideoProtocolPrefix::NONE;
+    if (callId.isEmpty()) {
+        VideoManager::instance().openVideoInput(resource);
+    } else {
+        CallManager::instance().switchInput(owner.id, callId, resource);
+    }
+}
+
+QString
+NewCallModel::getDisplay(int idx, int x, int y, int w, int h)
+{
+    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+    return QString("%1%2:%3+%4,%5 %6x%7")
+        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
+        .arg(sep)
+        .arg(idx)
+        .arg(x)
+        .arg(y)
+        .arg(w)
+        .arg(h);
+}
+
+void
+NewCallModel::setDisplay(int idx, int x, int y, int w, int h, const QString& callId)
+{
+    auto resource = getDisplay(idx, x, y, w, h);
+    if (callId.isEmpty()) {
+        VideoManager::instance().openVideoInput(resource);
+    } else {
+        CallManager::instance().switchInput(owner.id, callId, resource);
+    }
+}
+
+void
+NewCallModel::switchInputTo(const QString& id, const QString& callId)
+{
+    QString resource;
+    auto devices = pimpl_->lrc.getAVModel().getDevices();
+    auto deviceAvailable = std::find(std::begin(devices), std::end(devices), id);
+    if (deviceAvailable != devices.end()) {
+        QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+        resource = QString("%1%2%3").arg(DRing::Media::VideoProtocolPrefix::CAMERA).arg(sep).arg(id);
+    } else {
+        resource = QString(DRing::Media::VideoProtocolPrefix::NONE);
+    }
+    if (callId.isEmpty()) {
+        VideoManager::instance().openVideoInput(resource);
+    } else {
+        CallManager::instance().switchInput(owner.id, callId, resource);
+    }
+}
+
 NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
                                      Lrc& lrc,
                                      const CallbacksHandler& callbacksHandler,
                                      const BehaviorController& behaviorController)
     : linked(linked)
-    , lrc_(lrc)
+    , lrc(lrc)
     , callbacksHandler(callbacksHandler)
     , behaviorController(behaviorController)
 {
@@ -806,34 +917,32 @@ NewCallModelPimpl::~NewCallModelPimpl() {}
 void
 NewCallModelPimpl::initCallFromDaemon()
 {
-    QStringList callList = CallManager::instance().getCallList();
+    QStringList callList = CallManager::instance().getCallList(linked.owner.id);
     for (const auto& callId : callList) {
-        MapStringString details = CallManager::instance().getCallDetails(callId);
-        auto accountId = details["ACCOUNTID"];
-        if (accountId == linked.owner.id) {
-            auto callInfo = std::make_shared<call::Info>();
-            callInfo->id = callId;
-            auto now = std::chrono::steady_clock::now();
-            auto system_now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-            auto diff = static_cast<int64_t>(system_now)
-                        - std::stol(details["TIMESTAMP_START"].toStdString());
-            callInfo->startTime = now - std::chrono::seconds(diff);
-            callInfo->status = call::to_status(details["CALL_STATE"]);
-            auto endId = details["PEER_NUMBER"].indexOf("@");
-            callInfo->peerUri = details["PEER_NUMBER"].left(endId);
-            if (linked.owner.profileInfo.type == lrc::api::profile::Type::JAMI) {
-                callInfo->peerUri = "ring:" + callInfo->peerUri;
-            }
-            callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
-            callInfo->audioMuted = details["AUDIO_MUTED"] == "true";
-            callInfo->type = call::Type::DIALOG;
-            VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
-            callInfo->participantsInfos = infos;
-            calls.emplace(callId, std::move(callInfo));
-            // NOTE/BUG: the videorenderer can't know that the client has restarted
-            // So, for now, a user will have to manually restart the medias until
-            // this renderer is not redesigned.
+        MapStringString details = CallManager::instance().getCallDetails(linked.owner.id, callId);
+        auto callInfo = std::make_shared<call::Info>();
+        callInfo->id = callId;
+        auto now = std::chrono::steady_clock::now();
+        auto system_now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+        auto diff = static_cast<int64_t>(system_now)
+                    - std::stol(details["TIMESTAMP_START"].toStdString());
+        callInfo->startTime = now - std::chrono::seconds(diff);
+        callInfo->status = call::to_status(details["CALL_STATE"]);
+        auto endId = details["PEER_NUMBER"].indexOf("@");
+        callInfo->peerUri = details["PEER_NUMBER"].left(endId);
+        if (linked.owner.profileInfo.type == lrc::api::profile::Type::JAMI) {
+            callInfo->peerUri = "ring:" + callInfo->peerUri;
         }
+        callInfo->videoMuted = details["VIDEO_MUTED"] == "true";
+        callInfo->audioMuted = details["AUDIO_MUTED"] == "true";
+        callInfo->type = call::Type::DIALOG;
+        VectorMapStringString infos = CallManager::instance().getConferenceInfos(linked.owner.id,
+                                                                                 callId);
+        callInfo->participantsInfos = infos;
+        calls.emplace(callId, std::move(callInfo));
+        // NOTE/BUG: the videorenderer can't know that the client has restarted
+        // So, for now, a user will have to manually restart the medias until
+        // this renderer is not redesigned.
     }
 }
 
@@ -849,18 +958,16 @@ NewCallModelPimpl::checkMediaDeviceMuted(const MapStringString& mediaAttributes)
 void
 NewCallModelPimpl::initConferencesFromDaemon()
 {
-    QStringList callList = CallManager::instance().getConferenceList();
+    QStringList callList = CallManager::instance().getConferenceList(linked.owner.id);
     for (const auto& callId : callList) {
-        QMap<QString, QString> details = CallManager::instance().getConferenceDetails(callId);
+        QMap<QString, QString> details = CallManager::instance()
+                                             .getConferenceDetails(linked.owner.id, callId);
         auto callInfo = std::make_shared<call::Info>();
         callInfo->id = callId;
-        QStringList callList = CallManager::instance().getParticipantList(callId);
-        auto isForThisAccount = true;
+        QStringList callList = CallManager::instance().getParticipantList(linked.owner.id, callId);
         foreach (const auto& call, callList) {
-            MapStringString callDetails = CallManager::instance().getCallDetails(call);
-            isForThisAccount = callDetails["ACCOUNTID"] == linked.owner.id;
-            if (!isForThisAccount)
-                break;
+            MapStringString callDetails = CallManager::instance().getCallDetails(linked.owner.id,
+                                                                                 call);
             auto now = std::chrono::steady_clock::now();
             auto system_now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
             auto diff = static_cast<int64_t>(system_now)
@@ -871,10 +978,9 @@ NewCallModelPimpl::initConferencesFromDaemon()
             callInfo->startTime = now - std::chrono::seconds(diff);
             emit linked.callAddedToConference(call, callId);
         }
-        if (!isForThisAccount)
-            break;
         callInfo->type = call::Type::CONFERENCE;
-        VectorMapStringString infos = CallManager::instance().getConferenceInfos(callId);
+        VectorMapStringString infos = CallManager::instance().getConferenceInfos(linked.owner.id,
+                                                                                 callId);
         callInfo->participantsInfos = infos;
         calls.emplace(callId, std::move(callInfo));
     }
@@ -908,16 +1014,16 @@ NewCallModel::setCurrentCall(const QString& callId) const
     if (call->status == call::Status::PAUSED) {
         auto& call = pimpl_->calls[callId];
         if (call->type == call::Type::DIALOG) {
-            CallManager::instance().unhold(callId);
+            CallManager::instance().unhold(owner.id, callId);
         } else {
-            CallManager::instance().unholdConference(callId);
+            CallManager::instance().unholdConference(owner.id, callId);
         }
     }
 
     VectorString filterCalls;
-    QStringList conferences = CallManager::instance().getConferenceList();
+    QStringList conferences = CallManager::instance().getConferenceList(owner.id);
     for (const auto& confId : conferences) {
-        QStringList callList = CallManager::instance().getParticipantList(confId);
+        QStringList callList = CallManager::instance().getParticipantList(owner.id, confId);
         foreach (const auto& cid, callList) {
             filterCalls.push_back(cid);
         }
@@ -926,9 +1032,9 @@ NewCallModel::setCurrentCall(const QString& callId) const
         auto filtered = std::find(filterCalls.begin(), filterCalls.end(), cid) != filterCalls.end();
         if (cid != callId && !filtered) {
             // Only hold calls for a non rendez-vous point
-            MapStringString callDetails = CallManager::instance().getCallDetails(callId);
+            MapStringString callDetails = CallManager::instance().getCallDetails(owner.id, callId);
             auto accountId = callDetails["ACCOUNTID"];
-            CallManager::instance().hold(cid);
+            CallManager::instance().hold(owner.id, cid);
         }
     }
     if (!lrc::api::Lrc::holdConferences) {
@@ -936,13 +1042,14 @@ NewCallModel::setCurrentCall(const QString& callId) const
     }
     for (const auto& confId : conferences) {
         if (callId != confId) {
-            MapStringString confDetails = CallManager::instance().getConferenceDetails(confId);
+            MapStringString confDetails = CallManager::instance().getConferenceDetails(owner.id,
+                                                                                       confId);
             // Only hold conference if attached
             if (confDetails["CALL_STATE"] == "ACTIVE_DETACHED")
                 continue;
-            QStringList callList = CallManager::instance().getParticipantList(confId);
+            QStringList callList = CallManager::instance().getParticipantList(owner.id, confId);
             if (callList.indexOf(callId) == -1)
-                CallManager::instance().holdConference(confId);
+                CallManager::instance().holdConference(owner.id, confId);
         }
     }
 }
@@ -954,13 +1061,13 @@ NewCallModel::setConferenceLayout(const QString& confId, const call::Layout& lay
     if (call != pimpl_->calls.end()) {
         switch (layout) {
         case call::Layout::GRID:
-            CallManager::instance().setConferenceLayout(confId, 0);
+            CallManager::instance().setConferenceLayout(owner.id, confId, 0);
             break;
         case call::Layout::ONE_WITH_SMALL:
-            CallManager::instance().setConferenceLayout(confId, 1);
+            CallManager::instance().setConferenceLayout(owner.id, confId, 1);
             break;
         case call::Layout::ONE:
-            CallManager::instance().setConferenceLayout(confId, 2);
+            CallManager::instance().setConferenceLayout(owner.id, confId, 2);
             break;
         }
         call->second->layout = layout;
@@ -970,7 +1077,7 @@ NewCallModel::setConferenceLayout(const QString& confId, const call::Layout& lay
 void
 NewCallModel::setActiveParticipant(const QString& confId, const QString& participant)
 {
-    CallManager::instance().setActiveParticipant(confId, participant);
+    CallManager::instance().setActiveParticipant(owner.id, confId, participant);
 }
 
 bool
@@ -1001,7 +1108,7 @@ NewCallModel::isModerator(const QString& confId, const QString& uri)
 void
 NewCallModel::setModerator(const QString& confId, const QString& peerId, const bool& state)
 {
-    CallManager::instance().setModerator(confId, peerId, state);
+    CallManager::instance().setModerator(owner.id, confId, peerId, state);
 }
 
 bool
@@ -1044,13 +1151,13 @@ NewCallModel::setHandRaised(const QString& accountId,
 void
 NewCallModel::muteParticipant(const QString& confId, const QString& peerId, const bool& state)
 {
-    CallManager::instance().muteParticipant(confId, peerId, state);
+    CallManager::instance().muteParticipant(owner.id, confId, peerId, state);
 }
 
 void
 NewCallModel::hangupParticipant(const QString& confId, const QString& participant)
 {
-    CallManager::instance().hangupParticipant(confId, participant);
+    CallManager::instance().hangupParticipant(owner.id, confId, participant);
 }
 
 void
@@ -1059,20 +1166,7 @@ NewCallModel::sendSipMessage(const QString& callId, const QString& body) const
     MapStringString payloads;
     payloads["text/plain"] = body;
 
-    CallManager::instance().sendTextMessage(callId, payloads, true /* not used */);
-}
-
-void
-NewCallModel::hangupCallsAndConferences()
-{
-    QStringList conferences = CallManager::instance().getConferenceList();
-    for (const auto& conf : conferences) {
-        CallManager::instance().hangUpConference(conf);
-    }
-    QStringList calls = CallManager::instance().getCallList();
-    for (const auto& call : calls) {
-        CallManager::instance().hangUp(call);
-    }
+    CallManager::instance().sendTextMessage(owner.id, callId, payloads, true /* not used */);
 }
 
 bool
@@ -1167,15 +1261,19 @@ NewCallModelPimpl::slotMediaChangeRequested(const QString& accountId,
             item[MediaAttributeKey::ENABLED] = "true";
         }
     }
-    CallManager::instance().answerMediaChangeRequest(callId,
+    CallManager::instance().answerMediaChangeRequest(linked.owner.id,
+                                                     callId,
                                                      QVector<MapStringString>::fromList(
                                                          answerMedia));
 }
 
 void
-NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& state, int code)
+NewCallModelPimpl::slotCallStateChanged(const QString& accountId,
+                                        const QString& callId,
+                                        const QString& state,
+                                        int code)
 {
-    if (!linked.hasCall(callId))
+    if (accountId != linked.owner.id || !linked.hasCall(callId))
         return;
 
     auto status = call::to_status(state);
@@ -1247,7 +1345,7 @@ NewCallModelPimpl::slotCallStateChanged(const QString& callId, const QString& st
 
 void
 NewCallModelPimpl::slotMediaNegotiationStatus(const QString& callId,
-                                              const QString& event,
+                                              const QString&,
                                               const VectorMapStringString& mediaList)
 {
     if (!linked.hasCall(callId)) {
@@ -1278,10 +1376,14 @@ NewCallModelPimpl::slotMediaNegotiationStatus(const QString& callId,
 }
 
 void
-NewCallModelPimpl::slotincomingVCardChunk(
-    const QString& callId, const QString& from, int part, int numberOfParts, const QString& payload)
+NewCallModelPimpl::slotincomingVCardChunk(const QString& accountId,
+                                          const QString& callId,
+                                          const QString& from,
+                                          int part,
+                                          int numberOfParts,
+                                          const QString& payload)
 {
-    if (!linked.hasCall(callId))
+    if (accountId != linked.owner.id || !linked.hasCall(callId))
         return;
 
     auto it = vcardsChunks.find(from);
@@ -1362,7 +1464,7 @@ NewCallModelPimpl::slotOnConferenceInfosUpdated(const QString& confId,
     // TODO: remove when the rendez-vous UI will be done
     // For now, the rendez-vous account can see ongoing calls
     // And must be notified when a new
-    QStringList callList = CallManager::instance().getParticipantList(confId);
+    QStringList callList = CallManager::instance().getParticipantList(linked.owner.id, confId);
     foreach (const auto& call, callList) {
         emit linked.callAddedToConference(call, confId);
         calls[call]->videoMuted = it->second->videoMuted;
@@ -1378,10 +1480,12 @@ NewCallModel::hasCall(const QString& callId) const
 }
 
 void
-NewCallModelPimpl::slotConferenceCreated(const QString& confId)
+NewCallModelPimpl::slotConferenceCreated(const QString& accountId, const QString& confId)
 {
+    if (accountId != linked.owner.id)
+        return;
     // Detect if conference is created for this account
-    QStringList callList = CallManager::instance().getParticipantList(confId);
+    QStringList callList = CallManager::instance().getParticipantList(linked.owner.id, confId);
     auto hasConference = false;
     foreach (const auto& call, callList) {
         hasConference |= linked.hasCall(call);
@@ -1394,7 +1498,8 @@ NewCallModelPimpl::slotConferenceCreated(const QString& confId)
     callInfo->status = call::Status::IN_PROGRESS;
     callInfo->type = call::Type::CONFERENCE;
     callInfo->startTime = std::chrono::steady_clock::now();
-    callInfo->participantsInfos = CallManager::instance().getConferenceInfos(confId);
+    callInfo->participantsInfos = CallManager::instance().getConferenceInfos(linked.owner.id,
+                                                                             confId);
     for (auto& i : callInfo->participantsInfos)
         i["uri"].replace("@ring.dht", "");
     calls[confId] = callInfo;
@@ -1433,7 +1538,7 @@ NewCallModelPimpl::sendProfile(const QString& callId)
             = vCard.left(sizeLimit);
         vCard.remove(0, sizeLimit);
         ++i;
-        CallManager::instance().sendTextMessage(callId, chunk, false);
+        CallManager::instance().sendTextMessage(linked.owner.id, callId, chunk, false);
     }
 }
 
@@ -1474,7 +1579,7 @@ NewCallModelPimpl::startedDecoding(const QString& id, const QString& shmPath, in
         return;
     video::Settings settings;
     settings.size = toQString(width) + "x" + toQString(height);
-    lrc_.getAVModel().addRenderer(id, settings, shmPath);
+    lrc.getAVModel().addRenderer(id, settings, shmPath);
 }
 
 } // namespace lrc

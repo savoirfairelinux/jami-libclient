@@ -146,21 +146,39 @@ Lrc::subscribeToDebugReceived()
 VectorString
 Lrc::activeCalls()
 {
-    QStringList callLists = CallManager::instance().getCallList();
     VectorString result;
-    result.reserve(callLists.size());
-    for (const auto& call : callLists) {
-        MapStringString callDetails = CallManager::instance().getCallDetails(call);
-        if (!isFinished(callDetails[QString(DRing::Call::Details::CALL_STATE)]))
-            result.push_back(call);
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+    for (const auto& accId : accountIds) {
+        QStringList callLists = CallManager::instance().getCallList(accId);
+        for (const auto& call : callLists) {
+            MapStringString callDetails = CallManager::instance().getCallDetails(accId, call);
+            if (!isFinished(callDetails[QString(DRing::Call::Details::CALL_STATE)]))
+                result.push_back(call);
+        }
     }
     return result;
+}
+
+void
+Lrc::hangupCallsAndConferences()
+{
+    const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+    for (const auto& accId : accountIds) {
+        QStringList conferences = CallManager::instance().getConferenceList(accId);
+        for (const auto& conf : conferences) {
+            CallManager::instance().hangUpConference(accId, conf);
+        }
+        QStringList calls = CallManager::instance().getCallList(accId);
+        for (const auto& call : calls) {
+            CallManager::instance().hangUp(accId, call);
+        }
+    }
 }
 
 VectorString
 Lrc::getCalls()
 {
-    QStringList callLists = CallManager::instance().getCallList();
+    QStringList callLists = CallManager::instance().getCallList("");
     VectorString result;
     result.reserve(callLists.size());
     for (const auto& call : callLists) {
@@ -170,25 +188,20 @@ Lrc::getCalls()
 }
 
 VectorString
-Lrc::getConferences()
+Lrc::getConferences(const QString& accountId)
 {
-    QStringList conferencesList = CallManager::instance().getConferenceList();
     VectorString result;
-    result.reserve(conferencesList.size());
-    for (const auto& conf : conferencesList) {
-        result.push_back(conf);
-    }
-    return result;
-}
-
-VectorString
-Lrc::getConferenceSubcalls(const QString& cid)
-{
-    QStringList callList = CallManager::instance().getParticipantList(cid);
-    VectorString result;
-    result.reserve(callList.size());
-    foreach (const auto& callId, callList) {
-        result.push_back(callId);
+    if (accountId.isEmpty()) {
+        const QStringList accountIds = ConfigurationManager::instance().getAccountList();
+        for (const auto& accId : accountIds) {
+            QStringList conferencesList = CallManager::instance().getConferenceList(accId);
+            for (const auto& conf : conferencesList)
+                result.push_back(conf);
+        }
+    } else {
+        QStringList conferencesList = CallManager::instance().getConferenceList(accountId);
+        for (const auto& conf : conferencesList)
+            result.push_back(conf);
     }
     return result;
 }

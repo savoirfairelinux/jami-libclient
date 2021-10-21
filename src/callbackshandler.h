@@ -124,11 +124,15 @@ Q_SIGNALS:
                               const VectorMapStringString& mediaList);
     /**
      * Connect this signal to know when a call is updated
+     * @param accountId
      * @param callId the call id
      * @param state the new state
      * @param code
      */
-    void callStateChanged(const QString& callId, const QString& state, int code);
+    void callStateChanged(const QString& accountId,
+                          const QString& callId,
+                          const QString& state,
+                          int code);
     /**
      * Connect this signal to know when a call medias are available
      * @param callId the call id
@@ -162,34 +166,41 @@ Q_SIGNALS:
     void accountStatusChanged(const QString& accountId, const api::account::Status status);
     /**
      * Connect this signal to know where a VCard is incoming
+     * @param accountId
      * @param callId the call linked to this VCard
      * @param from the sender URI
      * @param part the number of the part
      * @param numberOfParts of the VCard
      * @param payload content of the VCard
      */
-    void incomingVCardChunk(const QString& callId,
+    void incomingVCardChunk(const QString& accountId,
+                            const QString& callId,
                             const QString& from,
                             int part,
                             int numberOfParts,
                             const QString& payload);
     /**
      * Connect this signal to get incoming text interaction from SIP.
+     * @param accountId the account linked.
      * @param callId the call linked.
      * @param from interaction sender.
      * @param body the text received.
      */
-    void incomingCallMessage(const QString& callId, const QString& from, const QString& body) const;
+    void incomingCallMessage(const QString& accountId,
+                             const QString& callId,
+                             const QString& from,
+                             const QString& body) const;
     /**
      * Connect this signal to know when a new conference is created
      * @param callId of the conference
      */
-    void conferenceCreated(const QString& callId);
+    void conferenceCreated(const QString& accountId, const QString& callId);
     /**
      * Connect this signal to know when a conference is removed
+     * @param accountId
      * @param callId of the conference
      */
-    void conferenceRemoved(const QString& callId);
+    void conferenceRemoved(const QString& accountId, const QString& callId);
     /**
      * Connect this signal to know when a message sent get a new status
      * @param accountId, account linked
@@ -460,11 +471,15 @@ private Q_SLOTS:
                                   const VectorMapStringString& mediaList);
     /**
      * Emit callStateChanged
+     * @param accountId
      * @param callId the call which changes.
      * @param state the new state
      * @param code unused for now
      */
-    void slotCallStateChanged(const QString& callId, const QString& state, int code);
+    void slotCallStateChanged(const QString& accountId,
+                              const QString& callId,
+                              const QString& state,
+                              int code);
     /**
      * Emit mediaNegotiationStatus
      * @param callId the call which changes.
@@ -477,29 +492,36 @@ private Q_SLOTS:
     /**
      * Parse a call message and emit incomingVCardChunk if it's a VCard chunk
      * else incomingCallMessage if it's a text message
+     * @param accountId account linked
      * @param callId call linked
      * @param from the URI
      * @param interaction the content of the Message.
      */
-    void slotIncomingMessage(const QString& callId,
+    void slotIncomingMessage(const QString& accountId,
+                             const QString& callId,
                              const QString& from,
                              const QMap<QString, QString>& interaction);
     /**
      * Emit conferenceCreated
+     * @param accountId
      * @param callId of the conference
      */
-    void slotConferenceCreated(const QString& callId);
+    void slotConferenceCreated(const QString& accountId, const QString& callId);
     /**
      * Emit conferenceRemove
+     * @param accountId
      * @param callId of the conference
      */
-    void slotConferenceRemoved(const QString& callId);
+    void slotConferenceRemoved(const QString& accountId, const QString& callId);
     /**
      * Call slotCallStateChanged
+     * @param accountId
      * @param callId of the conference
      * @param state, new state
      */
-    void slotConferenceChanged(const QString& callId, const QString& state);
+    void slotConferenceChanged(const QString& accountId,
+                               const QString& callId,
+                               const QString& state);
     /**
      * Emit accountMessageStatusChanged
      * @param accountId, account linked
