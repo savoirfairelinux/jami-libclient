@@ -371,7 +371,7 @@ ContactModel::removeContact(const QString& contactUri, bool banned)
     // hang up calls with the removed contact as peer
     try {
         auto callinfo = owner.callModel->getCallFromURI(contactUri, true);
-        owner.callModel->hangUp(callinfo.id);
+        owner.callModel->hangUp(owner.id, callinfo.id);
     } catch (std::out_of_range& e) {
     }
     if (emitContactRemoved) {

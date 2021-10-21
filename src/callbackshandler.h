@@ -184,7 +184,7 @@ Q_SIGNALS:
      * Connect this signal to know when a new conference is created
      * @param callId of the conference
      */
-    void conferenceCreated(const QString& callId);
+    void conferenceCreated(const QString& accountId, const QString& callId);
     /**
      * Connect this signal to know when a conference is removed
      * @param callId of the conference

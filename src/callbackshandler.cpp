@@ -531,9 +531,9 @@ CallbacksHandler::slotIncomingMessage(const QString& callId,
 }
 
 void
-CallbacksHandler::slotConferenceCreated(const QString& callId)
+CallbacksHandler::slotConferenceCreated(const QString& accountId, const QString& callId)
 {
-    emit conferenceCreated(callId);
+    emit conferenceCreated(accountId, callId);
 }
 
 void

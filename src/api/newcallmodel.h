@@ -79,14 +79,19 @@ public:
      * @param  isAudioOnly, set to false by default
      * @return the call uid created. Empty string is returned if call couldn't be created.
      */
-    QString createCall(const QString& uri, bool isAudioOnly = false, VectorMapStringString mediaList = {});
+    QString createCall(const QString& uri,
+                       bool isAudioOnly = false,
+                       VectorMapStringString mediaList = {});
 
     /**
      * Request a media change in a ongoing call.
+     * @param  accountId
      * @param  callId
      * @param  mediaLabel label of media to be changed
      */
-    void requestMediaChange(const QString& callId, const QString& mediaLabel);
+    void requestMediaChange(const QString& accountId,
+                            const QString& callId,
+                            const QString& mediaLabel);
 
     /**
      * Get the call from its call id
