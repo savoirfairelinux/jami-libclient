@@ -21,6 +21,7 @@
 #include "api/behaviorcontroller.h"
 #include "api/call.h"
 #include "api/account.h"
+#include "api/newvideo.h"
 #include "typedefs.h"
 
 #include <QObject>
@@ -70,6 +71,7 @@ public:
     enum class MediaRequestType { FILESHARING, SCREENSHARING, CAMERA };
 
     NewCallModel(const account::Info& owner,
+                 Lrc& lrc,
                  const CallbacksHandler& callbacksHandler,
                  const BehaviorController& behaviorController);
     ~NewCallModel();
@@ -86,6 +88,7 @@ public:
 
     /**
      * Request a media change in a ongoing call.
+     * @param  accountId
      * @param  callId
      * @param  mediaLabel label of media to be changed
      * @param source
@@ -122,6 +125,11 @@ public:
      * @throw out_of_range exception if not found
      */
     const call::Info& getConferenceFromURI(const QString& uri) const;
+
+    /**
+     * Helper: get subcalls list for a conference from daemon
+     */
+    VectorString getConferenceSubcalls(const QString& cid);
 
     /**
      * @param  callId to test
@@ -234,12 +242,6 @@ public:
      * @return true if the call is recording else false
      */
     bool isRecording(const QString& callId) const;
-
-    /**
-     * Close all active calls and conferences
-     */
-    static void hangupCallsAndConferences();
-
     /**
      * Extract Status Message From Status Map
      * @param statusCode
@@ -335,6 +337,48 @@ public:
      */
     const QList<call::PendingConferenceeInfo>& getPendingConferencees();
 
+    /**
+     * Get informations on the rendered device
+     * @param call_id linked call to the renderer
+     * @return the device rendered
+     */
+    video::RenderedDevice getCurrentRenderedDevice(const QString& call_id) const;
+
+    /**
+     * Render a file to the call id specified
+     * @param uri the path of the file
+     * @param callId
+     * @note callId can be omitted to switch the input of the local recorder
+     */
+    void setInputFile(const QString& uri, const QString& callId = {});
+    /**
+     * Change the current device rendered for the call id specified
+     * @param id of the camera
+     * @param callId
+     * @note renders a black frame if device not found or empty
+     * @note callId can be omitted to switch the input of the local recorder
+     */
+    void switchInputTo(const QString& id, const QString& callId = {});
+    /**
+     * Get the current display resource string
+     * @param idx of the display
+     * @param x top left of the area
+     * @param y top up of the area
+     * @param w width of the area
+     * @param h height of the area
+     */
+    QString getDisplay(int idx, int x, int y, int w, int h);
+    /**
+     * Render the current display to the call id specified
+     * @param idx of the display
+     * @param x top left of the area
+     * @param y top up of the area
+     * @param w width of the area
+     * @param h height of the area
+     * @param callId
+     * @note callId can be omitted to switch the input of the local recorder
+     */
+    void setDisplay(int idx, int x, int y, int w, int h, const QString& callId = {});
 Q_SIGNALS:
     /**
      * Emitted when a call state changes
