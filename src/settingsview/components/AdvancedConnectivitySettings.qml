@@ -191,6 +191,7 @@ ColumnLayout {
             labelText: JamiStrings.useSTUN
             fontPointSize: JamiTheme.settingsFontSize
 
+            visible: isSIP
             checked: CurrentAccount.enable_STUN
 
             onSwitchToggled: CurrentAccount.enable_STUN = checked
@@ -203,6 +204,7 @@ ColumnLayout {
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
             enabled: checkBoxSTUNEnable.checked
+            visible: isSIP
 
             textField: CurrentAccount.server_STUN
 
