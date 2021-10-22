@@ -53,7 +53,7 @@ Flickable {
 
         onContextMenuRequirePaste: {
             // Intercept paste event to use C++ QMimeData
-            MessagesAdapter.pasteKeyDetected()
+            MessagesAdapter.onPaste()
         }
     }
 
