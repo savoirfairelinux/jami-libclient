@@ -42,6 +42,7 @@
 // Qt
 #include <QObject>
 #include <QString>
+#include <QUrl>
 
 // std
 #include <chrono>
@@ -357,7 +358,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly, VectorMapStringSt
 }
 
 void
-NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabel)
+NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabel, const QString& uri, MediaRequestType type, bool mute)
 {
     // Main audio: audio_0
     // Main video: video_0
@@ -366,57 +367,103 @@ NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabe
     if (!callInfo)
         return;
 
-    if (callInfo->type == call::Type::CONFERENCE) {
-        if (mediaLabel.contains("audio_0")) {
-            CallManager::instance().muteLocalMedia(callId,
-                                                   DRing::Media::Details::MEDIA_TYPE_AUDIO,
-                                                   !callInfo->audioMuted);
-            callInfo->audioMuted = !callInfo->audioMuted;
-        } else if (mediaLabel.contains("video_0")) {
-            CallManager::instance().muteLocalMedia(callId,
-                                                   DRing::Media::Details::MEDIA_TYPE_VIDEO,
-                                                   !callInfo->videoMuted);
-            callInfo->videoMuted = !callInfo->videoMuted;
+    
+    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+    QString resource = "";
+    int found = 0;
+    QString srctype = MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE;
+    
+    switch (type) {
+    case MediaRequestType::FILESHARING: {
+        // File sharing
+        resource = !uri.isEmpty() ? QString("%1%2%3")
+                                        .arg(DRing::Media::VideoProtocolPrefix::FILE)
+                                        .arg(sep)
+                                        .arg(QUrl(uri).toLocalFile())
+                                  : DRing::Media::VideoProtocolPrefix::NONE;
+        if (callInfo->type == call::Type::CONFERENCE) {
+            CallManager::instance().switchInput(callId, resource);
+            return;
         }
-        if (callInfo->status == call::Status::IN_PROGRESS)
-            emit callInfosChanged(owner.id, callId);
+        if (!resource.isEmpty())
+            srctype = MediaAttributeValue::SRC_TYPE_FILE;
+
+        break;
+    }
+    case MediaRequestType::SCREENSHARING: {
+        // Screen/window sharing
+        resource = uri;
+        if (callInfo->type == call::Type::CONFERENCE) {
+            CallManager::instance().switchInput(callId, resource);
+            return;
+        }
+        srctype = MediaAttributeValue::SRC_TYPE_DISPLAY;
+        break;
+    }
+    case MediaRequestType::CAMERA: {
+        // Camera device
+        resource = !uri.isEmpty() ? QString("%1%2%3")
+                                        .arg(DRing::Media::VideoProtocolPrefix::CAMERA)
+                                        .arg(sep)
+                                        .arg(uri)
+                                  : DRing::Media::VideoProtocolPrefix::NONE;
+
+        if (callInfo->type == call::Type::CONFERENCE) {
+            if (mediaLabel.contains("audio_0")) {
+                CallManager::instance().muteLocalMedia(callId,
+                                                       DRing::Media::Details::MEDIA_TYPE_AUDIO,
+                                                       !callInfo->audioMuted && mute);
+            } else if (mediaLabel.contains("video_0")) {
+                CallManager::instance().muteLocalMedia(callId,
+                                                       DRing::Media::Details::MEDIA_TYPE_VIDEO,
+                                                       !callInfo->videoMuted && mute);
+            }
+            return;
+        }
+
+        srctype = MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE;
+        break;
+    }
+    default:
         return;
     }
 
     auto proposedList = callInfo->mediaList;
-
-    int found = 0;
     for (auto& item : proposedList) {
         if (item[MediaAttributeKey::LABEL] == mediaLabel) {
+            mute = resource.isEmpty() ? item[MediaAttributeKey::MUTED] == "false" : mute;
             item[MediaAttributeKey::ENABLED] = "true";
-            item[MediaAttributeKey::MUTED] = item[MediaAttributeKey::MUTED] == "true" ? "false"
-                                                                                      : "true";
+            item[MediaAttributeKey::MUTED] = mute ? "true" : "false";
+            item[MediaAttributeKey::SOURCE_TYPE] = srctype;
+            item[MediaAttributeKey::SOURCE] = resource.isEmpty() ? item[MediaAttributeKey::SOURCE] : resource;
+
             break;
         }
         found++;
     }
+
     if (found == proposedList.size() && mediaLabel == "video_0") {
+        mute &= !resource.isEmpty();
         MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE,
                                            MediaAttributeValue::VIDEO},
                                           {MediaAttributeKey::ENABLED, "true"},
-                                          {MediaAttributeKey::MUTED, "false"},
-                                          {MediaAttributeKey::SOURCE, ""},
-                                          {MediaAttributeKey::LABEL, "video_0"}};
+                                          {MediaAttributeKey::MUTED,
+                                           mute ? "true" : "false"},
+                                          {MediaAttributeKey::SOURCE_TYPE, srctype},
+                                          {MediaAttributeKey::SOURCE, resource},
+                                          {MediaAttributeKey::LABEL, mediaLabel}};
         proposedList.push_back(mediaAttribute);
-        // We should prepare it here for adding file and screen sharing
-        // for now it supports only adding main video to an audio only call
     }
     CallManager::instance().requestMediaChange(callId, proposedList);
     // If media existed and its mute state was changed here, then we should
     // update the mediaList because we will not receive signal
     // mediaNegotiationStatus
     if (found < callInfo->mediaList.size()) {
-        callInfo->mediaList[found][MediaAttributeKey::MUTED]
-            = callInfo->mediaList[found][MediaAttributeKey::MUTED] == "true" ? "false" : "true";
+        callInfo->mediaList = proposedList;
         if (mediaLabel.contains("audio_0")) {
-            callInfo->audioMuted = !callInfo->audioMuted;
+            callInfo->audioMuted = mute;
         } else if (mediaLabel.contains("video_0")) {
-            callInfo->videoMuted = !callInfo->videoMuted;
+            callInfo->videoMuted = mute;
         }
         if (callInfo->status == call::Status::IN_PROGRESS)
             emit callInfosChanged(owner.id, callId);
@@ -516,7 +563,7 @@ NewCallModel::toggleMedia(const QString& callId, const NewCallModel::Media media
     if (!hasCall(callId))
         return;
     auto mediaLabel = media == NewCallModel::Media::VIDEO ? "video_0" : "audio_0";
-    requestMediaChange(callId, mediaLabel);
+    requestMediaChange(callId, mediaLabel, "", MediaRequestType::CAMERA, true);
 }
 
 void
