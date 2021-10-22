@@ -67,6 +67,7 @@ public:
     const account::Info& owner;
 
     enum class Media { NONE, AUDIO, VIDEO };
+    enum class MediaRequestType { FILESHARING, SCREENSHARING, CAMERA };
 
     NewCallModel(const account::Info& owner,
                  const CallbacksHandler& callbacksHandler,
@@ -85,8 +86,15 @@ public:
      * Request a media change in a ongoing call.
      * @param  callId
      * @param  mediaLabel label of media to be changed
+     * @param source
+     * @param type
+     * @param mute
      */
-    void requestMediaChange(const QString& callId, const QString& mediaLabel);
+    void requestMediaChange(const QString& callId,
+                            const QString& mediaLabel,
+                            const QString& source,
+                            MediaRequestType type,
+                            bool mute);
 
     /**
      * Get the call from its call id
