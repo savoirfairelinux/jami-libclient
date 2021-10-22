@@ -251,7 +251,7 @@ public:
      */
     const video::Renderer& getRenderer(const QString& id) const;
     /**
-     * Render a file to the call id specified
+     * @deprecated Render a file to the call id specified
      * @param uri the path of the file
      * @param callId
      * @note callId can be omitted to switch the input of the local recorder
@@ -266,7 +266,7 @@ public:
      */
     void switchInputTo(const QString& id, const QString& callId = {});
     /**
-     * Render the current display to the call id specified
+     * @deprecated Render the current display to the call id specified
      * @param idx of the display
      * @param x top left of the area
      * @param y top up of the area
@@ -276,6 +276,15 @@ public:
      * @note callId can be omitted to switch the input of the local recorder
      */
     void setDisplay(int idx, int x, int y, int w, int h, const QString& callId = {});
+    /**
+     * Get the current display resource string
+     * @param idx of the display
+     * @param x top left of the area
+     * @param y top up of the area
+     * @param w width of the area
+     * @param h height of the area
+     */
+    QString getDisplay(int idx, int x, int y, int w, int h);
     /**
      * Get informations on the rendered device
      * @param call_id linked call to the renderer
