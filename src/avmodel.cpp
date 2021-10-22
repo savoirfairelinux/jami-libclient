@@ -556,8 +556,19 @@ AVModel::setInputFile(const QString& uri, const QString& callId)
 void
 AVModel::setDisplay(int idx, int x, int y, int w, int h, const QString& callId)
 {
+    auto resource = getDisplay(idx, x, y, w, h);
+    if (callId.isEmpty()) {
+        VideoManager::instance().switchInput(resource);
+    } else {
+        CallManager::instance().switchInput(callId, resource);
+    }
+}
+
+QString
+AVModel::getDisplay(int idx, int x, int y, int w, int h)
+{
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-    auto resource = QString("%1%2:%3+%4,%5 %6x%7")
+    return QString("%1%2:%3+%4,%5 %6x%7")
                         .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
                         .arg(sep)
                         .arg(idx)
@@ -565,11 +576,6 @@ AVModel::setDisplay(int idx, int x, int y, int w, int h, const QString& callId)
                         .arg(y)
                         .arg(w)
                         .arg(h);
-    if (callId.isEmpty()) {
-        VideoManager::instance().switchInput(resource);
-    } else {
-        CallManager::instance().switchInput(callId, resource);
-    }
 }
 
 void
