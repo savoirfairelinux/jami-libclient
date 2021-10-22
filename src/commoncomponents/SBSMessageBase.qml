@@ -131,7 +131,7 @@ Control {
         acceptedButtons: Qt.LeftButton
         onClicked: {
             if (root.hoveredLink)
-                Qt.openUrlExternally(root.hoveredLink)
+                MessagesAdapter.openUrl(root.hoveredLink)
         }
     }
 }
