@@ -78,7 +78,7 @@ Loader {
                         enabled: canOpen
                         onHoveredChanged: {
                             dataTransferItem.hoveredLink = enabled && hovered ?
-                                        ("file:///" + Body) : ""
+                                        ("file://" + Body) : ""
                         }
                         cursorShape: enabled ?
                                          Qt.PointingHandCursor :
@@ -300,7 +300,7 @@ Loader {
                             antialiasing: true
                             autoTransform: false
                             asynchronous: true
-                            source: "file:///" + Body
+                            source: "file://" + Body
                             property real aspectRatio: implicitWidth / implicitHeight
                             property real adjustedWidth: Math.min(maxSize,
                                                                   Math.max(minSize,
