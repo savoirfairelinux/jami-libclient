@@ -179,15 +179,6 @@ MessagesAdapter::deleteInteraction(const QString& interactionId)
 }
 
 void
-MessagesAdapter::openFile(const QString& arg)
-{
-    QUrl fileUrl("file:///" + arg);
-    if (!QDesktopServices::openUrl(fileUrl)) {
-        qDebug() << "Couldn't open file: " << fileUrl;
-    }
-}
-
-void
 MessagesAdapter::openUrl(const QString& url)
 {
     if (!QDesktopServices::openUrl(url)) {

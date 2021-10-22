@@ -96,7 +96,6 @@ protected:
     Q_INVOKABLE void acceptFile(const QString& arg);
     Q_INVOKABLE void cancelFile(const QString& arg);
     Q_INVOKABLE void openUrl(const QString& url);
-    Q_INVOKABLE void openFile(const QString& arg);
     Q_INVOKABLE void openDirectory(const QString& arg);
     Q_INVOKABLE void retryInteraction(const QString& interactionId);
     Q_INVOKABLE void deleteInteraction(const QString& interactionId);
@@ -106,7 +105,9 @@ protected:
     Q_INVOKABLE QVariantMap getMediaInfo(const QString& msg);
     Q_INVOKABLE bool isRemoteImage(const QString& msg);
     Q_INVOKABLE QString getFormattedTime(const quint64 timestamp);
-    Q_INVOKABLE void parseMessageUrls(const QString& messageId, const QString& msg, bool showPreview);
+    Q_INVOKABLE void parseMessageUrls(const QString& messageId,
+                                      const QString& msg,
+                                      bool showPreview);
     Q_INVOKABLE void onPaste();
     Q_INVOKABLE QString getStatusString(int status);
     Q_INVOKABLE QVariantMap getTransferStats(const QString& messageId, int);
