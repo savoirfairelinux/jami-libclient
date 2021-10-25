@@ -97,6 +97,7 @@ protected:
     Q_INVOKABLE void cancelFile(const QString& arg);
     Q_INVOKABLE void openUrl(const QString& url);
     Q_INVOKABLE void openFile(const QString& arg);
+    Q_INVOKABLE void openDirectory(const QString& arg);
     Q_INVOKABLE void retryInteraction(const QString& interactionId);
     Q_INVOKABLE void deleteInteraction(const QString& interactionId);
     Q_INVOKABLE void copyToDownloads(const QString& interactionId, const QString& displayName);

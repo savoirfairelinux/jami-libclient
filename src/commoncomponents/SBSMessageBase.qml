@@ -38,7 +38,10 @@ Control {
     property bool showTime
     property int seq
     property string author
+    property string transferId
+    property string transferName
     property string formattedTime
+    property string location
     property string hoveredLink
 
     readonly property real senderMargin: 64
@@ -124,13 +127,27 @@ Control {
         }
     }
 
+    SBSContextMenu {
+        id: ctxMenu
+
+        location: root.location
+        transferId: root.transferId
+        transferName: root.transferName
+    }
+
     MouseArea {
         id: itemMouseArea
         anchors.fill: parent
         z: -1
-        acceptedButtons: Qt.LeftButton
-        onClicked: {
-            if (root.hoveredLink)
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        onClicked: function (mouse) {
+
+            if (mouse.button === Qt.RightButton && transferId !== "") {
+                // Context Menu for Transfers
+                ctxMenu.x = mouse.x
+                ctxMenu.y = mouse.y
+                ctxMenu.openMenu()
+            } else if (root.hoveredLink)
                 MessagesAdapter.openUrl(root.hoveredLink)
         }
     }

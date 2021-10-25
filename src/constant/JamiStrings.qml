@@ -368,6 +368,10 @@ Item {
     property string networkError: qsTr("Network error")
     property string somethingWentWrong: qsTr("Something went wrong")
 
+    // Context Menu
+    property string saveFile: qsTr("Save file")
+    property string openLocation: qsTr("Open location")
+
     // Updates
     property string betaInstall: qsTr("Install beta version")
     property string checkForUpdates: qsTr("Check for updates now")

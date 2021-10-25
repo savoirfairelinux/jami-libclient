@@ -165,6 +165,7 @@
         <file>src/mainview/components/MessageListView.qml</file>
         <file>src/commoncomponents/MessageBubble.qml</file>
         <file>src/constant/MsgSeq.qml</file>
+        <file>src/commoncomponents/SBSContextMenu.qml</file>
         <file>src/commoncomponents/SBSMessageBase.qml</file>
         <file>src/commoncomponents/GeneratedMessageDelegate.qml</file>
         <file>src/commoncomponents/DataTransferMessageDelegate.qml</file>

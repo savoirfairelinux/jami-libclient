@@ -66,6 +66,9 @@ Loader {
             showTime: root.showTime
             seq: root.seq
             author: Author
+            location: Body
+            transferName: TransferName
+            transferId: Id
             formattedTime: MessagesAdapter.getFormattedTime(Timestamp)
             extraHeight: progressBar.visible ? 18 : 0
             innerContent.children: [
@@ -232,6 +235,9 @@ Loader {
             showTime: root.showTime
             seq: root.seq
             author: Author
+            location: Body
+            transferName: TransferName
+            transferId: Id
             formattedTime: MessagesAdapter.getFormattedTime(Timestamp)
             bubble.visible: false
             innerContent.children: [
