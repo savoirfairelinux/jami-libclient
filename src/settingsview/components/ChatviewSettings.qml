@@ -75,7 +75,6 @@ ColumnLayout {
 
         onSwitchToggled: {
             UtilsAdapter.setAppValue(Settings.Key.DisplayHyperlinkPreviews, checked)
-            MessagesAdapter.setDisplayLinks()
         }
     }
 }

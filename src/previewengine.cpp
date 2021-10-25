@@ -70,9 +70,9 @@ PreviewEngine::PreviewEngine(QObject* parent)
 }
 
 void
-PreviewEngine::parseMessage(const QString& messageId, const QString& msg)
+PreviewEngine::parseMessage(const QString& messageId, const QString& msg, bool showPreview)
 {
-    page()->runJavaScript(QString("parseMessage(`%1`, `%2`)").arg(messageId, msg));
+    page()->runJavaScript(QString("parseMessage(`%1`, `%2`, %3)").arg(messageId, msg, showPreview ? "true" : "false"));
 }
 
 void

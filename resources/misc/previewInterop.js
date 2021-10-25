@@ -44,11 +44,12 @@ function getPreviewInfo(messageId, url) {
     })
 }
 
-function parseMessage(messageId, message) {
+function parseMessage(messageId, message, showPreview) {
     var links = linkify.find(message)
     if (links.length === 0) {
         return
     }
-    getPreviewInfo(messageId, links[0].href)
+    if (showPreview)
+        getPreviewInfo(messageId, links[0].href)
     window.jsbridge.linkifyReady(messageId, linkifyStr(message))
 }

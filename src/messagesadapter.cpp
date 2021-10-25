@@ -407,9 +407,9 @@ MessagesAdapter::onConversationMessagesLoaded(uint32_t, const QString& convId)
 }
 
 void
-MessagesAdapter::parseMessageUrls(const QString& messageId, const QString& msg)
+MessagesAdapter::parseMessageUrls(const QString& messageId, const QString& msg, bool showPreview)
 {
-    previewEngine_->parseMessage(messageId, msg);
+    previewEngine_->parseMessage(messageId, msg, showPreview);
 }
 
 void

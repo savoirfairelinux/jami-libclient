@@ -52,7 +52,7 @@ public:
     explicit PreviewEngine(QObject* parent = nullptr);
     ~PreviewEngine() = default;
 
-    void parseMessage(const QString& messageId, const QString& msg);
+    void parseMessage(const QString& messageId, const QString& msg, bool showPreview);
 
 Q_SIGNALS:
     void infoReady(const QString& messageId, const QVariantMap& info);

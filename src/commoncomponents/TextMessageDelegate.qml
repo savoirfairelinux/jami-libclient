@@ -25,6 +25,7 @@ import QtGraphicalEffects 1.15
 import net.jami.Models 1.1
 import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
+import net.jami.Enums 1.1
 
 SBSMessageBase {
     id : root
@@ -170,7 +171,7 @@ SBSMessageBase {
     Behavior on opacity { NumberAnimation { duration: 100 } }
     Component.onCompleted: {
         if (!Linkified) {
-            MessagesAdapter.parseMessageUrls(Id, Body)
+            MessagesAdapter.parseMessageUrls(Id, Body, UtilsAdapter.getAppValue(Settings.DisplayHyperlinkPreviews))
         }
         opacity = 1
     }
