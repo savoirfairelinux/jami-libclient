@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a394571c_e9501a26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-10-25T18:24:54Z",
+      "side": 1,
+      "message": "2 nitpicks and LGTM",
+      "revId": "26573a7adf9bd72f487dfa803d51de8962587725",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d7f0c74_1ad944f4",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-10-25T18:24:54Z",
+      "side": 1,
+      "message": "format",
+      "revId": "26573a7adf9bd72f487dfa803d51de8962587725",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56e028a7_1b1381b5",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-10-25T18:24:54Z",
+      "side": 1,
+      "message": "mute \u0026\u003d !resource.isEmpty()",
+      "range": {
+        "startLine": 446,
+        "startChar": 2,
+        "endLine": 446,
+        "endChar": 25
+      },
+      "revId": "26573a7adf9bd72f487dfa803d51de8962587725",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
