@@ -254,6 +254,17 @@ Control {
             property var menuAction: shareMenuAction
         },
         Action {
+            id: raiseHandAction
+            onTriggered: CallAdapter.setHandRaised("", !CallAdapter.isHandRaised())
+            checkable: true
+            icon.source: JamiResources.hand_black_24dp_svg
+            icon.color: checked ? "red" : "white"
+            text: checked ?
+                      JamiStrings.lowerHand :
+                      JamiStrings.raiseHand
+            property real size: 34
+        },
+        Action {
             id: recordAction
             onTriggered: CallAdapter.recordThisCallToggle()
             checkable: true
@@ -288,6 +299,8 @@ Control {
         function onIsAudioMutedChanged() { reset() }
         function onIsVideoMutedChanged() { reset() }
         function onIsRecordingChanged() { reset() }
+        function onLocalHandRaisedChanged() { reset() }
+        function onIsConferenceCallChanged() { reset() }
     }
 
     function reset() {
@@ -300,6 +313,10 @@ Control {
 
         // overflow controls
         CallOverlayModel.addSecondaryControl(audioOutputAction)
+        if (isConferenceCall) {
+            CallOverlayModel.addSecondaryControl(raiseHandAction)
+            raiseHandAction.checked = CallAdapter.isHandRaised()
+        }
         if (isModerator && !isSIP)
             CallOverlayModel.addSecondaryControl(addPersonAction)
         if (isSIP) {

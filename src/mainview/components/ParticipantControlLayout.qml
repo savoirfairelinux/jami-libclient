@@ -85,6 +85,18 @@ RowLayout {
     }
 
     ParticipantOverlayButton {
+        id: lowerHandParticipant
+
+        visible: showLowerHand
+        preferredSize: iconButtonPreferredSize
+        Layout.preferredHeight: buttonPreferredSize
+        Layout.preferredWidth: buttonPreferredSize
+        source: JamiResources.hand_black_24dp_svg
+        onClicked: CallAdapter.setHandRaised(uri, false)
+        toolTipText: JamiStrings.lowerHand
+    }
+
+    ParticipantOverlayButton {
         id: hangupParticipant
 
         visible: showHangup

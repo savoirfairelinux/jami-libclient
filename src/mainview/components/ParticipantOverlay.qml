@@ -46,6 +46,7 @@ Item {
     property bool participantIsModerator: false
     property bool participantIsMuted: false
     property bool participantIsModeratorMuted: false
+    property bool participantHandIsRaised: false
 
     z: 1
 
@@ -69,6 +70,7 @@ Item {
         participantIsHost = CallAdapter.participantIsHost(overlayMenu.uri)
         participantIsModerator = CallAdapter.isModerator(overlayMenu.uri)
         participantIsActive = isActive
+        participantHandIsRaised = CallAdapter.isHandRaised(overlayMenu.uri)
         overlayMenu.showSetModerator = isHost && !isLocal && !participantIsModerator
         overlayMenu.showUnsetModerator = isHost && !isLocal && participantIsModerator
 
@@ -85,6 +87,7 @@ Item {
         overlayMenu.showMaximize = isModerator && showMax
         overlayMenu.showMinimize = isModerator && participantIsActive
         overlayMenu.showHangup = isModerator && !isLocal && !participantIsHost
+        overlayMenu.showLowerHand = isModerator && participantHandIsRaised
     }
 
     // Participant header with host, moderator and mute indicators
@@ -154,6 +157,21 @@ Item {
                 visible: participantIsMuted
 
                 source: JamiResources.mic_off_24dp_svg
+                color: JamiTheme.whiteColor
+            }
+
+            ResponsiveImage {
+                id: isHandRaisedIndicator
+
+                Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: 6
+
+                containerHeight: 12
+                containerWidth: 12
+
+                visible: participantHandIsRaised
+
+                source: JamiResources.hand_black_24dp_svg
                 color: JamiTheme.whiteColor
             }
         }

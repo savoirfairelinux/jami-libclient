@@ -45,6 +45,7 @@ Item {
     property bool isModerator
     property bool isConferenceCall
     property bool isGrid
+    property bool localHandRaised
 
     signal chatButtonClicked
 
@@ -73,6 +74,7 @@ Item {
             root.isConferenceCall = isConferenceCall
             root.isGrid = isGrid
             mainOverlay.recordingVisible = isRecording
+            root.localHandRaised = CallAdapter.isHandRaised()
         }
         root.isModerator = CallAdapter.isCurrentModerator()
     }

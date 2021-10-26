@@ -247,6 +247,8 @@ Item {
     property string viewPlugin: qsTr("View plugin")
     property string noVideoDevice: qsTr("No video device")
     property string notAvailable: qsTr("N/A")
+    property string lowerHand: qsTr("Lower hand")
+    property string raiseHand: qsTr("Raise hand")
 
     // Chatview header
     property string hideChatView: qsTr("Hide chat view")

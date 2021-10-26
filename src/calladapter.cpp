@@ -843,6 +843,32 @@ CallAdapter::isModerator(const QString& uri) const
 }
 
 bool
+CallAdapter::isHandRaised(const QString& uri) const
+{
+    auto* callModel = lrcInstance_->getAccountInfo(accountId_).callModel.get();
+    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid_);
+    auto confId = convInfo.confId;
+
+    if (confId.isEmpty())
+        confId = convInfo.callId;
+    return callModel->isHandRaised(confId, uri);
+}
+
+void
+CallAdapter::setHandRaised(const QString& uri, bool state)
+{
+    auto* callModel = lrcInstance_->getAccountInfo(accountId_).callModel.get();
+    const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid_);
+    auto confId = convInfo.confId;
+    if (confId.isEmpty())
+        confId = convInfo.callId;
+    try {
+        callModel->setHandRaised(accountId_, confId, uri, state);
+    } catch (...) {
+    }
+}
+
+bool
 CallAdapter::isCurrentModerator() const
 {
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(convUid_);

@@ -67,6 +67,8 @@ public:
     Q_INVOKABLE bool participantIsHost(const QString& uri) const;
     Q_INVOKABLE void setModerator(const QString& uri, const bool state);
     Q_INVOKABLE bool isModerator(const QString& uri = {}) const;
+    Q_INVOKABLE bool isHandRaised(const QString& uri = {}) const;
+    Q_INVOKABLE void setHandRaised(const QString& uri, bool state);
     Q_INVOKABLE bool isCurrentModerator() const;
     Q_INVOKABLE void holdThisCallToggle();
     Q_INVOKABLE void muteThisCallToggle(bool mute);

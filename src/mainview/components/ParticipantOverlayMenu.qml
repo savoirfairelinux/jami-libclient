@@ -40,6 +40,7 @@ Item {
     property bool showMaximize: false
     property bool showMinimize: false
     property bool showHangup: false
+    property bool showLowerHand: false
 
     property int shapeHeight: 30
     property int shapeRadius: 8
