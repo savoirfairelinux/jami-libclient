@@ -982,6 +982,40 @@ NewCallModel::setModerator(const QString& confId, const QString& peerId, const b
     CallManager::instance().setModerator(confId, peerId, state);
 }
 
+bool
+NewCallModel::isHandRaised(const QString& confId, const QString& uri)
+{
+    auto call = pimpl_->calls.find(confId);
+    if (call == pimpl_->calls.end() or not call->second)
+        return false;
+    auto ownerUri = owner.profileInfo.uri;
+    auto uriToCheck = uri;
+    if (uriToCheck.isEmpty()) {
+        uriToCheck = ownerUri;
+    }
+    auto handRaised = false;
+    if (!handRaised && call->second->participantsInfos.size() != 0) {
+        for (const auto& participant : call->second->participantsInfos) {
+            if (participant["uri"] == uriToCheck) {
+                handRaised = participant["handRaised"] == "true";
+                break;
+            }
+        }
+    }
+    return handRaised;
+}
+
+void
+NewCallModel::setHandRaised(const QString& confId, const QString& peerId, const bool& state)
+{
+    auto ownerUri = owner.profileInfo.uri;
+    auto uriToCheck = peerId;
+    if (uriToCheck.isEmpty()) {
+        uriToCheck = ownerUri;
+    }
+    CallManager::instance().raiseParticipantHand(confId, uriToCheck, state);
+}
+
 void
 NewCallModel::muteParticipant(const QString& confId, const QString& peerId, const bool& state)
 {
