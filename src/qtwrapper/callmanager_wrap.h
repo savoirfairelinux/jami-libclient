@@ -450,6 +450,14 @@ public Q_SLOTS: // METHODS
         DRing::setModerator(confId.toStdString(), peerId.toStdString(), state);
     }
 
+    void raiseParticipantHand(const QString& accountId,
+                              const QString& confId,
+                              const QString& peerId,
+                              const bool& state)
+    {
+        DRing::raiseParticipantHand(accountId.toStdString(), confId.toStdString(), peerId.toStdString(), state);
+    }
+
     void muteParticipant(const QString& confId, const QString& peerId, const bool& state)
     {
         DRing::muteParticipant(confId.toStdString(), peerId.toStdString(), state);
