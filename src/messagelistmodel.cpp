@@ -240,6 +240,10 @@ void
 MessageListModel::moveMessage(const QString& msgId, const QString& parentId)
 {
     int currentIndex = indexOfMessage(msgId);
+    if (currentIndex == -1) {
+        qWarning() << "Incorrect index detected in MessageListModel::moveMessage";
+        return;
+    }
 
     // if we have a next element check if it is a child interaction
     QString childMessageIdToMove;
@@ -256,7 +260,7 @@ MessageListModel::moveMessage(const QString& msgId, const QString& parentId)
         newIndex = interactions_.size() - 1;
     }
 
-    if (currentIndex == newIndex)
+    if (currentIndex == newIndex || newIndex == -1)
         return;
 
     moveMessage(currentIndex, newIndex);
