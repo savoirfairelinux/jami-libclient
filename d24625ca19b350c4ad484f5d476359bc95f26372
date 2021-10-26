@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6078ab6_91da6c83",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-10-26T19:03:56Z",
+      "side": 1,
+      "message": "an enum can be better to avoid magic numbers",
+      "range": {
+        "startLine": 361,
+        "startChar": 103,
+        "endLine": 361,
+        "endChar": 111
+      },
+      "revId": "d24625ca19b350c4ad484f5d476359bc95f26372",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
