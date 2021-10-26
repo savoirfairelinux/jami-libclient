@@ -69,12 +69,6 @@ LRCInstance::LRCInstance(migrateCallback willMigrateCb,
     }
 };
 
-VectorString
-LRCInstance::getConferenceSubcalls(const QString& callId)
-{
-    return lrc_->getConferenceSubcalls(callId);
-}
-
 RenderManager*
 LRCInstance::renderer()
 {

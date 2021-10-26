@@ -122,7 +122,6 @@ public:
     void monitor(bool continous);
 
     bool hasActiveCall(bool withVideo = false);
-    VectorString getConferenceSubcalls(const QString& callId);
 
     QString get_selectedConvUid();
 

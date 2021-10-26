@@ -682,7 +682,8 @@ CallAdapter::saveConferenceSubcalls()
     const auto& currentConvId = lrcInstance_->get_selectedConvUid();
     const auto& convInfo = lrcInstance_->getConversationFromConvUid(currentConvId);
     if (!convInfo.confId.isEmpty()) {
-        currentConfSubcalls_ = lrcInstance_->getConferenceSubcalls(convInfo.confId);
+        auto* callModel = lrcInstance_->getAccountInfo(accountId_).callModel.get();
+        currentConfSubcalls_ = callModel->getConferenceSubcalls(convInfo.confId);
     }
 }
 

@@ -273,7 +273,7 @@ VideoDevices::setDefaultDevice(int index, bool useSourceModel)
     lrcInstance_->avModel().setDefaultDevice(deviceId);
 
     if (!callId.isEmpty())
-        lrcInstance_->avModel().switchInputTo(deviceId, callId);
+        lrcInstance_->getCurrentCallModel()->switchInputTo(deviceId, callId);
 
     updateData();
 }
@@ -435,6 +435,7 @@ void
 VideoDevices::onVideoDeviceEvent()
 {
     auto& avModel = lrcInstance_->avModel();
+    auto* callModel = lrcInstance_->getCurrentCallModel();
     auto defaultDevice = avModel.getDefaultDevice();
     QString callId = lrcInstance_->getCurrentCallId();
 
@@ -455,11 +456,12 @@ VideoDevices::onVideoDeviceEvent()
 
     auto cb = [this, currentDeviceListSize, deviceEvent, defaultDevice, callId] {
         auto& avModel = lrcInstance_->avModel();
+        auto* callModel = lrcInstance_->getCurrentCallModel();
         if (currentDeviceListSize == 0) {
-            avModel.switchInputTo({}, callId);
+            callModel->switchInputTo({}, callId);
             avModel.stopPreview(this->getDefaultDevice());
         } else if (deviceEvent == DeviceEvent::Removed) {
-            avModel.switchInputTo(defaultDevice, callId);
+            callModel->switchInputTo(defaultDevice, callId);
         }
 
         updateData();
@@ -475,7 +477,7 @@ VideoDevices::onVideoDeviceEvent()
         if (callId.isEmpty()) {
             Q_EMIT deviceAvailable();
         } else {
-            avModel.switchInputTo(defaultDevice, callId);
+            callModel->switchInputTo(defaultDevice, callId);
         }
 
         Q_EMIT deviceListChanged(currentDeviceListSize);
