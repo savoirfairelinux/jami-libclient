@@ -80,7 +80,9 @@ public:
      * @param  isAudioOnly, set to false by default
      * @return the call uid created. Empty string is returned if call couldn't be created.
      */
-    QString createCall(const QString& uri, bool isAudioOnly = false, VectorMapStringString mediaList = {});
+    QString createCall(const QString& uri,
+                       bool isAudioOnly = false,
+                       VectorMapStringString mediaList = {});
 
     /**
      * Request a media change in a ongoing call.
@@ -285,6 +287,25 @@ public:
      * @param state         State of the change (true set moderator / false unset moderator)
      */
     void setModerator(const QString& confId, const QString& peerId, const bool& state);
+
+    /**
+     * Check if a participant has raised hand
+     * @param confId        The conference to check
+     * @param uri           Uri of the participant to check (if empty, check current account)
+     * @return if hand is raised
+     */
+    bool isHandRaised(const QString& confId, const QString& uri = "") noexcept;
+
+    /**
+     * Set/unset a moderator
+     * @param confId        The conference to change
+     * @param peerId        Uri of the participant to change
+     * @param state         State of the change (true set hand raised / false unset hand raised)
+     */
+    void setHandRaised(const QString& accountId,
+                       const QString& confId,
+                       const QString& peerId,
+                       bool state);
 
     /**
      * Mute/unmute participant

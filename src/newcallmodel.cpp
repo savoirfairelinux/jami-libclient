@@ -358,7 +358,11 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly, VectorMapStringSt
 }
 
 void
-NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabel, const QString& uri, MediaRequestType type, bool mute)
+NewCallModel::requestMediaChange(const QString& callId,
+                                 const QString& mediaLabel,
+                                 const QString& uri,
+                                 MediaRequestType type,
+                                 bool mute)
 {
     // Main audio: audio_0
     // Main video: video_0
@@ -434,7 +438,8 @@ NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabe
             item[MediaAttributeKey::ENABLED] = "true";
             item[MediaAttributeKey::MUTED] = mute ? "true" : "false";
             item[MediaAttributeKey::SOURCE_TYPE] = srctype;
-            item[MediaAttributeKey::SOURCE] = resource.isEmpty() ? item[MediaAttributeKey::SOURCE] : resource;
+            item[MediaAttributeKey::SOURCE] = resource.isEmpty() ? item[MediaAttributeKey::SOURCE]
+                                                                 : resource;
 
             break;
         }
@@ -446,8 +451,7 @@ NewCallModel::requestMediaChange(const QString& callId, const QString& mediaLabe
         MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE,
                                            MediaAttributeValue::VIDEO},
                                           {MediaAttributeKey::ENABLED, "true"},
-                                          {MediaAttributeKey::MUTED,
-                                           mute ? "true" : "false"},
+                                          {MediaAttributeKey::MUTED, mute ? "true" : "false"},
                                           {MediaAttributeKey::SOURCE_TYPE, srctype},
                                           {MediaAttributeKey::SOURCE, resource},
                                           {MediaAttributeKey::LABEL, mediaLabel}};
@@ -979,6 +983,43 @@ void
 NewCallModel::setModerator(const QString& confId, const QString& peerId, const bool& state)
 {
     CallManager::instance().setModerator(confId, peerId, state);
+}
+
+bool
+NewCallModel::isHandRaised(const QString& confId, const QString& uri) noexcept
+{
+    auto call = pimpl_->calls.find(confId);
+    if (call == pimpl_->calls.end() or not call->second)
+        return false;
+    auto ownerUri = owner.profileInfo.uri;
+    auto uriToCheck = uri;
+    if (uriToCheck.isEmpty()) {
+        uriToCheck = ownerUri;
+    }
+    auto handRaised = false;
+    for (const auto& participant : call->second->participantsInfos) {
+        auto itUri = participant.find("uri");
+        auto itHand = participant.find("handRaised");
+        if (itUri != participant.end() && itHand != participant.end() && *itUri == uriToCheck) {
+            handRaised = participant["handRaised"] == "true";
+            break;
+        }
+    }
+    return handRaised;
+}
+
+void
+NewCallModel::setHandRaised(const QString& accountId,
+                            const QString& confId,
+                            const QString& peerId,
+                            bool state)
+{
+    auto ownerUri = owner.profileInfo.uri;
+    auto uriToCheck = peerId;
+    if (uriToCheck.isEmpty()) {
+        uriToCheck = ownerUri;
+    }
+    CallManager::instance().raiseParticipantHand(accountId, confId, uriToCheck, state);
 }
 
 void
