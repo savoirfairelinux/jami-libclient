@@ -287,6 +287,25 @@ public:
     void setModerator(const QString& confId, const QString& peerId, const bool& state);
 
     /**
+     * Check if a participant has raised hand
+     * @param confId        The conference to check
+     * @param uri           Uri of the participant to check (if empty, check current account)
+     * @return if hand is raised
+     */
+    bool isHandRaised(const QString& confId, const QString& uri = "");
+
+    /**
+     * Set/unset a moderator
+     * @param confId        The conference to change
+     * @param peerId        Uri of the participant to change
+     * @param state         State of the change (true set hand raised / false unset hand raised)
+     */
+    void setHandRaised(const QString& accountId,
+                       const QString& confId,
+                       const QString& peerId,
+                       bool state);
+
+    /**
      * Mute/unmute participant
      * @param confId        The conference to change
      * @param peerId        Uri of the participant to mute
