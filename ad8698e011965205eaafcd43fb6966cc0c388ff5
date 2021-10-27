@@ -24,6 +24,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d8874e2_810431e3",
+        "filename": "src/api/newcallmodel.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-10-27T20:54:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "562e2bd2_4fb497f6",
+      "range": {
+        "startLine": 302,
+        "startChar": 69,
+        "endLine": 302,
+        "endChar": 79
+      },
+      "revId": "ad8698e011965205eaafcd43fb6966cc0c388ff5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e671cbcb_82cc85ed",
@@ -47,6 +71,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55c8be09_e49282e3",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 997,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-10-27T20:54:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e671cbcb_82cc85ed",
+      "range": {
+        "startLine": 997,
+        "startChar": 23,
+        "endLine": 997,
+        "endChar": 61
+      },
+      "revId": "ad8698e011965205eaafcd43fb6966cc0c388ff5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6a07eb8_0217e430",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-10-26T18:34:31Z",
       "side": 1,
       "message": "add accountId to prepare for next patches",
+      "range": {
+        "startLine": 453,
+        "startChar": 28,
+        "endLine": 453,
+        "endChar": 32
+      },
+      "revId": "ad8698e011965205eaafcd43fb6966cc0c388ff5",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f139ebc_38b46e57",
+        "filename": "src/qtwrapper/callmanager_wrap.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-10-27T20:54:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6a07eb8_0217e430",
       "range": {
         "startLine": 453,
         "startChar": 28,
