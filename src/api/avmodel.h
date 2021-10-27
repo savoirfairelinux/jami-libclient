@@ -286,6 +286,11 @@ public:
      */
     QString getDisplay(int idx, int x, int y, int w, int h);
     /**
+     * Get the specific window resource string
+     * @param id of the window
+     */
+    QString getDisplay(const QString& id, int minX, int minY, int maxX, int maxY);
+    /**
      * Get informations on the rendered device
      * @param call_id linked call to the renderer
      * @return the device rendered
@@ -309,6 +314,8 @@ public:
      * clear current using device
      */
     void clearCurrentVideoCaptureDevice();
+
+    Q_INVOKABLE QStringList getWindowsList();
 
 Q_SIGNALS:
     /**

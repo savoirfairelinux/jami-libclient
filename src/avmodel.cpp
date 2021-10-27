@@ -45,6 +45,11 @@
 #include "dbus/videomanager.h"
 #include "authority/storagehelper.h"
 
+#ifdef WIN32
+#include "Windows.h"
+#include <tchar.h>
+#endif
+
 namespace lrc {
 
 using namespace api;
@@ -569,14 +574,65 @@ AVModel::getDisplay(int idx, int x, int y, int w, int h)
 {
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
     return QString("%1%2:%3+%4,%5 %6x%7")
-                        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
-                        .arg(sep)
-                        .arg(idx)
-                        .arg(x)
-                        .arg(y)
-                        .arg(w)
-                        .arg(h);
+        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
+        .arg(sep)
+        .arg(idx)
+        .arg(x)
+        .arg(y)
+        .arg(w)
+        .arg(h);
 }
+
+#pragma optimize("", off)
+
+QString
+AVModel::getDisplay(const QString& id, int minX, int minY, int maxX, int maxY)
+{
+    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+    return QString("%1%2:title=%3")
+        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
+        .arg(sep)
+        .arg(id);
+    //HWND hwnd = FindWindow(NULL, id.toStdWString().c_str());
+    //if (hwnd) {
+    //    auto source_hdc = GetDC(hwnd);
+    //    if (!source_hdc) {
+    //        return {};
+    //    }
+    //    RECT virtual_rect;
+    //    auto bpp = GetDeviceCaps(source_hdc, BITSPIXEL);
+
+    //    auto horzres = GetDeviceCaps(source_hdc, HORZRES);
+    //    auto vertres = GetDeviceCaps(source_hdc, VERTRES);
+    //    auto desktophorzres = GetDeviceCaps(source_hdc, DESKTOPHORZRES);
+    //    auto desktopvertres = GetDeviceCaps(source_hdc, DESKTOPVERTRES);
+
+    //    GetWindowRect(hwnd, &virtual_rect);
+
+    //    /* window -- get the right height and width for scaling DPI */
+    //    virtual_rect.left = virtual_rect.left * desktophorzres / horzres;
+    //    virtual_rect.right = virtual_rect.right * desktophorzres / horzres;
+    //    virtual_rect.top = virtual_rect.top * desktopvertres / vertres;
+    //    virtual_rect.bottom = virtual_rect.bottom * desktopvertres / vertres;
+
+    //    if (virtual_rect.left < minX)
+    //        virtual_rect.left = minX;
+    //    if (virtual_rect.top < minY)
+    //        virtual_rect.top = minY;
+    //    if (virtual_rect.right > maxX)
+    //        virtual_rect.right = maxX;
+    //    if (virtual_rect.bottom > maxY)
+    //        virtual_rect.bottom = maxY;
+
+    //    return getDisplay(0,
+    //                      virtual_rect.left,
+    //                      virtual_rect.top,
+    //                      (virtual_rect.right - virtual_rect.left),
+    //                      (virtual_rect.bottom - virtual_rect.top));
+    //}
+    //return {};
+}
+#pragma optimize("", on)
 
 void
 AVModel::switchInputTo(const QString& id, const QString& callId)
@@ -643,6 +699,81 @@ AVModel::clearCurrentVideoCaptureDevice()
 {
     pimpl_->currentVideoCaptureDevice_.clear();
 }
+
+#pragma optimize("", off)
+
+#ifdef WIN32
+BOOL
+IsAltTabWindow(HWND hwnd)
+{
+    // Start at the root owner
+    HWND hwndWalk = GetAncestor(hwnd, GA_ROOTOWNER);
+
+    // See if we are the last active visible popup
+    HWND hwndTry;
+    while ((hwndTry = GetLastActivePopup(hwndWalk)) != hwndTry) {
+        if (IsWindowVisible(hwndTry))
+            break;
+        hwndWalk = hwndTry;
+    }
+    return hwndWalk == hwnd;
+}
+
+BOOL CALLBACK
+CbEnumAltTab(HWND hwnd, LPARAM lParam)
+{
+    // Do not show invisible windows
+    if (!IsWindowVisible(hwnd))
+        return TRUE;
+
+    // Alt-tab test as described by Raymond Chen
+    if (!IsAltTabWindow(hwnd))
+        return TRUE;
+
+    const size_t MAX_WINDOW_NAME = 256;
+    TCHAR windowName[MAX_WINDOW_NAME];
+    if (hwnd == GetShellWindow())
+        _tcscpy_s(windowName, MAX_WINDOW_NAME, _T("Desktop")); // Beware of localization
+    else
+        GetWindowText(hwnd, windowName, MAX_WINDOW_NAME);
+
+    // Do not show windows that has no caption
+    if (0 == windowName[0])
+        return TRUE;
+
+    std::wstring msg = std::wstring(windowName);
+    auto name = QString::fromStdWString(msg);
+    QStringList* windowList = reinterpret_cast<QStringList*>(lParam);
+    //qDebug() << name;
+    if (windowList->indexOf(name) > 0) {
+        return FALSE;
+    } else {
+        windowList->append(name);
+    }
+
+    return TRUE;
+}
+#endif
+
+QStringList
+AVModel::getWindowsList()
+{
+#ifdef WIN32
+    try {
+        auto newWindow = true;
+        QStringList windowList {};
+        LPARAM lParam = reinterpret_cast<LPARAM>(&windowList);
+        while (newWindow) {
+            newWindow = EnumWindows(CbEnumAltTab, lParam);
+        }
+        auto finishedloop = true;
+        return windowList;
+    } catch (...) {
+    }
+#endif
+    return {};
+}
+#pragma optimize("", on)
 
 AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)
     : callbacksHandler(callbacksHandler)
