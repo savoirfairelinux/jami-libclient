@@ -85,6 +85,6 @@ ColumnLayout {
         itemWidth: root.itemWidth
         echoMode: TextInput.Password
 
-        onEditFinished:nCurrentAccount.password = textField
+        onEditFinished: CurrentAccount.password = textField
     }
 }
