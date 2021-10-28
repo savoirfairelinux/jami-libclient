@@ -204,8 +204,8 @@ MessagesAdapter::openDirectory(const QString& path)
         if (!f.isDir())
             p = f.dir().absolutePath();
         QString url;
-        if (!p.startsWith("file://"))
-            url = "file://" + p;
+        if (!p.startsWith("file:/"))
+            url = "file:///" + p;
         else
             url = p;
         openUrl(url);
