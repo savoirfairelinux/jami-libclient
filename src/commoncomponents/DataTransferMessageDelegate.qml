@@ -34,6 +34,7 @@ Loader {
     property var mediaInfo
     property bool showTime: false
     property int seq: MsgSeq.single
+    property string author: Author
 
     width: ListView.view ? ListView.view.width : 0
 
