@@ -132,6 +132,16 @@ Renderer::useAVFrame(bool useAVFrame)
 #endif
 }
 
+bool
+Renderer::useDirectRenderer() const
+{
+#ifdef ENABLE_LIBWRAP
+    return true;
+#else
+    return false;
+#endif
+}
+
 QString
 Renderer::getId() const
 {

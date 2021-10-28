@@ -144,6 +144,8 @@ public:
      */
     void useAVFrame(bool useAVFrame);
 
+    bool useDirectRenderer() const;
+
 Q_SIGNALS:
     /**
      * Emitted when a new frame is ready
