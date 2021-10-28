@@ -144,24 +144,28 @@ FrameWrapper::slotFrameUpdated(const QString& id)
 
         unsigned int width = renderer_->size().width();
         unsigned int height = renderer_->size().height();
-#ifndef Q_OS_LINUX
-        unsigned int size = frame_.storage.size();
-        auto imageFormat = QImage::Format_ARGB32_Premultiplied;
-#else
-        unsigned int size = frame_.size;
-        auto imageFormat = QImage::Format_ARGB32;
-#endif
+        unsigned int size;
+        QImage::Format imageFormat;
+        if (renderer_->useDirectRenderer()) {
+            size = frame_.storage.size();
+            imageFormat = QImage::Format_ARGB32_Premultiplied;
+        } else {
+            size = frame_.size;
+            imageFormat = QImage::Format_ARGB32;
+        }
         /*
          * If the frame is empty or not the expected size,
          * do nothing and keep the last rendered QImage.
          */
         if (size != 0 && size == width * height * 4) {
-#ifndef Q_OS_LINUX
-            buffer_ = std::move(frame_.storage);
-#else
-            buffer_.reserve(size);
-            std::move(frame_.ptr, frame_.ptr + size, buffer_.begin());
-#endif
+            if (renderer_->useDirectRenderer()) {
+                buffer_ = std::move(frame_.storage);
+            } else {
+                // TODO remove this path. storage should work everywhere
+                // https://git.jami.net/savoirfairelinux/jami-libclient/-/issues/492
+                buffer_.resize(size);
+                std::move(frame_.ptr, frame_.ptr + size, buffer_.begin());
+            }
             image_.reset(new QImage((uchar*) buffer_.data(), width, height, imageFormat));
         }
     }
