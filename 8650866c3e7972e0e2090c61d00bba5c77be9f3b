@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f433284_229988d3",
+        "filename": "src/qtwrapper/videomanager_wrap.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-10-29T14:56:40Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 165,
+        "startChar": 37,
+        "endLine": 165,
+        "endChar": 47
+      },
+      "revId": "8650866c3e7972e0e2090c61d00bba5c77be9f3b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "804ddc9f_c6f65141",
+        "filename": "src/qtwrapper/videomanager_wrap.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-10-29T14:56:40Z",
+      "side": 1,
+      "message": "QString\u0026 as it\u0027s what will be used by LRC \u0026 generated for dbus",
+      "range": {
+        "startLine": 172,
+        "startChar": 31,
+        "endLine": 172,
+        "endChar": 42
+      },
+      "revId": "8650866c3e7972e0e2090c61d00bba5c77be9f3b",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
