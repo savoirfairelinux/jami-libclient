@@ -252,10 +252,11 @@ Loader {
                 Loader {
                     id: localMediaCompLoader
                     anchors.right: isOutgoing ? parent.right : undefined
+                    asynchronous: true
                     width: sourceComponent.width
                     height: sourceComponent.height
                     sourceComponent: mediaInfo.isImage !== undefined ?
-                                         imageComp :
+                                         imageComp : mediaInfo.isAnimatedImage !== undefined ? animatedImageComp :
                                          avComp
                     Component {
                         id: avComp
@@ -302,13 +303,58 @@ Loader {
                         }
                     }
                     Component {
-                        id: imageComp
+                        id: animatedImageComp
                         AnimatedImage {
-                            id: img
+                            id: animatedImg
                             anchors.right: isOutgoing ? parent.right : undefined
                             property real minSize: 192
                             property real maxSize: 256
                             cache: false
+                            fillMode: Image.PreserveAspectCrop
+                            mipmap: true
+                            antialiasing: true
+                            autoTransform: false
+                            asynchronous: true
+                            source: "file:///" + Body
+                            property real aspectRatio: implicitWidth / implicitHeight
+                            property real adjustedWidth: Math.min(maxSize,
+                                                                  Math.max(minSize,
+                                                                           innerContent.width - senderMargin))
+                            width: adjustedWidth
+                            height: Math.ceil(adjustedWidth / aspectRatio)
+                            Rectangle {
+                                color: JamiTheme.previewImageBackgroundColor
+                                z: -1
+                                anchors.fill: parent
+                            }
+                            layer.enabled: true
+                            layer.effect: OpacityMask {
+                                maskSource: MessageBubble {
+                                    out: isOutgoing
+                                    type: seq
+                                    width: animatedImg.width
+                                    height: animatedImg.height
+                                    radius: msgRadius
+                                }
+                            }
+                            HoverHandler {
+                                target : parent
+                                onHoveredChanged: {
+                                    localMediaMsgItem.hoveredLink = hovered ? animatedImg.source : ""
+                                }
+                                cursorShape: Qt.PointingHandCursor
+                            }
+                        }
+                    }
+
+                    Component {
+                        id: imageComp
+                        Image {
+                            id: img
+                            anchors.right: isOutgoing ? parent.right : undefined
+                            property real minSize: 192
+                            property real maxSize: 256
+                            cache: true
                             fillMode: Image.PreserveAspectCrop
                             mipmap: true
                             antialiasing: true

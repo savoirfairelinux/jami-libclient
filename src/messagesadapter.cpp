@@ -458,13 +458,24 @@ MessagesAdapter::conversationTypersUrlToName(const QSet<QString>& typersSet)
     return nameList;
 }
 
-bool
+QVariantMap
 MessagesAdapter::isLocalImage(const QString& msg)
 {
     QImageReader reader;
     reader.setDecideFormatFromContent(true);
     reader.setFileName(msg);
-    return !reader.read().isNull();
+    QByteArray fileFormat = reader.format();
+    if (fileFormat == "gif") {
+        return {{"isAnimatedImage", true}};
+    }
+    QList<QByteArray> supportedFormats = reader.supportedImageFormats();
+    auto iterator = std::find_if(supportedFormats.begin(),
+                                 supportedFormats.end(),
+                                 [fileFormat](QByteArray format) { return format == fileFormat; });
+    if (iterator != supportedFormats.end()) {
+        return {{"isImage", true}};
+    }
+    return {{"isImage", false}};
 }
 
 QVariantMap
@@ -476,8 +487,9 @@ MessagesAdapter::getMediaInfo(const QString& msg)
           "<%1 style='width:100%;height:%2;outline:none;background-color:#f1f3f4;"
           "object-fit:cover;' "
           "controls controlsList='nodownload' src='file://%3' type='%4'/></body>";
-    if (isLocalImage(msg)) {
-        return {{"isImage", true}};
+    QVariantMap fileInfo = isLocalImage(msg);
+    if (fileInfo["isImage"].toBool() || fileInfo["isAnimatedImage"].toBool()) {
+        return fileInfo;
     }
     QRegularExpression vPattern("[^\\s]+(.*?)\\.(avi|mov|webm|webp|rmvb)$",
                                 QRegularExpression::CaseInsensitiveOption);

@@ -101,7 +101,7 @@ protected:
     Q_INVOKABLE void deleteInteraction(const QString& interactionId);
     Q_INVOKABLE void copyToDownloads(const QString& interactionId, const QString& displayName);
     Q_INVOKABLE void userIsComposing(bool isComposing);
-    Q_INVOKABLE bool isLocalImage(const QString& msg);
+    Q_INVOKABLE QVariantMap isLocalImage(const QString& msg);
     Q_INVOKABLE QVariantMap getMediaInfo(const QString& msg);
     Q_INVOKABLE bool isRemoteImage(const QString& msg);
     Q_INVOKABLE QString getFormattedTime(const quint64 timestamp);
