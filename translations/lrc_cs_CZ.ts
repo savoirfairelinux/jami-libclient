@@ -126,279 +126,279 @@
         <translation>výchozí</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="55"/>
+        <location filename="../src/newcallmodel.cpp" line="56"/>
         <source>Null</source>
         <translation>Žádný</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="56"/>
+        <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>Trying</source>
         <translation>Pokus</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="57"/>
+        <location filename="../src/newcallmodel.cpp" line="58"/>
         <source>Ringing</source>
         <translation>Vyzvánění</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="58"/>
+        <location filename="../src/newcallmodel.cpp" line="59"/>
         <source>Being Forwarded</source>
         <translation>Přesměrovává se</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="59"/>
+        <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Queued</source>
         <translation>Fronta</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="60"/>
+        <location filename="../src/newcallmodel.cpp" line="61"/>
         <source>Progress</source>
         <translation>Průběh</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="61"/>
+        <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
-        <location filename="../src/newcallmodel.cpp" line="62"/>
+        <location filename="../src/newcallmodel.cpp" line="63"/>
         <source>Accepted</source>
         <translation>Přijato</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="63"/>
+        <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>Multiple Choices</source>
         <translation>Více voleb</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="64"/>
+        <location filename="../src/newcallmodel.cpp" line="65"/>
         <source>Moved Permanently</source>
         <translation>Trvale přemístěn</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="65"/>
+        <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>Moved Temporarily</source>
         <translation>Dočasně přemístěn</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="66"/>
+        <location filename="../src/newcallmodel.cpp" line="67"/>
         <source>Use Proxy</source>
         <translation>Použití proxy</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="67"/>
+        <location filename="../src/newcallmodel.cpp" line="68"/>
         <source>Alternative Service</source>
         <translation>Alternativní služba</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="68"/>
+        <location filename="../src/newcallmodel.cpp" line="69"/>
         <source>Bad Request</source>
         <translation>Nesprávný příkaz</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="69"/>
+        <location filename="../src/newcallmodel.cpp" line="70"/>
         <source>Unauthorized</source>
         <translation>Neautorizovaný</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="70"/>
+        <location filename="../src/newcallmodel.cpp" line="71"/>
         <source>Payment Required</source>
         <translation>Požadována platba</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="71"/>
+        <location filename="../src/newcallmodel.cpp" line="72"/>
         <source>Forbidden</source>
         <translation>Zakázáno</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="72"/>
+        <location filename="../src/newcallmodel.cpp" line="73"/>
         <source>Not Found</source>
         <translation>Nenalezen</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="73"/>
+        <location filename="../src/newcallmodel.cpp" line="74"/>
         <source>Method Not Allowed</source>
         <translation>Metoda není povolena</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="74"/>
-        <location filename="../src/newcallmodel.cpp" line="94"/>
+        <location filename="../src/newcallmodel.cpp" line="75"/>
+        <location filename="../src/newcallmodel.cpp" line="95"/>
         <source>Not Acceptable</source>
         <translation>Není přijatelný</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="75"/>
+        <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Proxy Authentication Required</source>
         <translation>Požadovaná autentizace proxy</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="76"/>
+        <location filename="../src/newcallmodel.cpp" line="77"/>
         <source>Request Timeout</source>
         <translation>Časový limit příkazu</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="77"/>
+        <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Gone</source>
         <translation>Je pryč</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="78"/>
+        <location filename="../src/newcallmodel.cpp" line="79"/>
         <source>Request Entity Too Large</source>
         <translation>Entita příkazu je příliš velká</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="79"/>
+        <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Request URI Too Long</source>
         <translation>URI příkazu je příliš dlouhý</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="80"/>
+        <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Unsupported Media Type</source>
         <translation>Typ média není podporován</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="81"/>
+        <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Unsupported URI Scheme</source>
         <translation>Plán URI není podporován</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="82"/>
+        <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Bad Extension</source>
         <translation>Nesprávná přípona</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="83"/>
+        <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Extension Required</source>
         <translation>Je požadována přípona</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="84"/>
+        <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Session Timer Too Small</source>
         <translation>Časovač relace je příliš krátký</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="85"/>
+        <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Interval Too Brief</source>
         <translation>Interval je příliš krátký</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="86"/>
+        <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Temporarily Unavailable</source>
         <translation>Dočasně není k dispozici</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="87"/>
+        <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Call TSX Does Not Exist</source>
         <translation>Hovor/transakce neexistuje</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="88"/>
+        <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Loop Detected</source>
         <translation>Detekována smyčka</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="89"/>
+        <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Too Many Hops</source>
         <translation>Příliš mnoho skoků</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="90"/>
+        <location filename="../src/newcallmodel.cpp" line="91"/>
         <source>Address Incomplete</source>
         <translation>Adresa není úplná</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="91"/>
+        <location filename="../src/newcallmodel.cpp" line="92"/>
         <source>Ambiguous</source>
         <translation>Nejasný</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="92"/>
+        <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Busy</source>
         <translation>Zaneprázdněný</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="93"/>
+        <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Request Terminated</source>
         <translation>Příkaz ukončen</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="95"/>
+        <location filename="../src/newcallmodel.cpp" line="96"/>
         <source>Bad Event</source>
         <translation>Nesprávná událost</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="96"/>
+        <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Request Updated</source>
         <translation>Příkaz aktualizován</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="97"/>
+        <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Request Pending</source>
         <translation>Příkaz čeká</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="98"/>
+        <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Undecipherable</source>
         <translation>Nerozluštitelný</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="99"/>
+        <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Internal Server Error</source>
         <translation>Vnitřní chyba serveru</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="100"/>
+        <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Not Implemented</source>
         <translation>Neimplementováno</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="101"/>
+        <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Bad Gateway</source>
         <translation>Nesprávná brána</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="102"/>
+        <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Service Unavailable</source>
         <translation>Služba není k dispozici</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="103"/>
+        <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Server Timeout</source>
         <translation>Časový limit serveru</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="104"/>
+        <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Version Not Supported</source>
         <translation>Verze není podporována</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="105"/>
+        <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Message Too Large</source>
         <translation>Zpráva je příliš velká</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="106"/>
+        <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Precondition Failure</source>
         <translation>Předběžná podmínka selhala</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="107"/>
+        <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Busy Everywhere</source>
         <translation>Vše je zaneprázdněno</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="108"/>
+        <location filename="../src/newcallmodel.cpp" line="109"/>
         <source>Call Refused</source>
         <translation>Hovor odmítnut</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="109"/>
+        <location filename="../src/newcallmodel.cpp" line="110"/>
         <source>Does Not Exist Anywhere</source>
         <translation>Nikde neexistuje</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="110"/>
+        <location filename="../src/newcallmodel.cpp" line="111"/>
         <source>Not Acceptable Anywhere</source>
         <translation>Nikde není přijatelný</translation>
     </message>

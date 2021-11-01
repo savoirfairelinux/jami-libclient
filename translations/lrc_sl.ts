@@ -126,279 +126,279 @@
         <translation>privzeto</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="55"/>
+        <location filename="../src/newcallmodel.cpp" line="56"/>
         <source>Null</source>
         <translation>Null</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="56"/>
+        <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>Trying</source>
         <translation>Poskušam</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="57"/>
+        <location filename="../src/newcallmodel.cpp" line="58"/>
         <source>Ringing</source>
         <translation>Zvoni</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="58"/>
+        <location filename="../src/newcallmodel.cpp" line="59"/>
         <source>Being Forwarded</source>
         <translation>Preusmerjanje naprej</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="59"/>
+        <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Queued</source>
         <translation>V čakalni vrsti</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="60"/>
+        <location filename="../src/newcallmodel.cpp" line="61"/>
         <source>Progress</source>
         <translation>Napredek</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="61"/>
+        <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>OK</source>
         <translation>V redu</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
-        <location filename="../src/newcallmodel.cpp" line="62"/>
+        <location filename="../src/newcallmodel.cpp" line="63"/>
         <source>Accepted</source>
         <translation>Sprejeto</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="63"/>
+        <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>Multiple Choices</source>
         <translation>Več izbir</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="64"/>
+        <location filename="../src/newcallmodel.cpp" line="65"/>
         <source>Moved Permanently</source>
         <translation>Permanentno preseljen</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="65"/>
+        <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>Moved Temporarily</source>
         <translation>Začasno preseljen</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="66"/>
+        <location filename="../src/newcallmodel.cpp" line="67"/>
         <source>Use Proxy</source>
         <translation>Uporabi posredniški strežnik</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="67"/>
+        <location filename="../src/newcallmodel.cpp" line="68"/>
         <source>Alternative Service</source>
         <translation>Aternativna storitev</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="68"/>
+        <location filename="../src/newcallmodel.cpp" line="69"/>
         <source>Bad Request</source>
         <translation>Napačen zahtevek</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="69"/>
+        <location filename="../src/newcallmodel.cpp" line="70"/>
         <source>Unauthorized</source>
         <translation>Ni avtorizacije</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="70"/>
+        <location filename="../src/newcallmodel.cpp" line="71"/>
         <source>Payment Required</source>
         <translation>Zahtevano je plačilo</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="71"/>
+        <location filename="../src/newcallmodel.cpp" line="72"/>
         <source>Forbidden</source>
         <translation>Prepovedano</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="72"/>
+        <location filename="../src/newcallmodel.cpp" line="73"/>
         <source>Not Found</source>
         <translation>Ni najdeno</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="73"/>
+        <location filename="../src/newcallmodel.cpp" line="74"/>
         <source>Method Not Allowed</source>
         <translation>Metoda ni dovoljena</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="74"/>
-        <location filename="../src/newcallmodel.cpp" line="94"/>
+        <location filename="../src/newcallmodel.cpp" line="75"/>
+        <location filename="../src/newcallmodel.cpp" line="95"/>
         <source>Not Acceptable</source>
         <translation>Ni sprejemljivo</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="75"/>
+        <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Proxy Authentication Required</source>
         <translation>Zahtevana je overitev posredniškega strežnika</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="76"/>
+        <location filename="../src/newcallmodel.cpp" line="77"/>
         <source>Request Timeout</source>
         <translation>Zahteva je potekla</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="77"/>
+        <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Gone</source>
         <translation>OdlšloOdšlo</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="78"/>
+        <location filename="../src/newcallmodel.cpp" line="79"/>
         <source>Request Entity Too Large</source>
         <translation>Zahtevana entiteta je prevelika</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="79"/>
+        <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Request URI Too Long</source>
         <translation>URI zahtevek je predolg</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="80"/>
+        <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Unsupported Media Type</source>
         <translation>Nepodprta vrsta medija</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="81"/>
+        <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Unsupported URI Scheme</source>
         <translation>URI shema ni podprta</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="82"/>
+        <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Bad Extension</source>
         <translation>Napačna razširitev</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="83"/>
+        <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Extension Required</source>
         <translation>Zahtevana je razširitev</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="84"/>
+        <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Session Timer Too Small</source>
         <translation>Časovnik seje je premajhen</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="85"/>
+        <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Interval Too Brief</source>
         <translation>Interval je prekratek</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="86"/>
+        <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Temporarily Unavailable</source>
         <translation>Trenutno ni na voljo</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="87"/>
+        <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Call TSX Does Not Exist</source>
         <translation>Klicni TSX ne obstaja</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="88"/>
+        <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Loop Detected</source>
         <translation>Zaznana zanka</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="89"/>
+        <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Too Many Hops</source>
         <translation>Preveč preskokov</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="90"/>
+        <location filename="../src/newcallmodel.cpp" line="91"/>
         <source>Address Incomplete</source>
         <translation>Nepopoln naslov</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="91"/>
+        <location filename="../src/newcallmodel.cpp" line="92"/>
         <source>Ambiguous</source>
         <translation>Dovumno</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="92"/>
+        <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Busy</source>
         <translation>Zasedeno</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="93"/>
+        <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Request Terminated</source>
         <translation>Zahteva je prekinjena</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="95"/>
+        <location filename="../src/newcallmodel.cpp" line="96"/>
         <source>Bad Event</source>
         <translation>Napačen dogodek</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="96"/>
+        <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Request Updated</source>
         <translation>Zahtevek je posodobljen</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="97"/>
+        <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Request Pending</source>
         <translation>Zahtevek čaka</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="98"/>
+        <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Undecipherable</source>
         <translation>Šifriranje ni možno</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="99"/>
+        <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Internal Server Error</source>
         <translation>Interna strežniška napaka</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="100"/>
+        <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Not Implemented</source>
         <translation>Ni implementirano</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="101"/>
+        <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Bad Gateway</source>
         <translation>Napačen prehod</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="102"/>
+        <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Service Unavailable</source>
         <translation>Storitev ni na voljo</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="103"/>
+        <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Server Timeout</source>
         <translation>Časovna omejitev strežnika</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="104"/>
+        <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Version Not Supported</source>
         <translation>Različica ni podprta</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="105"/>
+        <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Message Too Large</source>
         <translation>Sporočilo je preveliko</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="106"/>
+        <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Precondition Failure</source>
         <translation>Napaka zaradi predpogojev</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="107"/>
+        <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Busy Everywhere</source>
         <translation>Vse je zasedeno</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="108"/>
+        <location filename="../src/newcallmodel.cpp" line="109"/>
         <source>Call Refused</source>
         <translation>Zavrnjen klic</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="109"/>
+        <location filename="../src/newcallmodel.cpp" line="110"/>
         <source>Does Not Exist Anywhere</source>
         <translation>Nikjer ne obstaja</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="110"/>
+        <location filename="../src/newcallmodel.cpp" line="111"/>
         <source>Not Acceptable Anywhere</source>
         <translation>Ni sprjemljivo kjerkoli</translation>
     </message>
