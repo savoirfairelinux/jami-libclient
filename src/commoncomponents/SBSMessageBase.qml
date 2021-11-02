@@ -43,6 +43,7 @@ Control {
     property string formattedTime
     property string location
     property string hoveredLink
+    property var readers: []
 
     readonly property real senderMargin: 64
     readonly property real avatarSize: 32
@@ -106,11 +107,18 @@ Control {
                 }
             }
         }
-        Item {
+        ListView {
             id: infoCell
 
             Layout.fillWidth: true
-            Layout.preferredHeight: childrenRect.height
+            orientation: ListView.Horizontal
+            Layout.preferredHeight: {
+                if (showTime || seq === MsgSeq.last)
+                    return childrenRect.height
+                else if (reads.visible)
+                    return JamiTheme.avatarReadReceiptSize
+                return 0
+            }
 
             Label {
                 text: formattedTime
@@ -119,10 +127,23 @@ Control {
                 height: visible * implicitHeight
                 font.pointSize: 9
 
-                anchors.right: !isOutgoing ? undefined : parent.right
+                anchors.right: !isOutgoing ? undefined : reads.left
                 anchors.rightMargin: 8
                 anchors.left: isOutgoing ? undefined : parent.left
                 anchors.leftMargin: avatarBlockWidth + 6
+            }
+            ReadStatus {
+                id: reads
+                visible: root.readers.length !== 0 && CurrentAccount.sendReadReceipt
+                width: {
+                    if (root.readers.length === 0)
+                        return 0
+                    var nbAvatars = root.readers.length
+                    var margin = JamiTheme.avatarReadReceiptSize / 3
+                    return nbAvatars * JamiTheme.avatarReadReceiptSize - (nbAvatars - 1) * margin
+                }
+                anchors.right: parent.right
+                readers: root.readers
             }
         }
     }

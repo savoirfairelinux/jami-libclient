@@ -35,6 +35,7 @@ SBSMessageBase {
 
     isOutgoing: Author === ""
     author: Author
+    readers: Readers
     formattedTime: MessagesAdapter.getFormattedTime(Timestamp)
     extraHeight: extraContent.active && !isRemoteImage ? msgRadius : -isRemoteImage
     innerContent.children: [

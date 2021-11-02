@@ -242,6 +242,7 @@ Item {
     property int mosaicButtonPreferredWidth: 70
     property int mosaicButtonMaxWidth: 100
     property real avatarPresenceRatio: 0.26
+    property int avatarReadReceiptSize: 18
 
     property int menuItemsPreferredWidth: 220
     property int menuItemsPreferredHeight: 48

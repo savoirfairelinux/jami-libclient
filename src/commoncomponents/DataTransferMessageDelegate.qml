@@ -70,6 +70,7 @@ Loader {
             location: Body
             transferName: TransferName
             transferId: Id
+            readers: Readers
             formattedTime: MessagesAdapter.getFormattedTime(Timestamp)
             extraHeight: progressBar.visible ? 18 : 0
             innerContent.children: [
@@ -239,6 +240,7 @@ Loader {
             location: Body
             transferName: TransferName
             transferId: Id
+            readers: Readers
             formattedTime: MessagesAdapter.getFormattedTime(Timestamp)
             bubble.visible: false
             innerContent.children: [
