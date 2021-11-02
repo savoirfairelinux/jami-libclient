@@ -76,7 +76,6 @@ struct Info
     // MessageListModel interactions;
     QString lastMessageUid = 0;
     QHash<QString, QString> parentsId; // pair messageid/parentid for messages without parent loaded
-    std::map<QString, QString> lastDisplayedMessageUid;
     unsigned int unreadMessages = 0;
 
     MapStringString infos {};

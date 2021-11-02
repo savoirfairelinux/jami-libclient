@@ -1289,12 +1289,10 @@ ConversationModel::clearInteractionFromConversation(const QString& convId,
             }
             storage::clearInteractionFromConversation(pimpl_->db, convId, interactionId);
             erased_keys = conversation.interactions->erase(interactionId);
-            auto messageId = conversation.lastDisplayedMessageUid.find(
-                pimpl_->peersForConversation(conversation).front());
+            participantURI = pimpl_->peersForConversation(conversation).front();
+            auto messageId = conversation.interactions->getRead(participantURI);
 
-            if (messageId != conversation.lastDisplayedMessageUid.end()
-                && messageId->second == interactionId) {
-                // Update lastDisplayedMessageUid
+            if (messageId != "" && messageId == interactionId) {
                 for (auto iter = conversation.interactions->find(interactionId);
                      iter != conversation.interactions->end();
                      --iter) {
@@ -1304,10 +1302,7 @@ ConversationModel::clearInteractionFromConversation(const QString& convId,
                     }
                 }
                 updateDisplayedUid = true;
-                participantURI = pimpl_->peersForConversation(conversation).front();
-                conversation.lastDisplayedMessageUid.at(
-                    pimpl_->peersForConversation(conversation).front())
-                    = newDisplayedUid;
+                conversation.interactions->setRead(participantURI, newDisplayedUid);
             }
 
             if (conversation.lastMessageUid == interactionId) {
@@ -1421,10 +1416,7 @@ ConversationModel::isLastDisplayed(const QString& convId,
     auto conversationIdx = pimpl_->indexOf(convId);
     try {
         auto& conversation = pimpl_->conversations.at(conversationIdx);
-        if (conversation.lastDisplayedMessageUid.find(participant)
-            != conversation.lastDisplayedMessageUid.end()) {
-            return conversation.lastDisplayedMessageUid.find(participant)->second == interactionId;
-        }
+        return conversation.interactions->getRead(participant) == interactionId;
     } catch (const std::out_of_range& e) {
     }
     return false;
@@ -2839,7 +2831,8 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
         } else if (member["uri"] == accountURI) {
             lastRead = member["lastDisplayed"];
         }
-        conversation.lastDisplayedMessageUid.emplace(member["uri"], member["lastDisplayed"]);
+        if (member["uri"] != accountURI)
+            conversation.interactions->setRead(member["uri"], member["lastDisplayed"]);
         if (member["role"] == "left")
             membersLeft.append(member["uri"]);
     }
@@ -3389,25 +3382,27 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
             std::lock_guard<std::mutex> lk(interactionsLocks[conversation.uid]);
             auto& interactions = conversation.interactions;
             auto it = interactions->find(msgId);
-            auto messageId = conversation.lastDisplayedMessageUid.find(peerId);
+            auto messageId = conversation.interactions->getRead(peerId);
             if (it != interactions->end()) {
                 it->second.status = newStatus;
                 interactions->emitDataChanged(it, {MessageList::Role::Status});
                 bool interactionDisplayed = newStatus == interaction::Status::DISPLAYED
                                             && isOutgoing(it->second);
-                if (messageId != conversation.lastDisplayedMessageUid.end()) {
-                    auto lastDisplayedIt = interactions->find(messageId->second);
+                if (messageId != "") {
+                    auto lastDisplayedIt = interactions->find(messageId);
                     bool interactionIsLast = lastDisplayedIt == interactions->end()
                                              || lastDisplayedIt->second.timestamp
                                                     < it->second.timestamp;
                     updateDisplayedUid = interactionDisplayed && interactionIsLast;
                     if (updateDisplayedUid) {
-                        oldDisplayedUid = messageId->second;
-                        conversation.lastDisplayedMessageUid.at(peerId) = it->first;
+                        oldDisplayedUid = messageId;
+                        if (peerId != linked.owner.profileInfo.uri)
+                            conversation.interactions->setRead(peerId, it->first);
                     }
                 } else {
                     oldDisplayedUid = "";
-                    conversation.lastDisplayedMessageUid[peerId] = it->first;
+                    if (peerId != linked.owner.profileInfo.uri)
+                        conversation.interactions->setRead(peerId, it->first);
                     updateDisplayedUid = true;
                 }
                 emitUpdated = true;
@@ -3431,20 +3426,9 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
         if (conversation.mode != conversation::Mode::NON_SWARM) {
             if (static_cast<DRing::Account::MessageStates>(status)
                 == DRing::Account::MessageStates::DISPLAYED) {
-                if (conversation.lastDisplayedMessageUid.find(peerId)
-                    == conversation.lastDisplayedMessageUid.end()) {
-                    conversation.lastDisplayedMessageUid[peerId] = messageId;
-                    emit linked.displayedInteractionChanged(conversationId, peerId, "", messageId);
-                } else if (conversation.interactions->indexOfMessage(
-                               conversation.lastDisplayedMessageUid.find(peerId)->second)
-                           < conversation.interactions->indexOfMessage(messageId)) {
-                    auto lastDisplayedMsg = conversation.lastDisplayedMessageUid.find(peerId)->second;
-                    conversation.lastDisplayedMessageUid[peerId] = messageId;
-                    emit linked.displayedInteractionChanged(conversationId,
-                                                            peerId,
-                                                            lastDisplayedMsg,
-                                                            messageId);
-                }
+                auto previous = conversation.interactions->getRead(peerId);
+                conversation.interactions->setRead(peerId, messageId);
+                emit linked.displayedInteractionChanged(conversationId, peerId, previous, messageId);
             }
         }
     } catch (const std::out_of_range& e) {
