@@ -80,7 +80,6 @@ ColumnLayout {
         tooltipText: JamiStrings.acceptTransferTooltip
         itemWidth: root.itemWidth
         bottomValue: 0
-        topValue: Number.MAX_VALUE
 
         valueField: CurrentAccount.autoTransferSizeThreshold
 
