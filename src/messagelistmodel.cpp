@@ -354,6 +354,8 @@ MessageListModel::dataForItem(item_t item, int indexRow, int role) const
         return QVariant(item.second.linkified);
     case Role::TransferName:
         return QVariant(item.second.commit["displayName"]);
+    case Role::Readers:
+        return QVariant(messageToReaders_[item.first]);
     default:
         return {};
     }
@@ -403,6 +405,41 @@ MessageListModel::linkifyMessage(const QString& messageId, const QString& linkif
     interactions_[index].second.body = linkified;
     interactions_[index].second.linkified = true;
     Q_EMIT dataChanged(modelIndex, modelIndex, {Role::Body, Role::Linkified});
+}
+
+void
+MessageListModel::setRead(const QString& peer, const QString& messageId)
+{
+    auto i = lastDisplayedMessageUid_.find(peer);
+    if (i != lastDisplayedMessageUid_.end()) {
+        auto old = i.value();
+        messageToReaders_[old].removeAll(peer);
+        auto msgIdx = getIndexOfMessage(old);
+        // Remove from latest read
+        if (msgIdx != -1) {
+            QModelIndex modelIndex = QAbstractListModel::index(msgIdx, 0);
+            Q_EMIT dataChanged(modelIndex, modelIndex, {Role::Readers});
+        }
+    }
+    // update map
+    lastDisplayedMessageUid_[peer] = messageId;
+    messageToReaders_[messageId].append(peer);
+    // update interaction
+    auto msgIdx = getIndexOfMessage(messageId);
+    // Remove from latest read
+    if (msgIdx != -1) {
+        QModelIndex modelIndex = QAbstractListModel::index(msgIdx, 0);
+        Q_EMIT dataChanged(modelIndex, modelIndex, {Role::Readers});
+    }
+}
+
+QString
+MessageListModel::getRead(const QString& peer)
+{
+    auto i = lastDisplayedMessageUid_.find(peer);
+    if (i != lastDisplayedMessageUid_.end())
+        return i.value();
+    return "";
 }
 
 void
