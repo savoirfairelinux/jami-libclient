@@ -43,7 +43,8 @@ struct Info;
     X(Commit) \
     X(LinkPreviewInfo) \
     X(Linkified) \
-    X(TransferName)
+    X(TransferName) \
+    X(Readers)
 
 namespace MessageList {
 Q_NAMESPACE
@@ -107,6 +108,9 @@ public:
     void addHyperlinkInfo(const QString& messageId, const QVariantMap& info);
     void linkifyMessage(const QString& messageId, const QString& linkified);
 
+    void setRead(const QString& peer, const QString& messageId);
+    QString getRead(const QString& peer);
+
     // use these if the underlying data model is changed from conversationmodel
     // Note: this is not ideal, and this class should be refactored into a proper
     // view model and absorb the interaction management logic to avoid exposing
@@ -121,6 +125,13 @@ protected:
 
 private:
     QList<QPair<QString, interaction::Info>> interactions_;
+    // Note: because read status are updated even if interaction is not loaded
+    // we need to keep track of these status outside the interaction::Info
+    // lastDisplayedMessageUid_ stores: {"peerId":"messageId"}
+    // messageToReaders_ caches: "messageId":["peer1", "peer2"]
+    // to allow quick access.
+    QMap<QString, QString> lastDisplayedMessageUid_;
+    QMap<QString, QStringList> messageToReaders_;
 
     void moveMessage(const QString& msgId, const QString& parentId);
     void insertMessage(int index, item_t& message);
