@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7b3b86c_780e2634",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2267,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-11-03T15:00:02Z",
+      "side": 1,
+      "message": "maybe we could check it earlier end return. If there is no new messages client only need a signal conversationMessagesLoaded.",
+      "revId": "09e97314c392c884962e12794f2bc929c6d6bbf4",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
