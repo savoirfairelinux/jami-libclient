@@ -69,6 +69,7 @@ Item {
             root.isAudioOnly = isAudioOnly
             root.isAudioMuted = isAudioMuted
             root.isVideoMuted = isVideoMuted
+            callViewContextMenu.isVideoMuted = root.isVideoMuted
             root.isRecording = isRecording
             root.isSIP = isSIP
             root.isConferenceCall = isConferenceCall
@@ -137,7 +138,12 @@ Item {
 
         mode: JamiFileDialog.Mode.OpenFile
 
-        onAccepted: AvAdapter.shareFile(jamiFileDialog.file)
+        onAccepted: {
+            if (AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.FILE) {
+                AvAdapter.muteCamera = root.isVideoMuted
+            }
+            AvAdapter.shareFile(jamiFileDialog.file)
+        }
     }
 
     ResponsiveImage {
@@ -160,6 +166,9 @@ Item {
     }
 
     function openShareScreen() {
+        if (AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.FILE) {
+            AvAdapter.muteCamera = root.isVideoMuted
+        }
         if (Qt.application.screens.length === 1) {
             AvAdapter.shareEntireScreen(0)
         } else {
@@ -169,6 +178,9 @@ Item {
     }
 
     function openShareScreenArea() {
+        if (AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.FILE) {
+            AvAdapter.muteCamera = root.isVideoMuted
+        }
         if (Qt.platform.os !== "windows") {
             AvAdapter.shareScreenArea(0, 0, 0, 0)
         } else {
@@ -207,7 +219,6 @@ Item {
 
         isSIP: root.isSIP
         isPaused: root.isPaused
-        isAudioOnly: root.isAudioOnly
         localIsRecording: root.isRecording
 
         onTransferCallButtonClicked: openContactPicker(ContactList.TRANSFER)

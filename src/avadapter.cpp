@@ -92,18 +92,18 @@ AvAdapter::shareEntireScreen(int screenNumber)
     QRect rect = screen->geometry();
 
     auto resource = lrcInstance_->avModel().getDisplay(getScreenNumber(),
-                                       rect.x(),
-                                       rect.y(),
-                                       rect.width() * screen->devicePixelRatio(),
-                                       rect.height() * screen->devicePixelRatio());
+                                                       rect.x(),
+                                                       rect.y(),
+                                                       rect.width() * screen->devicePixelRatio(),
+                                                       rect.height() * screen->devicePixelRatio());
     auto callId = lrcInstance_->getCurrentCallId();
-    lrcInstance_->getCurrentCallModel()->requestMediaChange(callId,
-                                                            "video_0",
-                                                            resource,
-                                                            lrc::api::NewCallModel::MediaRequestType::SCREENSHARING,
-                                                            false);
-    set_currentRenderingDeviceType(
-        lrcInstance_->avModel().getCurrentRenderedDevice(callId).type);
+    lrcInstance_->getCurrentCallModel()
+        ->requestMediaChange(callId,
+                             "video_0",
+                             resource,
+                             lrc::api::NewCallModel::MediaRequestType::SCREENSHARING,
+                             false);
+    set_currentRenderingDeviceType(lrcInstance_->avModel().getCurrentRenderedDevice(callId).type);
 }
 
 void
@@ -117,13 +117,13 @@ AvAdapter::shareAllScreens()
                                                        arrangementRect.width(),
                                                        arrangementRect.height());
     auto callId = lrcInstance_->getCurrentCallId();
-    lrcInstance_->getCurrentCallModel()->requestMediaChange(callId,
-                                                            "video_0",
-                                                            resource,
-                                                            lrc::api::NewCallModel::MediaRequestType::SCREENSHARING,
-                                                            false);
-    set_currentRenderingDeviceType(
-        lrcInstance_->avModel().getCurrentRenderedDevice(callId).type);
+    lrcInstance_->getCurrentCallModel()
+        ->requestMediaChange(callId,
+                             "video_0",
+                             resource,
+                             lrc::api::NewCallModel::MediaRequestType::SCREENSHARING,
+                             false);
+    set_currentRenderingDeviceType(lrcInstance_->avModel().getCurrentRenderedDevice(callId).type);
 }
 
 void
@@ -184,7 +184,7 @@ void
 AvAdapter::shareFile(const QString& filePath)
 {
     auto callId = lrcInstance_->getCurrentCallId();
-     if (!callId.isEmpty()) {
+    if (!callId.isEmpty()) {
         lrcInstance_->getCurrentCallModel()
             ->requestMediaChange(callId,
                                  "video_0",
@@ -207,33 +207,34 @@ AvAdapter::shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned heig
         x = y = width = height = 0;
         xrectsel(&x, &y, &width, &height);
         auto resource = lrcInstance_->avModel().getDisplay(getScreenNumber(),
-                                                            x,
-                                                            y,
-                                                            width < 128 ? 128 : width,
-                                                            height < 128 ? 128 : height);
+                                                           x,
+                                                           y,
+                                                           width < 128 ? 128 : width,
+                                                           height < 128 ? 128 : height);
         auto callId = lrcInstance_->getCurrentCallId();
-        lrcInstance_->getCurrentCallModel()->requestMediaChange(callId,
-                                                                "video_0",
-                                                                resource,
-                                                                lrc::api::NewCallModel::MediaRequestType::SCREENSHARING,
-                                                                false);
+        lrcInstance_->getCurrentCallModel()
+            ->requestMediaChange(callId,
+                                 "video_0",
+                                 resource,
+                                 lrc::api::NewCallModel::MediaRequestType::SCREENSHARING,
+                                 false);
         set_currentRenderingDeviceType(
             lrcInstance_->avModel().getCurrentRenderedDevice(callId).type);
     });
 #else
     auto resource = lrcInstance_->avModel().getDisplay(getScreenNumber(),
-                                                        x,
-                                                        y,
-                                                        width < 128 ? 128 : width,
-                                                        height < 128 ? 128 : height);
+                                                       x,
+                                                       y,
+                                                       width < 128 ? 128 : width,
+                                                       height < 128 ? 128 : height);
     auto callId = lrcInstance_->getCurrentCallId();
-    lrcInstance_->getCurrentCallModel()->requestMediaChange(callId,
-                                                            "video_0",
-                                                            resource,
-                                                            lrc::api::NewCallModel::MediaRequestType::SCREENSHARING,
-                                                            false);
-    set_currentRenderingDeviceType(
-        lrcInstance_->avModel().getCurrentRenderedDevice(callId).type);
+    lrcInstance_->getCurrentCallModel()
+        ->requestMediaChange(callId,
+                             "video_0",
+                             resource,
+                             lrc::api::NewCallModel::MediaRequestType::SCREENSHARING,
+                             false);
+    set_currentRenderingDeviceType(lrcInstance_->avModel().getCurrentRenderedDevice(callId).type);
 #endif
 }
 
@@ -242,16 +243,14 @@ AvAdapter::stopSharing()
 {
     auto callId = lrcInstance_->getCurrentCallId();
     if (!callId.isEmpty()) {
-            lrcInstance_->getCurrentCallModel()
-                ->requestMediaChange(callId,
-                                     "video_0",
-                                     lrcInstance_->avModel().getCurrentVideoCaptureDevice(),
-                                     lrc::api::NewCallModel::MediaRequestType::CAMERA,
-                                     false);
-        lrcInstance_->avModel().switchInputTo(lrcInstance_->avModel().getCurrentVideoCaptureDevice(),
-                                              callId);
-        set_currentRenderingDeviceType(
-            lrcInstance_->avModel().getCurrentRenderedDevice(callId).type);
+        lrcInstance_->avModel().switchInputTo(lrcInstance_->avModel().getDefaultDevice(), callId);
+        lrcInstance_->getCurrentCallModel()
+            ->requestMediaChange(callId,
+                                 "video_0",
+                                 lrcInstance_->avModel().getCurrentVideoCaptureDevice(),
+                                 lrc::api::NewCallModel::MediaRequestType::CAMERA,
+                                 muteCamera_);
+        set_currentRenderingDeviceType(lrc::api::video::DeviceType::CAMERA);
     }
 }
 

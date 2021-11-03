@@ -650,7 +650,7 @@ CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
     bool isPaused = call->status == lrc::api::call::Status::PAUSED;
     bool isAudioOnly = call->isAudioOnly && !isPaused;
     bool isAudioMuted = call->audioMuted && (call->status != lrc::api::call::Status::PAUSED);
-    bool isVideoMuted = call->videoMuted && !isPaused;
+    bool isVideoMuted = call->isAudioOnly || (call->videoMuted && !isPaused);
     bool isRecording = isRecordingThisCall();
     bool isConferenceCall = !convInfo.confId.isEmpty()
                             || (convInfo.confId.isEmpty() && call->participantsInfos.size() != 0);

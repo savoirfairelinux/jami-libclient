@@ -34,7 +34,7 @@ ContextMenuAutoLoader {
 
     property bool isSIP: false
     property bool isPaused: false
-    property bool isAudioOnly: false
+    property bool isVideoMuted: false
     property bool localIsRecording: false
     property bool peerIsRecording: false
 
@@ -101,14 +101,12 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: stopSharing
 
-            canTrigger: AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY
-                        && !isSIP
+            canTrigger: (AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY || AvAdapter.currentRenderingDeviceType === Video.DeviceType.FILE)
+                        && !isSIP && !isVideoMuted
             itemName: JamiStrings.stopSharing
             iconSource: JamiResources.share_stop_black_24dp_svg
             iconColor: JamiTheme.redColor
-            onClicked: {
-                AvAdapter.stopSharing()
-            }
+            onClicked: AvAdapter.stopSharing()
         },
         GeneralMenuItem {
             id: shareScreen
@@ -118,6 +116,9 @@ ContextMenuAutoLoader {
             itemName: JamiStrings.shareScreen
             iconSource: JamiResources.share_screen_black_24dp_svg
             onClicked: {
+                if (AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.FILE) {
+                    AvAdapter.muteCamera = root.isVideoMuted
+                }
                 if (Qt.application.screens.length === 1) {
                     AvAdapter.shareEntireScreen(0)
                 } else {
@@ -134,6 +135,9 @@ ContextMenuAutoLoader {
             itemName: JamiStrings.shareScreenArea
             iconSource: JamiResources.share_screen_black_24dp_svg
             onClicked: {
+                if (AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.FILE) {
+                    AvAdapter.muteCamera = root.isVideoMuted
+                }
                 if (Qt.platform.os !== "windows") {
                     AvAdapter.shareScreenArea(0, 0, 0, 0)
                 } else {

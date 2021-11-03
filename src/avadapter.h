@@ -30,6 +30,7 @@ class AvAdapter final : public QmlAdapterBase
 {
     Q_OBJECT
     QML_RO_PROPERTY(lrc::api::video::DeviceType, currentRenderingDeviceType)
+    QML_PROPERTY(bool, muteCamera)
 
 public:
     explicit AvAdapter(LRCInstance* instance, QObject* parent = nullptr);
