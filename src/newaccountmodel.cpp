@@ -543,6 +543,8 @@ NewAccountModelPimpl::slotAccountStatusChanged(const QString& accountID,
             // When keys are generated, the status will change.
             // The account is already added and initialized. Just update details from daemon
             updateAccountDetails(accountInfo);
+            // This will load swarms as the account was not loaded before.
+            accountInfo.conversationModel->initConversations();
             emit linked.accountAdded(accountID);
         } else if (!accountInfo.profileInfo.uri.isEmpty()) {
             accountInfo.status = status;

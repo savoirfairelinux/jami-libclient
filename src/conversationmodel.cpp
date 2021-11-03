@@ -384,6 +384,12 @@ ConversationModel::ConversationModel(const account::Info& owner,
     , owner(owner)
 {}
 
+void
+ConversationModel::initConversations()
+{
+    pimpl_->initConversations();
+}
+
 ConversationModel::~ConversationModel() {}
 
 const ConversationModel::ConversationQueue&
@@ -2462,9 +2468,8 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
     int conversationIdx = indexOf(conversationId);
     bool conversationExists = conversationIdx >= 0;
 
-    if (!conversationExists) {
+    if (!conversationExists)
         addSwarmConversation(conversationId);
-    }
     auto& conversation = getConversationForUid(conversationId).get();
     if (conversationExists) {
         // if swarm request already exists, update participnts
@@ -3917,6 +3922,8 @@ ConversationModelPimpl::invalidateModel()
 void
 ConversationModelPimpl::emplaceBackConversation(conversation::Info&& conversation)
 {
+    if (indexOf(conversation.uid) != -1)
+        return;
     Q_EMIT linked.beginInsertRows(conversations.size());
     conversations.emplace_back(std::move(conversation));
     Q_EMIT linked.endInsertRows();
