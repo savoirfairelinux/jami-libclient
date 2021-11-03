@@ -2199,11 +2199,11 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
     if (accountId != linked.owner.id) {
         return;
     }
+
     try {
         auto& conversation = getConversationForUid(conversationId).get();
         auto size = messages.size();
         for (int i = size - 1; i >= 0; --i) {
-            // for (int i = 0; i < size; ++i) {
             auto message = messages[i];
             if (message["type"].isEmpty() || message["type"] == "application/update-profile") {
                 continue;
@@ -2257,6 +2257,15 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
                 conversation.lastMessageUid = conversation.interactions->atIndex(j).first;
                 break;
             }
+        }
+        if (conversation.lastMessageUid.isEmpty() && !conversation.allMessagesLoaded) {
+            // In this case, we only have loaded merge commits. Load more messages
+            ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
+                                                                      conversationId,
+                                                                      messages.rbegin()->value(
+                                                                          "id"),
+                                                                      2);
+            return;
         }
         invalidateModel();
         emit linked.modelChanged();
@@ -2468,10 +2477,10 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
         conversation.needsSyncing = false;
         Q_EMIT linked.conversationUpdated(conversationId);
         Q_EMIT linked.dataChanged(conversationIdx);
-        auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
-                                                                            conversationId,
-                                                                            "",
-                                                                            0);
+        ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
+                                                                  conversationId,
+                                                                  "",
+                                                                  0);
         auto& peers = peersForConversation(conversation);
         if (peers.size() == 1)
             emit linked.conversationReady(conversationId, peers.front());
@@ -2878,10 +2887,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
         Q_EMIT linked.dataChanged(indexOf(conversation.uid));
     }
     emplaceBackConversation(std::move(conversation));
-    auto id = ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
-                                                                        convId,
-                                                                        "",
-                                                                        1);
+    ConfigurationManager::instance().loadConversationMessages(linked.owner.id, convId, "", 1);
 }
 
 void
