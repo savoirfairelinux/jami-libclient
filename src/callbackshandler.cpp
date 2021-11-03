@@ -569,9 +569,13 @@ CallbacksHandler::slotDataTransferEvent(const QString& accountId,
 
     api::datatransfer::Info info;
     if (conversationId.isEmpty()) {
-        parent.getAccountModel().getAccountInfo(accountId).dataTransferModel->transferInfo(accountId,
-                                                                                           fileId,
-                                                                                           info);
+        try {
+            parent.getAccountModel()
+                .getAccountInfo(accountId)
+                .dataTransferModel->transferInfo(accountId, fileId, info);
+        } catch (...) {
+            return;
+        }
     } else {
         info.uid = fileId;
         info.status = convertDataTransferEvent(event);
@@ -579,8 +583,12 @@ CallbacksHandler::slotDataTransferEvent(const QString& accountId,
         info.accountId = accountId;
         qlonglong totalSize, progress;
         QString path;
-        parent.getAccountModel().getAccountInfo(accountId).dataTransferModel->fileTransferInfo(
-            accountId, conversationId, fileId, path, totalSize, progress);
+        try {
+            parent.getAccountModel().getAccountInfo(accountId).dataTransferModel->fileTransferInfo(
+                accountId, conversationId, fileId, path, totalSize, progress);
+        } catch (...) {
+            return;
+        }
         auto fi = QFileInfo(path);
         if (fi.isSymLink()) {
             path = fi.symLinkTarget();
