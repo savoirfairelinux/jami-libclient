@@ -114,13 +114,15 @@ Control {
             orientation: ListView.Horizontal
             Layout.preferredHeight: {
                 if (showTime || seq === MsgSeq.last)
-                    return childrenRect.height
+                    return contentHeight + formattedTimeLabel.contentHeight
                 else if (reads.visible)
                     return JamiTheme.avatarReadReceiptSize
                 return 0
             }
 
             Label {
+                id: formattedTimeLabel
+
                 text: formattedTime
                 color: JamiTheme.timestampColor
                 visible: showTime || seq === MsgSeq.last
