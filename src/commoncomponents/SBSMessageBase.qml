@@ -48,7 +48,7 @@ Control {
     readonly property real senderMargin: 64
     readonly property real avatarSize: 32
     readonly property real msgRadius: 18
-    readonly property real hPadding: 12
+    readonly property real hPadding: JamiTheme.sbsMessageBasePreferredPadding
 
     width: ListView.view ? ListView.view.width : 0
     height: mainColumnLayout.implicitHeight

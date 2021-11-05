@@ -30,7 +30,7 @@ ColumnLayout {
 
     property alias text: textArea.text
     property var textAreaObj: textArea
-    property real marginSize: 10
+    property real marginSize: JamiTheme.messageBarMarginSize
     property bool sendButtonVisibility: false
     property bool animate: false
 

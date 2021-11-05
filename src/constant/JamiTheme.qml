@@ -303,6 +303,12 @@ Item {
     property real filesToSendDelegateButtonSize: 16
     property real filesToSendDelegateFontPointSize: textFontSize + 2
 
+    // SBSMessageBase
+    property int sbsMessageBasePreferredPadding: 12
+
+    // MessageBar
+    property int messageBarMarginSize: 10
+
     // InvitationView
     property real invitationViewAvatarSize: 112
     property real invitationViewButtonRadius: 25

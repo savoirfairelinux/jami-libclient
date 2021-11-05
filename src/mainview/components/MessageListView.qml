@@ -168,7 +168,6 @@ ListView {
     }
 
     topMargin: 12
-    bottomMargin: 6
     spacing: 2
     anchors.centerIn: parent
     height: parent.height
@@ -277,79 +276,83 @@ ListView {
     header: Control {
         id: typeIndicatorContainer
 
-        topPadding: 3
+        topPadding: 6
 
         width: root.width
         height: typeIndicatorNameText.contentHeight + topPadding
 
         visible: MessagesAdapter.currentConvComposingList.length
 
-        TypingDots {
-            id: typingDots
-
+        RowLayout {
             anchors.left: typeIndicatorContainer.left
-            anchors.leftMargin: 5
-            anchors.verticalCenter: typeIndicatorContainer.verticalCenter
-        }
+            anchors.leftMargin: JamiTheme.messageBarMarginSize
+            anchors.bottom: typeIndicatorContainer.bottom
+            anchors.bottomMargin: 2
 
-        Text {
-            id: typeIndicatorNameText
+            spacing: 0
 
-            anchors.left: typingDots.right
-            anchors.leftMargin: 5
-            anchors.verticalCenter: typeIndicatorContainer.verticalCenter
+            TypingDots {
+                id: typingDots
 
-            width: {
-                var textSize = text ? JamiQmlUtils.getTextBoundingRect(font, text).width : 0
-                var typingContentWidth = typingDots.width + typingDots.anchors.leftMargin
-                                       + typeIndicatorNameText.anchors.leftMargin
-                                       + typeIndicatorEndingText.contentWidth
-                return Math.min(typeIndicatorContainer.width - 5 - typingContentWidth, textSize)
+                Layout.alignment: Qt.AlignVCenter
             }
 
-            font.pointSize: 8
-            font.bold: Font.DemiBold
-            elide: Text.ElideRight
-            color: JamiTheme.textColor
-            text: {
-                var finalText = ""
-                var nameList = MessagesAdapter.currentConvComposingList
+            Text {
+                id: typeIndicatorNameText
 
-                if (nameList.length > 4)
-                    return ""
-                if (nameList.length === 1)
-                    return nameList[0]
-
-                for (var i = 0; i < nameList.length; i++) {
-                    finalText += nameList[i]
-
-                    if (i === nameList.length - 2)
-                        finalText += JamiStrings.typeIndicatorAnd
-                    else if (i !== nameList.length - 1)
-                        finalText += ", "
+                Layout.alignment: Qt.AlignVCenter
+                Layout.leftMargin: JamiTheme.sbsMessageBasePreferredPadding
+                Layout.preferredWidth: {
+                    var textSize = text ? JamiQmlUtils.getTextBoundingRect(font, text).width : 0
+                    var typingContentWidth = typingDots.width + typingDots.anchors.leftMargin
+                                           + typeIndicatorNameText.anchors.leftMargin
+                                           + typeIndicatorEndingText.contentWidth
+                    return Math.min(typeIndicatorContainer.width - 5 - typingContentWidth, textSize)
                 }
 
-                return finalText
+                font.pointSize: 8
+                font.bold: Font.DemiBold
+                elide: Text.ElideRight
+                color: JamiTheme.textColor
+                text: {
+                    var finalText = ""
+                    var nameList = MessagesAdapter.currentConvComposingList
+
+                    if (nameList.length > 4)
+                        return ""
+                    if (nameList.length === 1)
+                        return nameList[0]
+
+                    for (var i = 0; i < nameList.length; i++) {
+                        finalText += nameList[i]
+
+                        if (i === nameList.length - 2)
+                            finalText += JamiStrings.typeIndicatorAnd
+                        else if (i !== nameList.length - 1)
+                            finalText += ", "
+                    }
+
+                    return finalText
+                }
             }
-        }
 
-        Text {
-            id: typeIndicatorEndingText
+            Text {
+                id: typeIndicatorEndingText
 
-            anchors.left: typeIndicatorNameText.right
-            anchors.verticalCenter: typeIndicatorContainer.verticalCenter
+                Layout.alignment: Qt.AlignVCenter
 
-            font.pointSize: 8
-            color: JamiTheme.textColor
-            text: {
-                var nameList = MessagesAdapter.currentConvComposingList
+                font.pointSize: 8
+                color: JamiTheme.textColor
+                text: {
+                    var nameList = MessagesAdapter.currentConvComposingList
 
-                if (nameList.length > 4)
-                    return JamiStrings.typeIndicatorMax
-                if (nameList.length === 1)
-                    return JamiStrings.typeIndicatorSingle.replace("{}", "")
+                    if (nameList.length > 4)
+                        return JamiStrings.typeIndicatorMax
+                    if (nameList.length === 1)
+                        return JamiStrings.typeIndicatorSingle.replace("{}", "")
 
-                return JamiStrings.typeIndicatorPlural.replace("{}", "")
+                    return JamiStrings.typeIndicatorPlural.replace("{}", "")
+                }
             }
         }
     }
