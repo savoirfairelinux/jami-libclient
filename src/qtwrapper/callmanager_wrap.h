@@ -337,15 +337,6 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
-    QString placeCall(const QString& accountID,
-                      const QString& to,
-                      const std::map<std::string, std::string>& volatileCallDetails)
-    {
-        QString temp(
-            DRing::placeCall(accountID.toStdString(), to.toStdString(), volatileCallDetails).c_str());
-        return temp;
-    }
-
     // MULTISTREAM FUNCTIONS
     QString placeCallWithMedia(const QString& accountID,
                                const QString& to,
@@ -455,7 +446,10 @@ public Q_SLOTS: // METHODS
                               const QString& peerId,
                               const bool& state)
     {
-        DRing::raiseParticipantHand(accountId.toStdString(), confId.toStdString(), peerId.toStdString(), state);
+        DRing::raiseParticipantHand(accountId.toStdString(),
+                                    confId.toStdString(),
+                                    peerId.toStdString(),
+                                    state);
     }
 
     void muteParticipant(const QString& confId, const QString& peerId, const bool& state)
