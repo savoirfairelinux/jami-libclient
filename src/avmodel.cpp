@@ -85,7 +85,9 @@ public:
      * @param settings
      * @param shmPath
      */
-    void addRenderer(const QString& id, video::Settings settings, const QString& shmPath = {});
+    void addRenderer(const QString& id,
+                     const video::Settings& settings,
+                     const QString& shmPath = {});
 
     /**
      * Remove renderer from renderers_
@@ -569,13 +571,13 @@ AVModel::getDisplay(int idx, int x, int y, int w, int h)
 {
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
     return QString("%1%2:%3+%4,%5 %6x%7")
-                        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
-                        .arg(sep)
-                        .arg(idx)
-                        .arg(x)
-                        .arg(y)
-                        .arg(w)
-                        .arg(h);
+        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
+        .arg(sep)
+        .arg(idx)
+        .arg(x)
+        .arg(y)
+        .arg(w)
+        .arg(h);
 }
 
 void
@@ -642,6 +644,18 @@ void
 AVModel::clearCurrentVideoCaptureDevice()
 {
     pimpl_->currentVideoCaptureDevice_.clear();
+}
+
+void
+AVModel::addRenderer(const QString& id, const video::Settings& settings, const QString& shmPath)
+{
+    pimpl_->addRenderer(id, settings, shmPath);
+}
+
+void
+AVModel::removeRenderer(const QString& id)
+{
+    pimpl_->removeRenderer(id);
 }
 
 AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)
@@ -723,6 +737,8 @@ AVModelPimpl::getRecordingPath() const
 void
 AVModelPimpl::startedDecoding(const QString& id, const QString& shmPath, int width, int height)
 {
+    if (id != "" && id != "local") // Else managed by callmodel
+        return;
     video::Settings settings;
     settings.size = toQString(width) + "x" + toQString(height);
     addRenderer(id, settings, shmPath);
@@ -803,7 +819,7 @@ AVModelPimpl::getDevice(int type) const
 }
 
 void
-AVModelPimpl::addRenderer(const QString& id, video::Settings settings, const QString& shmPath)
+AVModelPimpl::addRenderer(const QString& id, const video::Settings& settings, const QString& shmPath)
 {
     {
         std::lock_guard<std::mutex> lk(renderers_mtx_);

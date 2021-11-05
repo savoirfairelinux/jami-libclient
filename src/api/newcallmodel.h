@@ -70,6 +70,7 @@ public:
     enum class MediaRequestType { FILESHARING, SCREENSHARING, CAMERA };
 
     NewCallModel(const account::Info& owner,
+                 Lrc& lrc,
                  const CallbacksHandler& callbacksHandler,
                  const BehaviorController& behaviorController);
     ~NewCallModel();

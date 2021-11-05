@@ -748,6 +748,7 @@ NewAccountModelPimpl::addToAccounts(const QString& accountId, std::shared_ptr<Da
     // Init models for this account
     newAccInfo.accountModel = &linked;
     newAccInfo.callModel = std::make_unique<NewCallModel>(newAccInfo,
+                                                          lrc,
                                                           callbacksHandler,
                                                           behaviorController);
     newAccInfo.contactModel = std::make_unique<ContactModel>(newAccInfo,

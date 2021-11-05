@@ -21,6 +21,7 @@
 
 // Lrc
 #include "callbackshandler.h"
+#include "api/avmodel.h"
 #include "api/behaviorcontroller.h"
 #include "api/conversationmodel.h"
 #include "api/contact.h"
@@ -118,6 +119,7 @@ class NewCallModelPimpl : public QObject
 {
 public:
     NewCallModelPimpl(const NewCallModel& linked,
+                      Lrc& lrc,
                       const CallbacksHandler& callbacksHandler,
                       const BehaviorController& behaviorController);
     ~NewCallModelPimpl();
@@ -129,6 +131,7 @@ public:
     void sendProfile(const QString& callId);
 
     NewCallModel::CallInfoMap calls;
+    Lrc& lrc_;
     const CallbacksHandler& callbacksHandler;
     const NewCallModel& linked;
     const BehaviorController& behaviorController;
@@ -160,6 +163,7 @@ public:
     QString currentCall_ {};
 
     QList<call::PendingConferenceeInfo> pendingConferencees_;
+
 public Q_SLOTS:
     /**
      * Listen from CallbacksHandler when a call is incoming
@@ -237,14 +241,23 @@ public Q_SLOTS:
      * @param state the new state
      */
     void remoteRecordingChanged(const QString& callId, const QString& peerNumber, bool state);
+    /**
+     * Listen from CallbacksHandler when a renderer starts
+     * @param id
+     * @param shmPath
+     * @param width
+     * @param height
+     */
+    void startedDecoding(const QString& id, const QString& shmPath, int width, int height);
 };
 
 NewCallModel::NewCallModel(const account::Info& owner,
+                           Lrc& lrc,
                            const CallbacksHandler& callbacksHandler,
                            const BehaviorController& behaviorController)
     : QObject(nullptr)
     , owner(owner)
-    , pimpl_(std::make_unique<NewCallModelPimpl>(*this, callbacksHandler, behaviorController))
+    , pimpl_(std::make_unique<NewCallModelPimpl>(*this, lrc, callbacksHandler, behaviorController))
 {}
 
 NewCallModel::~NewCallModel() {}
@@ -732,9 +745,11 @@ NewCallModel::getPendingConferencees()
 }
 
 NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
+                                     Lrc& lrc,
                                      const CallbacksHandler& callbacksHandler,
                                      const BehaviorController& behaviorController)
     : linked(linked)
+    , lrc_(lrc)
     , callbacksHandler(callbacksHandler)
     , behaviorController(behaviorController)
 {
@@ -774,6 +789,10 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
             &CallbacksHandler::remoteRecordingChanged,
             this,
             &NewCallModelPimpl::remoteRecordingChanged);
+    connect(&callbacksHandler,
+            &CallbacksHandler::startedDecoding,
+            this,
+            &NewCallModelPimpl::startedDecoding);
 
 #ifndef ENABLE_LIBWRAP
     // Only necessary with dbus since the daemon runs separately
@@ -1445,6 +1464,17 @@ NewCallModelPimpl::remoteRecordingChanged(const QString& callId,
         it->second->peerRec.remove(uri);
 
     emit linked.remoteRecordingChanged(callId, it->second->peerRec, state);
+}
+
+void
+NewCallModelPimpl::startedDecoding(const QString& id, const QString& shmPath, int width, int height)
+{
+    auto it = calls.find(id);
+    if (it == calls.end())
+        return;
+    video::Settings settings;
+    settings.size = toQString(width) + "x" + toQString(height);
+    lrc_.getAVModel().addRenderer(id, settings, shmPath);
 }
 
 } // namespace lrc
