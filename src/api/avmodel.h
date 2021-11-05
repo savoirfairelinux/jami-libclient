@@ -310,6 +310,22 @@ public:
      */
     void clearCurrentVideoCaptureDevice();
 
+    /**
+     * Add video::Renderer to renderers_ and start it
+     * @param id
+     * @param settings
+     * @param shmPath
+     */
+    void addRenderer(const QString& id,
+                     const video::Settings& settings,
+                     const QString& shmPath = {});
+
+    /**
+     * Remove renderer from renderers_
+     * @param id
+     */
+    void removeRenderer(const QString& id);
+
 Q_SIGNALS:
     /**
      * Emitted when a renderer is started
