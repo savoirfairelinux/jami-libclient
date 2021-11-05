@@ -95,6 +95,16 @@ Renderer::~Renderer()
 }
 
 void
+Renderer::show()
+{
+    if (pimpl_->usingAVFrame_) {
+        VideoManager::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avTarget());
+    } else {
+        VideoManager::instance().registerSinkTarget(pimpl_->id_, pimpl_->renderer->target());
+    }
+}
+
+void
 Renderer::update(const QString& res, const QString& shmPath)
 {
     if (!pimpl_->thread_.isRunning())
@@ -104,13 +114,7 @@ Renderer::update(const QString& res, const QString& shmPath)
     QSize size = RendererPimpl::stringToQSize(res);
     pimpl_->renderer->setSize(size);
 
-#ifdef ENABLE_LIBWRAP
-    if (pimpl_->usingAVFrame_) {
-        VideoManager::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avTarget());
-    } else {
-        VideoManager::instance().registerSinkTarget(pimpl_->id_, pimpl_->renderer->target());
-    }
-#else // ENABLE_LIBWRAP
+#ifndef ENABLE_LIBWRAP
     pimpl_->renderer->setShmPath(shmPath);
 #endif
 }
@@ -198,7 +202,6 @@ RendererPimpl::RendererPimpl(Renderer& linked,
     renderer->moveToThread(&thread_);
 
     connect(&thread_, &QThread::finished, [this] { renderer.reset(); });
-
     connect(&linked,
             &Renderer::startRendering,
             renderer.get(),
@@ -221,15 +224,6 @@ RendererPimpl::RendererPimpl(Renderer& linked,
         this,
         [this] { emit linked_.stopped(id_); },
         Qt::DirectConnection);
-
-#ifdef ENABLE_LIBWRAP
-    if (usingAVFrame_) {
-        VideoManager::instance().registerAVSinkTarget(id_, renderer->avTarget());
-    } else {
-        VideoManager::instance().registerSinkTarget(id_, renderer->target());
-    }
-#endif
-
     thread_.start();
 }
 

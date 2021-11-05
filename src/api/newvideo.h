@@ -106,6 +106,11 @@ public:
     ~Renderer();
 
     /**
+     * Ask dae,pm tp start tp semd fra,es
+     */
+    void show();
+
+    /**
      * Update size and shmPath of a renderer
      * @param res new resolution "wxh"
      * @param shmPath new shmPath
