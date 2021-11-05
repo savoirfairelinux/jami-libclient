@@ -2258,7 +2258,8 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
                 break;
             }
         }
-        if (conversation.lastMessageUid.isEmpty() && !conversation.allMessagesLoaded) {
+        if (conversation.lastMessageUid.isEmpty() && !conversation.allMessagesLoaded
+            && messages.size() != 0) {
             // In this case, we only have loaded merge commits. Load more messages
             ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                       conversationId,
