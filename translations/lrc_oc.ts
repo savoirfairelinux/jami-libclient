@@ -72,7 +72,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="218"/>
         <location filename="../src/authority/storagehelper.cpp" line="136"/>
-        <location filename="../src/authority/storagehelper.cpp" line="954"/>
+        <location filename="../src/authority/storagehelper.cpp" line="941"/>
         <source>Invitation received</source>
         <translation>Invitacion recebuda</translation>
     </message>
@@ -84,14 +84,14 @@
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
         <location filename="../src/authority/storagehelper.cpp" line="133"/>
-        <location filename="../src/authority/storagehelper.cpp" line="952"/>
+        <location filename="../src/authority/storagehelper.cpp" line="939"/>
         <source>Contact added</source>
         <translation>Contacte ajustat</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="110"/>
         <location filename="../src/authority/storagehelper.cpp" line="116"/>
-        <location filename="../src/authority/storagehelper.cpp" line="950"/>
+        <location filename="../src/authority/storagehelper.cpp" line="937"/>
         <source>Outgoing call</source>
         <translation type="unfinished"/>
     </message>
@@ -103,7 +103,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="118"/>
-        <location filename="../src/authority/storagehelper.cpp" line="948"/>
+        <location filename="../src/authority/storagehelper.cpp" line="935"/>
         <source>Missed outgoing call</source>
         <translation>Sonada sortissenta mancada</translation>
     </message>
@@ -115,7 +115,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="138"/>
-        <location filename="../src/authority/storagehelper.cpp" line="956"/>
+        <location filename="../src/authority/storagehelper.cpp" line="943"/>
         <source>Invitation accepted</source>
         <translation>Invitacion acceptada</translation>
     </message>

@@ -1,20 +1,20 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr_FR" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ig" sourcelanguage="en" version="2.1">
 <context>
     <name>QObject</name>
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="387"/>
         <source>Me</source>
-        <translation>Moi </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="61"/>
         <source>Hold</source>
-        <translation>Patienter</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="63"/>
         <source>Talking</source>
-        <translation>Appel en cours</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="65"/>
@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/api/call.h" line="67"/>
         <source>Incoming</source>
-        <translation>Appel entrant</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="69"/>
@@ -35,24 +35,24 @@
         <location filename="../src/api/call.h" line="71"/>
         <location filename="../src/chatview.cpp" line="72"/>
         <source>Connecting</source>
-        <translation>En cours de connexion</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="73"/>
         <source>Searching</source>
-        <translation>Recherche en cours</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="75"/>
         <source>Inactive</source>
-        <translation>Inactif</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
         <location filename="../src/chatview.cpp" line="79"/>
         <source>Finished</source>
-        <translation>Terminé</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/call.h" line="79"/>
@@ -74,7 +74,7 @@
         <location filename="../src/authority/storagehelper.cpp" line="136"/>
         <location filename="../src/authority/storagehelper.cpp" line="941"/>
         <source>Invitation received</source>
-        <translation>Invitation reçue</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
@@ -86,38 +86,38 @@
         <location filename="../src/authority/storagehelper.cpp" line="133"/>
         <location filename="../src/authority/storagehelper.cpp" line="939"/>
         <source>Contact added</source>
-        <translation>Contact ajouté</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="110"/>
         <location filename="../src/authority/storagehelper.cpp" line="116"/>
         <location filename="../src/authority/storagehelper.cpp" line="937"/>
         <source>Outgoing call</source>
-        <translation>Appel sortant</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="112"/>
         <location filename="../src/authority/storagehelper.cpp" line="122"/>
         <source>Incoming call</source>
-        <translation>Appel entrant</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="118"/>
         <location filename="../src/authority/storagehelper.cpp" line="935"/>
         <source>Missed outgoing call</source>
-        <translation>Appel sortant manqué</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="124"/>
         <source>Missed incoming call</source>
-        <translation>Appel entrant manqué</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="138"/>
         <location filename="../src/authority/storagehelper.cpp" line="943"/>
         <source>Invitation accepted</source>
-        <translation>Invitation acceptée</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/avmodel.cpp" line="339"/>
@@ -133,12 +133,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="57"/>
         <source>Trying</source>
-        <translation>Essai en cours</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>
         <source>Ringing</source>
-        <translation>Sonnerie en cours</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
@@ -158,13 +158,13 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>OK</source>
-        <translation>ok</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
         <location filename="../src/newcallmodel.cpp" line="63"/>
         <source>Accepted</source>
-        <translation>Accepté</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
@@ -209,12 +209,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="72"/>
         <source>Forbidden</source>
-        <translation>Interdit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="73"/>
         <source>Not Found</source>
-        <translation>Introuvable</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="74"/>
@@ -315,7 +315,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Busy</source>
-        <translation>Occupé</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
@@ -410,7 +410,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
-        <translation>Faire un appel vidéo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
@@ -420,22 +420,22 @@
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
         <source>Place audio call</source>
-        <translation>Faire un appel audio</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="34"/>
         <source>Add to conversations</source>
-        <translation>Ajouter aux conversations</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="35"/>
         <source>Unban contact</source>
-        <translation>Débloquer le contact</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Send</source>
-        <translation>Envoyer</translation>
+        <translation>Zie</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
@@ -450,7 +450,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Send file</source>
-        <translation>Envoyer le fichier</translation>
+        <translation>Zipu faịlụ</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
@@ -460,7 +460,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
         <source>Leave video message</source>
-        <translation>Envoyer un message vidéo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
@@ -500,12 +500,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Accept</source>
-        <translation>Accepter</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="68"/>
         <source>Refuse</source>
-        <translation>Refuser</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="71"/>
@@ -530,7 +530,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
         <source>Block</source>
-        <translation>Bloquer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="47"/>
@@ -550,22 +550,22 @@
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
         <source>{0} days ago</source>
-        <translation>Il y a {0} jours</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>{0} hours ago</source>
-        <translation>il y a {0} heures</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="62"/>
         <source>{0} minutes ago</source>
-        <translation>il y a {0} minutes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
-        <translation>Annulé</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="75"/>
@@ -575,32 +575,32 @@
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
         <source>%d days ago</source>
-        <translation>Il y a %d jours</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>%d hours ago</source>
-        <translation>Il y a %d heures</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="62"/>
         <source>%d minutes ago</source>
-        <translation>Il y a %d minutes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="63"/>
         <source>one day ago</source>
-        <translation>il y a une journée</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="64"/>
         <source>one hour ago</source>
-        <translation>il y a une heure</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>just now</source>
-        <translation>juste maintenant</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
@@ -610,12 +610,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="69"/>
         <source>Delete</source>
-        <translation>Supprimer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="70"/>
         <source>Retry</source>
-        <translation>Réessaie</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -623,12 +623,12 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="474"/>
         <source>Searching…</source>
-        <translation>Recherche...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="999"/>
         <source>Invalid ID</source>
-        <translation>ID invalide</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="1002"/>
@@ -638,7 +638,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="1005"/>
         <source>Couldn&apos;t lookup…</source>
-        <translation>Impossible de vérifier le nom d&apos;utilisateur</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
