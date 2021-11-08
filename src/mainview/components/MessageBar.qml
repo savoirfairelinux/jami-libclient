@@ -113,6 +113,7 @@ ColumnLayout {
             Layout.alignment: Qt.AlignVCenter
             Layout.preferredWidth: JamiTheme.chatViewFooterButtonSize
             Layout.preferredHeight: JamiTheme.chatViewFooterButtonSize
+            visible: VideoDevices.listSize !== 0
 
             radius: JamiTheme.chatViewFooterButtonRadius
             preferredSize: JamiTheme.chatViewFooterButtonIconSize

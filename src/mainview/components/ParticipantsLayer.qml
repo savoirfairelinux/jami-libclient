@@ -90,7 +90,6 @@ Item {
         participantOverlays = participantOverlays.filter(part => !deletedUris.includes(part.uri))
 
         if (infos.length === 0) { // Return to normal call
-            previewRenderer.visible = !isAudioOnly && !isVideoMuted && !isConferenceCall && !isPaused
             for (var part in participantOverlays) {
                 if (participantOverlays[part]) {
                     participantOverlays[part].destroy()
@@ -98,7 +97,6 @@ Item {
             }
             participantOverlays = []
         } else {
-            previewRenderer.visible = false
             for (var infoVariant in infos) {
                 // Only create overlay for new participants
                 if (!currentUris.includes(infos[infoVariant].uri)) {

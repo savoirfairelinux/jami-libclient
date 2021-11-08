@@ -179,24 +179,8 @@ Rectangle {
                     id: previewRenderer
 
                     lrcInstance: LRCInstance
-                    visible: !callOverlay.isAudioOnly && !callOverlay.isConferenceCall && !callOverlay.isVideoMuted && !callOverlay.isPaused
-
-                    Connections {
-                        target: CallAdapter
-
-                        function onPreviewVisibilityNeedToChange(visible) {
-                            previewRenderer.visible = visible
-                        }
-                    }
-
-                    Connections {
-                        target: VideoDevices
-
-                        // TODO: previewRenderer visible should be listening to a property
-                        function onDeviceListChanged() {
-                            previewRenderer.visible = VideoDevices.listSize !== 0
-                        }
-                    }
+                    visible: !callOverlay.isAudioOnly && !callOverlay.isConferenceCall && !callOverlay.isVideoMuted && !callOverlay.isPaused &&
+                             ((VideoDevices.listSize !== 0 && AvAdapter.currentRenderingDeviceType === Video.DeviceType.CAMERA) || AvAdapter.currentRenderingDeviceType !== Video.DeviceType.CAMERA )
 
                     width: Math.max(callPageMainRect.width / 5, JamiTheme.minimumPreviewWidth)
                     x: callPageMainRect.width - previewRenderer.width - previewMargin
