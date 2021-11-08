@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(jami-qt)
+if (APPLE)
+    project(Jami)
+else()
+    project(jami-qt)
+endif()
 
 if(MSVC)
     cmake_minimum_required(VERSION 3.15)
@@ -389,6 +393,9 @@ else()
 
     find_library(ringclient ringclient ${LRCLIBDIR} NO_DEFAULT_PATH)
     find_library(SYSTEM_CONFIGURATUION SystemConfiguration)
+    SET(myApp_ICON ${CMAKE_CURRENT_SOURCE_DIR}/resources/images/jami.icns)
+    SET_SOURCE_FILES_PROPERTIES(${myApp_ICON} PROPERTIES
+           MACOSX_PACKAGE_LOCATION Resources)
 endif()
 
 # Qt find package
@@ -607,6 +614,7 @@ elseif (NOT APPLE)
     add_custom_target(uninstall
         COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 else()
+    target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/resources/images/jami.icns)
     target_link_libraries(${PROJECT_NAME} PRIVATE
                           ${QML_LIBS}
                           ${LRC_LIB_NAME}
@@ -634,8 +642,24 @@ else()
          install(DIRECTORY "${CMAKE_BINARY_DIR}/share/libringclient/translations/"
                             DESTINATION ${CMAKE_INSTALL_PREFIX}/share/libringclient/translations)
       endif()
+      set_target_properties(${PROJECT_NAME} PROPERTIES
+                            MACOSX_BUNDLE TRUE
+                            MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/resources/Info.plist"
+                            MACOSX_BUNDLE_EXECUTABLE_NAME "${PROJ_NAME}"
+                            MACOSX_BUNDLE_ICON_FILE "jami.icns"
+                            MACOSX_BUNDLE_GUI_IDENTIFIER "${BUNDLE_ID}"
+                            MACOSX_BUNDLE_BUNDLE_NAME "${PROJ_NAME}"
+                            MACOSX_BUNDLE_SHORT_VERSION_STRING "${JAMI_VERSION}"
+                            MACOSX_BUNDLE_BUNDLE_VERSION "${JAMI_BUILD}"
+                            MACOSX_BUNDLE_COPYRIGHT "${PROJ_COPYRIGHT}"
+                            XCODE_ATTRIBUTE_CODE_SIGN_ENTITLEMENTS "${CMAKE_CURRENT_SOURCE_DIR}/resources/entitlements/Jami.entitlements"
+                            XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME TRUE)
+      add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                         COMMAND ${CMAKE_COMMAND} -DQML_SRC_DIR=${SRC_DIR}
+                         -DMAC_DEPLOY_QT_PATH=${CMAKE_PREFIX_PATH}/bin
+                         -DEXE_NAME="${CMAKE_BINARY_DIR}/${PROJECT_NAME}.app"
+                         -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/macos_qt_deploy.cmake)
 endif()
-
 
 qt_import_qml_plugins(${PROJECT_NAME})
 qt_finalize_executable(${PROJECT_NAME})
