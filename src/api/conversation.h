@@ -78,6 +78,8 @@ struct Info
     QHash<QString, QString> parentsId; // pair messageid/parentid for messages without parent loaded
     unsigned int unreadMessages = 0;
 
+    QSet<QString> typers;
+
     MapStringString infos {};
 
     QString getCallId() const { return confId.isEmpty() ? callId : confId; }
