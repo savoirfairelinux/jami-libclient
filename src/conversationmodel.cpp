@@ -3083,11 +3083,9 @@ ConversationModelPimpl::slotCallStatusChanged(const QString& callId, int code)
                 }
             }
         } else if (i != conversations.end()) {
-            if (call.status == call::Status::PEER_BUSY) {
-                emit behaviorController.showLeaveMessageView(linked.owner.id, i->uid);
-            }
             // Update interaction status
             invalidateModel();
+            emit linked.selectConversation(i->uid);
             emit linked.conversationUpdated(i->uid);
             Q_EMIT linked.dataChanged(indexOf(i->uid));
         }
