@@ -3462,6 +3462,17 @@ ConversationModelPimpl::slotComposingStatusChanged(const QString& accountId,
 {
     if (accountId != linked.owner.id)
         return;
+
+    try {
+        auto& conversation = getConversationForUid(convId).get();
+        if (isComposing)
+            conversation.typers.insert(contactUri);
+        else
+            conversation.typers.remove(contactUri);
+    } catch (const std::out_of_range& e) {
+        qDebug() << "could not update message status for not existing conversation";
+    }
+
     emit linked.composingStatusChanged(convId, contactUri, isComposing);
 }
 
