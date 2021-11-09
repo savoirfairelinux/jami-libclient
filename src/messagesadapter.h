@@ -129,6 +129,8 @@ private Q_SLOTS:
                                   bool isComposing);
 
 private:
+    QList<QString> conversationTypersUrlToName(const QSet<QString>& typersSet);
+
     AppSettingsManager* settingsManager_;
     PreviewEngine* previewEngine_;
     FilteredMsgListModel* filteredMsgListModel_;
