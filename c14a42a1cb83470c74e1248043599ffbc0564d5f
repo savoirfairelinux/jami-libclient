@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ccf36a4_eb4cacac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-09T23:08:37Z",
+      "side": 1,
+      "message": "I just asked kateryna to verify on macOS\n\nAlso generally it\u0027s not the commit message format we use, but I will not block a patch for this. Thank you for the patch!\n\ngenerally we use:\n\npart: short desc\n\nlong desc if needed\n\nGitLab: #issue",
+      "range": {
+        "startLine": 7,
+        "startChar": 20,
+        "endLine": 7,
+        "endChar": 93
+      },
+      "revId": "c14a42a1cb83470c74e1248043599ffbc0564d5f",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
