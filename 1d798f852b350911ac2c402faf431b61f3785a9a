@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06cc5227_7aad34a8",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 3088,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-09T18:43:24Z",
+      "side": 0,
+      "message": "this should indeed be removed from there.",
+      "range": {
+        "startLine": 3086,
+        "startChar": 13,
+        "endLine": 3088,
+        "endChar": 13
+      },
+      "revId": "1d798f852b350911ac2c402faf431b61f3785a9a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}

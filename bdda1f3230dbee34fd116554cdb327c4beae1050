@@ -16,6 +16,24 @@
       "message": "Hi there is this comment on line 3122 in slotCallEnded\n\nDo not call selectConversation() since it is already done in slotCallStatusChanged\n\nBut the call was not there, that what made me think of this fix. It\u0027s pretty crude however and maybe the conversationUpdated Handler would be a better choice for dealing with this. What do you think?",
       "revId": "bdda1f3230dbee34fd116554cdb327c4beae1050",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7fca42e_422b1311",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-09T18:43:24Z",
+      "side": 1,
+      "message": "This comment should be removed, as it was the case several years ago but not today.\n\nselectConversation() is still used by client-gnome, but indeed conversationUpdated() is a better approach for dealing with this (that\u0027s how client-qt handles changes). However, we can keep this patch, has client that are still using selectconv should work too",
+      "parentUuid": "ba714485_2c56d149",
+      "revId": "bdda1f3230dbee34fd116554cdb327c4beae1050",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
