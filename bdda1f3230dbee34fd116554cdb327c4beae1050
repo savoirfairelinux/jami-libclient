@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba714485_2c56d149",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 935
+      },
+      "writtenOn": "2021-11-09T15:13:45Z",
+      "side": 1,
+      "message": "Hi there is this comment on line 3122 in slotCallEnded\n\nDo not call selectConversation() since it is already done in slotCallStatusChanged\n\nBut the call was not there, that what made me think of this fix. It\u0027s pretty crude however and maybe the conversationUpdated Handler would be a better choice for dealing with this. What do you think?",
+      "revId": "bdda1f3230dbee34fd116554cdb327c4beae1050",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
