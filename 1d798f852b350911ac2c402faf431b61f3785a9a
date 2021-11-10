@@ -39,6 +39,24 @@
       "message": "this signal is used by macOS client",
       "revId": "1d798f852b350911ac2c402faf431b61f3785a9a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "338649fd_bc63556b",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 3087,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-10T15:32:57Z",
+      "side": 0,
+      "message": "it\u0027s also in selectConv, is the leaveMessageView broken with this patch?",
+      "parentUuid": "908c337f_35af154e",
+      "revId": "1d798f852b350911ac2c402faf431b61f3785a9a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
