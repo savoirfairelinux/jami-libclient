@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04bde4a8_c11ffafe",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1477,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-11-10T17:22:42Z",
+      "side": 1,
+      "message": "It seems we need the lrc_ only for this.\nI dont know much about the lrc design, but should not we limit the access to lrc to only the needed method through an interface, or a callback ?",
+      "revId": "7a30446439fe7eeb817c6a93a731ba2707500900",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
