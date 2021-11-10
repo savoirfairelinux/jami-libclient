@@ -3,6 +3,7 @@ doc/Doxyfile
 
 GeneratedFiles/
 .vs/
+.vscode/
 x64/
 x86/
 [wW]in32/
