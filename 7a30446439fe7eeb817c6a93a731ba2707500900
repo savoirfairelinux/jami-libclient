@@ -16,6 +16,24 @@
       "message": "It seems we need the lrc_ only for this.\nI dont know much about the lrc design, but should not we limit the access to lrc to only the needed method through an interface, or a callback ?",
       "revId": "7a30446439fe7eeb817c6a93a731ba2707500900",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbc9f9e6_1b50223f",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1477,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-10T20:49:36Z",
+      "side": 1,
+      "message": "lrc is already a pimpl with limited access. AvModel is common to all accounts as it\u0027s represents the Audio/Video stuff which is not attached to accounts.\n\nThis should be reverted later, as we want the client (and not LRC) do register the renderers. I updated the commit message to be more clear about this patch",
+      "parentUuid": "04bde4a8_c11ffafe",
+      "revId": "7a30446439fe7eeb817c6a93a731ba2707500900",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
