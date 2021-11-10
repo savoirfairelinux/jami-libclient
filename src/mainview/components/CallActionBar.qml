@@ -116,11 +116,11 @@ Control {
 
                 Component.onCompleted: {
                     shareModel.append({"Name": JamiStrings.shareScreen,
-                                       "IconSource": JamiResources.share_screen_black_24dp_svg})
+                                       "IconSource": JamiResources.laptop_black_24dp_svg})
                     shareModel.append({"Name": JamiStrings.shareScreenArea,
-                                       "IconSource" : JamiResources.share_screen_black_24dp_svg})
+                                       "IconSource" : JamiResources.share_area_black_24dp_svg})
                     shareModel.append({"Name": JamiStrings.shareFile,
-                                       "IconSource" : JamiResources.insert_photo_24dp_svg})
+                                       "IconSource" : JamiResources.file_black_24dp_svg})
                 }
             }
             function accept(index) {
@@ -159,8 +159,8 @@ Control {
             onTriggered: CallAdapter.muteThisCallToggle(!isAudioMuted)
             checkable: true
             icon.source: checked ?
-                             JamiResources.mic_off_24dp_svg :
-                             JamiResources.mic_24dp_svg
+                             JamiResources.micro_off_black_24dp_svg :
+                             JamiResources.micro_black_24dp_svg
             icon.color: checked ? "red" : "white"
             text: !checked ? JamiStrings.mute : JamiStrings.unmute
             property var menuAction: audioInputMenuAction

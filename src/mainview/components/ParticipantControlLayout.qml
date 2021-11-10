@@ -53,8 +53,8 @@ RowLayout {
         Layout.preferredHeight: buttonPreferredSize
         Layout.preferredWidth: buttonPreferredSize
         source: showModeratorMute ?
-                    JamiResources.mic_24dp_svg :
-                    JamiResources.mic_off_24dp_svg
+                    JamiResources.micro_black_24dp_svg :
+                    JamiResources.micro_off_black_24dp_svg
         onClicked: CallAdapter.muteParticipant(uri, showModeratorMute)
         toolTipText: showModeratorMute? JamiStrings.muteParticipant
                                       : JamiStrings.unmuteParticipant

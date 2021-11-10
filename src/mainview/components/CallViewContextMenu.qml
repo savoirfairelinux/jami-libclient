@@ -114,7 +114,7 @@ ContextMenuAutoLoader {
             canTrigger: CurrentAccount.videoEnabled_Video && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY
                         && !isSIP
             itemName: JamiStrings.shareScreen
-            iconSource: JamiResources.share_screen_black_24dp_svg
+            iconSource: JamiResources.laptop_black_24dp_svg
             onClicked: {
                 if (AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.FILE) {
                     AvAdapter.muteCamera = root.isVideoMuted
@@ -133,7 +133,7 @@ ContextMenuAutoLoader {
             canTrigger: CurrentAccount.videoEnabled_Video && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY
                         && !isSIP
             itemName: JamiStrings.shareScreenArea
-            iconSource: JamiResources.share_screen_black_24dp_svg
+            iconSource: JamiResources.share_area_black_24dp_svg
             onClicked: {
                 if (AvAdapter.currentRenderingDeviceType !== Video.DeviceType.DISPLAY && AvAdapter.currentRenderingDeviceType !== Video.DeviceType.FILE) {
                     AvAdapter.muteCamera = root.isVideoMuted
@@ -151,7 +151,7 @@ ContextMenuAutoLoader {
 
             canTrigger: CurrentAccount.videoEnabled_Video && !isSIP
             itemName: JamiStrings.shareFile
-            iconSource: JamiResources.insert_photo_24dp_svg
+            iconSource: JamiResources.file_black_24dp_svg
             onClicked: {
                 jamiFileDialog.open()
             }

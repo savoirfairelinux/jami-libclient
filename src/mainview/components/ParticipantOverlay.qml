@@ -156,7 +156,7 @@ Item {
 
                 visible: participantIsMuted
 
-                source: JamiResources.mic_off_24dp_svg
+                source: JamiResources.micro_off_black_24dp_svg
                 color: JamiTheme.whiteColor
             }
 

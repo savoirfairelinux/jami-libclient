@@ -243,7 +243,6 @@ AvAdapter::stopSharing()
 {
     auto callId = lrcInstance_->getCurrentCallId();
     if (!callId.isEmpty()) {
-        lrcInstance_->avModel().switchInputTo(lrcInstance_->avModel().getDefaultDevice(), callId);
         lrcInstance_->getCurrentCallModel()
             ->requestMediaChange(callId,
                                  "video_0",
