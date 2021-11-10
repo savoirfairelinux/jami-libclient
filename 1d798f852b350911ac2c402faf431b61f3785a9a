@@ -22,6 +22,23 @@
       },
       "revId": "1d798f852b350911ac2c402faf431b61f3785a9a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "908c337f_35af154e",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 3087,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-11-10T14:39:11Z",
+      "side": 0,
+      "message": "this signal is used by macOS client",
+      "revId": "1d798f852b350911ac2c402faf431b61f3785a9a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
