@@ -57,6 +57,24 @@
       "parentUuid": "908c337f_35af154e",
       "revId": "1d798f852b350911ac2c402faf431b61f3785a9a",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ed1f13a_c1462ac6",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 3087,
+      "author": {
+        "id": 225
+      },
+      "writtenOn": "2021-11-10T15:47:01Z",
+      "side": 0,
+      "message": "right, it works",
+      "parentUuid": "338649fd_bc63556b",
+      "revId": "1d798f852b350911ac2c402faf431b61f3785a9a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
