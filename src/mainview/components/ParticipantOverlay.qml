@@ -31,8 +31,8 @@ Item {
     id: root
 
     // svg path for the participant indicators background shape
-    property int shapeWidth: indicatorsRowLayout.width + 8
-    property int shapeHeight: 16
+    property int shapeWidth: participantFootInfo.width + 8
+    property int shapeHeight: 30
     property int shapeRadius: 6
     property string pathShape: "M0,0 h%1 q%2,0 %2,%2 v%3 h-%4 z"
         .arg(shapeWidth - shapeRadius)
@@ -41,12 +41,25 @@ Item {
         .arg(shapeWidth)
 
     property string uri: overlayMenu.uri
+    property string bestName: ""
     property bool participantIsActive: false
     property bool participantIsHost: false
     property bool participantIsModerator: false
     property bool participantIsMuted: false
     property bool participantIsModeratorMuted: false
     property bool participantHandIsRaised: false
+
+    property bool meModerator: false
+    property bool isMe: false
+
+    property string muteAlertMessage: ""
+    property bool muteAlertActive: false
+
+    onMuteAlertActiveChanged: {
+        if (muteAlertActive) {
+            alertTimer.restart()
+        }
+    }
 
     z: 1
 
@@ -63,10 +76,11 @@ Item {
     function setMenu(newUri, bestName, isLocal, isActive, showMax) {
 
         overlayMenu.uri = newUri
-        overlayMenu.bestName = bestName
+        root.bestName = bestName
+        isMe = overlayMenu.uri === CurrentAccount.uri
 
         var isHost = CallAdapter.isCurrentHost()
-        var isModerator = CallAdapter.isCurrentModerator()
+        meModerator = CallAdapter.isCurrentModerator()
         participantIsHost = CallAdapter.participantIsHost(overlayMenu.uri)
         participantIsModerator = CallAdapter.isModerator(overlayMenu.uri)
         participantIsActive = isActive
@@ -77,104 +91,22 @@ Item {
         var muteState = CallAdapter.getMuteState(overlayMenu.uri)
         overlayMenu.isLocalMuted = muteState === CallAdapter.LOCAL_MUTED
                 || muteState === CallAdapter.BOTH_MUTED
-        var isModeratorMuted = muteState === CallAdapter.MODERATOR_MUTED
+        participantIsModeratorMuted = muteState === CallAdapter.MODERATOR_MUTED
                 || muteState === CallAdapter.BOTH_MUTED
 
-        participantIsMuted = overlayMenu.isLocalMuted || isModeratorMuted
+        participantIsMuted = overlayMenu.isLocalMuted || participantIsModeratorMuted
 
-        overlayMenu.showModeratorMute = isModerator && !isModeratorMuted
-        overlayMenu.showModeratorUnmute = isModerator && isModeratorMuted
-        overlayMenu.showMaximize = isModerator && showMax
-        overlayMenu.showMinimize = isModerator && participantIsActive
-        overlayMenu.showHangup = isModerator && !isLocal && !participantIsHost
-        overlayMenu.showLowerHand = isModerator && participantHandIsRaised
+        overlayMenu.showModeratorMute = meModerator && !participantIsModeratorMuted
+        overlayMenu.showModeratorUnmute = (meModerator || isMe) && participantIsModeratorMuted
+        overlayMenu.showMaximize = meModerator && showMax
+        overlayMenu.showMinimize = meModerator && participantIsActive
+        overlayMenu.showHangup = meModerator && !isLocal && !participantIsHost
     }
 
-    // Participant header with host, moderator and mute indicators
-    Rectangle {
-        id: participantIndicators
-        width: indicatorsRowLayout.width
-        height: shapeHeight
-        visible: participantIsHost || participantIsModerator || participantIsMuted
-        color: "transparent"
-        anchors.bottom: parent.bottom
-
-        Shape {
-            id: backgroundShape
-            ShapePath {
-                id: backgroundShapePath
-                strokeColor: "transparent"
-                fillColor: JamiTheme.darkGreyColorOpacity
-                capStyle: ShapePath.RoundCap
-                PathSvg { path: pathShape }
-            }
-        }
-
-        RowLayout {
-            id: indicatorsRowLayout
-            height: parent.height
-            anchors.verticalCenter: parent.verticalCenter
-
-            ResponsiveImage {
-                id: isHostIndicator
-
-                Layout.alignment: Qt.AlignVCenter
-                Layout.leftMargin: 6
-
-                containerHeight: 12
-                containerWidth: 12
-
-                visible: participantIsHost
-
-                source: JamiResources.star_outline_24dp_svg
-                color: JamiTheme.whiteColor
-            }
-
-            ResponsiveImage {
-                id: isModeratorIndicator
-
-                Layout.alignment: Qt.AlignVCenter
-                Layout.leftMargin: 6
-
-                containerHeight: 12
-                containerWidth: 12
-
-                visible: participantIsModerator
-
-                source: JamiResources.moderator_svg
-                color: JamiTheme.whiteColor
-            }
-
-            ResponsiveImage {
-                id: isMutedIndicator
-
-                Layout.alignment: Qt.AlignVCenter
-                Layout.leftMargin: 6
-
-                containerHeight: 12
-                containerWidth: 12
-
-                visible: participantIsMuted
-
-                source: JamiResources.micro_off_black_24dp_svg
-                color: JamiTheme.whiteColor
-            }
-
-            ResponsiveImage {
-                id: isHandRaisedIndicator
-
-                Layout.alignment: Qt.AlignVCenter
-                Layout.leftMargin: 6
-
-                containerHeight: 12
-                containerWidth: 12
-
-                visible: participantHandIsRaised
-
-                source: JamiResources.hand_black_24dp_svg
-                color: JamiTheme.whiteColor
-            }
-        }
+    TextMetrics {
+        id: nameTextMetrics
+        text: bestName
+        font.pointSize: JamiTheme.participantFontSize
     }
 
     Loader {
@@ -242,8 +174,187 @@ Item {
             }
         }
 
-        ParticipantOverlayMenu { id: overlayMenu }
+        ParticipantOverlayMenu {
+            id: overlayMenu
+            visible: isMe || meModerator
+        }
+
+        // Participant footer with host, moderator and mute indicators
+        // Mute indicator is as follow:
+        // - In another participant, if i am not moderator, the mute state is isLocalMuted || participantIsModeratorMuted
+        // - In another participant, if i am moderator, the mute state is isLocalMuted
+        // - In my video, the mute state is isLocalMuted
+        Rectangle {
+            id: participantIndicators
+            width: participantRect.width
+            height: shapeHeight
+            color: "transparent"
+            anchors.bottom: parent.bottom
+
+            Shape {
+                id: backgroundShape
+                ShapePath {
+                    id: backgroundShapePath
+                    strokeColor: "transparent"
+                    fillColor: JamiTheme.darkGreyColorOpacity
+                    capStyle: ShapePath.RoundCap
+                    PathSvg { path: pathShape }
+                }
+            }
+
+            RowLayout {
+                id: participantFootInfo
+                height: parent.height
+                anchors.verticalCenter: parent.verticalCenter
+                Text {
+                    id: bestNameLabel
+
+                    Layout.leftMargin: 8
+                    Layout.preferredWidth: Math.min(nameTextMetrics.boundingRect.width + 8,
+                                                    participantIndicators.width - indicatorsRowLayout.width - 16)
+                    Layout.preferredHeight: shapeHeight
+
+                    text: bestName
+                    elide: Text.ElideRight
+                    color: JamiTheme.whiteColor
+                    font.pointSize: JamiTheme.participantFontSize
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                    HoverHandler { id: hoverName }
+                    MaterialToolTip {
+                        visible: hoverName.hovered && (text.length > 0)
+                        text: bestNameLabel.truncated ? bestName : ""
+                    }
+                }
+
+                RowLayout {
+                    id: indicatorsRowLayout
+                    height: parent.height
+                    Layout.alignment: Qt.AlignVCenter
+
+                    ResponsiveImage {
+                        id: isHostIndicator
+
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.leftMargin: 6
+
+                        containerHeight: 12
+                        containerWidth: 12
+
+                        visible: participantIsHost
+
+                        source: JamiResources.star_outline_24dp_svg
+                        color: JamiTheme.whiteColor
+
+                        HoverHandler { id: hoverHost }
+                        MaterialToolTip {
+                            visible: hoverHost.hovered
+                            text: JamiStrings.host
+                        }
+                    }
+
+                    ResponsiveImage {
+                        id: isModeratorIndicator
+
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.leftMargin: 6
+
+                        containerHeight: 12
+                        containerWidth: 12
+
+                        visible: !participantIsHost && participantIsModerator
+
+                        source: JamiResources.moderator_svg
+                        color: JamiTheme.whiteColor
+
+                        HoverHandler { id: hoverModerator }
+                        MaterialToolTip {
+                            visible: hoverModerator.hovered
+                            text: JamiStrings.moderator
+                        }
+                    }
+
+                    ResponsiveImage {
+                        id: isMutedIndicator
+
+                        Layout.alignment: Qt.AlignVCenter
+                        Layout.leftMargin: 6
+
+                        containerHeight: 12
+                        containerWidth: 12
+
+                        visible: (!isMe && !meModerator) ? participantIsMuted : overlayMenu.isLocalMuted
+
+                        source: JamiResources.micro_off_black_24dp_svg
+                        color: "red"
+
+                        HoverHandler { id: hoverMicrophone }
+                        MaterialToolTip {
+                            visible: hoverMicrophone.hovered
+                            text: {
+                                if (!isMe && !meModerator && participantIsModeratorMuted && overlayMenu.isLocalMuted)
+                                    return JamiStrings.bothMuted
+                                if (overlayMenu.isLocalMuted)
+                                    return JamiStrings.localMuted
+                                if (!isMe && !meModerator && participantIsModeratorMuted)
+                                    return JamiStrings.moderatorMuted
+                                return JamiStrings.notMuted
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         Behavior on opacity { NumberAnimation { duration: JamiTheme.shortFadeDuration }}
+    }
+
+    PushButton {
+        id: isRaiseHandIndicator
+        source: JamiResources.hand_black_24dp_svg
+        imageColor: JamiTheme.whiteColor
+        preferredSize: shapeHeight
+        visible: root.participantHandIsRaised
+        anchors.right: parent.right
+        checkable: root.meModerator
+        pressedColor: JamiTheme.raiseHandColor
+        hoveredColor: JamiTheme.raiseHandColor
+        normalColor: JamiTheme.raiseHandColor
+        z: participantRect.z + 1
+        toolTipText: root.meModerator ? JamiStrings.lowerHand : ""
+        onClicked: CallAdapter.setHandRaised(uri, false)
+        radius: 5
+    }
+
+    Rectangle {
+        id: alertMessage
+
+        anchors.centerIn: parent
+        width: alertMessageTxt.width + 16
+        height: alertMessageTxt.contentHeight + 16
+        radius: 5
+        visible: root.muteAlertActive
+        color: JamiTheme.darkGreyColorOpacity
+
+        Text {
+            id: alertMessageTxt
+            text: root.muteAlertMessage
+            anchors.centerIn: parent
+            width: Math.min(participantRect.width, contentWidth)
+            color: JamiTheme.whiteColor
+            font.pointSize: JamiTheme.textFontSize
+            wrapMode: Text.Wrap
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        // Timer to decide when ParticipantOverlay fade out
+        Timer {
+            id: alertTimer
+            interval: JamiTheme.overlayFadeDelay
+            onTriggered: {
+                root.muteAlertActive = false
+            }
+        }
     }
 }

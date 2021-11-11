@@ -42,6 +42,15 @@ Item {
                           callActionBar.subMenuOpen ||
                           participantCallInStatusView.visible
 
+    property string muteAlertMessage: ""
+    property bool muteAlertActive: false
+
+    onMuteAlertActiveChanged: {
+        if (muteAlertActive) {
+            alertTimer.restart()
+        }
+    }
+
     opacity: 0
 
     // (un)subscribe to an app-wide mouse move event trap filtered
@@ -225,6 +234,40 @@ Item {
         anchors.rightMargin: 10
         anchors.bottom: __callActionBar.top
         anchors.bottomMargin: 20
+    }
+
+    Rectangle {
+        id: alertMessage
+
+        anchors.bottom: __callActionBar.top
+        anchors.bottomMargin: 16
+        anchors.horizontalCenter: __callActionBar.horizontalCenter
+        width: alertMessageTxt.width + 16
+        height: alertMessageTxt.contentHeight + 16
+        radius: 5
+        visible: root.muteAlertActive
+        color: JamiTheme.darkGreyColorOpacity
+
+        Text {
+            id: alertMessageTxt
+            text: root.muteAlertMessage
+            anchors.centerIn: parent
+            width: Math.min(root.width, contentWidth)
+            color: JamiTheme.whiteColor
+            font.pointSize: JamiTheme.textFontSize
+            wrapMode: Text.Wrap
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        // Timer to decide when ParticipantOverlay fade out
+        Timer {
+            id: alertTimer
+            interval: JamiTheme.overlayFadeDelay
+            onTriggered: {
+                root.muteAlertActive = false
+            }
+        }
     }
 
     CallActionBar {

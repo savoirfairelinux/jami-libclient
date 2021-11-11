@@ -31,7 +31,6 @@ Item {
     id: root
 
     property string uri: ""
-    property string bestName: ""
     property bool isLocalMuted: true
     property bool showSetModerator: false
     property bool showUnsetModerator: false
@@ -40,7 +39,6 @@ Item {
     property bool showMaximize: false
     property bool showMinimize: false
     property bool showHangup: false
-    property bool showLowerHand: false
 
     property int shapeHeight: 30
     property int shapeRadius: 8
@@ -56,12 +54,6 @@ Item {
     anchors.fill: parent
 
     Loader { sourceComponent: isBarLayout ? barComponent : rectComponent }
-
-    TextMetrics {
-        id: nameTextMetrics
-        text: bestName
-        font.pointSize: JamiTheme.participantFontSize
-    }
 
     Component {
         id: rectComponent
@@ -86,24 +78,8 @@ Item {
             }
 
             ColumnLayout {
-
                 anchors.centerIn: parent
 
-                Text {
-                    id: bestNameLabel
-
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    Layout.preferredWidth: Math.min(nameTextMetrics.boundingRect.width + 8,
-                                                    root.width - 16)
-                    Layout.preferredHeight: shapeHeight
-
-                    text: bestName
-                    elide: Text.ElideRight
-                    color: JamiTheme.whiteColor
-                    font.pointSize: JamiTheme.participantFontSize
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                }
                 ParticipantControlLayout {
                     id: buttonsRect
 
@@ -119,7 +95,7 @@ Item {
         id: barComponent
 
         Control {
-            width: rowLayout.implicitWidth
+            width: buttonsRect.implicitWidth
             height: shapeHeight
 
             onHoveredChanged: root.hovered = hovered
@@ -137,34 +113,12 @@ Item {
                 }
             }
 
-            RowLayout {
-                id: rowLayout
+            ParticipantControlLayout {
+                id: buttonsRect
 
-                spacing: 8
-
-                Text {
-                    id: bestNameLabel
-
-                    Layout.leftMargin: 8
-                    Layout.preferredWidth: Math.min(nameTextMetrics.boundingRect.width + 8,
-                                                    root.width - buttonsRect.implicitWidth - 16)
-                    Layout.preferredHeight: shapeHeight
-
-                    text: bestName
-                    elide: Text.ElideRight
-                    color: JamiTheme.whiteColor
-                    font.pointSize: JamiTheme.participantFontSize
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                ParticipantControlLayout {
-                    id: buttonsRect
-
-                    Layout.rightMargin: 8
-                    Layout.preferredWidth: implicitWidth
-                    Layout.preferredHeight: shapeHeight
-                }
+                Layout.rightMargin: 8
+                Layout.preferredWidth: implicitWidth
+                Layout.preferredHeight: shapeHeight
             }
         }
     }

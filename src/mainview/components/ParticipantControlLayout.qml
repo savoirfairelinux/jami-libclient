@@ -24,7 +24,7 @@ import net.jami.Constants 1.1
 import "../../commoncomponents"
 
 RowLayout {
-    id: buttonsRect
+    id: root
 
     property int visibleButtons: toggleModerator.visible
                                  + toggleMute.visible
@@ -55,9 +55,25 @@ RowLayout {
         source: showModeratorMute ?
                     JamiResources.micro_black_24dp_svg :
                     JamiResources.micro_off_black_24dp_svg
-        onClicked: CallAdapter.muteParticipant(uri, showModeratorMute)
-        toolTipText: showModeratorMute? JamiStrings.muteParticipant
-                                      : JamiStrings.unmuteParticipant
+        checkable: meModerator
+        onClicked: {
+            if (participantIsModeratorMuted && isLocalMuted) {
+                if (isMe)
+                    muteAlertMessage = JamiStrings.mutedLocally
+                else
+                    muteAlertMessage = JamiStrings.participantMicIsStillMuted
+                muteAlertActive = true
+            }
+            CallAdapter.muteParticipant(uri, showModeratorMute)
+        }
+        toolTipText: {
+            if (!checkable && participantIsModeratorMuted)
+                return JamiStrings.mutedByModerator
+            if (showModeratorMute)
+                return JamiStrings.muteParticipant
+            else
+                return JamiStrings.unmuteParticipant
+        }
     }
 
     ParticipantOverlayButton {
@@ -82,18 +98,6 @@ RowLayout {
         source: JamiResources.close_fullscreen_24dp_svg
         onClicked: CallAdapter.minimizeParticipant(uri)
         toolTipText: JamiStrings.minimizeParticipant
-    }
-
-    ParticipantOverlayButton {
-        id: lowerHandParticipant
-
-        visible: showLowerHand
-        preferredSize: iconButtonPreferredSize
-        Layout.preferredHeight: buttonPreferredSize
-        Layout.preferredWidth: buttonPreferredSize
-        source: JamiResources.hand_black_24dp_svg
-        onClicked: CallAdapter.setHandRaised(uri, false)
-        toolTipText: JamiStrings.lowerHand
     }
 
     ParticipantOverlayButton {
