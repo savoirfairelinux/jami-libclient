@@ -405,10 +405,22 @@ NewCallModel::requestMediaChange(const QString& callId,
         return;
 
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
-    QString resource = "";
-    int found = 0;
-    QString srctype = MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE;
+    // The media label must contain either "audio" or "video" substring,
+    // otherwise the media will be considered as of un-supported type.
+    QString mediaType = mediaLabel.contains("audio")
+                            ? MediaAttributeValue::AUDIO
+                            : (mediaLabel.contains("video") ? MediaAttributeValue::VIDEO : "");
+
+    if (mediaType.isEmpty()) {
+        qCritical() << "No valide media type found in media label!";
+        return;
+    }
+
+    QString resource {};
+    QString srctype {};
     auto proposedList = callInfo->mediaList;
+
+    int found = 0;
 
     switch (type) {
     case MediaRequestType::FILESHARING: {
@@ -418,63 +430,40 @@ NewCallModel::requestMediaChange(const QString& callId,
                                         .arg(sep)
                                         .arg(QUrl(uri).toLocalFile())
                                   : DRing::Media::VideoProtocolPrefix::NONE;
-        if (!resource.isEmpty())
+        if (not resource.isEmpty())
             srctype = MediaAttributeValue::SRC_TYPE_FILE;
-        if (callInfo->type == call::Type::CONFERENCE) {
-            proposedList.push_back({{MediaAttributeKey::MEDIA_TYPE, MediaAttributeValue::VIDEO},
-                                    {MediaAttributeKey::ENABLED, "true"},
-                                    {MediaAttributeKey::MUTED, mute ? "true" : "false"},
-                                    {MediaAttributeKey::SOURCE_TYPE, srctype},
-                                    {MediaAttributeKey::SOURCE, resource},
-                                    {MediaAttributeKey::LABEL, mediaLabel}});
-        }
-
         break;
     }
     case MediaRequestType::SCREENSHARING: {
         // Screen/window sharing
         resource = uri;
         srctype = MediaAttributeValue::SRC_TYPE_DISPLAY;
-        if (callInfo->type == call::Type::CONFERENCE) {
-            proposedList.push_back({{MediaAttributeKey::MEDIA_TYPE, MediaAttributeValue::VIDEO},
-                                    {MediaAttributeKey::ENABLED, "true"},
-                                    {MediaAttributeKey::MUTED, mute ? "true" : "false"},
-                                    {MediaAttributeKey::SOURCE_TYPE, srctype},
-                                    {MediaAttributeKey::SOURCE, resource},
-                                    {MediaAttributeKey::LABEL, mediaLabel}});
-        }
         break;
     }
     case MediaRequestType::CAMERA: {
         // Camera device
-        resource = !uri.isEmpty() ? QString("%1%2%3")
-                                        .arg(DRing::Media::VideoProtocolPrefix::CAMERA)
-                                        .arg(sep)
-                                        .arg(uri)
-                                  : DRing::Media::VideoProtocolPrefix::NONE;
-        srctype = MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE;
-
-        if (callInfo->type == call::Type::CONFERENCE) {
-            if (mediaLabel.contains("audio_0")) {
-                CallManager::instance().muteLocalMedia(owner.id,
-                                                       callId,
-                                                       DRing::Media::Details::MEDIA_TYPE_AUDIO,
-                                                       !callInfo->audioMuted && mute);
-                return;
-            } else if (mediaLabel.contains("video_0")) {
-                proposedList.push_back({{MediaAttributeKey::MEDIA_TYPE, MediaAttributeValue::VIDEO},
-                                        {MediaAttributeKey::ENABLED, "true"},
-                                        {MediaAttributeKey::MUTED, mute ? "true" : "false"},
-                                        {MediaAttributeKey::SOURCE_TYPE, srctype},
-                                        {MediaAttributeKey::SOURCE, resource},
-                                        {MediaAttributeKey::LABEL, mediaLabel}});
-            }
+        if (mediaLabel.contains("video")) {
+            resource = not uri.isEmpty() ? QString("%1%2%3")
+                                               .arg(DRing::Media::VideoProtocolPrefix::CAMERA)
+                                               .arg(sep)
+                                               .arg(uri)
+                                         : DRing::Media::VideoProtocolPrefix::NONE;
         }
-
+        srctype = MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE;
         break;
     }
     default:
         return;
+    }
+
+    if (callInfo->type == call::Type::CONFERENCE) {
+        MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE, mediaType},
+                                          {MediaAttributeKey::ENABLED, "true"},
+                                          {MediaAttributeKey::MUTED, mute ? "true" : "false"},
+                                          {MediaAttributeKey::SOURCE_TYPE, srctype},
+                                          {MediaAttributeKey::SOURCE, resource},
+                                          {MediaAttributeKey::LABEL, mediaLabel}};
+        proposedList.push_back(mediaAttribute);
     }
 
     for (auto& item : proposedList) {
@@ -483,9 +472,12 @@ NewCallModel::requestMediaChange(const QString& callId,
             item[MediaAttributeKey::ENABLED] = "true";
             item[MediaAttributeKey::MUTED] = mute ? "true" : "false";
             item[MediaAttributeKey::SOURCE_TYPE] = srctype;
-            item[MediaAttributeKey::SOURCE] = resource.isEmpty() ? item[MediaAttributeKey::SOURCE]
-                                                                 : resource;
-
+            // For now, only the video source can be changed by the client.
+            if (item[MediaAttributeKey::MEDIA_TYPE] == MediaAttributeValue::VIDEO) {
+                item[MediaAttributeKey::SOURCE] = resource.isEmpty()
+                                                      ? item[MediaAttributeKey::SOURCE]
+                                                      : resource;
+            }
             break;
         }
         found++;
@@ -502,7 +494,9 @@ NewCallModel::requestMediaChange(const QString& callId,
                                           {MediaAttributeKey::LABEL, mediaLabel}};
         proposedList.push_back(mediaAttribute);
     }
+
     CallManager::instance().requestMediaChange(owner.id, callId, proposedList);
+
     // If media existed and its mute state was changed here, then we should
     // update the mediaList because we will not receive signal
     // mediaNegotiationStatus
