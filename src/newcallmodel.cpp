@@ -456,11 +456,13 @@ NewCallModel::requestMediaChange(const QString& callId,
 
         if (callInfo->type == call::Type::CONFERENCE) {
             if (mediaLabel.contains("audio_0")) {
-                CallManager::instance().muteLocalMedia(owner.id,
-                                                       callId,
-                                                       DRing::Media::Details::MEDIA_TYPE_AUDIO,
-                                                       !callInfo->audioMuted && mute);
-                return;
+                proposedList.push_back({{MediaAttributeKey::MEDIA_TYPE, MediaAttributeValue::AUDIO},
+                                        {MediaAttributeKey::ENABLED, "true"},
+                                        {MediaAttributeKey::MUTED, mute ? "true" : "false"},
+                                        {MediaAttributeKey::SOURCE_TYPE, srctype},
+                                        {MediaAttributeKey::SOURCE, {}},
+                                        {MediaAttributeKey::LABEL, mediaLabel}});
+
             } else if (mediaLabel.contains("video_0")) {
                 proposedList.push_back({{MediaAttributeKey::MEDIA_TYPE, MediaAttributeValue::VIDEO},
                                         {MediaAttributeKey::ENABLED, "true"},
@@ -483,8 +485,12 @@ NewCallModel::requestMediaChange(const QString& callId,
             item[MediaAttributeKey::ENABLED] = "true";
             item[MediaAttributeKey::MUTED] = mute ? "true" : "false";
             item[MediaAttributeKey::SOURCE_TYPE] = srctype;
-            item[MediaAttributeKey::SOURCE] = resource.isEmpty() ? item[MediaAttributeKey::SOURCE]
-                                                                 : resource;
+            // For now, only the video source can be changed by the client.
+            if (item[MediaAttributeKey::MEDIA_TYPE] == MediaAttributeValue::VIDEO) {
+                item[MediaAttributeKey::SOURCE] = resource.isEmpty()
+                                                      ? item[MediaAttributeKey::SOURCE]
+                                                      : resource;
+            }
 
             break;
         }
@@ -502,7 +508,9 @@ NewCallModel::requestMediaChange(const QString& callId,
                                           {MediaAttributeKey::LABEL, mediaLabel}};
         proposedList.push_back(mediaAttribute);
     }
+
     CallManager::instance().requestMediaChange(owner.id, callId, proposedList);
+
     // If media existed and its mute state was changed here, then we should
     // update the mediaList because we will not receive signal
     // mediaNegotiationStatus
