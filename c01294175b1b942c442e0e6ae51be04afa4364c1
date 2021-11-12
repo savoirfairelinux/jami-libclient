@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8725d180_dd404fa0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-11-12T16:36:16Z",
+      "side": 1,
+      "message": "looks fine to me otherwise",
+      "revId": "c01294175b1b942c442e0e6ae51be04afa4364c1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6e95a8a_b7f871f4",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-11-12T16:36:16Z",
+      "side": 1,
+      "message": "code can be reduced\nMapStringString mediaAttribute \u003d {{MediaAttributeKey::ENABLED, \"true\"},\n                                          {MediaAttributeKey::MUTED, mute ? \"true\" : \"false\"},\n                                          {MediaAttributeKey::SOURCE_TYPE, srctype},\n                                          {MediaAttributeKey::LABEL, mediaLabel}};\nif (mediaLabel.contains(\"audio_0\")) {\n    mediaAttribute.insert(MediaAttributeKey::SOURCE, {});\n    mediaAttribute.insert(MediaAttributeKey::MEDIA_TYPE, MediaAttributeValue::AUDIO);\n    proposedList.push_back(mediaAttribute);\n} else if (mediaLabel.contains(\"video_0\")) {\n    mediaAttribute.insert(MediaAttributeKey::SOURCE, resource);\n    mediaAttribute.insert(MediaAttributeKey::MEDIA_TYPE, MediaAttributeValue::VIDEO);\n    proposedList.push_back(mediaAttribute);\n}",
+      "range": {
+        "startLine": 425,
+        "startChar": 12,
+        "endLine": 440,
+        "endChar": 13
+      },
+      "revId": "c01294175b1b942c442e0e6ae51be04afa4364c1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
