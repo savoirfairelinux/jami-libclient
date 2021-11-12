@@ -163,12 +163,12 @@ ConversationListModelBase::dataForItem(item_t item, int role) const
         auto peerUri = peerUriList.at(0);
         ContactModel* contactModel;
         contact::Info contact {};
+        contactModel = lrcInstance_->getCurrentAccountInfo().contactModel.get();
         try {
-            contactModel = lrcInstance_->getCurrentAccountInfo().contactModel.get();
             contact = contactModel->getContact(peerUri);
         } catch (const std::exception&) {
-            qWarning() << Q_FUNC_INFO << "Can't find contact" << peerUri;
-            return {};
+            qWarning() << Q_FUNC_INFO << "Can't find contact" << peerUri
+                       << " this is a bug, please report";
         }
 
         switch (role) {

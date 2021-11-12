@@ -133,12 +133,14 @@ ListView {
                 "title": model.dataForRow(row, ConversationList.Title),
                 "uri": model.dataForRow(row, ConversationList.URI),
                 "isSwarm": model.dataForRow(row, ConversationList.IsSwarm),
+                "mode": model.dataForRow(row, ConversationList.Mode),
                 "readOnly": model.dataForRow(row, ConversationList.ReadOnly)
             }
 
             responsibleAccountId = LRCInstance.currentAccountId
             responsibleConvUid = item.convId
             isSwarm = item.isSwarm
+            mode = item.mode
             contactType = LRCInstance.currentAccountType
             readOnly = item.readOnly
 

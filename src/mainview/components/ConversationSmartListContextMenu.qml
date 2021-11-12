@@ -31,6 +31,7 @@ ContextMenuAutoLoader {
     property string responsibleAccountId: ""
     property string responsibleConvUid: ""
     property bool isSwarm: false
+    property var mode: undefined
     property int contactType: Profile.Type.INVALID
     property bool hasCall: {
         if (responsibleAccountId && responsibleConvUid)
@@ -79,11 +80,20 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: removeContact
 
-            canTrigger: !hasCall && (contactType === Profile.Type.JAMI
-                                     || contactType === Profile.Type.SIP)
-            itemName: JamiStrings.removeContact
+            canTrigger: !hasCall
+            itemName: {
+                if (mode !== Conversation.Mode.ONE_TO_ONE && mode !== Conversation.Mode.NON_SWARM)
+                    return JamiStrings.removeConversation
+                else
+                    return JamiStrings.removeContact
+            }
             iconSource: JamiResources.ic_hangup_participant_24dp_svg
-            onClicked: MessagesAdapter.removeContact(responsibleConvUid)
+            onClicked: {
+                if (isSwarm)
+                    MessagesAdapter.removeConversation(responsibleConvUid)
+                else
+                    MessagesAdapter.removeContact(responsibleConvUid)
+            }
         },
         GeneralMenuItem {
             id: hangup
