@@ -99,7 +99,6 @@ Q_SIGNALS:
                        bool isAudioOnly,
                        bool isAudioMuted,
                        bool isVideoMuted,
-                       bool isRecording,
                        bool isSIP,
                        bool isConferenceCall,
                        bool isGrid);

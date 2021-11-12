@@ -353,6 +353,7 @@ Control {
         overflowItemCount = CallOverlayModel.secondaryModel().rowCount()
 
         muteAudioAction.checked = isAudioMuted
+        recordAction.checked = CallAdapter.isRecordingThisCall()
         muteVideoAction.checked = isAudioOnly ? true : isVideoMuted
     }
 

@@ -651,7 +651,6 @@ CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
     bool isAudioOnly = call->isAudioOnly && !isPaused;
     bool isAudioMuted = call->audioMuted && (call->status != lrc::api::call::Status::PAUSED);
     bool isVideoMuted = call->isAudioOnly || (call->videoMuted && !isPaused);
-    bool isRecording = isRecordingThisCall();
     bool isConferenceCall = !convInfo.confId.isEmpty()
                             || (convInfo.confId.isEmpty() && call->participantsInfos.size() != 0);
     bool isGrid = call->layout == lrc::api::call::Layout::GRID;
@@ -660,7 +659,6 @@ CallAdapter::updateCallOverlay(const lrc::api::conversation::Info& convInfo)
                          isAudioOnly,
                          isAudioMuted,
                          isVideoMuted,
-                         isRecording,
                          accInfo.profileInfo.type == lrc::api::profile::Type::SIP,
                          isConferenceCall,
                          isGrid);

@@ -273,13 +273,13 @@ Rectangle {
                         target: CallAdapter
 
                         function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
-                                                 isRecording, isSIP, isConferenceCall, isGrid) {
+                                                 isSIP, isConferenceCall, isGrid, previewId) {
                             callOverlay.showOnHoldImage(isPaused)
                             root.isAudioOnly = isAudioOnly
                             audioCallPageRectCentralRect.visible = !isPaused && root.isAudioOnly
                             callOverlay.updateUI(isPaused, isAudioOnly,
                                                  isAudioMuted, isVideoMuted,
-                                                 isRecording, isSIP,
+                                                 isSIP,
                                                  isConferenceCall, isGrid)
                             callOverlay.participantsLayer.update(CallAdapter.getConferencesInfos())
                         }

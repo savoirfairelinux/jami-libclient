@@ -62,7 +62,7 @@ Item {
     }
 
     function updateUI(isPaused, isAudioOnly, isAudioMuted,
-                      isVideoMuted, isRecording, isSIP,
+                      isVideoMuted, isSIP,
                       isConferenceCall, isGrid) {
         if (isPaused !== undefined) {
             root.isPaused = isPaused
@@ -70,13 +70,13 @@ Item {
             root.isAudioMuted = isAudioMuted
             root.isVideoMuted = isVideoMuted
             callViewContextMenu.isVideoMuted = root.isVideoMuted
-            root.isRecording = isRecording
             root.isSIP = isSIP
             root.isConferenceCall = isConferenceCall
             root.isGrid = isGrid
             mainOverlay.recordingVisible = isRecording
             root.localHandRaised = CallAdapter.isHandRaised()
         }
+        root.isRecording = CallAdapter.isRecordingThisCall()
         root.isModerator = CallAdapter.isCurrentModerator()
     }
 
