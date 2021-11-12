@@ -63,7 +63,8 @@ sudo apt-get install cmake make doxygen g++ gettext libnotify-dev pandoc nasm li
                      qml-module-qtquick-layouts qml-module-qtquick-privatewidgets \
                      qml-module-qtquick-shapes qml-module-qtquick-window2 \
                      qml-module-qtquick-templates2 qml-module-qt-labs-platform \
-                     qml-module-qtwebengine qml-module-qtwebchannel
+                     qml-module-qtwebengine qml-module-qtwebchannel \
+                     qml-module-qt-labs-qmlmodels
 ```
 
 ## Dependencies, Fedora
