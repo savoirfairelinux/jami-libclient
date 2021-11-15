@@ -20,19 +20,18 @@ vs_where_path = os.path.join(
 
 host_is_64bit = (False, True)[platform.machine().endswith('64')]
 this_dir = os.path.dirname(os.path.realpath(__file__))
-build_dir = this_dir + '\\build'
+build_dir = os.path.join(this_dir, 'build')
 temp_path = os.environ['TEMP']
 
 # project path
-jami_qt_project = build_dir + '\\jami-qt.vcxproj'
-unit_test_project = build_dir + '\\tests\\unittests.vcxproj'
-qml_test_project = build_dir + '\\tests\\qml_tests.vcxproj'
+jami_qt_project = os.path.join(build_dir, 'jami-qt.vcxproj')
+unit_test_project = os.path.join(build_dir, 'tests', 'unittests.vcxproj')
+qml_test_project = os.path.join(build_dir, 'tests', 'qml_tests.vcxproj')
 
 # test executable command
-qml_test_exe = this_dir + '\\x64\\test\\qml_tests.exe -input ' + this_dir + '\\tests\\qml'
-unit_test_exe = this_dir + '\\x64\\test\\unittests.exe'
-
-windows_font_dir = 'C:\\Windows\\Fonts'
+qml_test_exe = os.path.join(this_dir, 'x64', 'test', 'qml_tests.exe -input ') + \
+               os.path.join(this_dir, 'tests', 'qml')
+unit_test_exe = os.path.join(this_dir, 'x64', 'test', 'unittests.exe')
 
 class TestBuilding(Enum):
     NoTests = 0
@@ -182,7 +181,8 @@ def deps(arch, toolset, qtver):
     if (execute_cmd("git clone https://github.com/BlueDragon747/qrencode-win32.git", True)):
         print("Git clone failed when cloning from https://github.com/BlueDragon747/qrencode-win32.git")
         sys.exit(1)
-    if(execute_cmd("cd qrencode-win32 && git checkout d6495a2aa74d058d54ae0f1b9e9e545698de66ce && " + apply_cmd + ' ..\\qrencode-win32.patch', True)):
+    if(execute_cmd("cd qrencode-win32 && git checkout d6495a2aa74d058d54ae0f1b9e9e545698de66ce && "
+                    + apply_cmd + os.path.join(' ..', 'qrencode-win32.patch'), True)):
         print("qrencode-win32 set up error")
         sys.exit(1)
 
@@ -197,7 +197,8 @@ def deps(arch, toolset, qtver):
     msbuild_args = getMSBuildArgs(arch, 'Release-Lib', toolset)
 
     this_dir = os.path.dirname(os.path.realpath(__file__))
-    proj_path = this_dir + '\\qrencode-win32\\qrencode-win32\\vc8\\qrcodelib\\qrcodelib.vcxproj'
+    proj_path = os.path.join(this_dir, 'qrencode-win32' ,'qrencode-win32',
+                             'vc8', 'qrcodelib', 'qrcodelib.vcxproj')
 
     build_project(msbuild, msbuild_args, proj_path, vs_env_vars)
 
@@ -211,14 +212,12 @@ def build(arch, toolset, sdk_version, config_str, project_path_under_current_pat
     vs_env_vars = {}
     vs_env_vars.update(getVSEnv())
 
-    qt_dir = 'C:\\Qt\\' + qtver
+    qt_dir = os.path.join("C:\\", 'Qt', qtver)
     cmake_gen = getCMakeGenerator(getLatestVSVersion())
-    qt_minor_version = getQtVersionNumber(qtver, QtVerison.Minor)
-    msvc_folder = '\\msvc2017_64' if int(qt_minor_version) <= 14 else '\\msvc2019_64'
+    msvc_folder = 'msvc2019_64'
 
-    qt_cmake_dir = qt_dir + msvc_folder + '\\lib\\cmake\\'
-    cmake_prefix_path = qt_dir + msvc_folder
-
+    qt_cmake_dir = os.path.join(qt_dir, msvc_folder, 'lib', 'cmake')
+    cmake_prefix_path = os.path.join(qt_dir, msvc_folder)
     cmake_options = [
         '-DCMAKE_PREFIX_PATH=' + cmake_prefix_path,
         '-DQt5_DIR=' + qt_cmake_dir + 'Qt5',
@@ -308,17 +307,14 @@ def run_tests(mute_jamid, output_to_files):
         test_exe_command_list[0] += ' -mutejamid'
         test_exe_command_list[1] += ' -mutejamid'
     if output_to_files:
-        test_exe_command_list[0] += ' -o ' + this_dir + '\\x64\\test\\qml_tests.txt'
-        test_exe_command_list[1] += ' > ' + this_dir + '\\x64\\test\\unittests.txt'
+        test_exe_command_list[0] += ' -o ' + os.path.join(this_dir, 'x64', 'test', 'qml_tests.txt')
+        test_exe_command_list[1] += ' > ' + os.path.join(this_dir, 'x64', 'test', 'unittests.txt')
 
     test_result_code = 0
 
     # make sure that the tests are rendered offscreen
     os.environ["QT_QPA_PLATFORM"] = 'offscreen'
     os.environ["QT_QUICK_BACKEND"] = 'software'
-
-    # provide font dir
-    os.environ["QT_QPA_FONTDIR"] = windows_font_dir
 
     for test_exe_command in test_exe_command_list:
         if (execute_cmd(test_exe_command, True)):
