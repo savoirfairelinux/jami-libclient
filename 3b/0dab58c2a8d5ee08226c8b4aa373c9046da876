@@ -1,0 +1,7 @@
+Verified+1: Jenkins CI <jenkins@ring-packaging.cx>
+Code-Review+2: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+Submitted-by: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+Submitted-at: Tue, 16 Nov 2021 14:40:53 -0500
+Reviewed-on: https://review.jami.net/c/jami-libclient/+/19695
+Project: jami-libclient
+Branch: refs/heads/master
