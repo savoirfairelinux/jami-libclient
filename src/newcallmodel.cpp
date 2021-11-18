@@ -366,7 +366,7 @@ NewCallModel::createCall(const QString& uri, bool isAudioOnly, VectorMapStringSt
     }
 #ifdef ENABLE_LIBWRAP
     auto callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
-#else // dbus
+#else  // dbus
     // do not use auto here (QDBusPendingReply<QString>)
     QString callId = CallManager::instance().placeCallWithMedia(owner.id, uri, mediaList);
 #endif // ENABLE_LIBWRAP
@@ -826,6 +826,16 @@ NewCallModel::getDisplay(int idx, int x, int y, int w, int h)
         .arg(y)
         .arg(w)
         .arg(h);
+}
+
+QString
+NewCallModel::getDisplay(const QString& windowId)
+{
+    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+    return QString("%1%2:1+0,0 window-id:%3")
+        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
+        .arg(sep)
+        .arg(windowId);
 }
 
 void
