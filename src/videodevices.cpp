@@ -290,7 +290,6 @@ VideoDevices::getDefaultDevice()
     return rendererId;
 }
 
-#pragma optimize("", off)
 QString
 VideoDevices::startDevice(const QString& deviceId, bool force)
 {
@@ -310,7 +309,6 @@ VideoDevices::stopDevice(const QString& deviceId, bool force)
         deviceOpen_ = false;
     }
 }
-#pragma optimize("", on)
 
 void
 VideoDevices::setDefaultDeviceRes(int index)

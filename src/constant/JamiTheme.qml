@@ -132,7 +132,7 @@ Item {
     property color recordIconColor: "#dc2719"
     property color successLabelColor: "#2b5084"
     property color rubberBandSelectionBlue: "steelblue"
-    property color screenSelectionBorderGreen: "green"
+    property color screenSelectionBorderColor: raiseHandColor
     property color separationLine: darkTheme ? selectedColor : backgroundColor
 
     // Plugin Preferences View

@@ -43,7 +43,9 @@ function finishCreation() {
     selectScreenWindowObject.onClosing.connect(destroySelectScreenWindow)
 }
 
-function showSelectScreenWindow() {
+function showSelectScreenWindow(previewId) {
+    console.log("previewId", previewId)
+    selectScreenWindowObject.currentPreview = previewId
     selectScreenWindowObject.show()
 
     var screen = selectScreenWindowObject.screen

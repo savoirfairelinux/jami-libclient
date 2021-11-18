@@ -31,6 +31,8 @@ class AvAdapter final : public QmlAdapterBase
     Q_OBJECT
     QML_RO_PROPERTY(lrc::api::video::DeviceType, currentRenderingDeviceType)
     QML_PROPERTY(bool, muteCamera)
+    QML_RO_PROPERTY(QStringList, windowsNames)
+    QML_RO_PROPERTY(QList<QVariant>, windowsIds)
 
 public:
     explicit AvAdapter(LRCInstance* instance, QObject* parent = nullptr);
@@ -61,6 +63,14 @@ protected:
 
     // Select screen area to display (from all screens).
     Q_INVOKABLE void shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned height);
+
+    // Select window to display.
+    Q_INVOKABLE void shareWindow(const QString& windowId);
+
+    // Returns the screensharing resource
+    Q_INVOKABLE QString getSharingResource(int screenId, const QString& key);
+
+    Q_INVOKABLE void getListWindows();
 
     // Stop sharing the screen or file
     Q_INVOKABLE void stopSharing();

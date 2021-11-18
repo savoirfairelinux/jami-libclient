@@ -240,6 +240,60 @@ AvAdapter::shareScreenArea(unsigned x, unsigned y, unsigned width, unsigned heig
 }
 
 void
+AvAdapter::shareWindow(const QString& windowId)
+{
+    auto resource = lrcInstance_->getCurrentCallModel()->getDisplay(windowId);
+    auto callId = lrcInstance_->getCurrentCallId();
+    lrcInstance_->getCurrentCallModel()
+        ->requestMediaChange(callId,
+                             "video_0",
+                             resource,
+                             lrc::api::NewCallModel::MediaRequestType::SCREENSHARING,
+                             false);
+    set_currentRenderingDeviceType(
+        lrcInstance_->getCurrentCallModel()->getCurrentRenderedDevice(callId).type);
+}
+
+QString
+AvAdapter::getSharingResource(int screenId = -2, const QString& windowId = "")
+{
+    if (screenId == -1) {
+        const auto arrangementRect = getAllScreensBoundingRect();
+
+        return lrcInstance_->getCurrentCallModel()->getDisplay(getScreenNumber(),
+                                                               arrangementRect.x(),
+                                                               arrangementRect.y(),
+                                                               arrangementRect.width(),
+                                                               arrangementRect.height());
+    } else if (screenId > -1) {
+        QScreen* screen = QGuiApplication::screens().at(screenId);
+        if (!screen)
+            return "";
+        QRect rect = screen->geometry();
+
+        return lrcInstance_->getCurrentCallModel()->getDisplay(getScreenNumber(),
+                                                               rect.x(),
+                                                               rect.y(),
+                                                               rect.width()
+                                                                   * screen->devicePixelRatio(),
+                                                               rect.height()
+                                                                   * screen->devicePixelRatio());
+    } else if (!windowId.isEmpty()) {
+        return lrcInstance_->getCurrentCallModel()->getDisplay(windowId);
+    }
+
+    return "";
+}
+
+void
+AvAdapter::getListWindows()
+{
+    auto map = lrcInstance_->avModel().getListWindows();
+    set_windowsNames(map.keys());
+    set_windowsIds(map.values());
+}
+
+void
 AvAdapter::stopSharing()
 {
     auto callId = lrcInstance_->getCurrentCallId();

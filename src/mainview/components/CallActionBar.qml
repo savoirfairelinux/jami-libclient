@@ -184,12 +184,7 @@ Control {
         },
         Action {
             id: muteVideoAction
-            onTriggered: {
-                if (AvAdapter.currentRenderingDeviceType === Video.DeviceType.DISPLAY || AvAdapter.currentRenderingDeviceType === Video.DeviceType.FILE) {
-                    AvAdapter.stopSharing()
-                } else
-                    CallAdapter.videoPauseThisCallToggle(!isVideoMuted)
-            }
+            onTriggered: CallAdapter.videoPauseThisCallToggle(!isVideoMuted)
             checkable: true
             icon.source: checked ?
                              JamiResources.videocam_off_24dp_svg :

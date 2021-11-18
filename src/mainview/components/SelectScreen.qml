@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2020 by Savoir-faire Linux
  * Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>
+ *         Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,25 +32,42 @@ import "../../commoncomponents"
 // is to make user aware of which screen they want to share,
 // during the video call, if the context menu item is selected.
 Window {
-    id: selectScreenWindow
+    id: root
 
     property int minWidth: 650
     property int minHeight: 500
 
     property int selectedScreenNumber: -1
     property bool selectAllScreens: false
+    property string currentPreview: ""
+    property var screens: []
 
     // How many rows the ScrollView should have.
     function calculateRepeaterModel() {
-        var numberOfScreens = Qt.application.screens.length
+        screens = []
+        for (var idx in Qt.application.screens) {
+            screens.push(qsTr("Screen") + " " + idx)
+        }
+        AvAdapter.getListWindows()
+        for (var idx in AvAdapter.windowsNames) {
+            screens.push(AvAdapter.windowsNames[idx])
+        } 
 
-        return Math.ceil(numberOfScreens / 2)
+        return screens.length
     }
 
-    function calculateScreenNumber(index, isEven) {
-        return index * 2 + (isEven ? 2 : 1)
+    onActiveChanged: {
+        if (!active) {
+            selectedScreenNumber = -1
+            selectAllScreens = false
+        }
+        screenInfo.model = {}
+        screenInfo2.model = {}
+        calculateRepeaterModel()
+        screenInfo.model = screens.length
+        screenInfo2.model = screens.length
+        windowsText.visible = screens.length > Qt.application.screens.length
     }
-
     minimumWidth: minWidth
     minimumHeight: minHeight
 
@@ -60,6 +78,8 @@ Window {
 
     modality: Qt.ApplicationModal
 
+    title: JamiStrings.selectScreen
+
     Rectangle {
         id: selectScreenWindowRect
 
@@ -67,60 +87,107 @@ Window {
 
         color: JamiTheme.backgroundColor
 
-        Text {
-            id: screenListText
-
-            anchors.top: selectScreenWindowRect.top
-            anchors.topMargin: JamiTheme.preferredMarginSize
-            anchors.horizontalCenter: selectScreenWindowRect.horizontalCenter
-
-            font.pointSize: JamiTheme.textFontSize + 2
-            font.bold: true
-            text: JamiStrings.selectScreen
-            color: JamiTheme.textColor
-        }
-
         ScrollView {
             id: screenSelectionScrollView
 
-            anchors.top: screenListText.bottom
             anchors.topMargin: JamiTheme.preferredMarginSize
             anchors.horizontalCenter: selectScreenWindowRect.horizontalCenter
 
             width: selectScreenWindowRect.width
             height: selectScreenWindowRect.height -
-                    (screenListText.height + selectButton.height + JamiTheme.preferredMarginSize * 4)
+                    (selectButton.height + JamiTheme.preferredMarginSize * 4)
 
             clip: true
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
-            // Column of rows repeater (two screen captures in a row).
-            Column {
-                id: screenSelectionScrollViewColumn
+            Flow {
+                id: screenSelectionScrollViewFlow
+
+                anchors.fill: parent
+                topPadding: JamiTheme.preferredMarginSize
+                rightPadding: JamiTheme.preferredMarginSize
+                leftPadding: JamiTheme.preferredMarginSize
 
                 spacing: 10
+
+                Text {
+                    width: screenSelectionScrollView.width
+                    height: JamiTheme.preferredFieldHeight
+
+                    font.pointSize: JamiTheme.menuFontSize
+                    font.bold: true
+                    text: JamiStrings.screens
+                    verticalAlignment: Text.AlignBottom
+                    color: JamiTheme.textColor
+                }
 
                 Repeater {
                     id: screenInfo
 
-                    model: calculateRepeaterModel()
+                    model: screens ? screens.length : 0
 
-                    Row {
-                        id: screenInfoRow
+                    delegate: Rectangle {
+                        id: screenItem
 
-                        leftPadding: JamiTheme.preferredMarginSize
-                        rightPadding: JamiTheme.preferredMarginSize
-                        spacing: screenSelectionScrollViewColumn.spacing
+                        color: JamiTheme.secondaryBackgroundColor
 
-                        Connections {
-                            target: selectScreenWindow
+                        width: screenSelectionScrollView.width / 2 -
+                                screenSelectionScrollViewFlow.spacing / 2 - JamiTheme.preferredMarginSize
+                        height: 3 * width / 4
 
-                            function onSelectedScreenNumberChanged() {
-                                // Recover from green state.
-                                screenSelectionRectOdd.borderColor = JamiTheme.tabbarBorderColor
-                                screenSelectionRectEven.borderColor = JamiTheme.tabbarBorderColor
+                        border.color: selectedScreenNumber === index ? JamiTheme.screenSelectionBorderColor : JamiTheme.tabbarBorderColor
+                        visible: JamiStrings.selectScreen !== screens[index] && index < Qt.application.screens.length
+
+                        PreviewRenderer {
+                            id: screenPreview
+
+                            anchors.top: screenItem.top
+                            anchors.topMargin: 10
+                            anchors.horizontalCenter: screenItem.horizontalCenter
+                            height: screenItem.height - 50
+                            width: screenItem.width - 50
+
+                            lrcInstance: LRCInstance
+
+                            Component.onDestruction: {
+                                if (screenPreview.rendererId !== "" && screenPreview.rendererId !== currentPreview)
+                                    VideoDevices.stopDevice(screenPreview.rendererId, true)
+                            }
+                            Component.onCompleted: {
+                                if (visible) {
+                                    var rendId = AvAdapter.getSharingResource(index, "")
+                                    if (rendId !== "")
+                                        screenPreview.rendererId = VideoDevices.startDevice(rendId, true)
+                                }
+                            }
+                        }
+
+                        Text {
+                            id: screenName
+
+                            anchors.top: screenPreview.bottom
+                            anchors.topMargin: 10
+                            anchors.horizontalCenter: screenItem.horizontalCenter
+                            width: parent.width
+                            font.pointSize: JamiTheme.textFontSize
+                            text: screens[index] ? screens[index] : ""
+                            elide: Text.ElideMiddle
+                            horizontalAlignment: Text.AlignHCenter
+                            color: JamiTheme.textColor
+                        }
+
+                        MouseArea {
+                            anchors.fill: screenItem
+                            acceptedButtons: Qt.LeftButton
+
+                            onClicked: {
+                                selectAllScreens = false
+                                if (selectedScreenNumber == -1
+                                        || selectedScreenNumber !== index) {
+                                    selectedScreenNumber = index
+                                }
                             }
                         }
 
@@ -130,141 +197,6 @@ Window {
                             function onScreenCaptured(screenNumber, source) {
                                 if (screenNumber === -1)
                                     screenShotAll.source = JamiQmlUtils.base64StringTitle + source
-                                if (screenNumber !== index && screenNumber !== index + 1)
-                                    return
-                                if (screenNumber % 2 !== 1)
-                                    screenShotOdd.source = JamiQmlUtils.base64StringTitle + source
-                                else
-                                    screenShotEven.source = JamiQmlUtils.base64StringTitle + source
-                            }
-                        }
-
-                        // To make sure that two screen captures in one row,
-                        // a repeater of two rect is needed, which one in charge
-                        // of odd number screen, one in charge of even number screen.
-                        Rectangle {
-                            id: screenSelectionRectOdd
-
-                            property string borderColor: JamiTheme.tabbarBorderColor
-
-                            color: JamiTheme.secondaryBackgroundColor
-
-                            height: screenSelectionScrollView.height
-                            width: screenSelectionScrollView.width / 2 -
-                                   screenInfoRow.spacing / 2 - JamiTheme.preferredMarginSize
-
-                            border.color: borderColor
-
-                            Image {
-                                id: screenShotOdd
-
-                                anchors.top: screenSelectionRectOdd.top
-                                anchors.topMargin: 10
-                                anchors.horizontalCenter: screenSelectionRectOdd.horizontalCenter
-
-                                height: screenSelectionRectOdd.height - 50
-                                width: screenSelectionRectOdd.width - 50
-
-                                fillMode: Image.PreserveAspectFit
-                                mipmap: true
-
-                                Component.onCompleted: AvAdapter.captureScreen(
-                                                           calculateScreenNumber(index, false) - 1)
-                            }
-
-                            Text {
-                                id: screenNameOdd
-
-                                anchors.top: screenShotOdd.bottom
-                                anchors.topMargin: 10
-                                anchors.horizontalCenter: screenSelectionRectOdd.horizontalCenter
-
-                                font.pointSize: JamiTheme.textFontSize - 2
-                                text: qsTr("Screen") + " " + calculateScreenNumber(index, false)
-                                color: JamiTheme.textColor
-                            }
-
-                            MouseArea {
-                                anchors.fill: parent
-                                acceptedButtons: Qt.LeftButton
-
-                                onClicked: {
-                                    if (selectedScreenNumber == -1
-                                            || selectedScreenNumber !==
-                                            calculateScreenNumber(index, false)) {
-                                        selectedScreenNumber = calculateScreenNumber(index, false)
-                                        screenSelectionRectOdd.borderColor
-                                                = JamiTheme.screenSelectionBorderGreen
-                                    }
-                                }
-                            }
-                        }
-
-                        Rectangle {
-                            id: screenSelectionRectEven
-
-                            property string borderColor: JamiTheme.tabbarBorderColor
-
-                            color: JamiTheme.secondaryBackgroundColor
-
-                            height: screenSelectionScrollView.height
-                            width: screenSelectionScrollView.width / 2 -
-                                   screenInfoRow.spacing / 2 - JamiTheme.preferredMarginSize
-
-                            border.color: borderColor
-
-                            visible: {
-                                if (calculateScreenNumber(index, true) >=
-                                        Qt.application.screens.length)
-                                    return (Qt.application.screens.length) % 2 != 1
-                                return true
-                            }
-
-                            Image {
-                                id: screenShotEven
-
-                                anchors.top: screenSelectionRectEven.top
-                                anchors.topMargin: 10
-                                anchors.horizontalCenter: screenSelectionRectEven.horizontalCenter
-
-                                height: screenSelectionRectEven.height - 50
-                                width: screenSelectionRectEven.width - 50
-
-                                fillMode: Image.PreserveAspectFit
-                                mipmap: true
-
-                                Component.onCompleted: {
-                                    if (screenSelectionRectEven.visible)
-                                        AvAdapter.captureScreen(
-                                                    calculateScreenNumber(index, true) - 1)
-                                }
-                            }
-
-                            Text {
-                                id: screenNameEven
-
-                                anchors.top: screenShotEven.bottom
-                                anchors.topMargin: 10
-                                anchors.horizontalCenter: screenSelectionRectEven.horizontalCenter
-
-                                font.pointSize: JamiTheme.textFontSize - 2
-                                text: qsTr("Screen") + " " + (calculateScreenNumber(index, true))
-                                color: JamiTheme.textColor
-                            }
-
-                            MouseArea {
-                                anchors.fill: parent
-                                acceptedButtons: Qt.LeftButton
-
-                                onClicked: {
-                                    if (selectedScreenNumber == -1
-                                            || selectedScreenNumber !==
-                                            calculateScreenNumber(index, true)) {
-                                        selectedScreenNumber = calculateScreenNumber(index, true)
-                                        screenSelectionRectEven.borderColor
-                                                = JamiTheme.screenSelectionBorderGreen
-                                    }
-                                }
                             }
                         }
                     }
@@ -273,41 +205,38 @@ Window {
                 Rectangle {
                     id: screenSelectionRectAll
 
-                    property string borderColor: JamiTheme.tabbarBorderColor
-
-                    anchors.horizontalCenter: screenSelectionScrollViewColumn.horizontalCenter
-
                     color: JamiTheme.secondaryBackgroundColor
 
-                    height: screenSelectionScrollView.height
-                    width: screenSelectionScrollView.width - 2 * JamiTheme.preferredMarginSize
+                    width: screenSelectionScrollView.width / 2 -
+                                screenSelectionScrollViewFlow.spacing / 2 - JamiTheme.preferredMarginSize
+                    height: 3 * width / 4
 
-                    border.color: borderColor
+                    border.color: selectAllScreens ? JamiTheme.screenSelectionBorderColor : JamiTheme.tabbarBorderColor
 
-                    Connections {
-                        target: selectScreenWindow
+                    visible: Qt.application.screens.length > 1
 
-                        function onSelectedScreenNumberChanged() {
-                            // Recover from green state.
-                            selectAllScreens = false
-                            screenSelectionRectAll.borderColor = JamiTheme.tabbarBorderColor
-                        }
-                    }
-
-                    Image {
+                    PreviewRenderer {
                         id: screenShotAll
 
                         anchors.top: screenSelectionRectAll.top
                         anchors.topMargin: 10
                         anchors.horizontalCenter: screenSelectionRectAll.horizontalCenter
-
                         height: screenSelectionRectAll.height - 50
                         width: screenSelectionRectAll.width - 50
 
-                        fillMode: Image.PreserveAspectFit
-                        mipmap: true
+                        lrcInstance: LRCInstance
 
-                        Component.onCompleted: AvAdapter.captureAllScreens()
+                        Component.onDestruction: {
+                            if (screenShotAll.rendererId !== "" && screenShotAll.rendererId !== currentPreview)
+                                VideoDevices.stopDevice(screenShotAll.rendererId, true)
+                        }
+                        Component.onCompleted: {
+                            if (visible) {
+                                var rendId = AvAdapter.getSharingResource(-1, "")
+                                if (rendId !== "")
+                                    screenShotAll.rendererId = VideoDevices.startDevice(rendId, true)
+                            }
+                        }
                     }
 
                     Text {
@@ -317,8 +246,8 @@ Window {
                         anchors.topMargin: 10
                         anchors.horizontalCenter: screenSelectionRectAll.horizontalCenter
 
-                        font.pointSize: JamiTheme.textFontSize - 2
-                        text: qsTr("All Screens")
+                        font.pointSize: JamiTheme.textFontSize
+                        text: JamiStrings.allScreens
                         color: JamiTheme.textColor
                     }
 
@@ -329,8 +258,90 @@ Window {
                         onClicked: {
                             selectedScreenNumber = -1
                             selectAllScreens = true
-                            screenSelectionRectAll.borderColor
-                                    = JamiTheme.screenSelectionBorderGreen
+                        }
+                    }
+                }
+
+                Text {
+                    id: windowsText
+                    width: screenSelectionScrollView.width
+                    height: JamiTheme.preferredFieldHeight
+
+                    font.pointSize: JamiTheme.menuFontSize
+                    font.bold: true
+                    text: JamiStrings.windows
+                    verticalAlignment: Text.AlignBottom
+                    color: JamiTheme.textColor
+                }
+
+                Repeater {
+                    id: screenInfo2
+
+                    model: screens ? screens.length : 0
+
+                    delegate: Rectangle {
+                        id: screenItem2
+
+                        color: JamiTheme.secondaryBackgroundColor
+
+                        width: screenSelectionScrollView.width / 2 -
+                                screenSelectionScrollViewFlow.spacing / 2 - JamiTheme.preferredMarginSize
+                        height: 3 * width / 4
+
+                        border.color: selectedScreenNumber === index ? JamiTheme.screenSelectionBorderColor : JamiTheme.tabbarBorderColor
+                        visible: JamiStrings.selectScreen !== screens[index] && index >= Qt.application.screens.length
+
+                        PreviewRenderer {
+                            id: screenPreview2
+
+                            anchors.top: screenItem2.top
+                            anchors.topMargin: 10
+                            anchors.horizontalCenter: screenItem2.horizontalCenter
+                            anchors.leftMargin: 25
+                            anchors.rightMargin: 25
+                            height: screenItem2.height - 60
+                            width: screenItem2.width - 50
+
+                            lrcInstance: LRCInstance
+
+                            Component.onDestruction: {
+                                if (screenPreview2.rendererId !== "" && screenPreview2.rendererId !== currentPreview)
+                                    VideoDevices.stopDevice(screenPreview2.rendererId, true)
+                            }
+                            Component.onCompleted: {
+                                if (visible) {
+                                    var rendId = AvAdapter.getSharingResource(-2, AvAdapter.windowsIds[index - Qt.application.screens.length])
+                                    if (rendId !== "")
+                                        screenPreview2.rendererId = VideoDevices.startDevice(rendId, true)
+                                }
+                            }
+                        }
+
+                        Text {
+                            id: screenName2
+
+                            anchors.top: screenPreview2.bottom
+                            anchors.topMargin: 10
+                            anchors.horizontalCenter: screenItem2.horizontalCenter
+                            width: parent.width
+                            font.pointSize: JamiTheme.textFontSize
+                            text: screens[index] ? screens[index] : ""
+                            elide: Text.ElideMiddle
+                            horizontalAlignment: Text.AlignHCenter
+                            color: JamiTheme.textColor
+                        }
+
+                        MouseArea {
+                            anchors.fill: screenItem2
+                            acceptedButtons: Qt.LeftButton
+
+                            onClicked: {
+                                selectAllScreens = false
+                                if (selectedScreenNumber == -1
+                                        || selectedScreenNumber !== index) {
+                                    selectedScreenNumber = index
+                                }
+                            }
                         }
                     }
                 }
@@ -347,22 +358,27 @@ Window {
 
         preferredWidth: 200
 
-        visible: selectedScreenNumber != -1 || selectAllScreens
+        enabled: selectedScreenNumber != -1 || selectAllScreens
+        opacity: enabled ? 1.0 : 0.5
 
         color: JamiTheme.buttonTintedBlack
         hoveredColor: JamiTheme.buttonTintedBlackHovered
         pressedColor: JamiTheme.buttonTintedBlackPressed
         outlined: true
-        enabled: true
 
         text: JamiStrings.shareScreen
 
         onClicked: {
             if (selectAllScreens)
                 AvAdapter.shareAllScreens()
-            else
-                AvAdapter.shareEntireScreen(selectedScreenNumber - 1)
-            selectScreenWindow.close()
+            else {
+                if (selectedScreenNumber < Qt.application.screens.length)
+                    AvAdapter.shareEntireScreen(selectedScreenNumber)
+                else {
+                    AvAdapter.shareWindow(AvAdapter.windowsIds[selectedScreenNumber - Qt.application.screens.length])
+                }
+            }
+            root.close()
         }
     }
 }
