@@ -254,17 +254,69 @@ public:
      */
     const video::Renderer& getRenderer(const QString& id) const;
     /**
+     * @deprecated Render a file to the call id specified
+     * @param uri the path of the file
+     * @param callId
+     * @note callId can be omitted to switch the input of the local recorder
+     */
+    void setInputFile(const QString& uri, const QString& callId = {});
+    /**
+     * Change the current device rendered for the call id specified
+     * @param id of the camera
+     * @param callId
+     * @note renders a black frame if device not found or empty
+     * @note callId can be omitted to switch the input of the local recorder
+     */
+    void switchInputTo(const QString& id, const QString& callId = {});
+    /**
+     * @deprecated Render the current display to the call id specified
+     * @param idx of the display
+     * @param x top left of the area
+     * @param y top up of the area
+     * @param w width of the area
+     * @param h height of the area
+     * @param callId
+     * @note callId can be omitted to switch the input of the local recorder
+     */
+    void setDisplay(int idx, int x, int y, int w, int h, const QString& callId = {});
+    /**
+     * Get the current display resource string
+     * @param idx of the display
+     * @param x top left of the area
+     * @param y top up of the area
+     * @param w width of the area
+     * @param h height of the area
+     */
+    QString getDisplay(int idx, int x, int y, int w, int h);
+    /**
+     * Get the current window resource string
+     * @param windowId
+     */
+    QString getDisplay(const QString& windowId);
+    /**
+     * Get the list of available windows ids
+     * X11: a id is of the form 0x0000000
+     * @return map with windows names and ids
+     */
+    QVariantMap getListWindows();
+    /**
+     * Get informations on the rendered device
+     * @param call_id linked call to the renderer
+     * @return the device rendered
+     */
+    video::RenderedDevice getCurrentRenderedDevice(const QString& call_id) const;
+    /**
      * set to true to receive AVFrames from render
      */
     void useAVFrame(bool useAVFrame);
     /**
      * set current using device
-     * @ param device name
+     * @param device name
      */
     Q_INVOKABLE void setCurrentVideoCaptureDevice(const QString& currentVideoCaptureDevice);
     /**
      * set current using device
-     * @ return current using device name
+     * @return current using device name
      */
     Q_INVOKABLE QString getCurrentVideoCaptureDevice() const;
     /**
