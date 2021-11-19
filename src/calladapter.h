@@ -127,7 +127,6 @@ private:
     void saveConferenceSubcalls();
 
     QString accountId_;
-    QString convUid_;
 
     ScreenSaver screenSaver;
     SystemTray* systemTray_;
