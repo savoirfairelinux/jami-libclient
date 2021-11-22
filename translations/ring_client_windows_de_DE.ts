@@ -120,22 +120,22 @@
         <translation>Verpasster Anruf von %1</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="496"/>
+        <location filename="../src/calladapter.cpp" line="500"/>
         <source>me</source>
         <translation>ich</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="550"/>
+        <location filename="../src/calladapter.cpp" line="555"/>
         <source>Incoming call</source>
         <translation>Eingehender Anruf</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="551"/>
+        <location filename="../src/calladapter.cpp" line="556"/>
         <source>%1 is calling you</source>
         <translation>%1 ruft dich an</translation>
     </message>
     <message>
-        <location filename="../src/calladapter.cpp" line="562"/>
+        <location filename="../src/calladapter.cpp" line="567"/>
         <source>is calling you</source>
         <translation>ruft Sie an</translation>
     </message>
@@ -557,179 +557,179 @@ Jami wird nun beendet.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="36"/>
-        <location filename="../src/constant/JamiStrings.qml" line="212"/>
+        <location filename="../src/constant/JamiStrings.qml" line="210"/>
         <source>End call</source>
         <translation>Anruf beenden</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="213"/>
+        <location filename="../src/constant/JamiStrings.qml" line="211"/>
         <source>Pause call</source>
         <translation>Gespräch Halten</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="214"/>
+        <location filename="../src/constant/JamiStrings.qml" line="212"/>
         <source>Resume call</source>
         <translation>Gespräch wieder aufnehmen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="215"/>
+        <location filename="../src/constant/JamiStrings.qml" line="213"/>
         <source>Pause video</source>
         <translation>Video Pausieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="216"/>
+        <location filename="../src/constant/JamiStrings.qml" line="214"/>
         <source>Resume video</source>
         <translation>Video fortsetzen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="275"/>
+        <location filename="../src/constant/JamiStrings.qml" line="282"/>
         <source>Creating account…</source>
         <translation>Konto wird angelegt...</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="281"/>
+        <location filename="../src/constant/JamiStrings.qml" line="288"/>
         <source>Encrypt account with password</source>
         <translation>Sichern Sie Ihre Anmeldedaten mit einem Passwort ab!</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="282"/>
+        <location filename="../src/constant/JamiStrings.qml" line="289"/>
         <source>Create a rendezvous point</source>
         <translation>Einen Rendezvous-Treffpunkt erstellen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="285"/>
+        <location filename="../src/constant/JamiStrings.qml" line="292"/>
         <source>Choose a password to encrypt your account on this device. Note that the password cannot be recovered.</source>
         <translation>Wählen Sie ein sicheres Passwort um den Schlüssel für Ihre Anmeldedaten auf diesem Gerät sicher zu verschlüsseln. Beachten Sie, dass dieses Passwort nicht wiederhergestellt werden kann, wenn Sie es verlieren.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="288"/>
+        <location filename="../src/constant/JamiStrings.qml" line="295"/>
         <source>Choose a name for your rendezvous point</source>
         <translation>Wählen Sie einen Namen für das Renzezvous.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="339"/>
+        <location filename="../src/constant/JamiStrings.qml" line="346"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
         <translation>Wenn Ihr Konto nicht gesichert oder zu einem anderen Gerät hinzugefügt wurde, gehen Ihr Konto und Ihr registrierter Name unwiderruflich verloren.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="352"/>
+        <location filename="../src/constant/JamiStrings.qml" line="359"/>
         <source>Launch at startup</source>
         <translation>Beim Hochlauf starten</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="359"/>
+        <location filename="../src/constant/JamiStrings.qml" line="366"/>
         <source>Enable typing indicators</source>
         <translation>aktiviere Tipp-Indikatoren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="372"/>
-        <location filename="../src/constant/JamiStrings.qml" line="389"/>
+        <location filename="../src/constant/JamiStrings.qml" line="379"/>
+        <location filename="../src/constant/JamiStrings.qml" line="396"/>
         <source>Network error</source>
         <translation>Netzwerkfehler</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="390"/>
+        <location filename="../src/constant/JamiStrings.qml" line="397"/>
         <source>SSL error</source>
         <translation>SSL-Fehler</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="430"/>
+        <location filename="../src/constant/JamiStrings.qml" line="437"/>
         <source>Enter the PIN from another configured Jami account. Use the &quot;Link Another Device&quot; feature to obtain a PIN.</source>
         <translation>Geben Sie die PIN eines anderen konfigurierten Jami-Kontos ein. Verwenden Sie die Funktion &quot;Mit einem anderen Gerät verknüpfen&quot;, um eine PIN zu erhalten.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="432"/>
+        <location filename="../src/constant/JamiStrings.qml" line="439"/>
         <source>Link device</source>
         <translation>Gerät verknüpfen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="519"/>
+        <location filename="../src/constant/JamiStrings.qml" line="526"/>
         <source>Conversations</source>
         <translation>Gespräche</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="459"/>
+        <location filename="../src/constant/JamiStrings.qml" line="466"/>
         <source>Enable</source>
         <translation>Einschalten</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="467"/>
+        <location filename="../src/constant/JamiStrings.qml" line="474"/>
         <source>Display or hide preferences</source>
         <translation>Einstellungen anzeigen oder verbergen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="470"/>
+        <location filename="../src/constant/JamiStrings.qml" line="477"/>
         <source>Add new plugin</source>
         <translation>Ein Plugin hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="474"/>
+        <location filename="../src/constant/JamiStrings.qml" line="481"/>
         <source>Select a file</source>
         <translation>Datei wählen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="475"/>
+        <location filename="../src/constant/JamiStrings.qml" line="482"/>
         <source>Select</source>
         <translation>Auswählen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="476"/>
+        <location filename="../src/constant/JamiStrings.qml" line="483"/>
         <source>Choose image file</source>
         <translation>Bilddatei auswählen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="482"/>
+        <location filename="../src/constant/JamiStrings.qml" line="489"/>
         <source>Enter the rendezvous point&apos;s name</source>
         <translation>Geben Sie den Namen des Rendezvous-Treffpunkts ein</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="483"/>
+        <location filename="../src/constant/JamiStrings.qml" line="490"/>
         <source>Creating rendezvous point…</source>
         <translation>Erstelle Rendezvous-Treffpunkt...</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="507"/>
+        <location filename="../src/constant/JamiStrings.qml" line="514"/>
         <source>Create account from Jami Account Management Server (JAMS)</source>
         <translation>Ein Konto vom Jami Account Management Server (JAMS) anlegen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="510"/>
+        <location filename="../src/constant/JamiStrings.qml" line="517"/>
         <source>Create new rendezvous point</source>
         <translation>Einen neuen Rendezvous-Treffpunkt anlegen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="511"/>
+        <location filename="../src/constant/JamiStrings.qml" line="518"/>
         <source>Create a Jami account</source>
         <translation>Jami-Konto erstellen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="514"/>
+        <location filename="../src/constant/JamiStrings.qml" line="521"/>
         <source>About Jami</source>
         <translation>Über Jami</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="523"/>
+        <location filename="../src/constant/JamiStrings.qml" line="530"/>
         <source>Decline contact request</source>
         <translation>Kontaktanfrage ablehnen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="524"/>
+        <location filename="../src/constant/JamiStrings.qml" line="531"/>
         <source>Accept contact request</source>
         <translation>Kontaktanfrage akzeptieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="527"/>
+        <location filename="../src/constant/JamiStrings.qml" line="534"/>
         <source>Automatically check for updates</source>
         <translation>Automatisch nach Updates suchen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="530"/>
+        <location filename="../src/constant/JamiStrings.qml" line="537"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="413"/>
-        <location filename="../src/constant/JamiStrings.qml" line="531"/>
+        <location filename="../src/constant/JamiStrings.qml" line="420"/>
+        <location filename="../src/constant/JamiStrings.qml" line="538"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
@@ -1099,1118 +1099,1163 @@ Jami wird nun beendet.</translation>
         <translation>ruft Sie an</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="210"/>
-        <location filename="../src/constant/JamiStrings.qml" line="538"/>
+        <location filename="../src/constant/JamiStrings.qml" line="208"/>
+        <location filename="../src/constant/JamiStrings.qml" line="545"/>
         <source>Mute</source>
         <translation>Stumm</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="211"/>
-        <location filename="../src/constant/JamiStrings.qml" line="539"/>
+        <location filename="../src/constant/JamiStrings.qml" line="209"/>
+        <location filename="../src/constant/JamiStrings.qml" line="546"/>
         <source>Unmute</source>
         <translation>Wieder laut</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="217"/>
+        <location filename="../src/constant/JamiStrings.qml" line="215"/>
         <source>Add participants</source>
         <translation>Teilnehmer hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="218"/>
+        <location filename="../src/constant/JamiStrings.qml" line="216"/>
         <source>Chat</source>
         <translation>Chat</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="219"/>
+        <location filename="../src/constant/JamiStrings.qml" line="217"/>
         <source>More options</source>
         <translation>Weitere Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="220"/>
+        <location filename="../src/constant/JamiStrings.qml" line="218"/>
         <source>Mosaic</source>
         <translation>Mosaik</translation>
     </message>
     <message>
+        <location filename="../src/constant/JamiStrings.qml" line="219"/>
+        <source>Participant is still muted on his local machine</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="220"/>
+        <source>You are still muted on your local machine</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="221"/>
+        <source>You are still muted by moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="222"/>
+        <source>You are muted by a moderator</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="223"/>
+        <source>Moderator</source>
+        <translation>Moderator</translation>
+    </message>
+    <message>
         <location filename="../src/constant/JamiStrings.qml" line="224"/>
+        <source>Host</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="225"/>
+        <source>Local and Moderator muted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="226"/>
+        <source>Moderator muted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="227"/>
+        <source>Not muted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="231"/>
         <source>Cut</source>
         <translation>Ausschneiden</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="225"/>
+        <location filename="../src/constant/JamiStrings.qml" line="232"/>
         <source>Paste</source>
         <translation>Einfügen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="228"/>
+        <location filename="../src/constant/JamiStrings.qml" line="235"/>
         <source>Start video call</source>
         <translation>Video-Anruf beginnen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="229"/>
+        <location filename="../src/constant/JamiStrings.qml" line="236"/>
         <source>Start audio call</source>
         <translation>Einen Audioanruf beginnen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="230"/>
+        <location filename="../src/constant/JamiStrings.qml" line="237"/>
         <source>Clear conversation</source>
         <translation>Konversation löschen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="231"/>
+        <location filename="../src/constant/JamiStrings.qml" line="238"/>
         <source>Remove conversation</source>
         <translation>Entferne Gespräch</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="232"/>
+        <location filename="../src/constant/JamiStrings.qml" line="239"/>
         <source>Remove contact</source>
         <translation>Kontakt entfernen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="233"/>
+        <location filename="../src/constant/JamiStrings.qml" line="240"/>
         <source>Block contact</source>
         <translation>Kontakt blockieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="234"/>
+        <location filename="../src/constant/JamiStrings.qml" line="241"/>
         <source>Contact details</source>
         <translation>Kontaktdetails</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="237"/>
+        <location filename="../src/constant/JamiStrings.qml" line="244"/>
         <source>Hold</source>
         <translation>Gehalten</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="238"/>
+        <location filename="../src/constant/JamiStrings.qml" line="245"/>
         <source>Sip input panel</source>
         <translation>Sip-Eingabe-Konsole</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="239"/>
+        <location filename="../src/constant/JamiStrings.qml" line="246"/>
         <source>Transfer call</source>
         <translation>Anruf übergeben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="240"/>
+        <location filename="../src/constant/JamiStrings.qml" line="247"/>
         <source>Stop recording</source>
         <translation>Aufnahme beenden</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="241"/>
+        <location filename="../src/constant/JamiStrings.qml" line="248"/>
         <source>Start recording</source>
         <translation>Aufnahme beginnen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="242"/>
+        <location filename="../src/constant/JamiStrings.qml" line="249"/>
         <source>Exit full screen</source>
         <translation>Vollbild verlassen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="243"/>
+        <location filename="../src/constant/JamiStrings.qml" line="250"/>
         <source>Full screen</source>
         <translation>Vollbild</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="244"/>
+        <location filename="../src/constant/JamiStrings.qml" line="251"/>
         <source>Share screen</source>
         <translation>Bildschirm teilen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="246"/>
+        <location filename="../src/constant/JamiStrings.qml" line="253"/>
         <source>Share screen area</source>
         <translation>Bildschirmausschnitt teilen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="247"/>
+        <location filename="../src/constant/JamiStrings.qml" line="254"/>
         <source>Share file</source>
         <translation>Datei teilen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="248"/>
+        <location filename="../src/constant/JamiStrings.qml" line="255"/>
         <source>Select sharing method</source>
         <translation>Freigabemethode wählen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="249"/>
+        <location filename="../src/constant/JamiStrings.qml" line="256"/>
         <source>View plugin</source>
         <translation>Plugin anschauen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="250"/>
+        <location filename="../src/constant/JamiStrings.qml" line="257"/>
         <source>No video device</source>
         <translation>Keine Kamera</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="251"/>
+        <location filename="../src/constant/JamiStrings.qml" line="258"/>
         <source>N/A</source>
         <translation>N/V</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="252"/>
+        <location filename="../src/constant/JamiStrings.qml" line="259"/>
         <source>Lower hand</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="253"/>
+        <location filename="../src/constant/JamiStrings.qml" line="260"/>
         <source>Raise hand</source>
         <translation>Ihre Hand heben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="256"/>
+        <location filename="../src/constant/JamiStrings.qml" line="263"/>
         <source>Hide chat view</source>
         <translation>Chat verbergen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="257"/>
+        <location filename="../src/constant/JamiStrings.qml" line="264"/>
         <source>Place audio call</source>
         <translation>Audio-Anruf beginnen </translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="258"/>
+        <location filename="../src/constant/JamiStrings.qml" line="265"/>
         <source>Place video call</source>
         <translation>Starte Videoanruf</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="259"/>
+        <location filename="../src/constant/JamiStrings.qml" line="266"/>
         <source>Show available plugins</source>
         <translation>Verfügbare Plugins anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="260"/>
+        <location filename="../src/constant/JamiStrings.qml" line="267"/>
         <source>Add to conversations</source>
         <translation>Zur Unterhaltung hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="263"/>
+        <location filename="../src/constant/JamiStrings.qml" line="270"/>
         <source>Jump to latest</source>
         <translation>Zum Neuesten wechseln</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="264"/>
+        <location filename="../src/constant/JamiStrings.qml" line="271"/>
         <source>{} is typing…</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="265"/>
+        <location filename="../src/constant/JamiStrings.qml" line="272"/>
         <source>{} are typing…</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="266"/>
+        <location filename="../src/constant/JamiStrings.qml" line="273"/>
         <source>Several people are typing…</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="267"/>
+        <location filename="../src/constant/JamiStrings.qml" line="274"/>
         <source> and </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="270"/>
+        <location filename="../src/constant/JamiStrings.qml" line="277"/>
         <source>Enter Jami Account Management Server (JAMS) URL</source>
         <translation>URL des Jami Account Management Servers (JAMS) eingeben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="271"/>
+        <location filename="../src/constant/JamiStrings.qml" line="278"/>
         <source>Required</source>
         <translation>Benötigt</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="272"/>
+        <location filename="../src/constant/JamiStrings.qml" line="279"/>
         <source>Jami Account Management Server URL</source>
         <translation>Jami Account Management Server URL</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="273"/>
+        <location filename="../src/constant/JamiStrings.qml" line="280"/>
         <source>Enter your JAMS credentials</source>
         <translation>Geben Sie Ihre JAMS-Zugangsdaten ein</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="274"/>
+        <location filename="../src/constant/JamiStrings.qml" line="281"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="276"/>
+        <location filename="../src/constant/JamiStrings.qml" line="283"/>
         <source>Back to welcome page</source>
         <translation>Zurück zur Begrüßungsseite</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="279"/>
+        <location filename="../src/constant/JamiStrings.qml" line="286"/>
         <source>Choose name</source>
         <translation>Wählen Sie einen Namen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="280"/>
+        <location filename="../src/constant/JamiStrings.qml" line="287"/>
         <source>Choose username</source>
         <translation>Benutzername wählen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="283"/>
+        <location filename="../src/constant/JamiStrings.qml" line="290"/>
         <source>Create account</source>
         <translation>Konto erstellen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="284"/>
+        <location filename="../src/constant/JamiStrings.qml" line="291"/>
         <source>Confirm password</source>
         <translation>Konto bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="286"/>
+        <location filename="../src/constant/JamiStrings.qml" line="293"/>
         <source>Optional</source>
         <translation>Nicht zwingend erforderlich</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="287"/>
+        <location filename="../src/constant/JamiStrings.qml" line="294"/>
         <source>Choose a username for your account</source>
         <translation>Wähle einen Benutzernamen für dein Konto</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="289"/>
+        <location filename="../src/constant/JamiStrings.qml" line="296"/>
         <source>Choose a name</source>
         <translation>Wählen Sie einen Namen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="290"/>
+        <location filename="../src/constant/JamiStrings.qml" line="297"/>
         <source>Choose your username</source>
         <translation>Wählen Sie einen Benutzernamen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="291"/>
+        <location filename="../src/constant/JamiStrings.qml" line="298"/>
         <source>Invalid name</source>
         <translation>Ungültiger Name</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="292"/>
+        <location filename="../src/constant/JamiStrings.qml" line="299"/>
         <source>Invalid username</source>
         <translation>Ungültiger Benutzername</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="293"/>
+        <location filename="../src/constant/JamiStrings.qml" line="300"/>
         <source>Name already taken</source>
         <translation>Dieser Name ist schon vergeben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="294"/>
+        <location filename="../src/constant/JamiStrings.qml" line="301"/>
         <source>Username already taken</source>
         <translation>Benutzername bereits vergeben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="297"/>
+        <location filename="../src/constant/JamiStrings.qml" line="304"/>
         <source>Proxy</source>
         <translation>Proxy</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="298"/>
+        <location filename="../src/constant/JamiStrings.qml" line="305"/>
         <source>Server</source>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="299"/>
+        <location filename="../src/constant/JamiStrings.qml" line="306"/>
         <source>Create SIP account</source>
         <translation>SIP-Konto erstellen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="300"/>
+        <location filename="../src/constant/JamiStrings.qml" line="307"/>
         <source>Configure an existing SIP account</source>
         <translation>Ein bestehendes SIP-Konto konfigurieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="303"/>
+        <location filename="../src/constant/JamiStrings.qml" line="310"/>
         <source>Backup successful</source>
         <translation>Sicherungskopie erfolgreich</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="304"/>
+        <location filename="../src/constant/JamiStrings.qml" line="311"/>
         <source>Backup failed</source>
         <translation>Sicherungskopie fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="305"/>
+        <location filename="../src/constant/JamiStrings.qml" line="312"/>
         <source>Password changed successfully</source>
         <translation>Passwort erfolgreich geändert</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="306"/>
+        <location filename="../src/constant/JamiStrings.qml" line="313"/>
         <source>Password change failed</source>
         <translation>Passwortänderung fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="307"/>
+        <location filename="../src/constant/JamiStrings.qml" line="314"/>
         <source>Password set successfully</source>
         <translation>Passwort erfolgreich festgelegt</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="308"/>
+        <location filename="../src/constant/JamiStrings.qml" line="315"/>
         <source>Password set failed</source>
         <translation>Setzen des Passworts fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="309"/>
+        <location filename="../src/constant/JamiStrings.qml" line="316"/>
         <source>Change password</source>
         <translation>Passwort ändern</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="310"/>
-        <location filename="../src/constant/JamiStrings.qml" line="311"/>
+        <location filename="../src/constant/JamiStrings.qml" line="317"/>
+        <location filename="../src/constant/JamiStrings.qml" line="318"/>
         <source>Set password</source>
         <translation>Passwort festlegen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="312"/>
+        <location filename="../src/constant/JamiStrings.qml" line="319"/>
         <source>Change current password</source>
         <translation>Das aktuelle Passwort ändern</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="313"/>
+        <location filename="../src/constant/JamiStrings.qml" line="320"/>
         <source>Backup account to a .gz file</source>
         <translation>Konto in .gz-Datei sichern</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="314"/>
+        <location filename="../src/constant/JamiStrings.qml" line="321"/>
         <source>Display or hide advanced settings</source>
         <translation>Die erweiterten Einstellungen anzeigen oder verbergen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="315"/>
+        <location filename="../src/constant/JamiStrings.qml" line="322"/>
         <source>Enable account</source>
         <translation>Konto aktivieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="318"/>
+        <location filename="../src/constant/JamiStrings.qml" line="325"/>
         <source>Set username</source>
         <translation>Benutzernamen festlegen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="319"/>
+        <location filename="../src/constant/JamiStrings.qml" line="326"/>
         <source>Registering name</source>
         <translation>Namen registrieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="322"/>
+        <location filename="../src/constant/JamiStrings.qml" line="329"/>
         <source>Register a username</source>
         <translation>Einen Benutzernamen registrieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="323"/>
+        <location filename="../src/constant/JamiStrings.qml" line="330"/>
         <source>Register username</source>
         <translation>Benutzernamen registrieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="326"/>
+        <location filename="../src/constant/JamiStrings.qml" line="333"/>
         <source>Link a new device to this account</source>
         <translation>Ein neues Gerät mit diesem Konto verknüpfen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="327"/>
+        <location filename="../src/constant/JamiStrings.qml" line="334"/>
         <source>Link another device</source>
         <translation>Neues Gerät verbinden</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="328"/>
+        <location filename="../src/constant/JamiStrings.qml" line="335"/>
         <source>Remove Device</source>
         <translation>Gerät entfernen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="329"/>
+        <location filename="../src/constant/JamiStrings.qml" line="336"/>
         <source>Are you sure you wish to remove this device?</source>
         <translation>Sind Sie sicher, dass Sie dieses Gerät entfernen wollen?</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="330"/>
+        <location filename="../src/constant/JamiStrings.qml" line="337"/>
         <source>Linked Devices</source>
         <translation>Verknüpfte Geräte</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="331"/>
+        <location filename="../src/constant/JamiStrings.qml" line="338"/>
         <source>Your PIN is:</source>
         <translation>Ihre PIN lautet:</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="332"/>
+        <location filename="../src/constant/JamiStrings.qml" line="339"/>
         <source>Error connecting to the network.
 Please try again later.</source>
         <translation>Netzwerkfehler
 Versuchen Sie es später erneut.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="335"/>
+        <location filename="../src/constant/JamiStrings.qml" line="342"/>
         <source>Display or hide banned contacts</source>
         <translation>Gesperrte Kontakte anzeigen oder verbergen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="338"/>
+        <location filename="../src/constant/JamiStrings.qml" line="345"/>
         <source>Do you really want to delete this account?</source>
         <translation>Wollen Sie dieses Konto wirklich löschen?</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="342"/>
+        <location filename="../src/constant/JamiStrings.qml" line="349"/>
         <source>Save new device name</source>
         <translation>Neuen Gerätenamen sichern</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="343"/>
+        <location filename="../src/constant/JamiStrings.qml" line="350"/>
         <source>Edit device name</source>
         <translation>Gerätenamen ändern</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="344"/>
+        <location filename="../src/constant/JamiStrings.qml" line="351"/>
         <source>Unlink device from account</source>
         <translation>Verknüpfung des Gerät mit dem Konto auflösen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="347"/>
+        <location filename="../src/constant/JamiStrings.qml" line="354"/>
         <source>Select a folder</source>
         <translation>Ordner auswählen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="348"/>
+        <location filename="../src/constant/JamiStrings.qml" line="355"/>
         <source>Enable notifications</source>
         <translation>Benachrichtigungen einschalten</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="349"/>
+        <location filename="../src/constant/JamiStrings.qml" line="356"/>
         <source>Enable dark theme</source>
         <translation>Dunkles Thema einschalten</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="350"/>
+        <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Keep minimized on close</source>
         <translation>Beim Schließen minimiert lassen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="351"/>
+        <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Run application on system startup</source>
         <translation>Applikation beim Systemstart starten</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="353"/>
+        <location filename="../src/constant/JamiStrings.qml" line="360"/>
         <source>Downloads directory</source>
         <translation>Download-Ordner</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="354"/>
+        <location filename="../src/constant/JamiStrings.qml" line="361"/>
         <source>Choose download directory</source>
         <translation>Download-Ordner auswählen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="355"/>
+        <location filename="../src/constant/JamiStrings.qml" line="362"/>
         <source>Record call</source>
         <translation>Anruf aufzeichnen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="358"/>
+        <location filename="../src/constant/JamiStrings.qml" line="365"/>
         <source>Chatview</source>
         <translation>Konversationsansicht</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="360"/>
+        <location filename="../src/constant/JamiStrings.qml" line="367"/>
         <source>Display hyperlink previews in the chatview</source>
         <translation>Hyperlink-Vorschauen in der Chatansicht anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="363"/>
+        <location filename="../src/constant/JamiStrings.qml" line="370"/>
         <source>File transfer</source>
         <translation>Dateiübertragung</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="364"/>
+        <location filename="../src/constant/JamiStrings.qml" line="371"/>
         <source>Allow incoming files from unknown contacts</source>
         <translation>Eingehende Dateien von Unbekannten erlauben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="365"/>
+        <location filename="../src/constant/JamiStrings.qml" line="372"/>
         <source>Automatically accept incoming files</source>
         <translation>Automatisch eingehende Dateien annehmen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="366"/>
+        <location filename="../src/constant/JamiStrings.qml" line="373"/>
         <source>Accept transfer limit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="367"/>
+        <location filename="../src/constant/JamiStrings.qml" line="374"/>
         <source>in MB, 0 = unlimited</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="370"/>
+        <location filename="../src/constant/JamiStrings.qml" line="377"/>
         <source>Register</source>
         <translation>Registrieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="371"/>
+        <location filename="../src/constant/JamiStrings.qml" line="378"/>
         <source>Incorrect password</source>
         <translation>Falsches Passwort</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="376"/>
+        <location filename="../src/constant/JamiStrings.qml" line="383"/>
         <source>Save file</source>
         <translation>Datei speichern</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="377"/>
+        <location filename="../src/constant/JamiStrings.qml" line="384"/>
         <source>Open location</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="380"/>
+        <location filename="../src/constant/JamiStrings.qml" line="387"/>
         <source>Install beta version</source>
         <translation>Beta-Version installieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="381"/>
+        <location filename="../src/constant/JamiStrings.qml" line="388"/>
         <source>Check for updates now</source>
         <translation>Jetzt nach Aktualisierungen suchen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="382"/>
+        <location filename="../src/constant/JamiStrings.qml" line="389"/>
         <source>Enable/Disable automatic updates</source>
         <translation>Automatische Aktualisierung Ein/Aus</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="383"/>
+        <location filename="../src/constant/JamiStrings.qml" line="390"/>
         <source>toggle automatic updates</source>
         <translation>Automatische Aktualisierung umschalten</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="384"/>
+        <location filename="../src/constant/JamiStrings.qml" line="391"/>
         <source>Updates</source>
         <translation>Aktualisierungen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="385"/>
+        <location filename="../src/constant/JamiStrings.qml" line="392"/>
         <source>Update</source>
         <translation>Aktualisieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="386"/>
+        <location filename="../src/constant/JamiStrings.qml" line="393"/>
         <source>A new version of Jami was found
  Would you like to update now?</source>
         <translation>Eine neue Version von Jami ist verfügbar
 Möchten Sie jetzt aktualisieren? </translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="387"/>
+        <location filename="../src/constant/JamiStrings.qml" line="394"/>
         <source>No new version of Jami was found</source>
         <translation>Es liegt keine neue Jami-Version vor.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="388"/>
+        <location filename="../src/constant/JamiStrings.qml" line="395"/>
         <source>An error occured when checking for a new version</source>
         <translation>Bei der Suche nach einer neuen Version ist ein Fehler aufgetreten</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="391"/>
+        <location filename="../src/constant/JamiStrings.qml" line="398"/>
         <source>Installer download canceled</source>
         <translation>Herunterladen des Installationsprogramms abgebrochen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="393"/>
+        <location filename="../src/constant/JamiStrings.qml" line="400"/>
         <source>This will uninstall your current Release version and you can always download the latest Release version on our website</source>
         <translation>Dies wird ihre momentane Version entfernen. Sie können jederzeit die aktuell freigegebene Version auf der Website herunterladen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="394"/>
+        <location filename="../src/constant/JamiStrings.qml" line="401"/>
         <source>Network disconnected</source>
         <translation>Netzwerk nicht erreichbar</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="373"/>
-        <location filename="../src/constant/JamiStrings.qml" line="395"/>
+        <location filename="../src/constant/JamiStrings.qml" line="380"/>
+        <location filename="../src/constant/JamiStrings.qml" line="402"/>
         <source>Something went wrong</source>
         <translation>Ein Fehler ist aufgetreten.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="398"/>
+        <location filename="../src/constant/JamiStrings.qml" line="405"/>
         <source>Troubleshoot</source>
         <translation>Fehlerbehebung</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="399"/>
+        <location filename="../src/constant/JamiStrings.qml" line="406"/>
         <source>Open logs</source>
         <translation>Protokolle öffnen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="400"/>
+        <location filename="../src/constant/JamiStrings.qml" line="407"/>
         <source>Get logs</source>
         <translation>Protokolle abrufen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="403"/>
+        <location filename="../src/constant/JamiStrings.qml" line="410"/>
         <source>Select a record directory</source>
         <translation>Einen Aufzeichnungsordner wählen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="406"/>
+        <location filename="../src/constant/JamiStrings.qml" line="413"/>
         <source>Debug</source>
         <translation>Debuggen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="407"/>
+        <location filename="../src/constant/JamiStrings.qml" line="414"/>
         <source>Show Stats</source>
         <translation>Statistiken anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="408"/>
+        <location filename="../src/constant/JamiStrings.qml" line="415"/>
         <source>Start</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="409"/>
+        <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>Stop</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="425"/>
+        <location filename="../src/constant/JamiStrings.qml" line="432"/>
         <source>Generating account…</source>
         <translation>Lege Konto an...</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="426"/>
+        <location filename="../src/constant/JamiStrings.qml" line="433"/>
         <source>Import from backup</source>
         <translation>Aus Backup importieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="433"/>
+        <location filename="../src/constant/JamiStrings.qml" line="440"/>
         <source>PIN</source>
         <translation>PIN</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="454"/>
+        <location filename="../src/constant/JamiStrings.qml" line="461"/>
         <source>Stop taking photo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="455"/>
+        <location filename="../src/constant/JamiStrings.qml" line="462"/>
         <source>Clear avatar image</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="471"/>
+        <location filename="../src/constant/JamiStrings.qml" line="478"/>
         <source>Go back to plugins list</source>
         <translation>Zu der Plugin-Liste zurück</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="479"/>
+        <location filename="../src/constant/JamiStrings.qml" line="486"/>
         <source>Profile is only shared with contacts</source>
         <translation>Profil wird nur mit Kontakten geteilt</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="481"/>
+        <location filename="../src/constant/JamiStrings.qml" line="488"/>
         <source>Enter your name</source>
         <translation>Gib deinen Namen ein</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="501"/>
+        <location filename="../src/constant/JamiStrings.qml" line="508"/>
         <source>Import account from other device</source>
         <translation>Konto von einem anderen Gerät importieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="502"/>
+        <location filename="../src/constant/JamiStrings.qml" line="509"/>
         <source>Import account from backup file</source>
         <translation>Konto aus Backup importieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="505"/>
+        <location filename="../src/constant/JamiStrings.qml" line="512"/>
         <source>Hide advanced features</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="512"/>
+        <location filename="../src/constant/JamiStrings.qml" line="519"/>
         <source>Create new Jami account</source>
         <translation>Neues Jami-Konto erstellen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="513"/>
+        <location filename="../src/constant/JamiStrings.qml" line="520"/>
         <source>Create new SIP account</source>
         <translation>Neues SIP-Konto anlegen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="515"/>
+        <location filename="../src/constant/JamiStrings.qml" line="522"/>
         <source>Welcome to</source>
         <translation>Willkommen bei </translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="532"/>
+        <location filename="../src/constant/JamiStrings.qml" line="539"/>
         <source>Upgrade</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="533"/>
+        <location filename="../src/constant/JamiStrings.qml" line="540"/>
         <source>Later</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="554"/>
+        <location filename="../src/constant/JamiStrings.qml" line="550"/>
+        <source>Local muted</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="561"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
         <translation>Neuer Verbindungsversuch zum Jami-Daemon (dring)...</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="555"/>
+        <location filename="../src/constant/JamiStrings.qml" line="562"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
         <translation>Konnte die Verbindung zum Jami-Hintergrundprozess (jamid) nicht wiederherstellen.
 Jami wird nun beendet.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="558"/>
+        <location filename="../src/constant/JamiStrings.qml" line="565"/>
         <source>Is swarm:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="559"/>
+        <location filename="../src/constant/JamiStrings.qml" line="566"/>
         <source>True</source>
         <translation>Wahr</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="560"/>
+        <location filename="../src/constant/JamiStrings.qml" line="567"/>
         <source>False</source>
         <translation>Falsch</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="563"/>
+        <location filename="../src/constant/JamiStrings.qml" line="570"/>
         <source>Add emoji</source>
         <translation>Emoji hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="564"/>
+        <location filename="../src/constant/JamiStrings.qml" line="571"/>
         <source>Send file</source>
         <translation>Datei senden</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="565"/>
+        <location filename="../src/constant/JamiStrings.qml" line="572"/>
         <source>Leave audio message</source>
         <translation>Audio-Nachricht hinterlassen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="566"/>
+        <location filename="../src/constant/JamiStrings.qml" line="573"/>
         <source>Leave video message</source>
         <translation>Video-Nachricht hinterlassen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="567"/>
+        <location filename="../src/constant/JamiStrings.qml" line="574"/>
         <source>Send</source>
         <translation>Senden</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="568"/>
+        <location filename="../src/constant/JamiStrings.qml" line="575"/>
         <source>Remove</source>
         <translation>Entfernen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="569"/>
+        <location filename="../src/constant/JamiStrings.qml" line="576"/>
         <source>Write to %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="572"/>
+        <location filename="../src/constant/JamiStrings.qml" line="579"/>
         <source>%1 has sent you a request for a conversation.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="573"/>
+        <location filename="../src/constant/JamiStrings.qml" line="580"/>
         <source>Hello,
 Would you like to join the conversation?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="574"/>
+        <location filename="../src/constant/JamiStrings.qml" line="581"/>
         <source>You have accepted
 the conversation request</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="575"/>
+        <location filename="../src/constant/JamiStrings.qml" line="582"/>
         <source>Waiting until %1
 connects to synchronize the conversation.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="223"/>
-        <location filename="../src/constant/JamiStrings.qml" line="410"/>
+        <location filename="../src/constant/JamiStrings.qml" line="230"/>
+        <location filename="../src/constant/JamiStrings.qml" line="417"/>
         <source>Copy</source>
         <translation>Kopieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="245"/>
+        <location filename="../src/constant/JamiStrings.qml" line="252"/>
         <source>Stop sharing screen or file</source>
         <translation>Bildschirm oder Datei nicht mehr freigeben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="411"/>
+        <location filename="../src/constant/JamiStrings.qml" line="418"/>
         <source>Report Bug</source>
         <translation>Fehler melden</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="412"/>
+        <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Clear</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="414"/>
+        <location filename="../src/constant/JamiStrings.qml" line="421"/>
         <source>Copied to clipboard!</source>
         <translation>In die Zwischenablage kopiert!</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="415"/>
+        <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Receive Logs</source>
         <translation>Protokolle empfangen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="418"/>
+        <location filename="../src/constant/JamiStrings.qml" line="425"/>
         <source>Archive</source>
         <translation>Archiv</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="419"/>
+        <location filename="../src/constant/JamiStrings.qml" line="426"/>
         <source>Open file</source>
         <translation>Datei öffnen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="420"/>
+        <location filename="../src/constant/JamiStrings.qml" line="427"/>
         <source>Create your account from a backup</source>
         <translation>Konto aus Backup erstellen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="421"/>
+        <location filename="../src/constant/JamiStrings.qml" line="428"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
         <translation>Sie können ein Archiv erstellen, indem Sie in den Kontoeinstellungen &quot;Konto sichern&quot; auswählen. So erstellen Sie eine .gz-Datei auf Ihrem Gerät.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="424"/>
+        <location filename="../src/constant/JamiStrings.qml" line="431"/>
         <source>Restore an account from backup</source>
         <translation>Ein Konto aus einer Sicherung wiederherstellen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="429"/>
+        <location filename="../src/constant/JamiStrings.qml" line="436"/>
         <source>Enter Jami account password</source>
         <translation>Jami-Konto-Passwort eingeben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="436"/>
+        <location filename="../src/constant/JamiStrings.qml" line="443"/>
         <source>The PIN and the account password should be entered in your device within 10 minutes.</source>
         <translation>Die PIN und das Konto-Passwort sollten auf dem Gerät innerhalb von 10 Minuten eingegeben werden.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="437"/>
+        <location filename="../src/constant/JamiStrings.qml" line="444"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="438"/>
+        <location filename="../src/constant/JamiStrings.qml" line="445"/>
         <source>Enter your account password</source>
         <translation>Konto-Passwort eingeben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="439"/>
+        <location filename="../src/constant/JamiStrings.qml" line="446"/>
         <source>Add Device</source>
         <translation>Gerät hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="442"/>
+        <location filename="../src/constant/JamiStrings.qml" line="449"/>
         <source>Enter the password</source>
         <translation>Passwort eingeben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="443"/>
+        <location filename="../src/constant/JamiStrings.qml" line="450"/>
         <source>Enter current password</source>
         <translation>Aktuelles Passwort eingeben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="444"/>
+        <location filename="../src/constant/JamiStrings.qml" line="451"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
         <translation>Geben Sie das Konto-Passwort ein, um die Entfernung dieses Geräts zu bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="445"/>
+        <location filename="../src/constant/JamiStrings.qml" line="452"/>
         <source>Enter new password</source>
         <translation>Neues Passwort eingeben</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="446"/>
+        <location filename="../src/constant/JamiStrings.qml" line="453"/>
         <source>Confirm new password</source>
         <translation>Neues Passwort bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="447"/>
+        <location filename="../src/constant/JamiStrings.qml" line="454"/>
         <source>Change</source>
         <translation>Ändern</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="448"/>
+        <location filename="../src/constant/JamiStrings.qml" line="455"/>
         <source>Confirm</source>
         <translation>Bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="449"/>
+        <location filename="../src/constant/JamiStrings.qml" line="456"/>
         <source>Export</source>
         <translation>Exportieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="452"/>
+        <location filename="../src/constant/JamiStrings.qml" line="459"/>
         <source>Choose a picture as avatar</source>
         <translation>Wählen Sie ein Bild als Avatar</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="453"/>
+        <location filename="../src/constant/JamiStrings.qml" line="460"/>
         <source>Import avatar from image file</source>
         <translation>Ein Bild für einen Avatar importieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="456"/>
+        <location filename="../src/constant/JamiStrings.qml" line="463"/>
         <source>Take photo</source>
         <translation>Bild aufnehmen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="462"/>
+        <location filename="../src/constant/JamiStrings.qml" line="469"/>
         <source>Reset</source>
         <translation>Zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="463"/>
+        <location filename="../src/constant/JamiStrings.qml" line="470"/>
         <source>Select a plugin to install</source>
         <translation>Wählen Sie ein Plugin, um es zu installieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="464"/>
+        <location filename="../src/constant/JamiStrings.qml" line="471"/>
         <source>Install plugin</source>
         <translation>Plugin installieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="480"/>
+        <location filename="../src/constant/JamiStrings.qml" line="487"/>
         <source>Save profile</source>
         <translation>Profil speichern</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="484"/>
+        <location filename="../src/constant/JamiStrings.qml" line="491"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="487"/>
+        <location filename="../src/constant/JamiStrings.qml" line="494"/>
         <source>Enter the account password to confirm the removal of this device</source>
         <translation>Geben Sie das Konto-Passwort ein, um die Entfernung dieses Geräts zu bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="490"/>
+        <location filename="../src/constant/JamiStrings.qml" line="497"/>
         <source>Select a screen to share</source>
         <translation>Einen Bildschirm zum Teilen auswählen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="493"/>
+        <location filename="../src/constant/JamiStrings.qml" line="500"/>
         <source>QR code</source>
         <translation>QR-Code</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="496"/>
+        <location filename="../src/constant/JamiStrings.qml" line="503"/>
         <source>Account QR</source>
         <translation>Konto-QR-Code</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="499"/>
+        <location filename="../src/constant/JamiStrings.qml" line="506"/>
         <source>This is your Jami username.
 Copy and share it with your friends!</source>
         <translation>Dies ist Ihr Jami-Benutzername.
 Kopieren Sie ihn und teilen Sie ihn mit Ihren Freunden!</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="500"/>
+        <location filename="../src/constant/JamiStrings.qml" line="507"/>
         <source>Link this device to an existing account</source>
         <translation>Dieses Gerät mit einem bestehenden Konto verknüpfen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="503"/>
+        <location filename="../src/constant/JamiStrings.qml" line="510"/>
         <source>Advanced features</source>
         <translation>Erweiterte Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="504"/>
+        <location filename="../src/constant/JamiStrings.qml" line="511"/>
         <source>Show advanced features</source>
         <translation>Erweiterte Funktionen anzeigen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="506"/>
+        <location filename="../src/constant/JamiStrings.qml" line="513"/>
         <source>Connect to a JAMS server</source>
         <translation>Mit einem JAMS-Server verbinden</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="508"/>
+        <location filename="../src/constant/JamiStrings.qml" line="515"/>
         <source>Add a SIP account</source>
         <translation>SIP-Konto hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="509"/>
+        <location filename="../src/constant/JamiStrings.qml" line="516"/>
         <source>Error while creating your account. Check your credentials.</source>
         <translation>Fehler beim Erstellen des Kontos. Prüfen Sie Ihre Zugangsdaten.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="518"/>
+        <location filename="../src/constant/JamiStrings.qml" line="525"/>
         <source>Clear Text</source>
         <translation>Text löschen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="520"/>
+        <location filename="../src/constant/JamiStrings.qml" line="527"/>
         <source>Search Results</source>
         <translation>Suchergebnisse</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="536"/>
+        <location filename="../src/constant/JamiStrings.qml" line="543"/>
         <source>Set moderator</source>
         <translation>Moderator festlegen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="537"/>
+        <location filename="../src/constant/JamiStrings.qml" line="544"/>
         <source>Unset moderator</source>
         <translation>Moderator freistellen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="540"/>
+        <location filename="../src/constant/JamiStrings.qml" line="547"/>
         <source>Maximize</source>
         <translation>Maximale Größe</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="541"/>
+        <location filename="../src/constant/JamiStrings.qml" line="548"/>
         <source>Minimize</source>
         <translation>Minimieren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="542"/>
+        <location filename="../src/constant/JamiStrings.qml" line="549"/>
         <source>Hangup</source>
         <translation>Auflegen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="543"/>
-        <source>local muted</source>
-        <translation>lokal stummgeschaltet</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="546"/>
+        <location filename="../src/constant/JamiStrings.qml" line="553"/>
         <source>Conference moderation</source>
         <translation>Konferenz-Moderation</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="547"/>
+        <location filename="../src/constant/JamiStrings.qml" line="554"/>
         <source>Default moderators</source>
         <translation>Standard Moderatoren</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="548"/>
+        <location filename="../src/constant/JamiStrings.qml" line="555"/>
         <source>Enable local moderators</source>
         <translation>Lokale Moderatoren einschalten</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="549"/>
+        <location filename="../src/constant/JamiStrings.qml" line="556"/>
         <source>Make all participants moderators</source>
         <translation>Alle Teilnehmer zu Moderatoren machen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="550"/>
+        <location filename="../src/constant/JamiStrings.qml" line="557"/>
         <source>Add default moderator</source>
         <translation>Standard Moderator hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="551"/>
+        <location filename="../src/constant/JamiStrings.qml" line="558"/>
         <source>Remove default moderator</source>
         <translation>Standardmoderator entfernen</translation>
     </message>
@@ -2357,12 +2402,12 @@ Kopieren Sie ihn und teilen Sie ihn mit Ihren Freunden!</translation>
 <context>
     <name>PhotoboothView</name>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="80"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="81"/>
         <source>Image Files</source>
         <translation>Bilder</translation>
     </message>
     <message>
-        <location filename="../src/commoncomponents/PhotoboothView.qml" line="81"/>
+        <location filename="../src/commoncomponents/PhotoboothView.qml" line="82"/>
         <source>All files</source>
         <translation>Alle Dateien</translation>
     </message>
@@ -2468,92 +2513,92 @@ Kopieren Sie ihn und teilen Sie ihn mit Ihren Freunden!</translation>
         <translation>Basiert auf dem SFLPhone-Projekt</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="263"/>
+        <location filename="../src/messagesadapter.cpp" line="266"/>
         <source>Sending</source>
         <translation>Sende</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="265"/>
+        <location filename="../src/messagesadapter.cpp" line="268"/>
         <source>Failure</source>
         <translation>Fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="267"/>
+        <location filename="../src/messagesadapter.cpp" line="270"/>
         <source>Sent</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="269"/>
+        <location filename="../src/messagesadapter.cpp" line="272"/>
         <source>Connecting</source>
         <translation>Verbinden</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="271"/>
+        <location filename="../src/messagesadapter.cpp" line="274"/>
         <source>Accept</source>
         <translation>Akzeptieren</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="273"/>
+        <location filename="../src/messagesadapter.cpp" line="276"/>
         <source>Canceled</source>
         <translation>Abgebrochen</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="276"/>
+        <location filename="../src/messagesadapter.cpp" line="279"/>
         <source>Unable to make contact</source>
         <translation>Kontakt kann nicht hergestellt werden</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="278"/>
+        <location filename="../src/messagesadapter.cpp" line="281"/>
         <source>Ongoing</source>
         <translation>Übertragung läuft</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="280"/>
+        <location filename="../src/messagesadapter.cpp" line="283"/>
         <source>Waiting for contact</source>
         <translation>Auf Kontakt warten</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="282"/>
+        <location filename="../src/messagesadapter.cpp" line="285"/>
         <source>Incoming transfer</source>
         <translation>Eingehende Übertragung</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="284"/>
+        <location filename="../src/messagesadapter.cpp" line="287"/>
         <source>Timed out waiting for contact</source>
         <translation>Frist für das Warten auf Kontakt verstrichen</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="286"/>
+        <location filename="../src/messagesadapter.cpp" line="289"/>
         <source>Finished</source>
         <translation>Erledigt</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="511"/>
+        <location filename="../src/messagesadapter.cpp" line="523"/>
         <source>%1 days ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="513"/>
+        <location filename="../src/messagesadapter.cpp" line="525"/>
         <source>one day ago</source>
         <translation>vor einem Tag</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="516"/>
+        <location filename="../src/messagesadapter.cpp" line="528"/>
         <source>%1 hours ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="518"/>
+        <location filename="../src/messagesadapter.cpp" line="530"/>
         <source>one hour ago</source>
         <translation>vor einer Stunde</translation>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="521"/>
+        <location filename="../src/messagesadapter.cpp" line="533"/>
         <source>%1 minutes ago</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/messagesadapter.cpp" line="522"/>
+        <location filename="../src/messagesadapter.cpp" line="534"/>
         <source>just now</source>
         <translation>gerade eben</translation>
     </message>
@@ -2561,7 +2606,7 @@ Kopieren Sie ihn und teilen Sie ihn mit Ihren Freunden!</translation>
 <context>
     <name>RecordBox</name>
     <message>
-        <location filename="../src/mainview/components/RecordBox.qml" line="271"/>
+        <location filename="../src/mainview/components/RecordBox.qml" line="274"/>
         <source>Preview unavailable</source>
         <translation>Vorschau nicht möglich</translation>
     </message>
@@ -2655,17 +2700,17 @@ Kopieren Sie ihn und teilen Sie ihn mit Ihren Freunden!</translation>
 <context>
     <name>SettingsView</name>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="122"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="119"/>
         <source>Account Settings</source>
         <translation>Konto-Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="124"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="121"/>
         <source>General</source>
         <translation>Allgemein</translation>
     </message>
     <message>
-        <location filename="../src/settingsview/SettingsView.qml" line="128"/>
+        <location filename="../src/settingsview/SettingsView.qml" line="125"/>
         <source>Plugin</source>
         <translation>Plugin</translation>
     </message>
