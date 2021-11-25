@@ -64,10 +64,6 @@ IF(NOT ${ring_BIN} MATCHES "ring_BIN-NOTFOUND")
    )
 ENDIF()
 
-if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
-   ADD_DEFINITIONS("-std=c++0x")
-endif()
-
 if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     add_definitions(-DUNICODE -D_UNICODE)
     remove_definitions(-D_MBCS)
