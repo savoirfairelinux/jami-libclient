@@ -345,6 +345,7 @@ public:
     video::RenderedDevice getCurrentRenderedDevice(const QString& call_id) const;
 
     /**
+     * @deprecated
      * Render a file to the call id specified
      * @param uri the path of the file
      * @param callId
@@ -369,6 +370,12 @@ public:
      */
     QString getDisplay(int idx, int x, int y, int w, int h);
     /**
+     * Get the current window resource string
+     * @param windowId
+     */
+    QString getDisplay(const QString& windowId);
+    /**
+     * @deprecated
      * Render the current display to the call id specified
      * @param idx of the display
      * @param x top left of the area

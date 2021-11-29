@@ -46,6 +46,10 @@
 #include "dbus/videomanager.h"
 #include "authority/storagehelper.h"
 
+#if defined(Q_OS_UNIX) && !defined(__APPLE__)
+#include <xcb/xcb.h>
+#endif
+
 namespace lrc {
 
 using namespace api;
@@ -538,6 +542,100 @@ AVModel::getRenderer(const QString& id) const
         throw std::out_of_range("Can't find renderer " + id.toStdString());
     }
     return *pimpl_->renderers_[id];
+}
+
+#if defined(Q_OS_UNIX) && !defined(__APPLE__)
+static xcb_atom_t
+getatom(xcb_connection_t* c, char* atom_name)
+{
+    xcb_intern_atom_cookie_t atom_cookie;
+    xcb_atom_t atom;
+    xcb_intern_atom_reply_t* rep;
+
+    atom_cookie = xcb_intern_atom(c, 0, strlen(atom_name), atom_name);
+    rep = xcb_intern_atom_reply(c, atom_cookie, NULL);
+    if (NULL != rep) {
+        atom = rep->atom;
+        free(rep);
+        return atom;
+    }
+    return NULL;
+}
+#endif
+
+QVariantMap
+AVModel::getListWindows()
+{
+    QMap<QString, QVariant> ret {};
+
+#if defined(Q_OS_UNIX) && !defined(__APPLE__)
+    xcb_connection_t* c = xcb_connect(NULL, NULL);
+
+    if (xcb_connection_has_error(c)) {
+        qDebug() << "xcb connection has error";
+        xcb_disconnect(c);
+        return ret;
+    }
+
+    xcb_atom_t atom_net_client, atom_wm_visible_name;
+    atom_net_client = getatom(c, "_NET_CLIENT_LIST");
+    atom_wm_visible_name = getatom(c, "_NET_WM_NAME");
+    if (!atom_net_client || !atom_wm_visible_name) {
+        xcb_disconnect(c);
+        return ret;
+    }
+
+    xcb_screen_t* screen = xcb_setup_roots_iterator(xcb_get_setup(c)).data;
+
+    xcb_get_property_cookie_t prop_cookie_list, prop_cookie;
+    xcb_get_property_reply_t *reply_prop_list, *reply_prop;
+    xcb_generic_error_t* e;
+
+    prop_cookie_list
+        = xcb_get_property(c, 0, screen->root, atom_net_client, XCB_GET_PROPERTY_TYPE_ANY, 0, 100);
+    reply_prop_list = xcb_get_property_reply(c, prop_cookie_list, &e);
+    if (e) {
+        qDebug() << "Error: " << e->error_code;
+        free(e);
+    }
+    if (reply_prop_list) {
+        int value_len = xcb_get_property_value_length(reply_prop_list);
+        if (value_len) {
+            xcb_window_t* win = (xcb_window_t*) xcb_get_property_value(reply_prop_list);
+            for (int i = 0; i < value_len / 4; i++) {
+                prop_cookie = xcb_get_property(c,
+                                               0,
+                                               win[i],
+                                               atom_wm_visible_name,
+                                               XCB_GET_PROPERTY_TYPE_ANY,
+                                               0,
+                                               1000);
+                reply_prop = xcb_get_property_reply(c, prop_cookie, &e);
+                if (e) {
+                    qDebug() << "Error: " << e->error_code;
+                    free(e);
+                }
+                if (reply_prop) {
+                    int value_len2 = xcb_get_property_value_length(reply_prop);
+                    if (value_len2) {
+                        auto name = QString((char*) xcb_get_property_value(reply_prop));
+                        name.truncate(value_len2);
+                        if (ret.find(name) != ret.end()) {
+                            name += QString(" - 0x%1").arg(win[i], 0, 16);
+                        }
+                        ret.insert(name, QVariant(QString("0x%1").arg(win[i], 0, 16)));
+                    }
+                    free(reply_prop);
+                }
+            }
+        }
+        free(reply_prop_list);
+    }
+    xcb_disconnect(c);
+    return ret;
+#else
+    return ret;
+#endif
 }
 
 void
