@@ -254,17 +254,23 @@ public:
      */
     const video::Renderer& getRenderer(const QString& id) const;
     /**
+     * Get the list of available windows ids
+     * X11: a id is of the form 0x0000000
+     * @return map with windows names and ids
+     */
+    QVariantMap getListWindows();
+    /**
      * set to true to receive AVFrames from render
      */
     void useAVFrame(bool useAVFrame);
     /**
      * set current using device
-     * @ param device name
+     * @param device name
      */
     Q_INVOKABLE void setCurrentVideoCaptureDevice(const QString& currentVideoCaptureDevice);
     /**
      * set current using device
-     * @ return current using device name
+     * @return current using device name
      */
     Q_INVOKABLE QString getCurrentVideoCaptureDevice() const;
     /**
