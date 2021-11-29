@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff144520_ae511387",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-29T19:53:26Z",
+      "side": 1,
+      "message": "ternary operations are a bit ugly to read. Anyway, I will not block a patch for this.\n\nQString mediaType;\nif (mediaLabel.contains(\"audio\"))\n   mediaType \u003d MediaAttributeValue::AUDIO;\nelse if (mediaLabel.contains(\"video\"))\n   mediaType \u003d MediaAttributeValue::VIDEO;\nelse {\n        qCritical() \u003c\u003c \"No valide media type found in media label!\";\n        return;",
+      "range": {
+        "startLine": 410,
+        "startChar": 17,
+        "endLine": 412,
+        "endChar": 36
+      },
+      "revId": "3cf4aa2f99f7ca0b4bfc8c80a163798dd3c70f66",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f9f1c35_8f94658b",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-29T19:53:26Z",
+      "side": 1,
+      "message": "if (item[MediaAttributeKey::MEDIA_TYPE] \u003d\u003d MediaAttributeValue::VIDEO \u0026\u0026 !resource.isEmpty())\nitem[MediaAttributeKey::SOURCE] \u003d resource;\n\nBut question, why do we check item[MediaAttributeKey::MEDIA_TYPE] \u003d\u003d MediaAttributeValue::VIDEO, what will break if we set the resource to something?",
+      "range": {
+        "startLine": 475,
+        "startChar": 64,
+        "endLine": 479,
+        "endChar": 65
+      },
+      "revId": "3cf4aa2f99f7ca0b4bfc8c80a163798dd3c70f66",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
