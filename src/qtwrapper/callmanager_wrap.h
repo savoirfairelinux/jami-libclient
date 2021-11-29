@@ -225,8 +225,8 @@ public:
                 }),
             exportable_callback<CallSignal::SmartInfo>(
                 [this](const std::map<std::string, std::string>& info) {
-                    LOG_DRING_SIGNAL("smartInfo", "");
-                    Q_EMIT smartInfo(convertMap(info));
+                    LOG_DRING_SIGNAL("SmartInfo", "");
+                    Q_EMIT SmartInfo(convertMap(info));
                 }),
             exportable_callback<CallSignal::RemoteRecordingChanged>(
                 [this](const std::string& callId, const std::string& contactId, bool state) {
@@ -599,7 +599,7 @@ Q_SIGNALS: // SIGNALS
     void audioMuted(const QString& callId, bool state);
     void videoMuted(const QString& callId, bool state);
     void peerHold(const QString& callId, bool state);
-    void smartInfo(const MapStringString& info);
+    void SmartInfo(const MapStringString& info);
     void remoteRecordingChanged(const QString& callId,
                                 const QString& peerNumber,
                                 bool remoteRecordingState);
