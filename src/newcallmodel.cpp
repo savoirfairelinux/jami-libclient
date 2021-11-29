@@ -838,6 +838,16 @@ NewCallModel::getDisplay(int idx, int x, int y, int w, int h)
         .arg(h);
 }
 
+QString
+NewCallModel::getDisplay(const QString& windowId)
+{
+    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+    return QString("%1%2:+0,0 window-id:%3")
+        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
+        .arg(sep)
+        .arg(windowId);
+}
+
 void
 NewCallModel::setDisplay(int idx, int x, int y, int w, int h, const QString& callId)
 {
