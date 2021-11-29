@@ -48,7 +48,4 @@ public:
     QMap<QString, QString> m_information;
 
     void setMapInfo(const MapStringString& info);
-
-public slots:
-    void slotSmartInfo(const MapStringString& info);
 };

@@ -18,7 +18,6 @@
 
 #include "smartinfohub.h"
 #include "private/smartInfoHub_p.h"
-#include "typedefs.h"
 
 #include <dbus/videomanager.h>
 #include <dbus/callmanager.h>
@@ -28,9 +27,9 @@ SmartInfoHub::SmartInfoHub()
 {
     d_ptr = new SmartInfoHubPrivate;
     connect(&CallManager::instance(),
-            SIGNAL(SmartInfo(MapStringString)),
-            d_ptr,
-            SLOT(slotSmartInfo(MapStringString)),
+            &CallManagerInterface::SmartInfo,
+            this,
+            &SmartInfoHub::slotSmartInfo,
             Qt::QueuedConnection);
 }
 
@@ -64,13 +63,12 @@ SmartInfoHub::setRefreshTime(uint32_t timeMS)
 
 // Retrieve information from the map and implement all the variables
 void
-SmartInfoHubPrivate::slotSmartInfo(const MapStringString& map)
+SmartInfoHub::slotSmartInfo(const MapStringString& map)
 {
-    for (int i = 0; i < map.size(); i++) {
-        SmartInfoHubPrivate::m_information[map.keys().at(i)] = map[map.keys().at(i)];
-    }
+    for (int i = 0; i < map.size(); i++)
+        d_ptr->m_information[map.keys().at(i)] = map[map.keys().at(i)];
 
-    emit SmartInfoHub::instance().changed();
+    emit changed();
 }
 // Getter
 
