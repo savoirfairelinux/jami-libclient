@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccad46dd_a93d829f",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-29T19:16:11Z",
+      "side": 1,
+      "message": "Why checking? xcb_connect will fail if necessary (at least it should), this avoid to exec commands)",
+      "range": {
+        "startLine": 587,
+        "startChar": 15,
+        "endLine": 589,
+        "endChar": 19
+      },
+      "revId": "75f557c189b1055fc8f452d2d8ebbb662808a221",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da67d161_b5c8699f",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-29T19:16:11Z",
+      "side": 1,
+      "message": "xcb_disconnect must be used if we follow the doc",
+      "range": {
+        "startLine": 590,
+        "startChar": 26,
+        "endLine": 590,
+        "endChar": 37
+      },
+      "revId": "75f557c189b1055fc8f452d2d8ebbb662808a221",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43a2f0df_e2ef92ac",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-29T19:16:11Z",
+      "side": 1,
+      "message": "adds new warnings to the build",
+      "range": {
+        "startLine": 600,
+        "startChar": 13,
+        "endLine": 600,
+        "endChar": 44
+      },
+      "revId": "75f557c189b1055fc8f452d2d8ebbb662808a221",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
