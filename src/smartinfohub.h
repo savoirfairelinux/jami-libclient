@@ -19,6 +19,7 @@
 #pragma once
 
 #include <QObject>
+#include "typedefs.h"
 
 class SmartInfoHubPrivate;
 
@@ -51,6 +52,9 @@ public:
 Q_SIGNALS:
     /// Emitted when informations have changed
     void changed();
+
+private Q_SLOTS:
+    void slotSmartInfo(const MapStringString& info);
 
 private:
     // use to initialise the connection between the Qsignal and the lambda function
