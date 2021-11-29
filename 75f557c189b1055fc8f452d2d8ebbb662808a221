@@ -24,6 +24,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fabb2d8_4189afad",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 589,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-11-29T21:43:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccad46dd_a93d829f",
+      "range": {
+        "startLine": 587,
+        "startChar": 15,
+        "endLine": 589,
+        "endChar": 19
+      },
+      "revId": "75f557c189b1055fc8f452d2d8ebbb662808a221",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da67d161_b5c8699f",
@@ -47,6 +71,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48e1e757_b4b81c77",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 590,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-11-29T21:43:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da67d161_b5c8699f",
+      "range": {
+        "startLine": 590,
+        "startChar": 26,
+        "endLine": 590,
+        "endChar": 37
+      },
+      "revId": "75f557c189b1055fc8f452d2d8ebbb662808a221",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43a2f0df_e2ef92ac",
@@ -60,6 +108,30 @@
       "writtenOn": "2021-11-29T19:16:11Z",
       "side": 1,
       "message": "adds new warnings to the build",
+      "range": {
+        "startLine": 600,
+        "startChar": 13,
+        "endLine": 600,
+        "endChar": 44
+      },
+      "revId": "75f557c189b1055fc8f452d2d8ebbb662808a221",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a1a0eb2_a8043283",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2021-11-29T21:43:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43a2f0df_e2ef92ac",
       "range": {
         "startLine": 600,
         "startChar": 13,
