@@ -46,6 +46,10 @@
 #include "dbus/videomanager.h"
 #include "authority/storagehelper.h"
 
+#if defined(Q_OS_UNIX) && !defined(__APPLE__)
+#include <xcb/xcb.h>
+#endif
+
 namespace lrc {
 
 using namespace api;
@@ -538,6 +542,101 @@ AVModel::getRenderer(const QString& id) const
         throw std::out_of_range("Can't find renderer " + id.toStdString());
     }
     return *pimpl_->renderers_[id];
+}
+
+#if defined(Q_OS_UNIX) && !defined(__APPLE__)
+static xcb_atom_t
+getAtom(xcb_connection_t* c, const std::string& atomName)
+{
+    xcb_intern_atom_cookie_t atom_cookie = xcb_intern_atom(c, 0, atomName.size(), atomName.c_str());
+    if (auto* rep = xcb_intern_atom_reply(c, atom_cookie, nullptr)) {
+        xcb_atom_t atom = rep->atom;
+        free(rep);
+        return atom;
+    }
+    return {};
+}
+#endif
+
+const QVariantMap
+AVModel::getListWindows() const
+{
+    QMap<QString, QVariant> ret {};
+
+#if defined(Q_OS_UNIX) && !defined(__APPLE__)
+    std::unique_ptr<xcb_connection_t, void (*)(xcb_connection_t*)> c(xcb_connect(nullptr, nullptr),
+                                                                     [](xcb_connection_t* ptr) {
+                                                                         xcb_disconnect(ptr);
+                                                                     });
+
+    if (xcb_connection_has_error(c.get())) {
+        qDebug() << "xcb connection has error";
+        return ret;
+    }
+
+    auto atomNetClient = getAtom(c.get(), "_NET_CLIENT_LIST");
+    auto atomWMVisibleName = getAtom(c.get(), "_NET_WM_NAME");
+    if (!atomNetClient || !atomWMVisibleName)
+        return ret;
+
+    auto* screen = xcb_setup_roots_iterator(xcb_get_setup(c.get())).data;
+
+    xcb_get_property_cookie_t propCookieList = xcb_get_property(c.get(),
+                                                                0,
+                                                                screen->root,
+                                                                atomNetClient,
+                                                                XCB_GET_PROPERTY_TYPE_ANY,
+                                                                0,
+                                                                100);
+
+    using propertyPtr
+        = std::unique_ptr<xcb_get_property_reply_t, void (*)(xcb_get_property_reply_t*)>;
+
+    xcb_generic_error_t* e;
+    propertyPtr replyPropList(xcb_get_property_reply(c.get(), propCookieList, &e),
+                              [](auto* ptr) { free(ptr); });
+    if (e) {
+        qDebug() << "Error: " << e->error_code;
+        free(e);
+    }
+    if (replyPropList.get()) {
+        int valueLegth = xcb_get_property_value_length(replyPropList.get());
+        if (valueLegth) {
+            auto* win = static_cast<xcb_window_t*>(xcb_get_property_value(replyPropList.get()));
+            for (int i = 0; i < valueLegth / 4; i++) {
+                xcb_get_property_cookie_t prop_cookie = xcb_get_property(c.get(),
+                                                                         0,
+                                                                         win[i],
+                                                                         atomWMVisibleName,
+                                                                         XCB_GET_PROPERTY_TYPE_ANY,
+                                                                         0,
+                                                                         1000);
+                propertyPtr replyProp {xcb_get_property_reply(c.get(), prop_cookie, &e),
+                                       [](auto* ptr) {
+                                           free(ptr);
+                                       }};
+                if (e) {
+                    qDebug() << "Error: " << e->error_code;
+                    free(e);
+                }
+                if (replyProp.get()) {
+                    int valueLegth2 = xcb_get_property_value_length(replyProp.get());
+                    if (valueLegth2) {
+                        auto name = QString::fromUtf8(
+                            reinterpret_cast<char*>(xcb_get_property_value(replyProp.get())));
+                        name.truncate(valueLegth2);
+                        if (ret.find(name) != ret.end())
+                            name += QString(" - 0x%1").arg(win[i], 0, 16);
+                        ret.insert(name, QVariant(QString("0x%1").arg(win[i], 0, 16)));
+                    }
+                }
+            }
+        }
+    }
+    return ret;
+#else
+    return ret;
+#endif
 }
 
 void
