@@ -25,6 +25,7 @@ import net.jami.Adapters 1.1
 import net.jami.Constants 1.1
 
 import "../commoncomponents"
+import "../settingsview/components"
 
 ItemDelegate {
     id: root
@@ -130,7 +131,7 @@ ItemDelegate {
             opacity: enabled ? 1.0 : 0.5
         }
 
-        Switch {
+        ToggleSwitch {
             id: btnPreferenceSwitch
 
             visible: preferenceType === PreferenceItemDelegate.SWITCH
@@ -140,7 +141,7 @@ ItemDelegate {
             Layout.preferredWidth: 30
             checked: preferenceCurrentValue === "1"
 
-            onToggled: getNewPreferenceValueSlot(checked)
+            onSwitchToggled: getNewPreferenceValueSlot(checked)
             opacity: enabled ? 1.0 : 0.5
         }
 

@@ -94,7 +94,7 @@ ItemDelegate {
                 verticalAlignment: Text.AlignVCenter
             }
 
-            Switch {
+            ToggleSwitch {
                 id: loadSwitch
                 Layout.fillHeight: true
                 property bool isHovering: false
@@ -106,28 +106,9 @@ ItemDelegate {
                 ToolTip.text: qsTr("Load/Unload")
 
                 checked: isLoaded
-                onClicked: {
+                onSwitchToggled: {
                     btnLoadPluginToggled()
                     pluginListPreferencesView.isLoaded = root.isLoaded
-                }
-
-                background: Rectangle {
-                    id: switchBackground
-
-                    color: "transparent"
-                    MouseArea {
-                        id: btnMouseArea
-                        hoverEnabled: true
-                        onReleased: {
-                            loadSwitch.clicked()
-                        }
-                        onEntered: {
-                            loadSwitch.isHovering = true
-                        }
-                        onExited: {
-                            loadSwitch.isHovering = false
-                        }
-                    }
                 }
             }
 
