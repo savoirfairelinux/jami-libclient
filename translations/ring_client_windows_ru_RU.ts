@@ -1101,7 +1101,7 @@ Jami will now quit.</source>
         <location filename="../src/constant/JamiStrings.qml" line="208"/>
         <location filename="../src/constant/JamiStrings.qml" line="545"/>
         <source>Mute</source>
-        <translation type="unfinished"/>
+        <translation>Заглушить</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="209"/>
@@ -1992,7 +1992,7 @@ connects to synchronize the conversation.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Очистить</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="421"/>
@@ -2214,7 +2214,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="547"/>
         <source>Maximize</source>
-        <translation type="unfinished"/>
+        <translation>На весь экран</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="548"/>
@@ -2787,6 +2787,19 @@ Copy and share it with your friends!</source>
         <location filename="../src/settingsview/components/UserIdentity.qml" line="38"/>
         <source>Identity</source>
         <translation>Идентичность</translation>
+    </message>
+</context>
+<context>
+    <name>UtilsAdapter</name>
+    <message>
+        <location filename="../src/utilsadapter.cpp" line="249"/>
+        <source>%1 Mbps</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/utilsadapter.cpp" line="249"/>
+        <source>Default</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

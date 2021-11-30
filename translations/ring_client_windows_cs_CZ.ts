@@ -2790,4 +2790,17 @@ Zkopírujte je a sdílejte je se svými přáteli!</translation>
         <translation>Totožnost</translation>
     </message>
 </context>
+<context>
+    <name>UtilsAdapter</name>
+    <message>
+        <location filename="../src/utilsadapter.cpp" line="249"/>
+        <source>%1 Mbps</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/utilsadapter.cpp" line="249"/>
+        <source>Default</source>
+        <translation>Výchozí</translation>
+    </message>
+</context>
 </TS>

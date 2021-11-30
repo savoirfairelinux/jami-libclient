@@ -1133,22 +1133,22 @@ A Jami most kilép.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="219"/>
         <source>Participant is still muted on his local machine</source>
-        <translation type="unfinished"/>
+        <translation>Résztvevő továbbra elnémítva a helyi eszközén</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="220"/>
         <source>You are still muted on your local machine</source>
-        <translation type="unfinished"/>
+        <translation>Továbbra elnémítva a helyi eszközön</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="221"/>
         <source>You are still muted by moderator</source>
-        <translation type="unfinished"/>
+        <translation>Moderátor továbbra elnémította Önt</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="222"/>
         <source>You are muted by a moderator</source>
-        <translation type="unfinished"/>
+        <translation>Moderátor elnémította Önt</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="223"/>
@@ -1163,12 +1163,12 @@ A Jami most kilép.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="225"/>
         <source>Local and Moderator muted</source>
-        <translation type="unfinished"/>
+        <translation>Helyi és moderátor elnémítva</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="226"/>
         <source>Moderator muted</source>
-        <translation type="unfinished"/>
+        <translation>Moderátor elnémítva</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="227"/>
@@ -2792,6 +2792,19 @@ Másolja ki, és ossza meg barátaival!</translation>
         <location filename="../src/settingsview/components/UserIdentity.qml" line="38"/>
         <source>Identity</source>
         <translation>Személyazonosság</translation>
+    </message>
+</context>
+<context>
+    <name>UtilsAdapter</name>
+    <message>
+        <location filename="../src/utilsadapter.cpp" line="249"/>
+        <source>%1 Mbps</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/utilsadapter.cpp" line="249"/>
+        <source>Default</source>
+        <translation>Alapértelmezett</translation>
     </message>
 </context>
 </TS>

@@ -2788,4 +2788,17 @@ Deel deze met uw vrienden!</translation>
         <translation>Identiteit</translation>
     </message>
 </context>
+<context>
+    <name>UtilsAdapter</name>
+    <message>
+        <location filename="../src/utilsadapter.cpp" line="249"/>
+        <source>%1 Mbps</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/utilsadapter.cpp" line="249"/>
+        <source>Default</source>
+        <translation>Standaard</translation>
+    </message>
+</context>
 </TS>

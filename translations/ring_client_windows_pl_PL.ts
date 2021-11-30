@@ -2788,4 +2788,17 @@ Skopiuj i podziel się nią z przyjaciółmi!</translation>
         <translation>Tożsamość</translation>
     </message>
 </context>
+<context>
+    <name>UtilsAdapter</name>
+    <message>
+        <location filename="../src/utilsadapter.cpp" line="249"/>
+        <source>%1 Mbps</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/utilsadapter.cpp" line="249"/>
+        <source>Default</source>
+        <translation>Wartość domyślna</translation>
+    </message>
+</context>
 </TS>
