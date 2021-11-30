@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93133591_54d97ef5",
+        "filename": "src/api/avmodel.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-30T21:56:50Z",
+      "side": 1,
+      "message": "const",
+      "range": {
+        "startLine": 261,
+        "startChar": 20,
+        "endLine": 261,
+        "endChar": 33
+      },
+      "revId": "d981d57721f2ff57bf7bd131278a367e4796d73a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1413af5_09dc7d61",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-30T21:56:50Z",
+      "side": 1,
+      "message": "avoid old C style in cpp, just auto atom_cookie \u003d",
+      "range": {
+        "startLine": 551,
+        "startChar": 8,
+        "endLine": 553,
+        "endChar": 7
+      },
+      "revId": "d981d57721f2ff57bf7bd131278a367e4796d73a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b192992_bae23a13",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-30T21:56:50Z",
+      "side": 1,
+      "message": "base a const std::string\u0026 to avoid string constant to char* and old strlen",
+      "range": {
+        "startLine": 555,
+        "startChar": 41,
+        "endLine": 555,
+        "endChar": 57
+      },
+      "revId": "d981d57721f2ff57bf7bd131278a367e4796d73a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e81f2c7_ef5b8a36",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-30T21:56:50Z",
+      "side": 1,
+      "message": "if (!rep)",
+      "range": {
+        "startLine": 557,
+        "startChar": 4,
+        "endLine": 557,
+        "endChar": 22
+      },
+      "revId": "d981d57721f2ff57bf7bd131278a367e4796d73a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0787e5a_cd678f25",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-30T21:56:50Z",
+      "side": 1,
+      "message": "/home/amarok/Projects/jami/lrc/src/avmodel.cpp: In function ‘xcb_atom_t lrc::getatom(xcb_connection_t*, char*)’:\n/home/amarok/Projects/jami/lrc/src/avmodel.cpp:562:12: warning: converting to non-pointer type ‘xcb_atom_t’ {aka ‘unsigned int’} from NULL [-Wconversion-null]\n  562 |     return NULL;\n      |            ^~~~\n/home/amarok/Projects/jami/lrc/src/avmodel.cpp: In member function ‘QVariantMap lrc::api::AVModel::getListWindows()’:\n/home/amarok/Projects/jami/lrc/src/avmodel.cpp:581:34: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]\n  581 |     atom_net_client \u003d getatom(c, \"_NET_CLIENT_LIST\");\n      |                                  ^~~~~~~~~~~~~~~~~~\n/home/amarok/Projects/jami/lrc/src/avmodel.cpp:582:39: warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]\n  582 |     atom_wm_visible_name \u003d getatom(c, \"_NET_WM_NAME\");",
+      "range": {
+        "startLine": 562,
+        "startChar": 0,
+        "endLine": 562,
+        "endChar": 16
+      },
+      "revId": "d981d57721f2ff57bf7bd131278a367e4796d73a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5484557_7592b8d0",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-30T21:56:50Z",
+      "side": 1,
+      "message": "QString::fromUtf8(reinterpret_cast\u003cchar*\u003e(xcb_get_property_value(reply_prop)));",
+      "range": {
+        "startLine": 621,
+        "startChar": 36,
+        "endLine": 621,
+        "endChar": 88
+      },
+      "revId": "d981d57721f2ff57bf7bd131278a367e4796d73a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e831f1e_dbc9eceb",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-30T21:56:50Z",
+      "side": 1,
+      "message": "This is error prone, in cpp we can use deleters and replace manual free by auto deleters\n\ncf conversationrepository in the daemon for example\n\nlike: using ReplyT \u003d std::unique_ptr\u003cxcb_get_property_reply_t, void (*)(xcb_get_property_reply_t*)\u003e;",
+      "range": {
+        "startLine": 628,
+        "startChar": 20,
+        "endLine": 628,
+        "endChar": 37
+      },
+      "revId": "d981d57721f2ff57bf7bd131278a367e4796d73a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f5918fe_87460c1c",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-11-30T21:56:50Z",
+      "side": 1,
+      "message": "if xcb_connection_t* is stored in a unique ptr this can be automated and avoid errors",
+      "range": {
+        "startLine": 634,
+        "startChar": 4,
+        "endLine": 634,
+        "endChar": 18
+      },
+      "revId": "d981d57721f2ff57bf7bd131278a367e4796d73a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
