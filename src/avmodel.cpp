@@ -49,6 +49,10 @@
 #if defined(Q_OS_UNIX) && !defined(__APPLE__)
 #include <xcb/xcb.h>
 #endif
+#ifdef WIN32
+#include "Windows.h"
+#include <tchar.h>
+#endif
 
 namespace lrc {
 
@@ -563,6 +567,59 @@ getatom(xcb_connection_t* c, char* atom_name)
 }
 #endif
 
+#ifdef WIN32
+BOOL
+IsAltTabWindow(HWND hwnd)
+{
+    // Start at the root owner
+    HWND hwndWalk = GetAncestor(hwnd, GA_ROOTOWNER);
+
+    // See if we are the last active visible popup
+    HWND hwndTry;
+    while ((hwndTry = GetLastActivePopup(hwndWalk)) != hwndTry) {
+        if (IsWindowVisible(hwndTry))
+            break;
+        hwndWalk = hwndTry;
+    }
+    return hwndWalk == hwnd;
+}
+
+BOOL CALLBACK
+CbEnumAltTab(HWND hwnd, LPARAM lParam)
+{
+    // Do not show invisible windows
+    if (!IsWindowVisible(hwnd))
+        return TRUE;
+
+    // Alt-tab test as described by Raymond Chen
+    if (!IsAltTabWindow(hwnd))
+        return TRUE;
+
+    const size_t MAX_WINDOW_NAME = 256;
+    TCHAR windowName[MAX_WINDOW_NAME];
+    if (hwnd == GetShellWindow())
+        _tcscpy_s(windowName, MAX_WINDOW_NAME, _T("Desktop")); // Beware of localization
+    else
+        GetWindowText(hwnd, windowName, MAX_WINDOW_NAME);
+
+    // Do not show windows that has no caption
+    if (0 == windowName[0])
+        return TRUE;
+
+    std::wstring msg = std::wstring(windowName);
+    auto name = QString::fromStdWString(msg);
+    QMap<QString, QVariant>* windowList = reinterpret_cast<QMap<QString, QVariant>*>(lParam);
+    auto keys = windowList->keys();
+    if (keys.indexOf(name) > 0) {
+        return FALSE;
+    } else {
+        windowList->insert(name, name);
+    }
+
+    return TRUE;
+}
+#endif
+
 QVariantMap
 AVModel::getListWindows()
 {
@@ -633,9 +690,20 @@ AVModel::getListWindows()
     }
     xcb_disconnect(c);
     return ret;
-#else
+#endif
+#ifdef WIN32
+    try {
+        auto newWindow = true;
+        LPARAM lParam = reinterpret_cast<LPARAM>(&ret);
+        while (newWindow) {
+            newWindow = EnumWindows(CbEnumAltTab, lParam);
+        }
+        auto finishedloop = true;
+    } catch (...) {
+    }
     return ret;
 #endif
+    return ret;
 }
 
 void

@@ -842,10 +842,19 @@ QString
 NewCallModel::getDisplay(const QString& windowId)
 {
     QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+#if (defined(Q_OS_UNIX) && !defined(__APPLE__))
     return QString("%1%2:+0,0 window-id:%3")
         .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
         .arg(sep)
         .arg(windowId);
+#endif
+#ifdef WIN32
+    return QString("%1%2:+0,0 window-id:title=%3")
+        .arg(DRing::Media::VideoProtocolPrefix::DISPLAY)
+        .arg(sep)
+        .arg(windowId);
+#endif
+    return {};
 }
 
 void
