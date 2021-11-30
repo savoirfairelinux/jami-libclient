@@ -105,7 +105,7 @@ Rectangle {
 
     function startRecording() {
         timer.start()
-        pathRecorder = AVModel.startLocalMediaRecorder(VideoDevices.getDefaultDevice())
+        pathRecorder = AVModel.startLocalMediaRecorder(isVideo? VideoDevices.getDefaultDevice() : "")
         if (pathRecorder == "") {
             timer.stop()
         }
