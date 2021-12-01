@@ -142,6 +142,10 @@ ItemDelegate {
                 }
             }
         }
+
+        Accessible.role: Accessible.Button
+        Accessible.name: Title === undefined? "" : Title
+        Accessible.description: LastInteraction === undefined? "" : LastInteraction
     }
 
     background: Rectangle {

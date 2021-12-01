@@ -58,6 +58,10 @@ Button {
 
     focusPolicy: Qt.TabFocus
 
+    Accessible.role: Accessible.Button
+    Accessible.name: root.text
+    Accessible.description: toolTipText
+
     MaterialToolTip {
         id: toolTip
 

@@ -79,6 +79,10 @@ AbstractButton {
     hoverEnabled: true
     focusPolicy: Qt.TabFocus
 
+    Accessible.role: Accessible.Button
+    Accessible.name: buttonText
+    Accessible.description: toolTipText
+
     MaterialToolTip {
         id: toolTip
 

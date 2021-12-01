@@ -66,6 +66,10 @@ RowLayout {
         ToolTip.visible: hovered && (tooltipText.length > 0)
         ToolTip.text: tooltipText
 
+        Accessible.role: Accessible.Button
+        Accessible.name: root.labelText
+        Accessible.description: root.tooltipText
+
         onToggled: {
             switchToggled()
         }
