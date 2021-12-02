@@ -70,6 +70,9 @@ Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb, bool muteD
 #ifndef ENABLE_LIBWRAP
     // Replace locale for timestamps
     std::locale::global(std::locale(""));
+#else
+    if (!getenv("JAMI_DISABLE_SHM"))
+        setenv("JAMI_DISABLE_SHM", "1", true);
 #endif
     // Ensure Daemon is running/loaded (especially on non-DBus platforms)
     // before instantiating LRC and its members
