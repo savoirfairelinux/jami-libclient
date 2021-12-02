@@ -71,8 +71,10 @@ Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb, bool muteD
     // Replace locale for timestamps
     std::locale::global(std::locale(""));
 #else
+#ifdef Q_OS_LINUX
     if (!getenv("JAMI_DISABLE_SHM"))
         setenv("JAMI_DISABLE_SHM", "1", true);
+#endif
 #endif
     // Ensure Daemon is running/loaded (especially on non-DBus platforms)
     // before instantiating LRC and its members
