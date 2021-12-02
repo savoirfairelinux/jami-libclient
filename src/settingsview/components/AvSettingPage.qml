@@ -32,10 +32,6 @@ Rectangle {
     property int contentWidth: avSettingsColumnLayout.width
     property int preferredHeight: avSettingsColumnLayout.implicitHeight
 
-    function populateAVSettings() {
-        audioSettings.populateAudioSettings()
-    }
-
     color: JamiTheme.secondaryBackgroundColor
 
     ColumnLayout {
