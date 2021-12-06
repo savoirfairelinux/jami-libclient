@@ -82,7 +82,7 @@ Rectangle {
     }
 
     function closeContextMenuAndRelatedWindows() {
-        callOverlay.closePotentialContactPicker()
+        callOverlay.closeContextMenuAndRelatedWindows()
     }
 
     function handleParticipantsInfo(infos) {

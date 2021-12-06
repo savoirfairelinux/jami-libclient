@@ -84,11 +84,10 @@ Item {
         onHoldImage.visible = visible
     }
 
-    function closePotentialContactPicker() {
+    function closeContextMenuAndRelatedWindows() {
         ContactPickerCreation.closeContactPicker()
-    }
-
-    function closePotentialPluginHandlerPicker() {
+        SelectScreenWindowCreation.destroySelectScreenWindow()
+        ScreenRubberBandCreation.destroyScreenRubberBandWindow()
         PluginHandlerPickerCreation.closePluginHandlerPicker()
     }
 
