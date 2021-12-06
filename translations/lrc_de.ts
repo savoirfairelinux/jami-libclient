@@ -120,8 +120,8 @@
         <translation>Einladung angenommen</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="342"/>
-        <location filename="../src/avmodel.cpp" line="361"/>
+        <location filename="../src/avmodel.cpp" line="346"/>
+        <location filename="../src/avmodel.cpp" line="365"/>
         <source>default</source>
         <translation>Standard</translation>
     </message>

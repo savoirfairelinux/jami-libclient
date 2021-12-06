@@ -122,8 +122,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="342"/>
-        <location filename="../src/avmodel.cpp" line="361"/>
+        <location filename="../src/avmodel.cpp" line="346"/>
+        <location filename="../src/avmodel.cpp" line="365"/>
         <source>default</source>
         <translation type="unfinished"></translation>
     </message>

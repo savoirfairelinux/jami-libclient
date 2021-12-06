@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>Stik je zapustil pogovor</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
@@ -120,8 +120,8 @@
         <translation>Povabilo je potrjeno</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="342"/>
-        <location filename="../src/avmodel.cpp" line="361"/>
+        <location filename="../src/avmodel.cpp" line="346"/>
+        <location filename="../src/avmodel.cpp" line="365"/>
         <source>default</source>
         <translation>privzeto</translation>
     </message>
@@ -415,7 +415,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Pokaži razpoložljive vstavke</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
@@ -455,7 +455,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Add emoji</source>
-        <translation type="unfinished"/>
+        <translation>Dodaj emoji</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -470,32 +470,32 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>Kopiraj med prenose</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Piši stiku {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>vam je poslal(a) zahtevo za pogovor.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Pozdravljeni, se želite pridružiti pogovoru?</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Sprejeli ste zahtevo za pogovor.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Čakamo, da druga naprava sinhronizira pogovor.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
@@ -510,22 +510,22 @@
     <message>
         <location filename="../src/chatview.cpp" line="71"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>Stika ni mogoče vzpostaviti</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="76"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Čakanje na stik</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="77"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Dohodni prenos</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="78"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Čas čakanja na stik je pretekel</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
@@ -570,7 +570,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="75"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>V teku</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
@@ -633,7 +633,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="1002"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Uporabniškega imena ni mogoče najti</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="1005"/>
