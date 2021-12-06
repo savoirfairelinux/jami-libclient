@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f7019cac_ed47c21b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-12-06T14:08:54Z",
+      "side": 1,
+      "message": "good catch. thanks",
+      "parentUuid": "65e8e33a_95ca6875",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "c01294175b1b942c442e0e6ae51be04afa4364c1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "8725d180_dd404fa0",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -101,6 +125,30 @@
       "writtenOn": "2021-11-29T14:59:17Z",
       "side": 1,
       "message": "Ack",
+      "parentUuid": "e6e95a8a_b7f871f4",
+      "range": {
+        "startLine": 425,
+        "startChar": 12,
+        "endLine": 440,
+        "endChar": 13
+      },
+      "revId": "c01294175b1b942c442e0e6ae51be04afa4364c1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "374ed14a_bce7ff2b",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-12-06T14:08:54Z",
+      "side": 1,
+      "message": "I did my best to factorize this code in the context of the scope of this patch. However, the code can be further simplified and improved.",
       "parentUuid": "e6e95a8a_b7f871f4",
       "range": {
         "startLine": 425,
