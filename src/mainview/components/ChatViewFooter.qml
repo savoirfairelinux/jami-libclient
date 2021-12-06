@@ -89,11 +89,6 @@ Rectangle {
 
         visible: false
     }
-    onVisibleChanged: {
-        if (!visible) {
-            recordBox.visible = false
-        }
-    }
 
     EmojiPicker {
         id: emojiPicker

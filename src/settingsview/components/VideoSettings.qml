@@ -32,12 +32,14 @@ ColumnLayout {
     id: root
 
     property real aspectRatio: 0.75
+    property bool previewAvailable: false
     property int itemWidth
 
     function startPreviewing(force = false) {
         if (root.visible) {
             previewWidget.deviceId = VideoDevices.getDefaultDevice()
             previewWidget.rendererId = VideoDevices.startDevice(previewWidget.deviceId, force)
+            previewAvailable = true
         }
     }
 
@@ -194,7 +196,7 @@ ColumnLayout {
 
         onSwitchToggled: {
             AvAdapter.setHardwareAcceleration(checked)
-            startPreviewing()
+            startPreviewing(true)
         }
     }
 
@@ -228,18 +230,11 @@ ColumnLayout {
                 maskSource: rectBox
             }
         }
-
-        onVisibleChanged: {
-            if (visible) {
-                VideoDevices.stopDevice(previewWidget.deviceId)
-                startPreviewing(true)
-            } else
-                VideoDevices.stopDevice(previewWidget.deviceId)
-        }
     }
-    
+
     Label {
-        visible: VideoDevices.listSize === 0
+        // TODO: proper use of previewAvailable
+        visible: !previewAvailable
 
         Layout.fillWidth: true
         Layout.preferredHeight: JamiTheme.preferredFieldHeight
@@ -248,7 +243,6 @@ ColumnLayout {
         text: JamiStrings.previewUnavailable
         font.pointSize: JamiTheme.settingsFontSize
         font.kerning: true
-        color: JamiTheme.primaryForegroundColor
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter

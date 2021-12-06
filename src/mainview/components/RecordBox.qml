@@ -41,6 +41,7 @@ Rectangle {
     property int duration: 0
     property int state: RecordBox.States.INIT
     property bool isVideo: false
+    property bool previewAvailable: false
     property int preferredWidth: 320
     property int preferredHeight: 240
     property int btnSize: 40
@@ -60,6 +61,7 @@ Rectangle {
         if (isVideo) {
             previewWidget.deviceId = VideoDevices.getDefaultDevice()
             previewWidget.rendererId = VideoDevices.startDevice(previewWidget.deviceId)
+            previewAvailable = true
         }
     }
 
@@ -241,7 +243,7 @@ Rectangle {
 
         anchors.fill: parent
 
-        visible: (isVideo && VideoDevices.listSize !== 0) 
+        visible: (isVideo && previewAvailable)
         color: JamiTheme.blackColor
         radius: 5
 
@@ -260,13 +262,6 @@ Rectangle {
                 maskSource: rectBox
             }
         }
-
-        onVisibleChanged: {
-            if (visible) {
-                openRecorder(true)
-            } else
-                VideoDevices.stopDevice(previewWidget.deviceId)
-        }
     }
 
     Label {
@@ -274,14 +269,11 @@ Rectangle {
 
         width: root.width
 
-        visible: (isVideo && VideoDevices.listSize === 0)
+        visible: (isVideo && !previewAvailable)
 
-        text: JamiStrings.previewUnavailable
-        font.pointSize: JamiTheme.settingsFontSize
+        text: qsTr("Preview unavailable")
+        font.pointSize: 10
         font.kerning: true
-        color: JamiTheme.primaryForegroundColor
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
     }
 
     Timer {

@@ -30,26 +30,12 @@ ColumnLayout {
     id:root
 
     property int itemWidth
-    property int videoDevicesListSize: VideoDevices.listSize
 
     enum Setting {
         AUDIOINPUT,
         AUDIOOUTPUT,
         RINGTONEDEVICE,
         AUDIOMANAGER
-    }
-
-    onVisibleChanged: {
-        if (visible)
-            populateAudioSettings()
-    }
-
-    onVideoDevicesListSizeChanged: {
-        AvAdapter.stopAudioMeter()
-        var selectedAudioManager = inputComboBoxSetting.comboModel.data(
-                    inputComboBoxSetting.comboModel.index(inputComboBoxSetting.modelIndex, 0), AudioDeviceModel.RawDeviceName)
-        AVModel.setInputDevice(selectedAudioManager)
-        AvAdapter.startAudioMeter()
     }
 
     function populateAudioSettings() {
