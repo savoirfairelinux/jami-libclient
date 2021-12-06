@@ -53,8 +53,8 @@ PreviewRenderer::paint(QPainter* painter)
 
             auto aspectRatio = static_cast<qreal>(previewImage->width())
                                / static_cast<qreal>(previewImage->height());
-            auto previewHeight = height();
-            auto previewWidth = previewHeight * aspectRatio;
+            auto previewHeight = aspectRatio < 1 ? height() : width() / aspectRatio;
+            auto previewWidth = aspectRatio < 1 ? previewHeight * aspectRatio : width();
 
             /* Instead of setting fixed size, we could get an x offset for the preview
              * but this would render the horizontal spacers in the parent widget useless.
