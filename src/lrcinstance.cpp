@@ -151,13 +151,13 @@ LRCInstance::hasActiveCall(bool withVideo)
         for (const auto& accountId : accountList) {
             auto& accountInfo = accountModel().getAccountInfo(accountId);
             if (withVideo) {
-                if (accountInfo.callModel->hasCall(callId))
-                    return true;
-            } else {
                 if (accountInfo.callModel->hasCall(callId)) {
                     auto call = accountInfo.callModel->getCall(callId);
                     result |= !(call.isAudioOnly || call.videoMuted);
                 }
+            } else {
+                if (accountInfo.callModel->hasCall(callId))
+                    return true;
             }
         }
     }
