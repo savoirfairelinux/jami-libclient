@@ -20,6 +20,38 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# Here we let find_package(<PackageName>...) try to find Qt 6,
+# If it is found, find_package will succeed, and the CMake variable
+# QT_VERSION_MAJOR will be defined 6.
+find_package(QT NAMES Qt6 REQUIRED)
+if (${QT_VERSION_MAJOR} STRLESS 6)
+    if (${QT_VERSION_MINOR} STRLESS 2)
+        message(FATAL_ERROR "Qt 6.2 or higher is required." )
+    endif()
+endif()
+set(QT_MODULES
+    Quick
+    Network
+    NetworkAuth
+    Svg
+    Gui
+    Qml
+    QmlModels
+    Positioning
+    Sql
+    Concurrent
+    Core
+    Core5Compat
+    WebEngineCore
+    WebEngineQuick
+    WebChannel
+    WebEngineWidgets
+)
+find_package(Qt6 COMPONENTS ${QT_MODULES} REQUIRED)
+foreach(MODULE ${QT_MODULES})
+  list(APPEND QT_LIBS "Qt::${MODULE}")
+endforeach()
+
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS})
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH true)
@@ -108,7 +140,8 @@ set(COMMON_SOURCES
     ${SRC_DIR}/currentconversation.cpp
     ${SRC_DIR}/currentaccount.cpp
     ${SRC_DIR}/videodevices.cpp
-    ${SRC_DIR}/previewengine.cpp)
+    ${SRC_DIR}/previewengine.cpp
+)
 
 set(COMMON_HEADERS
     ${SRC_DIR}/avatarimageprovider.h
@@ -165,62 +198,21 @@ set(COMMON_HEADERS
     ${SRC_DIR}/currentconversation.h
     ${SRC_DIR}/currentaccount.h
     ${SRC_DIR}/videodevices.h
-    ${SRC_DIR}/previewengine.h)
-
-set(QML_LIBS
-    Qt::Quick
-    Qt::Network
-    Qt::NetworkAuth
-    Qt::Svg
-    Qt::Gui
-    Qt::Qml
-    Qt::QmlModels
-    Qt::Positioning
-    Qt::Sql
-    Qt::Concurrent
-    Qt::Core
-    Qt::Core5Compat
-    Qt::WebEngineCore
-    Qt::WebEngineQuick
-    Qt::WebChannel
-    Qt::WebEngineWidgets)
-
-set(QML_LIBS_LIST
-    Quick
-    Network
-    NetworkAuth
-    Svg
-    Gui
-    Qml
-    QmlModels
-    Positioning
-    Sql
-    Concurrent
-    Core
-    Core5Compat
-    WebEngineCore
-    WebEngineQuick
-    WebChannel
-    WebEngineWidgets)
-
-set(WINDOWS_SYS_LIBS Shell32.lib
-                     Ole32.lib
-                     Advapi32.lib
-                     Shlwapi.lib
-                     User32.lib
-                     Gdi32.lib
-                     Crypt32.lib
-                     Strmiids.lib)
-
-# Here we let find_package(<PackageName>...) try to find Qt 6,
-# If it is found, find_package will succeed, and the CMake variable
-# QT_VERSION_MAJOR will be defined 6.
-find_package(QT NAMES Qt6 COMPONENTS ${QML_LIBS_LIST} REQUIRED)
-if (${QT_VERSION_MAJOR} STRLESS 6)
-   message(FATAL_ERROR "We currently only support Qt6" )
-endif()
+    ${SRC_DIR}/previewengine.h
+)
 
 if(MSVC)
+    set(WINDOWS_SYS_LIBS
+        Shell32.lib
+        Ole32.lib
+        Advapi32.lib
+        Shlwapi.lib
+        User32.lib
+        Gdi32.lib
+        Crypt32.lib
+        Strmiids.lib
+    )
+
     list(APPEND COMMON_SOURCES
                 ${SRC_DIR}/connectivitymonitor.cpp)
     # preprocessor defines
@@ -229,18 +221,25 @@ if(MSVC)
     # dependencies
     set(LRC ${PROJECT_SOURCE_DIR}/../lrc)
     set(DRING ${PROJECT_SOURCE_DIR}/../daemon)
-    set(QRENCODE ${PROJECT_SOURCE_DIR}/qrencode-win32/qrencode-win32)
+    set(QRENCODE_DIR ${PROJECT_SOURCE_DIR}/3rdparty/qrencode-win32/qrencode-win32)
 
     # compiler options
     add_compile_options(/wd4068 /wd4099 /wd4189 /wd4267 /wd4577 /wd4467 /wd4715 /wd4828)
-    add_compile_options(/MP /GS /W3 /Gy /Zc:wchar_t /Zi /Gm- /O2 /Zc:inline /fp:precise /errorReport:prompt)
-    add_compile_options(/Gd /Oi /MD /std:c++17 /FC /EHsc /nologo /sdl)
+    add_compile_options(/MP /GS /W3 /Gy /Zc:wchar_t /Zi /Gm- /O2 /Zc:inline /fp:precise)
+    add_compile_options(/Gd /Oi /MD /FC /EHsc /nologo /sdl)
 
     # linker options
-    add_link_options("/IGNORE:4006,4049,4078,4098" "/FORCE:MULTIPLE" "/INCREMENTAL:NO" "/DEBUG" "/LTCG" "/NODEFAULTLIB:LIBCMT")
+    add_link_options(
+        "/IGNORE:4006,4049,4078,4098"
+        "/FORCE:MULTIPLE"
+        "/INCREMENTAL:NO"
+        "/DEBUG"
+        "/LTCG"
+        "/NODEFAULTLIB:LIBCMT"
+    )
 
     # client deps
-    set(QRENCODE_LIB ${QRENCODE}/vc8/qrcodelib/x64/Release-Lib/qrcodelib.lib)
+    set(QRENCODE_LIB ${QRENCODE_DIR}/vc8/qrcodelib/x64/Release-Lib/qrcodelib.lib)
 
     # lrc
     set(LRC_SRC_PATH ${LRC}/src)
@@ -252,24 +251,20 @@ if(MSVC)
     set(DRING_LIB ${DRING}/build/x64/ReleaseLib_win32/bin/jami.lib)
     set(GNUTLS_LIB ${DRING}/contrib/msvc/lib/x64/libgnutls.lib)
 
-    # ReleaseCompile config
-    if(ReleaseCompile)
-        message("ReleaseCompile config enabled")
-        add_definitions(-DCOMPILE_ONLY)
+    # Beta config
+    if(BETA)
+        message(STATUS "Beta config enabled")
+        add_definitions(-DBETA)
+        set(JAMI_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/x64/Beta)
     else()
-        # Beta config
-        if(BETA)
-            message("Beta config enabled")
-            add_definitions(-DBETA)
-            set(JAMI_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/x64/Beta)
-        else()
-            set(JAMI_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/x64/Release)
-        endif()
+        set(JAMI_OUTPUT_DIRECTORY_RELEASE ${PROJECT_SOURCE_DIR}/x64/Release)
     endif()
 
-    include_directories(${DRING_SRC_PATH}
-                        ${LRC_SRC_PATH}
-                        ${QRENCODE})
+    include_directories(
+        ${DRING_SRC_PATH}
+        ${LRC_SRC_PATH}
+        ${QRENCODE_DIR}
+    )
 elseif (NOT APPLE)
     list(APPEND COMMON_SOURCES
                 ${SRC_DIR}/xrectsel.c
@@ -278,8 +273,8 @@ elseif (NOT APPLE)
     list(APPEND COMMON_HEADERS
                 ${SRC_DIR}/dbuserrorhandler.h
                 ${SRC_DIR}/xrectsel.h)
-    list(APPEND QML_LIBS Qt::DBus)
-    list(APPEND QML_LIBS_LIST DBus)
+    list(APPEND QT_LIBS Qt::DBus)
+    list(APPEND QT_MODULES DBus)
 
     find_package(PkgConfig REQUIRED)
 
@@ -401,13 +396,13 @@ endif()
 # Qt find package
 if(QT6_VER AND QT6_PATH)
     message(STATUS "Using custom Qt version")
-    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QML_LIBS_LIST}
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_MODULES}
                  PATHS ${QT6_PATH} NO_DEFAULT_PATH)
     # Linguist tools is not required.
     find_package(Qt${QT_VERSION_MAJOR} COMPONENTS LinguistTools
                  PATHS ${QT6_PATH} NO_DEFAULT_PATH)
 else()
-    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QML_LIBS_LIST})
+    find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_MODULES})
     find_package(Qt${QT_VERSION_MAJOR}LinguistTools)
 endif()
 
@@ -429,7 +424,7 @@ if(MSVC)
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
 
     target_link_libraries(${PROJECT_NAME} PRIVATE
-                          ${QML_LIBS}
+                          ${QT_LIBS}
                           ${QRENCODE_LIB}
                           ${WINDOWS_SYS_LIBS})
 
@@ -439,72 +434,70 @@ if(MSVC)
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${JAMI_OUTPUT_DIRECTORY_RELEASE}"
     )
 
-    if(NOT DEFINED ReleaseCompile)
-        # executable icon
-        target_sources(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/ico.rc)
+    # executable icon
+    target_sources(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/ico.rc)
 
-        target_link_libraries(${PROJECT_NAME} PRIVATE
-                              ${RINGCLIENT_STATIC_LIB}
-                              ${QTWRAPPER_LIB}
-                              ${DRING_LIB}
-                              ${GNUTLS_LIB})
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+                          ${RINGCLIENT_STATIC_LIB}
+                          ${QTWRAPPER_LIB}
+                          ${DRING_LIB}
+                          ${GNUTLS_LIB})
 
-        # translations
-        if(Qt${QT_VERSION_MAJOR}LinguistTools_FOUND)
-            message("Releasing and copying translation files")
-            file(MAKE_DIRECTORY "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/ring/translations/")
-            file(MAKE_DIRECTORY "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/libringclient/translations/")
-            file(GLOB TS_CLIENT_FILES ${PROJECT_SOURCE_DIR}/translations/*.ts)
-            file(GLOB TS_LRC_FILES ${LRC}/translations/*.ts)
-            set_source_files_properties(${TS_CLIENT_FILES} PROPERTIES OUTPUT_LOCATION
-                                        "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/ring/translations")
-            set_source_files_properties(${TS_LRC_FILES} PROPERTIES OUTPUT_LOCATION
-                                        "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/libringclient/translations")
+    # translations
+    if(Qt${QT_VERSION_MAJOR}LinguistTools_FOUND)
+        message("Releasing and copying translation files")
+        file(MAKE_DIRECTORY "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/ring/translations/")
+        file(MAKE_DIRECTORY "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/libringclient/translations/")
+        file(GLOB TS_CLIENT_FILES ${PROJECT_SOURCE_DIR}/translations/*.ts)
+        file(GLOB TS_LRC_FILES ${LRC}/translations/*.ts)
+        set_source_files_properties(${TS_CLIENT_FILES} PROPERTIES OUTPUT_LOCATION
+                                    "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/ring/translations")
+        set_source_files_properties(${TS_LRC_FILES} PROPERTIES OUTPUT_LOCATION
+                                    "${JAMI_OUTPUT_DIRECTORY_RELEASE}/share/libringclient/translations")
 
-            qt_add_translation(QM_CLIENT_FILES ${TS_CLIENT_FILES})
-            qt_add_translation(QM_LRC_FILES ${TS_LRC_FILES})
-            target_sources(${PROJECT_NAME} PRIVATE ${QM_CLIENT_FILES})
-            target_sources(${PROJECT_NAME} PRIVATE ${QM_LRC_FILES})
-        endif()
-
-        # POST_BUILD steps
-
-        # check time stamp
-        set(TIME_STAMP_FILE ".deploy.stamp")
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                           WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
-                           COMMAND ${CMAKE_COMMAND} -DTIME_STAMP_FILE=${TIME_STAMP_FILE}
-                                   -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/time_stamp_check.cmake)
-
-        # copy runtime files and run windeployqt on target and deploy Qt libs
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                           WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
-                           COMMAND ${CMAKE_COMMAND} -DTIME_STAMP_FILE=${TIME_STAMP_FILE}
-                                   -DCOPY_TO_PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>
-                                   -DDRING_PATH=${DRING}
-                                   -DPROJECT_ROOT_DIR=${PROJECT_SOURCE_DIR}
-                                   -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/windows_daemon_deploy.cmake)
-
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                           WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
-                           COMMAND ${CMAKE_COMMAND} -DTIME_STAMP_FILE=${TIME_STAMP_FILE}
-                                   -DWIN_DEPLOY_QT_PATH=${CMAKE_PREFIX_PATH}/bin
-                                   -DQML_SRC_DIR=${SRC_DIR}
-                                   -DEXE_NAME=$<TARGET_FILE:${PROJECT_NAME}>
-                                   -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/windows_qt_deploy.cmake)
-
-        # create time stamp
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                           WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
-                           COMMAND ${CMAKE_COMMAND} -DTIME_STAMP_FILE=${TIME_STAMP_FILE}
-                                   -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/time_stamp_create.cmake)
+        qt_add_translation(QM_CLIENT_FILES ${TS_CLIENT_FILES})
+        qt_add_translation(QM_LRC_FILES ${TS_LRC_FILES})
+        target_sources(${PROJECT_NAME} PRIVATE ${QM_CLIENT_FILES})
+        target_sources(${PROJECT_NAME} PRIVATE ${QM_LRC_FILES})
     endif()
+
+    # POST_BUILD steps
+
+    # check time stamp
+    set(TIME_STAMP_FILE ".deploy.stamp")
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                       WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+                       COMMAND ${CMAKE_COMMAND} -DTIME_STAMP_FILE=${TIME_STAMP_FILE}
+                               -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/time_stamp_check.cmake)
+
+    # copy runtime files and run windeployqt on target and deploy Qt libs
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                       WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+                       COMMAND ${CMAKE_COMMAND} -DTIME_STAMP_FILE=${TIME_STAMP_FILE}
+                               -DCOPY_TO_PATH=$<TARGET_FILE_DIR:${PROJECT_NAME}>
+                               -DDRING_PATH=${DRING}
+                               -DPROJECT_ROOT_DIR=${PROJECT_SOURCE_DIR}
+                               -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/windows_daemon_deploy.cmake)
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                       WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+                       COMMAND ${CMAKE_COMMAND} -DTIME_STAMP_FILE=${TIME_STAMP_FILE}
+                               -DWIN_DEPLOY_QT_PATH=${CMAKE_PREFIX_PATH}/bin
+                               -DQML_SRC_DIR=${SRC_DIR}
+                               -DEXE_NAME=$<TARGET_FILE:${PROJECT_NAME}>
+                               -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/windows_qt_deploy.cmake)
+
+    # create time stamp
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                       WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+                       COMMAND ${CMAKE_COMMAND} -DTIME_STAMP_FILE=${TIME_STAMP_FILE}
+                               -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/time_stamp_create.cmake)
 
     # executable name
     set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "Jami")
 elseif (NOT APPLE)
     target_link_libraries(${PROJECT_NAME} PRIVATE
-                          ${QML_LIBS}
+                          ${QT_LIBS}
                           ${LRC_LIB_NAME}
                           ${qrencode}
                           ${X11}
@@ -616,7 +609,7 @@ elseif (NOT APPLE)
 else()
     target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/resources/images/jami.icns)
     target_link_libraries(${PROJECT_NAME} PRIVATE
-                          ${QML_LIBS}
+                          ${QT_LIBS}
                           ${LRC_LIB_NAME}
                           ${SYSTEM_CONFIGURATUION}
                           qrencode)

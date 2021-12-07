@@ -49,7 +49,7 @@
 #include "dbuserrorhandler.h"
 #endif
 
-#if defined _MSC_VER && !COMPILE_ONLY
+#if defined _MSC_VER
 #include <gnutls/gnutls.h>
 #endif
 
@@ -181,7 +181,7 @@ MainApplication::init()
     loadTranslations();
     setApplicationFont();
 
-#if defined _MSC_VER && !COMPILE_ONLY
+#if defined _MSC_VER
     gnutls_global_init();
 #endif
 

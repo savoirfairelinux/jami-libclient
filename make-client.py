@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import tempfile
 import re
 import sys
@@ -9,9 +11,6 @@ import multiprocessing
 import fileinput
 from enum import Enum
 
-# vs help
-win_sdk_default = '10.0.16299.0'
-win_toolset_default = '142'
 qt_version_default = '6.2.0'
 
 vs_where_path = os.path.join(
@@ -21,36 +20,30 @@ vs_where_path = os.path.join(
 host_is_64bit = (False, True)[platform.machine().endswith('64')]
 this_dir = os.path.dirname(os.path.realpath(__file__))
 build_dir = os.path.join(this_dir, 'build')
+
 temp_path = os.environ['TEMP']
 openssl_include_dir = 'C:\\Qt\\Tools\\OpenSSL\\Win_x64\\include\\openssl'
 
+qt_path = os.path.join('c:', os.sep, 'Qt')
+qt_kit_path = 'msvc2019_64'
+qt_root_path = os.getenv('QT_ROOT_DIRECTORY', qt_path)
+
 # project path
-jami_qt_project = os.path.join(build_dir, 'jami-qt.vcxproj')
 unit_test_project = os.path.join(build_dir, 'tests', 'unittests.vcxproj')
 qml_test_project = os.path.join(build_dir, 'tests', 'qml_tests.vcxproj')
 
 # test executable command
 qml_test_exe = os.path.join(this_dir, 'x64', 'test', 'qml_tests.exe -input ') + \
-               os.path.join(this_dir, 'tests', 'qml')
+    os.path.join(this_dir, 'tests', 'qml')
 unit_test_exe = os.path.join(this_dir, 'x64', 'test', 'unittests.exe')
 
-class TestBuilding(Enum):
-    NoTests = 0
-    WithTests = 1
-    OnlyTests = 2
 
-class QtVerison(Enum):
-    Major = 0
-    Minor = 1
-    Micro = 2
-
-def execute_cmd(cmd, with_shell=False, env_vars={}):
-    if(bool(env_vars)):
-        p = subprocess.Popen(cmd, shell=with_shell,
-                             stdout=sys.stdout,
-                             env=env_vars)
-    else:
-        p = subprocess.Popen(cmd, shell=with_shell)
+def execute_cmd(cmd, with_shell=False, env_vars=None, cmd_dir=os.getcwd()):
+    p = subprocess.Popen(cmd,
+                         shell=with_shell,
+                         stdout=sys.stdout,
+                         env=env_vars,
+                         cwd=cmd_dir)
     _, _ = p.communicate()
     return p.returncode
 
@@ -69,11 +62,6 @@ def getLatestVSVersion():
     else:
         return
 
-def getCMakeGenerator(vs_version):
-    if vs_version == '15':
-        return 'Visual Studio 15 2017 Win64'
-    else:
-        return 'Visual Studio ' + vs_version + ' 2019'
 
 def findVSLatestDir():
     args = [
@@ -90,9 +78,11 @@ def findVSLatestDir():
     else:
         return
 
+
 def getQtVersionNumber(qt_version, version_type):
     version_list = qt_version.split('.')
     return version_list[version_type.value]
+
 
 def findMSBuild():
     filename = 'MSBuild.exe'
@@ -100,7 +90,8 @@ def findMSBuild():
         if filename in files:
             return os.path.join(root, filename)
 
-def getMSBuildArgs(arch, config_str, toolset, configuration_type=''):
+
+def getMSBuildArgs(arch, config_str, configuration_type=''):
     msbuild_args = [
         '/nologo',
         '/verbosity:minimal',
@@ -108,11 +99,10 @@ def getMSBuildArgs(arch, config_str, toolset, configuration_type=''):
         '/p:Platform=' + arch,
         '/p:Configuration=' + config_str,
         '/p:useenv=true']
-    if (toolset != ''):
-        msbuild_args.append('/p:PlatformToolset=' + toolset)
     if (configuration_type != ''):
         msbuild_args.append('/p:ConfigurationType=' + configuration_type)
     return msbuild_args
+
 
 def getVSEnv(arch='x64', platform='', version=''):
     env_cmd = 'set path=%path:"=% && ' + \
@@ -151,6 +141,7 @@ def replace_necessary_vs_prop(project_path, toolset, sdk_version):
                     'WindowsTargetPlatformVersion',
                     sdk_version)
 
+
 def build_project(msbuild, msbuild_args, proj, env_vars):
     args = []
     args.extend(msbuild_args)
@@ -170,24 +161,33 @@ def replace_vs_prop(filename, prop, val):
             print(re.sub(p, val, line), end='')
 
 
-def deps(arch, toolset, qtver):
-    print('Deps Qt Client Release|' + arch)
+def init_submodules():
+    print('Initializing submodules...')
 
-    # Fetch QRencode
-    print('Generate QRencode')
-    apply_cmd = "git apply --reject --ignore-whitespace --whitespace=fix"
-    qrencode_path = 'qrencode-win32'
-    if (os.path.isdir(qrencode_path)):
-        os.system('rmdir qrencode-win32 /s /q')
-    if (execute_cmd("git clone https://github.com/BlueDragon747/qrencode-win32.git", True)):
-        print("Git clone failed when cloning from https://github.com/BlueDragon747/qrencode-win32.git")
-        sys.exit(1)
-    if(execute_cmd("cd qrencode-win32 && git checkout d6495a2aa74d058d54ae0f1b9e9e545698de66ce && "
-                    + apply_cmd + os.path.join(' ..', 'qrencode-win32.patch'), True)):
-        print("qrencode-win32 set up error")
-        sys.exit(1)
+    if (execute_cmd(['git', 'submodule', 'update', '--init'], False)):
+        print('Submodule initialization error.')
+    else:
+        if (execute_cmd(['git', 'submodule', 'update', '--recursive'], False)):
+            print('Submodule recursive checkout error.')
+        else:
+            print('Submodule recursive checkout finished.')
 
-    print('Building qrcodelib')
+
+def build_deps(arch):
+    print('Patching and building qrencode')
+    apply_cmd = [
+        'git',
+        'apply',
+        '--reject',
+        '--ignore-whitespace',
+        '--whitespace=fix'
+    ]
+    qrencode_dir = os.path.join(this_dir, '3rdparty', 'qrencode-win32')
+    patch_file = os.path.join(this_dir, 'qrencode-win32.patch')
+    apply_cmd.append(patch_file)
+    print(apply_cmd)
+    if(execute_cmd(apply_cmd, False, None, qrencode_dir)):
+        print("Couldn't patch qrencode-win32.")
 
     vs_env_vars = {}
     vs_env_vars.update(getVSEnv())
@@ -195,112 +195,48 @@ def deps(arch, toolset, qtver):
     msbuild = findMSBuild()
     if not os.path.isfile(msbuild):
         raise IOError('msbuild.exe not found. path=' + msbuild)
-    msbuild_args = getMSBuildArgs(arch, 'Release-Lib', toolset)
-
-    this_dir = os.path.dirname(os.path.realpath(__file__))
-    proj_path = os.path.join(this_dir, 'qrencode-win32' ,'qrencode-win32',
+    msbuild_args = getMSBuildArgs(arch, 'Release-Lib')
+    proj_path = os.path.join(qrencode_dir, 'qrencode-win32',
                              'vc8', 'qrcodelib', 'qrcodelib.vcxproj')
 
     build_project(msbuild, msbuild_args, proj_path, vs_env_vars)
 
 
-def build(arch, toolset, sdk_version, config_str, project_path_under_current_path, qtver,
-          test_building_type, force_option=True):
+def build(arch, config_str, qtver, tests=False):
     print("Building with Qt " + qtver)
-
-    configuration_type = 'StaticLibrary'
 
     vs_env_vars = {}
     vs_env_vars.update(getVSEnv())
 
-    qt_dir = os.path.join("C:\\", 'Qt', qtver)
-    cmake_gen = getCMakeGenerator(getLatestVSVersion())
-    qt_major_version = getQtVersionNumber(qtver, QtVerison.Major)
-    qt_general_macro = 'Qt' + qt_major_version
-    msvc_folder = '\\msvc2019_64'
+    qt_dir = os.path.join(qt_root_path, qtver, qt_kit_path)
 
-    qt_cmake_dir = qt_dir + msvc_folder + '\\lib\\cmake\\'
-    cmake_prefix_path = qt_dir + msvc_folder
-
-    qt_cmake_dir = os.path.join(qt_dir, msvc_folder, 'lib', 'cmake')
-    cmake_prefix_path = os.path.join(qt_dir, msvc_folder)
     cmake_options = [
-        '-DCMAKE_PREFIX_PATH=' + cmake_prefix_path,
-        '-DOPENSSL_INCLUDE_DIR=' + openssl_include_dir,
-        '-DQT_DIR=' + qt_dir + msvc_folder,
-        '-D' + qt_general_macro + '_DIR=' + qt_cmake_dir + qt_general_macro,
-        '-D' + qt_general_macro + 'Core_DIR=' + qt_cmake_dir + qt_general_macro + 'Core',
-        '-D' + qt_general_macro + 'Core5Compat_DIR=' + qt_cmake_dir + qt_general_macro + 'Core5Compat',
-        '-D' + qt_general_macro + 'WebEngineCore_DIR=' + qt_cmake_dir + qt_general_macro + 'WebEngineCore',
-        '-D' + qt_general_macro + 'WebEngineQuick_DIR=' + qt_cmake_dir + qt_general_macro + 'WebEngineQuick',
-        '-D' + qt_general_macro + 'WebChannel_DIR=' + qt_cmake_dir + qt_general_macro + 'WebChannel',
-        '-D' + qt_general_macro + 'WebEngineWidgets_DIR=' + qt_cmake_dir + qt_general_macro + 'WebEngineWidgets',
-        '-D' + qt_general_macro + 'Sql_DIR=' + qt_cmake_dir + qt_general_macro + 'Sql',
-        '-D' + qt_general_macro + 'LinguistTools_DIR=' + qt_cmake_dir + qt_general_macro + 'LinguistTools',
-        '-D' + qt_general_macro + 'Concurrent_DIR=' + qt_cmake_dir + qt_general_macro + 'Concurrent',
-        '-D' + qt_general_macro + 'Network_DIR=' + qt_cmake_dir + qt_general_macro + 'Network',
-        '-D' + qt_general_macro + 'NetworkAuth_DIR=' + qt_cmake_dir + qt_general_macro + 'NetworkAuth',
-        '-D' + qt_general_macro + 'Gui_DIR=' + qt_cmake_dir + qt_general_macro + 'Gui',
-        '-D' + qt_general_macro + 'Qml_DIR=' + qt_cmake_dir + qt_general_macro + 'Qml',
-        '-D' + qt_general_macro + 'QmlModels_DIR=' + qt_cmake_dir + qt_general_macro + 'QmlModels',
-        '-D' + qt_general_macro + 'Positioning_DIR=' + qt_cmake_dir + qt_general_macro + 'Positioning',
-        '-D' + qt_general_macro + 'Test_DIR=' + qt_cmake_dir + qt_general_macro + 'Test',
-        '-D' + qt_general_macro + 'QuickTest_DIR=' + qt_cmake_dir + qt_general_macro + 'QuickTest',
-        '-DENABLE_TESTS=' + (str("ENABLE_TESTS") if test_building_type != TestBuilding.NoTests else ''),
-        '-DCMAKE_SYSTEM_VERSION=' + sdk_version
+        '-DCMAKE_PREFIX_PATH=' + qt_dir,
+        '-DCMAKE_BUILD_TYPE=' + config_str
     ]
+    if tests:
+        cmake_options.append('-DENABLE_TESTS=true')
+
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
-    os.chdir(build_dir)
 
-    if (config_str == 'Release'):
-        print('Generating project using cmake ' + config_str + '|' + arch)
-        cmd = ['cmake', '..', '-G', cmake_gen]
-        cmd.extend(cmake_options)
-        if(execute_cmd(cmd, False, vs_env_vars)):
-            print("Cmake vcxproj file generate error")
-            sys.exit(1)
-        configuration_type = 'Application'
-    elif (config_str == 'Beta'):
-        print('Generating project using cmake ' + config_str + '|' + arch)
+    config_str = 'Release'
+    cmd = ['cmake', '..']
+    if (config_str == 'Beta'):
         cmake_options.append('-DBETA=1')
-        cmd = ['cmake', '..', '-G', cmake_gen]
-        cmd.extend(cmake_options)
-        if(execute_cmd(cmd, False, vs_env_vars)):
-            print("Beta: Cmake vcxproj file generate error")
-            sys.exit(1)
-        config_str = 'Release'
-        configuration_type = 'Application'
-    elif (config_str == 'ReleaseCompile'):
-        print('Generating project using qmake ' + config_str + '|' + arch)
-        cmake_options.append('-DReleaseCompile=1')
-        cmd = ['cmake', '..', '-G', cmake_gen]
-        cmd.extend(cmake_options)
-        if(execute_cmd(cmd, False, vs_env_vars)):
-            print("ReleaseCompile: Cmake vcxproj file generate error")
-            sys.exit(1)
-        config_str = 'Release'
 
-    # Note: If project is configured to Beta or ReleaseCompile, the configuration name is still release,
-    # but will be outputted into x64/Beta folder (for Beta Only)
+    print('Generating project using cmake ' + config_str + '|' + arch)
+    cmd.extend(cmake_options)
+    if(execute_cmd(cmd, False, vs_env_vars, build_dir)):
+        print("Cmake generate error")
+        sys.exit(1)
 
     print('Building projects in ' + config_str + '|' + arch)
+    cmd = ['cmake', '--build', '.', '--config', config_str]
+    if(execute_cmd(cmd, False, vs_env_vars, build_dir)):
+        print("Cmake build error")
+        sys.exit(1)
 
-    msbuild = findMSBuild()
-    if not os.path.isfile(msbuild):
-        raise IOError('msbuild.exe not found. path=' + msbuild)
-    msbuild_args = getMSBuildArgs(arch, config_str, toolset, configuration_type)
-
-    if (force_option):
-        replace_necessary_vs_prop(project_path_under_current_path, toolset, sdk_version)
-
-    if (test_building_type != TestBuilding.OnlyTests):
-        build_project(msbuild, msbuild_args, project_path_under_current_path, vs_env_vars)
-
-    # build test projects
-    if (test_building_type != TestBuilding.NoTests):
-        build_tests_projects(arch, config_str, msbuild, vs_env_vars,
-                             toolset, sdk_version, force_option)
 
 def build_tests_projects(arch, config_str, msbuild, vs_env_vars, toolset,
                          sdk_version, force_option=True):
@@ -316,6 +252,7 @@ def build_tests_projects(arch, config_str, msbuild, vs_env_vars, toolset,
         msbuild_args = getMSBuildArgs(arch, config_str, toolset)
         build_project(msbuild, msbuild_args, project, vs_env_vars)
 
+
 def run_tests(mute_jamid, output_to_files):
     print('Running client tests')
 
@@ -325,8 +262,10 @@ def run_tests(mute_jamid, output_to_files):
         test_exe_command_list[0] += ' -mutejamid'
         test_exe_command_list[1] += ' -mutejamid'
     if output_to_files:
-        test_exe_command_list[0] += ' -o ' + os.path.join(this_dir, 'x64', 'test', 'qml_tests.txt')
-        test_exe_command_list[1] += ' > ' + os.path.join(this_dir, 'x64', 'test', 'unittests.txt')
+        test_exe_command_list[0] += ' -o ' + \
+            os.path.join(this_dir, 'x64', 'test', 'qml_tests.txt')
+        test_exe_command_list[1] += ' > ' + \
+            os.path.join(this_dir, 'x64', 'test', 'unittests.txt')
 
     test_result_code = 0
 
@@ -339,54 +278,36 @@ def run_tests(mute_jamid, output_to_files):
             test_result_code = 1
     sys.exit(test_result_code)
 
+
 def parse_args():
     ap = argparse.ArgumentParser(description="Client qt build tool")
     subparser = ap.add_subparsers(dest="subparser_name")
 
     ap.add_argument(
-        '-b', '--build', action='store_true',
-        help='Build Qt Client')
-    ap.add_argument(
         '-a', '--arch', default='x64',
         help='Sets the build architecture')
     ap.add_argument(
-        '-wt', '--withtest', action='store_true',
-        help='Build Qt Client Test')
+        '-t', '--runtests', action='store_true',
+        help='Build and run tests')
     ap.add_argument(
-        '-ot', '--onlytest', action='store_true',
-        help='Build Only Qt Client Test')
-    ap.add_argument(
-        '-d', '--deps', action='store_true',
-        help='Build Deps for Qt Client')
-    ap.add_argument(
-        '-bt', '--beta', action='store_true',
+        '-b', '--beta', action='store_true',
         help='Build Qt Client in Beta Config')
-    ap.add_argument(
-        '-c', '--releasecompile', action='store_true',
-        help='Build Qt Client in ReleaseCompile Config')
-    ap.add_argument(
-        '-s', '--sdk', default=win_sdk_default, type=str,
-        help='Use specified windows sdk version')
-    ap.add_argument(
-        '-t', '--toolset', default=win_toolset_default, type=str,
-        help='Use specified platform toolset version')
     ap.add_argument(
         '-q', '--qtver', default=qt_version_default,
         help='Sets the version of Qmake')
+    ap.add_argument(
+        '-m', '--mute', action='store_true', default=False,
+        help='Mute jamid logs')
+
+    subparser.add_parser('init')
+    subparser.add_parser('pack')
 
     run_test = subparser.add_parser('runtests')
     run_test.add_argument(
-        '-md', '--mutejamid', action='store_true', default=False,
-        help='Avoid jamid logs')
-    run_test.add_argument(
-        '-o', '--outputtofiles', action='store_true', default=False,
-        help='Output tests log into files')
+        '-l', '--logtests', action='store_true', default=False,
+        help='Output tests log to files')
 
     parsed_args = ap.parse_args()
-
-    if parsed_args.toolset:
-        if parsed_args.toolset[0] != 'v':
-            parsed_args.toolset = 'v' + parsed_args.toolset
 
     return parsed_args
 
@@ -402,35 +323,18 @@ def main():
 
     parsed_args = parse_args()
 
-    if int(getQtVersionNumber(parsed_args.qtver, QtVerison.Major)) < 6:
-        print('We currently only support Qt6')
+    if parsed_args.subparser_name == 'init':
+        init_submodules()
+        build_deps(parsed_args.arch)
+    elif parsed_args.subparser_name == 'pack':
+        print('Package generation is not yet implemented.')
         sys.exit(1)
-
-    test_building_type = TestBuilding.NoTests
-
-    if parsed_args.withtest:
-        test_building_type = TestBuilding.WithTests
-
-    if parsed_args.onlytest:
-        test_building_type = TestBuilding.OnlyTests
-
-    if parsed_args.subparser_name == 'runtests':
-        run_tests(parsed_args.mutejamid, parsed_args.outputtofiles)
-
-    if parsed_args.deps:
-        deps(parsed_args.arch, parsed_args.toolset, parsed_args.qtver)
-
-    if parsed_args.build:
-        build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk,
-              'Release', jami_qt_project, parsed_args.qtver, test_building_type)
-
-    if parsed_args.beta:
-        build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk,
-              'Beta', jami_qt_project, parsed_args.qtver, test_building_type)
-
-    if parsed_args.releasecompile:
-        build(parsed_args.arch, parsed_args.toolset, parsed_args.sdk,
-              'ReleaseCompile', jami_qt_project, parsed_args.qtver, test_building_type)
+    else:
+        config = ('Release', 'Beta')[parsed_args.beta]
+        build(parsed_args.arch, config,
+              qt_version_default, parsed_args.runtests)
+        if parsed_args.runtests:
+            run_tests(parsed_args.mutejamid, parsed_args.outputtofiles)
 
 
 if __name__ == '__main__':

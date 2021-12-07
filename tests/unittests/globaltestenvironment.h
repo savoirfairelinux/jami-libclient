@@ -49,7 +49,7 @@ public:
         settingsManager.reset(new AppSettingsManager(nullptr));
         systemTray.reset(new SystemTray(settingsManager.get(), nullptr));
 
-#if defined _MSC_VER && !COMPILE_ONLY
+#if defined _MSC_VER
         gnutls_global_init();
 #endif
 
