@@ -140,10 +140,24 @@ Window {
                         border.color: selectedScreenNumber === index ? JamiTheme.screenSelectionBorderColor : JamiTheme.tabbarBorderColor
                         visible: JamiStrings.selectScreen !== screens[index] && index < Qt.application.screens.length
 
+                        Text {
+                            id: screenName
+
+                            anchors.top: screenItem.top
+                            anchors.topMargin: 10
+                            anchors.horizontalCenter: screenItem.horizontalCenter
+                            width: parent.width
+                            font.pointSize: JamiTheme.textFontSize
+                            text: screens[index] ? screens[index] : ""
+                            elide: Text.ElideMiddle
+                            horizontalAlignment: Text.AlignHCenter
+                            color: JamiTheme.textColor
+                        }
+
                         PreviewRenderer {
                             id: screenPreview
 
-                            anchors.top: screenItem.top
+                            anchors.top: screenName.bottom
                             anchors.topMargin: 10
                             anchors.horizontalCenter: screenItem.horizontalCenter
                             height: screenItem.height - 50
@@ -162,20 +176,6 @@ Window {
                                         screenPreview.rendererId = VideoDevices.startDevice(rendId, true)
                                 }
                             }
-                        }
-
-                        Text {
-                            id: screenName
-
-                            anchors.top: screenPreview.bottom
-                            anchors.topMargin: 10
-                            anchors.horizontalCenter: screenItem.horizontalCenter
-                            width: parent.width
-                            font.pointSize: JamiTheme.textFontSize
-                            text: screens[index] ? screens[index] : ""
-                            elide: Text.ElideMiddle
-                            horizontalAlignment: Text.AlignHCenter
-                            color: JamiTheme.textColor
                         }
 
                         MouseArea {
@@ -215,10 +215,22 @@ Window {
 
                     visible: Qt.application.screens.length > 1
 
+                    Text {
+                        id: screenNameAll
+
+                        anchors.top: screenSelectionRectAll.top
+                        anchors.topMargin: 10
+                        anchors.horizontalCenter: screenSelectionRectAll.horizontalCenter
+
+                        font.pointSize: JamiTheme.textFontSize
+                        text: JamiStrings.allScreens
+                        color: JamiTheme.textColor
+                    }
+
                     PreviewRenderer {
                         id: screenShotAll
 
-                        anchors.top: screenSelectionRectAll.top
+                        anchors.top: screenNameAll.bottom
                         anchors.topMargin: 10
                         anchors.horizontalCenter: screenSelectionRectAll.horizontalCenter
                         height: screenSelectionRectAll.height - 50
@@ -237,18 +249,6 @@ Window {
                                     screenShotAll.rendererId = VideoDevices.startDevice(rendId, true)
                             }
                         }
-                    }
-
-                    Text {
-                        id: screenNameAll
-
-                        anchors.top: screenShotAll.bottom
-                        anchors.topMargin: 10
-                        anchors.horizontalCenter: screenSelectionRectAll.horizontalCenter
-
-                        font.pointSize: JamiTheme.textFontSize
-                        text: JamiStrings.allScreens
-                        color: JamiTheme.textColor
                     }
 
                     MouseArea {
@@ -291,10 +291,24 @@ Window {
                         border.color: selectedScreenNumber === index ? JamiTheme.screenSelectionBorderColor : JamiTheme.tabbarBorderColor
                         visible: JamiStrings.selectScreen !== screens[index] && index >= Qt.application.screens.length
 
+                        Text {
+                            id: screenName2
+
+                            anchors.top: screenItem2.top
+                            anchors.topMargin: 10
+                            anchors.horizontalCenter: screenItem2.horizontalCenter
+                            width: parent.width
+                            font.pointSize: JamiTheme.textFontSize
+                            text: screens[index] ? screens[index] : ""
+                            elide: Text.ElideMiddle
+                            horizontalAlignment: Text.AlignHCenter
+                            color: JamiTheme.textColor
+                        }
+
                         PreviewRenderer {
                             id: screenPreview2
 
-                            anchors.top: screenItem2.top
+                            anchors.top: screenName2.bottom
                             anchors.topMargin: 10
                             anchors.horizontalCenter: screenItem2.horizontalCenter
                             anchors.leftMargin: 25
@@ -315,20 +329,6 @@ Window {
                                         screenPreview2.rendererId = VideoDevices.startDevice(rendId, true)
                                 }
                             }
-                        }
-
-                        Text {
-                            id: screenName2
-
-                            anchors.top: screenPreview2.bottom
-                            anchors.topMargin: 10
-                            anchors.horizontalCenter: screenItem2.horizontalCenter
-                            width: parent.width
-                            font.pointSize: JamiTheme.textFontSize
-                            text: screens[index] ? screens[index] : ""
-                            elide: Text.ElideMiddle
-                            horizontalAlignment: Text.AlignHCenter
-                            color: JamiTheme.textColor
                         }
 
                         MouseArea {
