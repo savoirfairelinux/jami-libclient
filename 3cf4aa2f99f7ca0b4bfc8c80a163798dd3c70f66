@@ -69,6 +69,30 @@
       },
       "revId": "3cf4aa2f99f7ca0b4bfc8c80a163798dd3c70f66",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c424c391_7d643db3",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 479,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2021-12-08T14:59:54Z",
+      "side": 1,
+      "message": "As the comments says, right now only video source can be changed by the client.\nWhen audio source is handled in the daemon, it will be changed here as well.",
+      "parentUuid": "6f9f1c35_8f94658b",
+      "range": {
+        "startLine": 475,
+        "startChar": 64,
+        "endLine": 479,
+        "endChar": 65
+      },
+      "revId": "3cf4aa2f99f7ca0b4bfc8c80a163798dd3c70f66",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
