@@ -968,17 +968,14 @@ ConversationModel::getConversationInfos(const QString& conversationId)
 }
 
 void
-ConversationModel::createConversation(const VectorString& participants, const QString& title)
+ConversationModel::createConversation(const VectorString& participants, const MapStringString& infos)
 {
     auto convUid = ConfigurationManager::instance().startConversation(owner.id);
     for (const auto& participant : participants) {
         ConfigurationManager::instance().addConversationMember(owner.id, convUid, participant);
     }
-    if (!title.isEmpty()) {
-        MapStringString info = getConversationInfos(convUid);
-        info["title"] = title;
-        updateConversationInfo(convUid, info);
-    }
+    if (!infos.isEmpty())
+        updateConversationInfo(convUid, infos);
     pimpl_->addSwarmConversation(convUid);
     emit newConversation(convUid);
     pimpl_->invalidateModel();
