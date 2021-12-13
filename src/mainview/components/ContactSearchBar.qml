@@ -31,6 +31,7 @@ Rectangle {
     signal returnPressedWhileSearching
 
     property alias textContent: contactSearchBar.text
+    property alias placeHolderText: contactSearchBar.placeholderText
 
     function clearText() {
         contactSearchBar.clear()

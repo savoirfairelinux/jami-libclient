@@ -212,6 +212,7 @@ Item {
     property string resumeCall: qsTr("Resume call")
     property string pauseVideo: qsTr("Pause video")
     property string resumeVideo: qsTr("Resume video")
+    property string addParticipant: qsTr("Add participant")
     property string addParticipants: qsTr("Add participants")
     property string chat: qsTr("Chat")
     property string moreOptions: qsTr("More options")

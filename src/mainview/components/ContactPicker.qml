@@ -94,12 +94,11 @@ Popup {
                 id: contactPickerContactSearchBar
 
                 Layout.alignment: Qt.AlignCenter
-                Layout.topMargin: 5
-                Layout.bottomMargin: 5
-                Layout.preferredWidth: implicitWidth
+                Layout.margins: 5
+                Layout.fillWidth: true
                 Layout.preferredHeight: 35
 
-                implicitWidth: contactPickerPopupRect.width - 10
+                placeHolderText: JamiStrings.addParticipant
 
                 onContactSearchBarTextChanged: {
                     ContactAdapter.setSearchFilter(text)
