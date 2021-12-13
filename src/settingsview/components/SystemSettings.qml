@@ -36,7 +36,7 @@ ColumnLayout {
 
     onDownloadPathChanged: {
         if(downloadPath === "") return
-       UtilsAdapter.setDownloadPath(downloadPath)
+        UtilsAdapter.setDownloadPath(downloadPath)
     }
 
     FolderDialog {
@@ -44,6 +44,7 @@ ColumnLayout {
 
         title: JamiStrings.selectFolder
         currentFolder: StandardPaths.writableLocation(StandardPaths.DownloadLocation)
+        options: FolderDialog.ShowDirsOnly
 
         onAccepted: {
             var dir = UtilsAdapter.getAbsPath(folder.toString())

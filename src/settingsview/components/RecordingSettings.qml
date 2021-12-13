@@ -31,7 +31,7 @@ ColumnLayout {
     id:root
 
     property int itemWidth
-    property string recordPath: UtilsAdapter.getDirDocument()
+    property string recordPath: AVModel.getRecordPath()
 
     onRecordPathChanged: {
         if(recordPath === "") return
@@ -46,6 +46,7 @@ ColumnLayout {
 
         title: JamiStrings.selectFolder
         currentFolder: StandardPaths.writableLocation(StandardPaths.HomeLocation)
+        options: FolderDialog.ShowDirsOnly
 
         onAccepted: {
             var dir = UtilsAdapter.getAbsPath(folder.toString())
