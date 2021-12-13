@@ -199,7 +199,7 @@ public:
      * Get the current recording path
      * @return recording path
      */
-    QString getRecordPath() const;
+    Q_INVOKABLE QString getRecordPath() const;
     /**
      * Sets the recording path
      * @param path recording path
