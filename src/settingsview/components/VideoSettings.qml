@@ -243,6 +243,7 @@ ColumnLayout {
         text: JamiStrings.previewUnavailable
         font.pointSize: JamiTheme.settingsFontSize
         font.kerning: true
+        color: JamiTheme.primaryForegroundColor
 
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter

@@ -271,9 +271,12 @@ Rectangle {
 
         visible: (isVideo && !previewAvailable)
 
-        text: qsTr("Preview unavailable")
-        font.pointSize: 10
+        text: JamiStrings.previewUnavailable
+        font.pointSize: JamiTheme.settingsFontSize
         font.kerning: true
+        color: JamiTheme.primaryForegroundColor
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
     }
 
     Timer {
