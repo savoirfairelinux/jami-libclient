@@ -83,8 +83,11 @@ main(int argc, char* argv[])
     QCoreApplication::setApplicationVersion(QString(VERSION_STRING));
     QApplication::setHighDpiScaleFactorRoundingPolicy(
         Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
-#if defined(__APPLE__)
-    QQuickWindow::setGraphicsApi(QSGRendererInterface::Metal);
+
+#if defined(Q_OS_MACOS)
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::MetalRhi);
+#elif defined(Q_OS_WIN)
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::VulkanRhi);
 #endif
 
     auto newArgv = parseInputArgument(argc, argv, qtWebEngineChromiumFlags);
