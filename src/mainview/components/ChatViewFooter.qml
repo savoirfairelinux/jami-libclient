@@ -84,7 +84,7 @@ Rectangle {
         }
     }
 
-    RecordBox{
+    RecordBox {
         id: recordBox
 
         visible: false

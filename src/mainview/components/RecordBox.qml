@@ -41,7 +41,6 @@ Rectangle {
     property int duration: 0
     property int state: RecordBox.States.INIT
     property bool isVideo: false
-    property bool previewAvailable: false
     property int preferredWidth: 320
     property int preferredHeight: 240
     property int btnSize: 40
@@ -61,7 +60,6 @@ Rectangle {
         if (isVideo) {
             previewWidget.deviceId = VideoDevices.getDefaultDevice()
             previewWidget.rendererId = VideoDevices.startDevice(previewWidget.deviceId)
-            previewAvailable = true
         }
     }
 
@@ -243,7 +241,7 @@ Rectangle {
 
         anchors.fill: parent
 
-        visible: (isVideo && previewAvailable)
+        visible: (isVideo && VideoDevices.listSize !== 0)
         color: JamiTheme.blackColor
         radius: 5
 
@@ -262,6 +260,14 @@ Rectangle {
                 maskSource: rectBox
             }
         }
+
+        onVisibleChanged: {
+            if (visible) {
+                previewWidget.deviceId = VideoDevices.getDefaultDevice()
+                previewWidget.rendererId = VideoDevices.startDevice(previewWidget.deviceId)
+            } else
+                VideoDevices.stopDevice(previewWidget.deviceId)
+        }
     }
 
     Label {
@@ -269,7 +275,13 @@ Rectangle {
 
         width: root.width
 
-        visible: (isVideo && !previewAvailable)
+        visible: (isVideo && VideoDevices.listSize === 0)
+
+        onVisibleChanged: {
+            if (visible) {
+                closeRecorder()
+            }
+        }
 
         text: JamiStrings.previewUnavailable
         font.pointSize: JamiTheme.settingsFontSize
