@@ -87,7 +87,9 @@ ColumnLayout {
             Layout.preferredWidth: JamiTheme.preferredFieldHeight
             Layout.preferredHeight: JamiTheme.preferredFieldHeight
 
-            toolTipText: JamiStrings.tipBannedContacts
+            toolTipText: bannedListWidget.visible?
+                                JamiStrings.tipBannedContactsHide :
+                                JamiStrings.tipBannedContactsDisplay
             imageColor: JamiTheme.textColor
 
             source: bannedListWidget.visible?

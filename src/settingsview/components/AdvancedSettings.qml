@@ -59,7 +59,9 @@ ColumnLayout {
             Layout.alignment: Qt.AlignHCenter
 
             imageColor: JamiTheme.textColor
-            toolTipText: JamiStrings.tipAdvancedSettingsDisplay
+            toolTipText: advancedSettingsView.visible ?
+                            JamiStrings.tipAdvancedSettingsHide :
+                            JamiStrings.tipAdvancedSettingsDisplay
 
             preferredSize: 32
             source: advancedSettingsView.visible ?

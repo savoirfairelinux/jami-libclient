@@ -319,7 +319,8 @@ Item {
     property string setAPassword: qsTr("Set password")
     property string changeCurrentPassword: qsTr("Change current password")
     property string tipBackupAccount: qsTr("Backup account to a .gz file")
-    property string tipAdvancedSettingsDisplay: qsTr("Display or hide advanced settings")
+    property string tipAdvancedSettingsDisplay: qsTr("Display advanced settings")
+    property string tipAdvancedSettingsHide: qsTr("Hide advanced settings")
     property string enableAccount: qsTr("Enable account")
 
     // NameRegistrationDialog
@@ -340,7 +341,8 @@ Item {
     property string linkDeviceNetWorkError: qsTr("Error connecting to the network.\nPlease try again later.")
 
     // BannedContacts
-    property string tipBannedContacts: qsTr("Display or hide banned contacts")
+    property string tipBannedContactsDisplay: qsTr("Display banned contacts")
+    property string tipBannedContactsHide: qsTr("Hide banned contacts")
 
     // DeleteAccountDialog
     property string confirmDeleteQuestion: qsTr("Do you really want to delete this account?")
