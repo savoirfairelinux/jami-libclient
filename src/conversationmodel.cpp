@@ -2208,6 +2208,8 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
         return;
     }
 
+    auto allLoaded = false;
+
     try {
         auto& conversation = getConversationForUid(conversationId).get();
         auto size = messages.size();
@@ -2216,17 +2218,12 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
             if (message["type"].isEmpty() || message["type"] == "application/update-profile") {
                 continue;
             }
-            if (message["type"] == "initial") {
-                conversation.allMessagesLoaded = true;
-                Q_EMIT linked.conversationUpdated(conversationId);
-                if (message.find("invited") == message.end()) {
-                    continue;
-                }
-            }
             auto msgId = message["id"];
             auto msg = interaction::Info(message, linked.owner.profileInfo.uri);
             auto downloadFile = false;
-            if (msg.type == interaction::Type::DATA_TRANSFER) {
+            if (msg.type == interaction::Type::INITIAL) {
+                allLoaded = true;
+            } else if (msg.type == interaction::Type::DATA_TRANSFER) {
                 auto fileId = message["fileId"];
                 QString path;
                 qlonglong bytesProgress, totalSize;
@@ -2282,6 +2279,11 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
         auto conversationIdx = indexOf(conversationId);
         Q_EMIT linked.dataChanged(conversationIdx);
         Q_EMIT linked.conversationMessagesLoaded(requestId, conversationId);
+
+        if (allLoaded) {
+            conversation.allMessagesLoaded = true;
+            Q_EMIT linked.conversationUpdated(conversationId);
+        }
     } catch (const std::exception& e) {
         qDebug() << "messages loaded for not existing conversation";
     }
@@ -2390,25 +2392,23 @@ ConversationModelPimpl::insertSwarmInteraction(const QString& interactionId,
     if (index >= 0) {
         auto result = conversation.interactions->insert(index + 1,
                                                         qMakePair(interactionId, interaction));
-        if (!result.second) {
+        if (!result.second)
             return false;
-        }
     } else {
         auto result = conversation.interactions->insert(std::make_pair(interactionId, interaction),
                                                         insertAtBegin);
-        if (!result.second) {
+        if (!result.second)
             return false;
-        }
-        conversation.parentsId[interactionId] = interaction.parentId;
+        if (!interaction.parentId.isEmpty())
+            conversation.parentsId[interactionId] = interaction.parentId;
     }
     if (!conversation.parentsId.values().contains(interactionId)) {
         return true;
     }
     auto msgIds = conversation.parentsId.keys(interactionId);
     conversation.interactions->moveMessages(msgIds, interactionId);
-    for (auto& msg : msgIds) {
+    for (auto& msg : msgIds)
         conversation.parentsId.remove(msg);
-    }
     return true;
 }
 
