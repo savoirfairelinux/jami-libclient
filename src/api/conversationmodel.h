@@ -386,6 +386,14 @@ public:
      */
     QString description(const QString& conversationId) const;
 
+    /**
+     * Get member's role in conversation
+     * @param conversationId
+     * @param memberUri
+     * @return role
+     */
+    member::Role memberRole(const QString& conversationId, const QString& memberUri) const;
+
 Q_SIGNALS:
     /**
      * Emitted when a conversation receives a new interaction
