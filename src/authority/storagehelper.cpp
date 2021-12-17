@@ -438,7 +438,7 @@ getHistory(Database& db, api::conversation::Info& conversation)
             if (status != api::interaction::Status::DISPLAYED || !payloads[i + 1].isEmpty()) {
                 continue;
             }
-            conversation.interactions->setRead(conversation.participants.front(), payloads[i]);
+            conversation.interactions->setRead(conversation.participants.front().uri, payloads[i]);
         }
     }
 }

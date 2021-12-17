@@ -20,6 +20,7 @@
 
 #include "interaction.h"
 #include "messagelistmodel.h"
+#include "member.h"
 #include "typedefs.h"
 
 #include <map>
@@ -69,11 +70,10 @@ struct Info
     bool allMessagesLoaded = false;
     QString uid = "";
     QString accountId;
-    VectorString participants;
+    QVector<member::Member> participants;
     QString callId;
     QString confId;
     std::unique_ptr<MessageListModel> interactions;
-    // MessageListModel interactions;
     QString lastMessageUid = 0;
     QHash<QString, QString> parentsId; // pair messageid/parentid for messages without parent loaded
     unsigned int unreadMessages = 0;
@@ -89,6 +89,14 @@ struct Info
     // for each contact we must have one non-swarm conversation or one active one-to-one
     // conversation. Where active means peer did not leave the conversation.
     inline bool isCoreDialog() const { return isLegacy() || mode == Mode::ONE_TO_ONE; };
+
+    inline QStringList participantsUris() const
+    {
+        QStringList result;
+        for (const auto& p : participants)
+            result.append(p.uri);
+        return result;
+    }
 
     Mode mode = Mode::NON_SWARM;
     bool needsSyncing = false;

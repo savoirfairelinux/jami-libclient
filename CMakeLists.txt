@@ -351,27 +351,28 @@ SET( libringclient_LIB_HDRS
 )
 
 SET(libringclient_api_LIB_HDRS
-  src/api/interaction.h
-  src/api/conversation.h
-  src/api/contact.h
-  src/api/call.h
   src/api/account.h
-  src/api/chatview.h
-  src/api/lrc.h
   src/api/avmodel.h
-  src/api/pluginmodel.h
+  src/api/behaviorcontroller.h
+  src/api/chatview.h
+  src/api/call.h
+  src/api/contact.h
+  src/api/conversation.h
+  src/api/contactmodel.h
+  src/api/conversationmodel.h
+  src/api/datatransfermodel.h
+  src/api/datatransfer.h
+  src/api/interaction.h
+  src/api/lrc.h
+  src/api/member.h
   src/api/newaccountmodel.h
-  src/api/peerdiscoverymodel.h
   src/api/newcallmodel.h
   src/api/newcodecmodel.h
   src/api/newdevicemodel.h
-  src/api/contactmodel.h
-  src/api/conversationmodel.h
-  src/api/profile.h
-  src/api/behaviorcontroller.h
-  src/api/datatransfermodel.h
-  src/api/datatransfer.h
   src/api/newvideo.h
+  src/api/pluginmodel.h
+  src/api/peerdiscoverymodel.h
+  src/api/profile.h
 )
 
 SET(libringclient_WEB_chatview

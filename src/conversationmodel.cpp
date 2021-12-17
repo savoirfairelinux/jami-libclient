@@ -1041,10 +1041,10 @@ ConversationModel::title(const QString& conversationId) const
     QString title;
     auto idx = 0;
     for (const auto& member : conversation.participants) {
-        if (member == owner.profileInfo.uri) {
+        if (member.uri == owner.profileInfo.uri) {
             title += owner.accountModel->bestNameForAccount(owner.id);
         } else {
-            title += owner.contactModel->bestNameForContact(member);
+            title += owner.contactModel->bestNameForContact(member.uri);
         }
         idx += 1;
         if (idx != conversation.participants.size()) {
@@ -1052,6 +1052,20 @@ ConversationModel::title(const QString& conversationId) const
         }
     }
     return title;
+}
+
+member::Role
+ConversationModel::memberRole(const QString& conversationId, const QString& memberUri) const
+{
+    auto conversationOpt = getConversationForUid(conversationId);
+    if (!conversationOpt.has_value())
+        throw std::out_of_range("Member out of range");
+    auto& conversation = conversationOpt->get();
+    for (const auto& p : conversation.participants) {
+        if (p.uri == memberUri)
+            return p.role;
+    }
+    throw std::out_of_range("Member out of range");
 }
 
 QString
@@ -2022,18 +2036,18 @@ ConversationModelPimpl::peersForConversation(const conversation::Info& conversat
     VectorString result {};
     switch (conversation.mode) {
     case conversation::Mode::NON_SWARM:
-        return conversation.participants;
+        return {conversation.participants[0].uri};
     default:
         break;
     }
     // Note: for one to one, we must return self
     if (conversation.participants.size() == 1)
-        return conversation.participants;
+        return {conversation.participants[0].uri};
     for (const auto& participant : conversation.participants) {
-        if (participant.isNull())
+        if (participant.uri.isNull())
             continue;
-        if (participant != linked.owner.profileInfo.uri)
-            result.push_back(participant);
+        if (participant.uri != linked.owner.profileInfo.uri)
+            result.push_back(participant.uri);
     }
     return result;
 }
@@ -2446,11 +2460,11 @@ ConversationModelPimpl::slotConversationReady(const QString& accountId,
     // remove non swarm conversation that was added from slotContactAdded
     const VectorMapStringString& members = ConfigurationManager::instance()
                                                .getConversationMembers(accountId, conversationId);
-    VectorString participants;
+    QVector<member::Member> participants;
     // it means conversation with one participant. In this case we could have non swarm conversation
     bool shouldRemoveNonSwarmConversation = members.size() == 2;
     for (const auto& member : members) {
-        participants.append(member["uri"]);
+        participants.append({member["uri"], api::member::to_role(member["role"])});
         if (shouldRemoveNonSwarmConversation) {
             try {
                 auto& conversation = getConversationForPeerUri(member["uri"]).get();
@@ -2575,14 +2589,14 @@ ConversationModelPimpl::slotConversationMemberEvent(const QString& accountId,
     auto& conversation = getConversationForUid(conversationId).get();
     const VectorMapStringString& members
         = ConfigurationManager::instance().getConversationMembers(linked.owner.id, conversationId);
-    VectorString uris;
+    QVector<member::Member> participants;
     VectorString membersRemaining;
     for (auto& member : members) {
-        uris.append(member["uri"]);
+        participants.append(member::Member {member["uri"], member::to_role(member["role"])});
         if (member["role"] != "left")
             membersRemaining.append(member["uri"]);
     }
-    conversation.participants = uris;
+    conversation.participants = participants;
     conversation.readOnly = membersRemaining == VectorString(1, linked.owner.profileInfo.uri);
     invalidateModel();
     Q_EMIT linked.modelChanged();
@@ -2675,7 +2689,7 @@ ConversationModelPimpl::addContactRequest(const QString& contactUri)
         conversation::Info conversation;
         conversation.uid = contactUri;
         conversation.accountId = linked.owner.id;
-        conversation.participants = {contactUri};
+        conversation.participants = {{contactUri, member::Role::INVITED}};
         conversation.mode = conversation::Mode::NON_SWARM;
         conversation.isRequest = true;
         emplaceBackConversation(std::move(conversation));
@@ -2723,7 +2737,8 @@ ConversationModelPimpl::addConversationRequest(const MapStringString& convReques
     conversation::Info conversation;
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
-    conversation.participants = {linked.owner.profileInfo.uri, peerUri};
+    conversation.participants = {{linked.owner.profileInfo.uri, member::Role::INVITED},
+                                 {peerUri, member::Role::MEMBER}};
     conversation.mode = mode;
     conversation.isRequest = true;
     emplaceBackConversation(std::move(conversation));
@@ -2814,7 +2829,8 @@ ConversationModelPimpl::slotContactModelUpdated(const QString& uri)
     for (auto& user : users) {
         conversation::Info conversationInfo;
         conversationInfo.uid = user.profileInfo.uri;
-        conversationInfo.participants.push_back(user.profileInfo.uri);
+        conversationInfo.participants.append(
+            member::Member {user.profileInfo.uri, member::Role::MEMBER});
         conversationInfo.accountId = linked.owner.id;
         searchResults.emplace_front(std::move(conversationInfo));
     }
@@ -2824,7 +2840,7 @@ ConversationModelPimpl::slotContactModelUpdated(const QString& uri)
 void
 ConversationModelPimpl::addSwarmConversation(const QString& convId)
 {
-    VectorString participants;
+    QVector<member::Member> participants;
     const VectorMapStringString& members = ConfigurationManager::instance()
                                                .getConversationMembers(linked.owner.id, convId);
     auto accountURI = linked.owner.profileInfo.uri;
@@ -2842,7 +2858,7 @@ ConversationModelPimpl::addSwarmConversation(const QString& convId)
         // this check should be removed once all usage of participants replaced by
         // peersForConversation. We should have ourself in participants list
         // Note: if members.size() == 1, it's a conv with self so we're also the peer
-        participants.append(member["uri"]);
+        participants.append(member::Member {member["uri"], member::to_role(member["role"])});
         if (mode == conversation::Mode::ONE_TO_ONE && member["uri"] != accountURI) {
             otherMember = member["uri"];
         } else if (member["uri"] == accountURI) {
@@ -2906,7 +2922,7 @@ ConversationModelPimpl::addConversationWith(const QString& convId,
     conversation::Info conversation;
     conversation.uid = convId;
     conversation.accountId = linked.owner.id;
-    conversation.participants = {contactUri};
+    conversation.participants = {{contactUri, member::Role::MEMBER}};
     conversation.mode = conversation::Mode::NON_SWARM;
     conversation.needsSyncing = false;
     conversation.isRequest = isRequest;
