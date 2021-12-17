@@ -32,7 +32,7 @@ namespace interaction {
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
-enum class Type { INVALID, TEXT, CALL, CONTACT, DATA_TRANSFER, MERGE, COUNT__ };
+enum class Type { INVALID, INITIAL, TEXT, CALL, CONTACT, DATA_TRANSFER, MERGE, COUNT__ };
 Q_ENUM_NS(Type)
 
 static inline const QString
@@ -41,6 +41,8 @@ to_string(const Type& type)
     switch (type) {
     case Type::TEXT:
         return "TEXT";
+    case Type::INITIAL:
+        return "INITIAL";
     case Type::CALL:
         return "CALL";
     case Type::CONTACT:
@@ -59,7 +61,9 @@ to_string(const Type& type)
 static inline Type
 to_type(const QString& type)
 {
-    if (type == "TEXT" || type == "text/plain")
+    if (type == "INITIAL" || type == "initial")
+        return interaction::Type::INITIAL;
+    else if (type == "TEXT" || type == "text/plain")
         return interaction::Type::TEXT;
     else if (type == "CALL" || type == "application/call-history+json")
         return interaction::Type::CALL;
@@ -286,13 +290,9 @@ struct Info
         if (type == Type::CONTACT) {
             authorUri = accountURI == message["uri"] ? "" : message["uri"];
             body = getContactInteractionString(authorUri, to_action(message["action"]));
-        }
-        if (message["type"] == "initial" && message.find("invited") != message.end()) {
-            type = Type::CONTACT;
-            authorUri = accountURI != message["invited"] ? "" : message["invited"];
-            body = getContactInteractionString(authorUri, ContactAction::ADD);
-        }
-        if (type == Type::CALL) {
+        } else if (type == Type::INITIAL) {
+            body = QObject::tr("Swarm's creation");
+        } else if (type == Type::CALL) {
             duration = message["duration"].toInt() / 1000;
         }
         commit = message;
