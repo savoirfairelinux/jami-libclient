@@ -133,7 +133,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
         <source>Trying</source>
-        <translation>Poskušam</translation>
+        <translation>Poskus v teku</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="60"/>
@@ -174,7 +174,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="67"/>
         <source>Moved Permanently</source>
-        <translation>Permanentno preseljen</translation>
+        <translation>Trajno preseljen</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="68"/>
@@ -189,7 +189,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="70"/>
         <source>Alternative Service</source>
-        <translation>Aternativna storitev</translation>
+        <translation>Alternativna storitev</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="71"/>
@@ -240,7 +240,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Gone</source>
-        <translation>OdlšloOdšlo</translation>
+        <translation>Odšlo</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="81"/>
@@ -250,7 +250,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Request URI Too Long</source>
-        <translation>URI zahtevek je predolg</translation>
+        <translation>Zahtevek URI je predolg</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="83"/>
@@ -260,7 +260,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Unsupported URI Scheme</source>
-        <translation>URI shema ni podprta</translation>
+        <translation>Shema URI ni podprta</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="85"/>
@@ -400,7 +400,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="113"/>
         <source>Not Acceptable Anywhere</source>
-        <translation>Ni sprjemljivo kjerkoli</translation>
+        <translation>Ni sprejemljivo kjerkoli</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
@@ -646,7 +646,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="435"/>
         <source>Bad URI scheme</source>
-        <translation>Napačna URI shema</translation>
+        <translation>Napačna shema URI</translation>
     </message>
 </context>
 </TS>
