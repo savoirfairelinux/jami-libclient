@@ -120,6 +120,12 @@ public:
      */
     const QString bestNameForContact(const QString& contactUri) const;
 
+    /**
+     * Get avatar from storage
+     * @param contactUri
+     */
+    QString avatar(const QString& avatar) const;
+
 Q_SIGNALS:
     /**
      * Connect this signal to know when this model was updated.

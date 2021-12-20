@@ -149,6 +149,14 @@ api::contact::Info buildContactFromProfile(const QString& accountId,
                                            const api::profile::Type& type);
 
 /**
+ * Get a contact's avatar
+ * @param  accountId
+ * @param  contactUri
+ * @return the avatar
+ */
+QString avatar(const QString& accountId, const QString& contactUri = "");
+
+/**
  * Get all conversations for an account in the database.
  * @param db
  * @return conversations id for all conversations
