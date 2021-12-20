@@ -443,7 +443,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="92"/>
         <source>Enable SDES key exchange</source>
-        <translation>Vklopi SDES izmenjavo ključev</translation>
+        <translation>Vklopi izmenjavo ključev SDES</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="93"/>
@@ -458,7 +458,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="95"/>
         <source>CA certificate</source>
-        <translation>CA certifikat</translation>
+        <translation>Potrdilo CA</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="96"/>
@@ -483,17 +483,17 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="100"/>
         <source>Verify server TLS certificates</source>
-        <translation>Preveri TLS certifikate strežnika</translation>
+        <translation>Preveri certifikate TLS strežnika</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="101"/>
         <source>Require certificate for incoming TLS connections</source>
-        <translation>Zahtevaj certifikat za dohodne TLS povezave</translation>
+        <translation>Zahtevaj certifikat za dohodne povezave TLS</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="102"/>
         <source>TLS protocol method</source>
-        <translation>Metoda TLS protokola</translation>
+        <translation>Metoda protokola TLS</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="103"/>
@@ -503,7 +503,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="104"/>
         <source>TLS server name</source>
-        <translation>Ime TLS strežnika</translation>
+        <translation>Ime strežnika TLS</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="105"/>
@@ -553,7 +553,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="183"/>
         <source>Your account only exists on this device. If you lose your device or uninstall the application, your account will be deleted and can not be recovered. You can backup your account now or later.</source>
-        <translation type="unfinished"/>
+        <translation>Vaš račun obstaja le na tej napravi. Če boste napravo izgubili ali odstranili program, bo vaš račun izbrisan in ga ne bo mogoče obnoviti. Vaš račun lahko varnostno kopirate zdaj ali kasneje.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="36"/>
@@ -584,7 +584,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="283"/>
         <source>Creating account…</source>
-        <translation>Ustvarjanje računa...</translation>
+        <translation>Ustvarjanje računa ...</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="289"/>
@@ -607,129 +607,129 @@ Jami se bo zdaj zaprl.</translation>
         <translation>Izberite ime za točko srečevanja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="347"/>
+        <location filename="../src/constant/JamiStrings.qml" line="349"/>
         <source>If your account has not been backed up or added to another device, your account and registered name will be irrevocably lost.</source>
-        <translation type="unfinished"/>
+        <translation>Če vaš račun ni bil varnostno shranjen ali dodan drugi napravi, bosta vaš račun in uporabljeno ime nepovratno izgubljena.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="360"/>
+        <location filename="../src/constant/JamiStrings.qml" line="362"/>
         <source>Launch at startup</source>
         <translation>Zaženi ob zagonu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="367"/>
+        <location filename="../src/constant/JamiStrings.qml" line="369"/>
         <source>Enable typing indicators</source>
         <translation>Omogoči pokazatelja tipkanja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="380"/>
-        <location filename="../src/constant/JamiStrings.qml" line="397"/>
+        <location filename="../src/constant/JamiStrings.qml" line="382"/>
+        <location filename="../src/constant/JamiStrings.qml" line="399"/>
         <source>Network error</source>
         <translation>Napaka na omrežju</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="398"/>
+        <location filename="../src/constant/JamiStrings.qml" line="400"/>
         <source>SSL error</source>
-        <translation>SSL napaka</translation>
+        <translation>Napaka SSL</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="438"/>
+        <location filename="../src/constant/JamiStrings.qml" line="440"/>
         <source>Enter the PIN from another configured Jami account. Use the &quot;Link Another Device&quot; feature to obtain a PIN.</source>
         <translation>Vnesite PIN z drugega nastavljenega Jami računa. Uporabite funkcijo &quot;Poveži drugo napravo&quot;, da pridobite PIN.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="440"/>
+        <location filename="../src/constant/JamiStrings.qml" line="442"/>
         <source>Link device</source>
         <translation>Poveži napravo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="530"/>
+        <location filename="../src/constant/JamiStrings.qml" line="532"/>
         <source>Conversations</source>
         <translation>Pogovori</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="467"/>
+        <location filename="../src/constant/JamiStrings.qml" line="469"/>
         <source>Enable</source>
         <translation>Vklopi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="475"/>
+        <location filename="../src/constant/JamiStrings.qml" line="477"/>
         <source>Display or hide preferences</source>
         <translation>Prikaži ali skrij nastavitve</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="478"/>
+        <location filename="../src/constant/JamiStrings.qml" line="480"/>
         <source>Add new plugin</source>
         <translation>Dodaj nov vtičnik</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="482"/>
+        <location filename="../src/constant/JamiStrings.qml" line="484"/>
         <source>Select a file</source>
         <translation>Izberi datoteko</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="483"/>
+        <location filename="../src/constant/JamiStrings.qml" line="485"/>
         <source>Select</source>
         <translation>Izberi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="484"/>
+        <location filename="../src/constant/JamiStrings.qml" line="486"/>
         <source>Choose image file</source>
         <translation>Izberi slikovno datoteko</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="490"/>
+        <location filename="../src/constant/JamiStrings.qml" line="492"/>
         <source>Enter the rendezvous point&apos;s name</source>
         <translation>Vnesite ime točke srečevanja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="491"/>
+        <location filename="../src/constant/JamiStrings.qml" line="493"/>
         <source>Creating rendezvous point…</source>
-        <translation>Ustvarjanje točke srečevanja...</translation>
+        <translation>Ustvarjanje točke srečevanja ...</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="518"/>
+        <location filename="../src/constant/JamiStrings.qml" line="520"/>
         <source>Create account from Jami Account Management Server (JAMS)</source>
         <translation>Ustvari račun z Jami Account Management Server (JAMS)</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="521"/>
+        <location filename="../src/constant/JamiStrings.qml" line="523"/>
         <source>Create new rendezvous point</source>
         <translation>Ustvari novo točko srečevanja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="522"/>
+        <location filename="../src/constant/JamiStrings.qml" line="524"/>
         <source>Create a Jami account</source>
-        <translation>Ustvari Jami račun</translation>
+        <translation>Ustvari račun Jami</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="525"/>
+        <location filename="../src/constant/JamiStrings.qml" line="527"/>
         <source>About Jami</source>
-        <translation>O Jami</translation>
+        <translation>O programu Jami</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="534"/>
+        <location filename="../src/constant/JamiStrings.qml" line="536"/>
         <source>Decline contact request</source>
         <translation>Zavrni zahtevo stika</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="535"/>
+        <location filename="../src/constant/JamiStrings.qml" line="537"/>
         <source>Accept contact request</source>
         <translation>Sprejemi zahtevo stika</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="538"/>
+        <location filename="../src/constant/JamiStrings.qml" line="540"/>
         <source>Automatically check for updates</source>
         <translation>Samodejno preveri posodobitve</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="541"/>
+        <location filename="../src/constant/JamiStrings.qml" line="543"/>
         <source>Ok</source>
         <translation>V redu</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="421"/>
-        <location filename="../src/constant/JamiStrings.qml" line="542"/>
+        <location filename="../src/constant/JamiStrings.qml" line="423"/>
+        <location filename="../src/constant/JamiStrings.qml" line="544"/>
         <source>Cancel</source>
         <translation>Prekliči</translation>
     </message>
@@ -746,7 +746,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="43"/>
         <source>You are viewing a conversation where all participants other than you have left. New interactions will not be possible.</source>
-        <translation type="unfinished"/>
+        <translation>Gledate pogovor, ki so ga vsi udeleženci razen vas zapustili. Nove interakcije niso možne.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="44"/>
@@ -766,12 +766,12 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="83"/>
         <source>Send and receive receipts indicating that a message have been displayed</source>
-        <translation type="unfinished"/>
+        <translation>Pošilja in prejema obvestila, da je bilo sporočilo prikazano.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="108"/>
         <source>Select a CA certificate</source>
-        <translation>Izberi CA certifikat</translation>
+        <translation>Izberi potrdilo CA</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="111"/>
@@ -801,22 +801,22 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="117"/>
         <source>TURN address</source>
-        <translation>TURN naslov</translation>
+        <translation>Naslov TURN</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="118"/>
         <source>TURN username</source>
-        <translation>TURN uporabniško ime</translation>
+        <translation>Uporabniško ime TURN</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="119"/>
         <source>TURN password</source>
-        <translation>TURN geslo</translation>
+        <translation>Geslo TURN</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="120"/>
         <source>TURN Realm</source>
-        <translation>TURN Realm</translation>
+        <translation>Območje TURN</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="121"/>
@@ -826,12 +826,12 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="122"/>
         <source>STUN address</source>
-        <translation>STUN naslov</translation>
+        <translation>Naslov STUN</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="125"/>
         <source>Allow IP Auto Rewrite</source>
-        <translation type="unfinished"/>
+        <translation>Dovoli samodejno ponovno pisanje IP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="126"/>
@@ -866,7 +866,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="135"/>
         <source>Audio Codecs</source>
-        <translation>Avdio kodeki</translation>
+        <translation>Zvočni kodeki</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="138"/>
@@ -906,7 +906,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="148"/>
         <source>OpenDHT Configuration</source>
-        <translation>OpenDTH nastavitve</translation>
+        <translation>Nastavitve OpenDTH</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="149"/>
@@ -986,7 +986,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="173"/>
         <source>Resolution</source>
-        <translation>Resolucija</translation>
+        <translation>Ločljivost</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="174"/>
@@ -1011,7 +1011,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="180"/>
         <source>Select screen sharing frame rate (frames per second)</source>
-        <translation type="unfinished"/>
+        <translation>Izberite hitrost ob skupni rabi zaslona (sličice na sekundo)</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="187"/>
@@ -1056,7 +1056,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="195"/>
         <source>Jami archive files</source>
-        <translation>Jami arhivske datoteke</translation>
+        <translation>Arhivske datoteke Jami</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="196"/>
@@ -1091,7 +1091,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="206"/>
         <source>Peer stopped recording</source>
-        <translation type="unfinished"/>
+        <translation>Soležnik je nehal snemati</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="207"/>
@@ -1100,13 +1100,13 @@ Jami se bo zdaj zaprl.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="208"/>
-        <location filename="../src/constant/JamiStrings.qml" line="549"/>
+        <location filename="../src/constant/JamiStrings.qml" line="551"/>
         <source>Mute</source>
         <translation>Utišaj</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="209"/>
-        <location filename="../src/constant/JamiStrings.qml" line="550"/>
+        <location filename="../src/constant/JamiStrings.qml" line="552"/>
         <source>Unmute</source>
         <translation>Vklopi zvok</translation>
     </message>
@@ -1133,17 +1133,17 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="219"/>
         <source>Mosaic</source>
-        <translation type="unfinished"/>
+        <translation>Mozaik</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="222"/>
         <source>You are still muted by moderator</source>
-        <translation type="unfinished"/>
+        <translation>Še vedno imate izklopljen mikrofon s strani moderatorja</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="223"/>
         <source>You are muted by a moderator</source>
-        <translation type="unfinished"/>
+        <translation>Imate izklopljen mikrofon s strani moderatorja</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="224"/>
@@ -1158,17 +1158,17 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="226"/>
         <source>Local and Moderator muted</source>
-        <translation type="unfinished"/>
+        <translation>Moderator in krajevno izklopljen mikrofon</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="227"/>
         <source>Moderator muted</source>
-        <translation type="unfinished"/>
+        <translation>Moderator ima izklopljen mikrofon</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="228"/>
         <source>Not muted</source>
-        <translation type="unfinished"/>
+        <translation>Ni nemo</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="232"/>
@@ -1358,7 +1358,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="280"/>
         <source>Jami Account Management Server URL</source>
-        <translation>Jami Account Management Server URL</translation>
+        <translation>URL strežnika upravljanja z računi Jam</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="281"/>
@@ -1403,7 +1403,7 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="295"/>
         <source>Choose a username for your account</source>
-        <translation>Izberite uporabniško ime za vaš račun</translation>
+        <translation>Izberite uporabniško ime za svoj račun</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="297"/>
@@ -1448,12 +1448,12 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="307"/>
         <source>Create SIP account</source>
-        <translation>Ustvari SIP račun</translation>
+        <translation>Ustvari račun SIP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="308"/>
         <source>Configure an existing SIP account</source>
-        <translation>Nastavi obstoječi SIP račun</translation>
+        <translation>Nastavi obstoječi račun SIP</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="311"/>
@@ -1504,490 +1504,481 @@ Jami se bo zdaj zaprl.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="321"/>
         <source>Backup account to a .gz file</source>
-        <translation>Varnostno kopiraj račun v .gz datoteko</translation>
+        <translation>Varnostno kopiraj račun v datoteko .gz</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="322"/>
-        <source>Display or hide advanced settings</source>
-        <translation>Prikaži ali skrij napredne nastavitve</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="323"/>
+        <location filename="../src/constant/JamiStrings.qml" line="324"/>
         <source>Enable account</source>
         <translation>Vklopi račun</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="326"/>
+        <location filename="../src/constant/JamiStrings.qml" line="327"/>
         <source>Set username</source>
         <translation>Določi uporabniško ime</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="327"/>
+        <location filename="../src/constant/JamiStrings.qml" line="328"/>
         <source>Registering name</source>
         <translation>Registriraj ime</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="330"/>
+        <location filename="../src/constant/JamiStrings.qml" line="331"/>
         <source>Register a username</source>
         <translation>Registriraj uporabniško ime</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="331"/>
+        <location filename="../src/constant/JamiStrings.qml" line="332"/>
         <source>Register username</source>
         <translation>Registriraj uporabniško ime</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="334"/>
+        <location filename="../src/constant/JamiStrings.qml" line="335"/>
         <source>Link a new device to this account</source>
         <translation>Poveži novo napravo s tem računom</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="335"/>
+        <location filename="../src/constant/JamiStrings.qml" line="336"/>
         <source>Link another device</source>
         <translation>Poveži še eno napravo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="336"/>
+        <location filename="../src/constant/JamiStrings.qml" line="337"/>
         <source>Remove Device</source>
         <translation>Odstrani napravo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="337"/>
+        <location filename="../src/constant/JamiStrings.qml" line="338"/>
         <source>Are you sure you wish to remove this device?</source>
         <translation>Ali ste prepričani, da želite odstraniti to napravo?</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="338"/>
+        <location filename="../src/constant/JamiStrings.qml" line="339"/>
         <source>Linked Devices</source>
         <translation>Povezane naprave</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="339"/>
+        <location filename="../src/constant/JamiStrings.qml" line="340"/>
         <source>Your PIN is:</source>
         <translation>Vaš PIN je:</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="340"/>
+        <location filename="../src/constant/JamiStrings.qml" line="341"/>
         <source>Error connecting to the network.
 Please try again later.</source>
         <translation>Napaka ob povezovanju z omrežjem.
 Poskusite znova kasneje.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="343"/>
-        <source>Display or hide banned contacts</source>
-        <translation>Prikaži ali skrij zavrnjene stike</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="346"/>
+        <location filename="../src/constant/JamiStrings.qml" line="348"/>
         <source>Do you really want to delete this account?</source>
         <translation>Ali res želite izbrisati ta račun?</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="350"/>
+        <location filename="../src/constant/JamiStrings.qml" line="352"/>
         <source>Save new device name</source>
         <translation>Shrani novo ime naprave</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="351"/>
+        <location filename="../src/constant/JamiStrings.qml" line="353"/>
         <source>Edit device name</source>
         <translation>Uredi ime naprave</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="352"/>
+        <location filename="../src/constant/JamiStrings.qml" line="354"/>
         <source>Unlink device from account</source>
         <translation>Odstrani napravo z računa</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="355"/>
+        <location filename="../src/constant/JamiStrings.qml" line="357"/>
         <source>Select a folder</source>
         <translation>Izberi mapo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="356"/>
+        <location filename="../src/constant/JamiStrings.qml" line="358"/>
         <source>Enable notifications</source>
         <translation>Omogoči obvestila</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="357"/>
+        <location filename="../src/constant/JamiStrings.qml" line="359"/>
         <source>Enable dark theme</source>
         <translation>Omogoči temno temo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="358"/>
+        <location filename="../src/constant/JamiStrings.qml" line="360"/>
         <source>Keep minimized on close</source>
         <translation>Ohrani zmanjšano ob zaprtju</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="359"/>
+        <location filename="../src/constant/JamiStrings.qml" line="361"/>
         <source>Run application on system startup</source>
         <translation>Zažani program ob zagonu sistema</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="361"/>
+        <location filename="../src/constant/JamiStrings.qml" line="363"/>
         <source>Downloads directory</source>
         <translation>Mapa s prenosi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="362"/>
+        <location filename="../src/constant/JamiStrings.qml" line="364"/>
         <source>Choose download directory</source>
         <translation>Izberite mapo za prenose</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="363"/>
+        <location filename="../src/constant/JamiStrings.qml" line="365"/>
         <source>Record call</source>
         <translation>Snemaj klic</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="366"/>
+        <location filename="../src/constant/JamiStrings.qml" line="368"/>
         <source>Chatview</source>
         <translation>Prikaz klepeta</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="368"/>
+        <location filename="../src/constant/JamiStrings.qml" line="370"/>
         <source>Display hyperlink previews in the chatview</source>
         <translation>Prikaži predoglede hiperpovezav v prikazu klepeta</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="371"/>
+        <location filename="../src/constant/JamiStrings.qml" line="373"/>
         <source>File transfer</source>
         <translation>Prenos datoteke</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="372"/>
+        <location filename="../src/constant/JamiStrings.qml" line="374"/>
         <source>Allow incoming files from unknown contacts</source>
         <translation>Dovoli dodhodne datoteke neznanih stikov</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="373"/>
+        <location filename="../src/constant/JamiStrings.qml" line="375"/>
         <source>Automatically accept incoming files</source>
         <translation>Samodejno sprejmi dohodne datoteke</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="374"/>
+        <location filename="../src/constant/JamiStrings.qml" line="376"/>
         <source>Accept transfer limit</source>
         <translation>Sprejmi omejitev prenosa</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="375"/>
+        <location filename="../src/constant/JamiStrings.qml" line="377"/>
         <source>in MB, 0 = unlimited</source>
         <translation>v MB, 0 = neomejeno</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="378"/>
+        <location filename="../src/constant/JamiStrings.qml" line="380"/>
         <source>Register</source>
         <translation>Registracija</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="379"/>
+        <location filename="../src/constant/JamiStrings.qml" line="381"/>
         <source>Incorrect password</source>
         <translation>Nepravilno geslo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="384"/>
+        <location filename="../src/constant/JamiStrings.qml" line="386"/>
         <source>Save file</source>
         <translation>Shrani datoteko</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="385"/>
+        <location filename="../src/constant/JamiStrings.qml" line="387"/>
         <source>Open location</source>
-        <translation type="unfinished"/>
+        <translation>Odpri lokacijo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="388"/>
+        <location filename="../src/constant/JamiStrings.qml" line="390"/>
         <source>Install beta version</source>
-        <translation>Namesti beta različico</translation>
+        <translation>Namesti različico beta</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="389"/>
+        <location filename="../src/constant/JamiStrings.qml" line="391"/>
         <source>Check for updates now</source>
         <translation>Preveri posodobitve zdaj</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="390"/>
+        <location filename="../src/constant/JamiStrings.qml" line="392"/>
         <source>Enable/Disable automatic updates</source>
         <translation>Vklopi/izklopi samodejno posodabljanje</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="391"/>
+        <location filename="../src/constant/JamiStrings.qml" line="393"/>
         <source>toggle automatic updates</source>
         <translation>preklapljanje med samodejnm posodabljanjem</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="392"/>
+        <location filename="../src/constant/JamiStrings.qml" line="394"/>
         <source>Updates</source>
         <translation>Posodobitve</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="393"/>
+        <location filename="../src/constant/JamiStrings.qml" line="395"/>
         <source>Update</source>
         <translation>Posodobi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="394"/>
+        <location filename="../src/constant/JamiStrings.qml" line="396"/>
         <source>A new version of Jami was found
  Would you like to update now?</source>
         <translation>Najdena je bila novejša različica Jami-ja
 Ali bi radi izvedli posodobitev?</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="395"/>
+        <location filename="../src/constant/JamiStrings.qml" line="397"/>
         <source>No new version of Jami was found</source>
         <translation>Novejša različice ni bila najdena</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="396"/>
+        <location filename="../src/constant/JamiStrings.qml" line="398"/>
         <source>An error occured when checking for a new version</source>
         <translation>Ob iskanju novejše različice se je zgodila napaka</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="399"/>
+        <location filename="../src/constant/JamiStrings.qml" line="401"/>
         <source>Installer download canceled</source>
         <translation>Prenos posodobitve je bilo prekinjeno</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="401"/>
+        <location filename="../src/constant/JamiStrings.qml" line="403"/>
         <source>This will uninstall your current Release version and you can always download the latest Release version on our website</source>
         <translation>To bo odstranilo vašo trenutno različico, lahko pa vedno prenesete zadnjo različico z naše spletne strani.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="402"/>
+        <location filename="../src/constant/JamiStrings.qml" line="404"/>
         <source>Network disconnected</source>
         <translation>Prekinjena omrežna povezava</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="381"/>
-        <location filename="../src/constant/JamiStrings.qml" line="403"/>
+        <location filename="../src/constant/JamiStrings.qml" line="383"/>
+        <location filename="../src/constant/JamiStrings.qml" line="405"/>
         <source>Something went wrong</source>
         <translation>Nekaj je šlo narobe</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="406"/>
-        <source>Troubleshoot</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="407"/>
-        <source>Open logs</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/constant/JamiStrings.qml" line="408"/>
-        <source>Get logs</source>
-        <translation type="unfinished"/>
+        <source>Troubleshoot</source>
+        <translation>Razreši težavo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="411"/>
+        <location filename="../src/constant/JamiStrings.qml" line="409"/>
+        <source>Open logs</source>
+        <translation>Odpri zapisnike</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="410"/>
+        <source>Get logs</source>
+        <translation>Dobi zapisnike</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="413"/>
         <source>Select a record directory</source>
         <translation>Izberite mapo za snemanje</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="414"/>
+        <location filename="../src/constant/JamiStrings.qml" line="416"/>
         <source>Debug</source>
         <translation>Razhrošči</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="415"/>
+        <location filename="../src/constant/JamiStrings.qml" line="417"/>
         <source>Show Stats</source>
         <translation>Pokaži statistiko</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="416"/>
+        <location filename="../src/constant/JamiStrings.qml" line="418"/>
         <source>Start</source>
-        <translation type="unfinished"/>
+        <translation>Začni</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="417"/>
+        <location filename="../src/constant/JamiStrings.qml" line="419"/>
         <source>Stop</source>
         <translation>Zaustavi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="433"/>
+        <location filename="../src/constant/JamiStrings.qml" line="435"/>
         <source>Generating account…</source>
-        <translation>Ustvarjanje računa...</translation>
+        <translation>Ustvarjanje računa ...</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="434"/>
+        <location filename="../src/constant/JamiStrings.qml" line="436"/>
         <source>Import from backup</source>
         <translation>Uvozi iz varnostne kopije</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="441"/>
+        <location filename="../src/constant/JamiStrings.qml" line="443"/>
         <source>PIN</source>
         <translation>PIN</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="462"/>
+        <location filename="../src/constant/JamiStrings.qml" line="464"/>
         <source>Stop taking photo</source>
         <translation>Nehaj slikati</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="463"/>
+        <location filename="../src/constant/JamiStrings.qml" line="465"/>
         <source>Clear avatar image</source>
         <translation>Počisti sliko avatarja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="479"/>
+        <location filename="../src/constant/JamiStrings.qml" line="481"/>
         <source>Go back to plugins list</source>
         <translation>Vrni se na seznam vtičnikov</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="487"/>
+        <location filename="../src/constant/JamiStrings.qml" line="489"/>
         <source>Profile is only shared with contacts</source>
         <translation>Profil se deli le s stiki</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="489"/>
+        <location filename="../src/constant/JamiStrings.qml" line="491"/>
         <source>Enter your name</source>
         <translation>Vnesite svoje ime</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="512"/>
+        <location filename="../src/constant/JamiStrings.qml" line="514"/>
         <source>Import account from other device</source>
         <translation>Uvozi račun iz druge naprave</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="513"/>
+        <location filename="../src/constant/JamiStrings.qml" line="515"/>
         <source>Import account from backup file</source>
         <translation>Uvozi račun iz varnostne kopije</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="516"/>
+        <location filename="../src/constant/JamiStrings.qml" line="518"/>
         <source>Hide advanced features</source>
         <translation>Skrij napredne možnosti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="523"/>
+        <location filename="../src/constant/JamiStrings.qml" line="525"/>
         <source>Create new Jami account</source>
-        <translation>Ustvari nov Jami račun</translation>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="524"/>
-        <source>Create new SIP account</source>
-        <translation>Ustvari nov SIP račun</translation>
+        <translation>Ustvari nov račun Jami</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="526"/>
+        <source>Create new SIP account</source>
+        <translation>Ustvari nov račun SIP</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="528"/>
         <source>Welcome to</source>
         <translation>Dobrodošli v</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="543"/>
+        <location filename="../src/constant/JamiStrings.qml" line="545"/>
         <source>Upgrade</source>
         <translation>Nadgradi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="544"/>
+        <location filename="../src/constant/JamiStrings.qml" line="546"/>
         <source>Later</source>
         <translation>Kasneje</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="554"/>
+        <location filename="../src/constant/JamiStrings.qml" line="556"/>
         <source>Local muted</source>
-        <translation type="unfinished"/>
+        <translation>Krajevno izklopljen mikrofon</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="565"/>
+        <location filename="../src/constant/JamiStrings.qml" line="567"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
         <translation>Poskus ponovnega povezovanja s prikritim procesom Jami (jamid) ...</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="566"/>
+        <location filename="../src/constant/JamiStrings.qml" line="568"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
         <translation>Ponovna povezava s pritajenim procesom Jami (jamid) je spodletela.
 Jami se bo zdaj zaprl.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="569"/>
-        <source>Is swarm:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/constant/JamiStrings.qml" line="570"/>
-        <source>True</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/constant/JamiStrings.qml" line="571"/>
-        <source>False</source>
-        <translation type="unfinished"/>
+        <source>Is swarm:</source>
+        <translation>Je roj:</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="574"/>
+        <location filename="../src/constant/JamiStrings.qml" line="572"/>
+        <source>True</source>
+        <translation>da</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="573"/>
+        <source>False</source>
+        <translation>ne</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="576"/>
         <source>Add emoji</source>
         <translation>Dodaj emoji</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="575"/>
+        <location filename="../src/constant/JamiStrings.qml" line="577"/>
         <source>Send file</source>
         <translation>Pošlji datoteko</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="576"/>
+        <location filename="../src/constant/JamiStrings.qml" line="578"/>
         <source>Leave audio message</source>
         <translation>Pusti zvočno sporočilo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="577"/>
+        <location filename="../src/constant/JamiStrings.qml" line="579"/>
         <source>Leave video message</source>
         <translation>Pusti video sporočilo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="578"/>
+        <location filename="../src/constant/JamiStrings.qml" line="580"/>
         <source>Send</source>
         <translation>Pošlji</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="579"/>
+        <location filename="../src/constant/JamiStrings.qml" line="581"/>
         <source>Remove</source>
         <translation>Odstrani</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="580"/>
+        <location filename="../src/constant/JamiStrings.qml" line="582"/>
         <source>Write to %1</source>
         <translation>Piši stiku %1</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="583"/>
+        <location filename="../src/constant/JamiStrings.qml" line="585"/>
         <source>%1 has sent you a request for a conversation.</source>
         <translation>%1 vam je poslal zahtevo za pogovor.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="584"/>
+        <location filename="../src/constant/JamiStrings.qml" line="586"/>
         <source>Hello,
 Would you like to join the conversation?</source>
         <translation>Pozdravljeni, 
 se želite pridružiti pogovoru?</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="585"/>
+        <location filename="../src/constant/JamiStrings.qml" line="587"/>
         <source>You have accepted
 the conversation request</source>
         <translation>Sprejeli ste zahtevo
 za pogovor.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="586"/>
+        <location filename="../src/constant/JamiStrings.qml" line="588"/>
         <source>Waiting until %1
 connects to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Čakamo, da se %1
+poveže, da sinhroniziramo pogovor.</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="231"/>
-        <location filename="../src/constant/JamiStrings.qml" line="418"/>
+        <location filename="../src/constant/JamiStrings.qml" line="420"/>
         <source>Copy</source>
         <translation>Kopiraj</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="220"/>
         <source>Participant is still muted on their device</source>
-        <translation type="unfinished"/>
+        <translation>Udeleženec ima še vedno izklopljen mikrofon na svoji napravi</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="221"/>
         <source>You are still muted on your device</source>
-        <translation type="unfinished"/>
+        <translation>Še vedno imate izklopljen mikrofon na svoji napravi</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="253"/>
@@ -1995,289 +1986,309 @@ connects to synchronize the conversation.</source>
         <translation>Prenehaj deliti zaslon ali datoteko</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="419"/>
+        <location filename="../src/constant/JamiStrings.qml" line="322"/>
+        <source>Display advanced settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="323"/>
+        <source>Hide advanced settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="344"/>
+        <source>Display banned contacts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="345"/>
+        <source>Hide banned contacts</source>
+        <translation>Skrij zavrnjene stike</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="421"/>
         <source>Report Bug</source>
         <translation>Poročaj o hrošču</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="420"/>
+        <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Clear</source>
         <translation>Počisiti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="422"/>
+        <location filename="../src/constant/JamiStrings.qml" line="424"/>
         <source>Copied to clipboard!</source>
         <translation>Kopirano na odložišče!</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="423"/>
+        <location filename="../src/constant/JamiStrings.qml" line="425"/>
         <source>Receive Logs</source>
-        <translation type="unfinished"/>
+        <translation>Prejmi zapisnike</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="426"/>
+        <location filename="../src/constant/JamiStrings.qml" line="428"/>
         <source>Archive</source>
         <translation>Arhiv</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="427"/>
+        <location filename="../src/constant/JamiStrings.qml" line="429"/>
         <source>Open file</source>
         <translation>Odpri datoteko</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="428"/>
+        <location filename="../src/constant/JamiStrings.qml" line="430"/>
         <source>Create your account from a backup</source>
         <translation>Ustvarite račun iz varnostne kopije</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="429"/>
+        <location filename="../src/constant/JamiStrings.qml" line="431"/>
         <source>You can obtain an archive by clicking on &quot;Backup account&quot; in the account settings. This will create a .gz file on your device.</source>
         <translation>Lahko ustvarite arhiv s klikom na &quot;Varnostno kopiranje&quot; na nastavitvah računa. To bo na vaši napravi ustvarilo .gz datoteko.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="432"/>
+        <location filename="../src/constant/JamiStrings.qml" line="434"/>
         <source>Restore an account from backup</source>
         <translation>Obnovi račun iz varnostne kopije</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="437"/>
+        <location filename="../src/constant/JamiStrings.qml" line="439"/>
         <source>Enter Jami account password</source>
-        <translation>Vnesite geslo Jami računa</translation>
+        <translation>Vnesite geslo računa Jami</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="444"/>
+        <location filename="../src/constant/JamiStrings.qml" line="446"/>
         <source>The PIN and the account password should be entered in your device within 10 minutes.</source>
         <translation>PIN in geslo računa je potebno vnesti v roku 10 minut.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="445"/>
+        <location filename="../src/constant/JamiStrings.qml" line="447"/>
         <source>Close</source>
         <translation>Zapri</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="446"/>
+        <location filename="../src/constant/JamiStrings.qml" line="448"/>
         <source>Enter your account password</source>
         <translation>Vnesite geslo računa</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="447"/>
+        <location filename="../src/constant/JamiStrings.qml" line="449"/>
         <source>Add Device</source>
         <translation>Dodaj napravo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="450"/>
+        <location filename="../src/constant/JamiStrings.qml" line="452"/>
         <source>Enter the password</source>
         <translation>Vnesite geslo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="451"/>
+        <location filename="../src/constant/JamiStrings.qml" line="453"/>
         <source>Enter current password</source>
         <translation>Vnesite trenutno geslo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="452"/>
+        <location filename="../src/constant/JamiStrings.qml" line="454"/>
         <source>Enter this account&apos;s password to confirm the removal of this device</source>
         <translation>Vnesite geslo računa, da potrdite odstranitev te naprave</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="453"/>
+        <location filename="../src/constant/JamiStrings.qml" line="455"/>
         <source>Enter new password</source>
         <translation>Vnesite novo geslo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="454"/>
+        <location filename="../src/constant/JamiStrings.qml" line="456"/>
         <source>Confirm new password</source>
         <translation>Potrdite novo geslo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="455"/>
+        <location filename="../src/constant/JamiStrings.qml" line="457"/>
         <source>Change</source>
-        <translation>remeni</translation>
+        <translation>Spremeni</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="456"/>
+        <location filename="../src/constant/JamiStrings.qml" line="458"/>
         <source>Confirm</source>
         <translation>Potrdi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="457"/>
+        <location filename="../src/constant/JamiStrings.qml" line="459"/>
         <source>Export</source>
         <translation>Izvozi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="460"/>
+        <location filename="../src/constant/JamiStrings.qml" line="462"/>
         <source>Choose a picture as avatar</source>
         <translation>Za avatar izberi sliko</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="461"/>
+        <location filename="../src/constant/JamiStrings.qml" line="463"/>
         <source>Import avatar from image file</source>
         <translation>Uvozi sklikovno datoteko za avatar</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="464"/>
+        <location filename="../src/constant/JamiStrings.qml" line="466"/>
         <source>Take photo</source>
         <translation>Slikaj</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="470"/>
+        <location filename="../src/constant/JamiStrings.qml" line="472"/>
         <source>Reset</source>
         <translation>Ponastavi</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="471"/>
+        <location filename="../src/constant/JamiStrings.qml" line="473"/>
         <source>Select a plugin to install</source>
         <translation>Izberite vtičnik za namesitev</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="472"/>
+        <location filename="../src/constant/JamiStrings.qml" line="474"/>
         <source>Install plugin</source>
         <translation>Namesti vtičnik</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="488"/>
+        <location filename="../src/constant/JamiStrings.qml" line="490"/>
         <source>Save profile</source>
         <translation>Shrani profil</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="492"/>
+        <location filename="../src/constant/JamiStrings.qml" line="494"/>
         <source>Information</source>
         <translation>Informacije</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="495"/>
+        <location filename="../src/constant/JamiStrings.qml" line="497"/>
         <source>Enter the account password to confirm the removal of this device</source>
         <translation>Vnesite geslo računa, da potrdite odstranitev te naprave</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="498"/>
+        <location filename="../src/constant/JamiStrings.qml" line="500"/>
         <source>Select a screen to share</source>
         <translation>Izberite zaslon, ki ga želite deliti</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="499"/>
+        <location filename="../src/constant/JamiStrings.qml" line="501"/>
         <source>All Screens</source>
         <translation>Vsi zasloni</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="500"/>
+        <location filename="../src/constant/JamiStrings.qml" line="502"/>
         <source>Screens</source>
         <translation>Zasloni</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="501"/>
+        <location filename="../src/constant/JamiStrings.qml" line="503"/>
         <source>Windows</source>
         <translation>Okna</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="504"/>
+        <location filename="../src/constant/JamiStrings.qml" line="506"/>
         <source>QR code</source>
-        <translation>QR koda</translation>
+        <translation>QR-koda</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="507"/>
+        <location filename="../src/constant/JamiStrings.qml" line="509"/>
         <source>Account QR</source>
         <translation>QR računa</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="510"/>
+        <location filename="../src/constant/JamiStrings.qml" line="512"/>
         <source>This is your Jami username.
 Copy and share it with your friends!</source>
         <translation>To je vaše Jami uporabniško ime.
 Kopirajte ga in delite s prijatelji!</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="511"/>
+        <location filename="../src/constant/JamiStrings.qml" line="513"/>
         <source>Link this device to an existing account</source>
         <translation>Povežite to napravo z obstoječim računom</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="514"/>
+        <location filename="../src/constant/JamiStrings.qml" line="516"/>
         <source>Advanced features</source>
         <translation>Napredno</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="515"/>
+        <location filename="../src/constant/JamiStrings.qml" line="517"/>
         <source>Show advanced features</source>
         <translation>Prikaži napredne funkcije</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="517"/>
-        <source>Connect to a JAMS server</source>
-        <translation>Poveži se z JAMS strežnikom</translation>
-    </message>
-    <message>
         <location filename="../src/constant/JamiStrings.qml" line="519"/>
-        <source>Add a SIP account</source>
-        <translation>Dodaj SIP račun</translation>
+        <source>Connect to a JAMS server</source>
+        <translation>Poveži se s strežnikom JAMS</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="520"/>
+        <location filename="../src/constant/JamiStrings.qml" line="521"/>
+        <source>Add a SIP account</source>
+        <translation>Dodaj račun SIP</translation>
+    </message>
+    <message>
+        <location filename="../src/constant/JamiStrings.qml" line="522"/>
         <source>Error while creating your account. Check your credentials.</source>
         <translation>Napaka pri ustvarjanju računa. Preverite podatke.</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="529"/>
+        <location filename="../src/constant/JamiStrings.qml" line="531"/>
         <source>Clear Text</source>
         <translation>Počisti besedilo</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="531"/>
+        <location filename="../src/constant/JamiStrings.qml" line="533"/>
         <source>Search Results</source>
         <translation>Rezultati iskanja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="547"/>
+        <location filename="../src/constant/JamiStrings.qml" line="549"/>
         <source>Set moderator</source>
         <translation>Določi moderatorja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="548"/>
+        <location filename="../src/constant/JamiStrings.qml" line="550"/>
         <source>Unset moderator</source>
         <translation>Odstavi moderatorja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="551"/>
+        <location filename="../src/constant/JamiStrings.qml" line="553"/>
         <source>Maximize</source>
         <translation>Povečaj</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="552"/>
+        <location filename="../src/constant/JamiStrings.qml" line="554"/>
         <source>Minimize</source>
         <translation>Minimaliziraj</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="553"/>
+        <location filename="../src/constant/JamiStrings.qml" line="555"/>
         <source>Hangup</source>
         <translation>Odloži</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="557"/>
+        <location filename="../src/constant/JamiStrings.qml" line="559"/>
         <source>Conference moderation</source>
         <translation>Moderiranje konference</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="558"/>
+        <location filename="../src/constant/JamiStrings.qml" line="560"/>
         <source>Default moderators</source>
         <translation>Privzeti moderatorji</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="559"/>
+        <location filename="../src/constant/JamiStrings.qml" line="561"/>
         <source>Enable local moderators</source>
         <translation>Omogoči krajevne moderatorje</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="560"/>
+        <location filename="../src/constant/JamiStrings.qml" line="562"/>
         <source>Make all participants moderators</source>
         <translation>Vsi udeleženci naj postanejo moderatorji</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="561"/>
+        <location filename="../src/constant/JamiStrings.qml" line="563"/>
         <source>Add default moderator</source>
         <translation>Dodaj privzetega moderatorja</translation>
     </message>
     <message>
-        <location filename="../src/constant/JamiStrings.qml" line="562"/>
+        <location filename="../src/constant/JamiStrings.qml" line="564"/>
         <source>Remove default moderator</source>
         <translation>Odstrani privzetega moderatorja</translation>
     </message>
@@ -2400,7 +2411,7 @@ Kopirajte ga in delite s prijatelji!</translation>
     <message>
         <location filename="../src/mainapplication.cpp" line="428"/>
         <source>E&amp;xit</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Zapri</translation>
     </message>
     <message>
         <location filename="../src/mainapplication.cpp" line="430"/>
@@ -2697,7 +2708,7 @@ Kopirajte ga in delite s prijatelji!</translation>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="39"/>
         <source>Audio/Video</source>
-        <translation>Zvok/Video</translation>
+        <translation>Zvok/video</translation>
     </message>
     <message>
         <location filename="../src/settingsview/components/SettingsMenu.qml" line="41"/>
