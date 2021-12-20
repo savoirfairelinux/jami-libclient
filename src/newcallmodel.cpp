@@ -1420,7 +1420,7 @@ NewCallModelPimpl::slotincomingVCardChunk(const QString& accountId,
                 vcardPhoto += chunk;
 
             for (auto& e : QString(vcardPhoto).split("\n"))
-                if (e.contains("PHOTO"))
+                if (e.contains("PHOTO") && lrc::api::Lrc::cacheAvatars.load())
                     profileInfo.avatar = e.split(":")[1];
                 else if (e.contains("FN"))
                     profileInfo.alias = e.split(":")[1];

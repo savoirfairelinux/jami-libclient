@@ -1222,6 +1222,13 @@ NewAccountModel::notificationsCount() const
     return total;
 }
 
+QString
+NewAccountModel::avatar(const QString& accountId) const
+{
+    return authority::storage::avatar(accountId);
+}
+
+
 } // namespace lrc
 
 #include "api/moc_newaccountmodel.cpp"
