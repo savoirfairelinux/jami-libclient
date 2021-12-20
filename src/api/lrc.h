@@ -115,6 +115,11 @@ public:
     static std::atomic_bool holdConferences;
 
     /**
+     * If cache contact's avatar or reload
+     */
+    static std::atomic_bool cacheAvatars;
+
+    /**
      * Make monitor continous or discrete
      */
     static void monitor(bool continous);
