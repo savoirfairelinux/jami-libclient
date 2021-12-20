@@ -46,7 +46,7 @@ Item {
 
     function stopBooth(){
         if (!AccountAdapter.hasVideoCall()) {
-        VideoDevices.stopDevice(preview.deviceId)
+            VideoDevices.stopDevice(preview.deviceId)
         }
         isPreviewing = false
     }

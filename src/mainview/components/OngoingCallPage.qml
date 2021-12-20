@@ -33,7 +33,7 @@ Rectangle {
     id: root
 
     property var accountPeerPair: ["", ""]
-    property variant clickPos: "1,1"
+    property string clickPos: "1,1"
     property int previewMargin: 15
     property int previewMarginYTop: previewMargin + 42
     property int previewMarginYBottom: previewMargin + 84
@@ -43,14 +43,6 @@ Rectangle {
     property alias callId: distantRenderer.rendererId
     property var linkedWebview: null
     property string callPreviewId: ""
-
-    onCallPreviewIdChanged: {
-        testLog("\n\n CHANGING CALLPREVIEWID" + root.callPreviewId + " " + previewRenderer.rendererId + " \n\n")
-    }
-
-    function testLog(txt) {
-        console.log(this, txt)
-    }
 
     color: "black"
 
@@ -194,7 +186,7 @@ Rectangle {
                     rendererId: root.callPreviewId
 
                     onVisibleChanged: {
-                        if (!visible) {
+                        if (!visible && !AccountAdapter.hasVideoCall()) {
                             VideoDevices.stopDevice(rendererId, true)
                         }
                     }
@@ -291,8 +283,8 @@ Rectangle {
 
                         function onUpdateOverlay(isPaused, isAudioOnly, isAudioMuted, isVideoMuted,
                                                  isSIP, isConferenceCall, isGrid, previewId) {
-                            if (previewId != "") {
-                                if (root.callPreviewId != previewId)
+                            if (previewId !== "") {
+                                if (root.callPreviewId !== previewId)
                                     VideoDevices.stopDevice(root.callPreviewId, true)
                                 VideoDevices.startDevice(previewId)
                             } else {
