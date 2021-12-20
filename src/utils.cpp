@@ -357,7 +357,7 @@ Utils::contactPhoto(LRCInstance* instance,
         auto& accInfo = instance->accountModel().getAccountInfo(
             accountId.isEmpty() ? instance->get_currentAccountId() : accountId);
         auto contactInfo = accInfo.contactModel->getContact(contactUri);
-        auto contactPhoto = contactInfo.profileInfo.avatar;
+        auto contactPhoto = accInfo.contactModel->avatar(contactUri);
         auto bestName = accInfo.contactModel->bestNameForContact(contactUri);
         if (accInfo.profileInfo.type == profile::Type::SIP
             && contactInfo.profileInfo.type == profile::Type::TEMPORARY) {
