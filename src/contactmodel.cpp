@@ -26,11 +26,11 @@
 // LRC
 #include "api/account.h"
 #include "api/contact.h"
+#include "api/conversationmodel.h"
 #include "api/interaction.h"
+#include "api/lrc.h"
 #include "api/newaccountmodel.h"
 #include "api/newcallmodel.h"
-#include "api/conversationmodel.h"
-#include "api/newaccountmodel.h"
 #include "callbackshandler.h"
 #include "uri.h"
 #include "vcard.h"
@@ -538,6 +538,12 @@ ContactModel::bestNameForContact(const QString& contactUri) const
     return contactUri;
 }
 
+QString
+ContactModel::avatar(const QString& uri) const
+{
+    return storage::avatar(owner.id, uri);
+}
+
 const QString
 ContactModel::bestIdForContact(const QString& contactUri) const
 {
@@ -726,7 +732,7 @@ ContactModelPimpl::fillWithJamiContacts()
         const auto alias = vCard["FN"];
         QByteArray photo;
         for (const auto& key : vCard.keys()) {
-            if (key.contains("PHOTO"))
+            if (key.contains("PHOTO") && lrc::api::Lrc::cacheAvatars.load())
                 photo = vCard[key];
         }
         contactInfo.profileInfo.type = profile::Type::PENDING;
@@ -925,7 +931,8 @@ ContactModelPimpl::addToContacts(const QString& contactUri,
         updateProfile = true;
         contactInfo.profileInfo.alias = profileInfo.alias;
     }
-    if (!profileInfo.avatar.isEmpty() && contactInfo.profileInfo.avatar != profileInfo.avatar) {
+    auto oldAvatar = lrc::api::Lrc::cacheAvatars.load()? contactInfo.profileInfo.avatar : storage::avatar(linked.owner.id, contactUri);
+    if (!profileInfo.avatar.isEmpty() && oldAvatar != profileInfo.avatar) {
         updateProfile = true;
         contactInfo.profileInfo.avatar = profileInfo.avatar;
     }
@@ -934,6 +941,8 @@ ContactModelPimpl::addToContacts(const QString& contactUri,
 
     contactInfo.isBanned = banned;
     contactInfo.conversationId = conversationId;
+    if (!lrc::api::Lrc::cacheAvatars.load())
+        contactInfo.profileInfo.avatar.clear();
 
     // lookup address in case of RING contact
     if (type == profile::Type::JAMI) {
@@ -1245,6 +1254,8 @@ ContactModelPimpl::slotProfileReceived(const QString& accountId,
     contactInfo.profileInfo = profileInfo;
 
     linked.owner.contactModel->addContact(contactInfo);
+    if (!lrc::api::Lrc::cacheAvatars.load())
+        contactInfo.profileInfo.avatar.clear(); // Do not store after update
 }
 
 void
