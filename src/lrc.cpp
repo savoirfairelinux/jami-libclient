@@ -47,6 +47,7 @@ namespace lrc {
 using namespace api;
 
 std::atomic_bool lrc::api::Lrc::holdConferences;
+std::atomic_bool lrc::api::Lrc::cacheAvatars {true};
 
 // To judge whether the call is finished or not depending on callState
 bool isFinished(const QString& callState);

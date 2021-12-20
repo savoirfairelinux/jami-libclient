@@ -23,6 +23,7 @@
 #include "api/profile.h"
 #include "api/conversation.h"
 #include "api/datatransfer.h"
+#include "api/lrc.h"
 #include "uri.h"
 #include "vcard.h"
 
@@ -341,13 +342,39 @@ buildContactFromProfile(const QString& accountId,
     QByteArray vcard = in.readAll().toUtf8();
     const auto vCard = lrc::vCard::utils::toHashMap(vcard);
     const auto alias = vCard[vCard::Property::FORMATTED_NAME];
-    for (const auto& key : vCard.keys()) {
-        if (key.contains("PHOTO"))
-            profileInfo.avatar = vCard[key];
+    if (lrc::api::Lrc::cacheAvatars.load()) {
+        for (const auto& key : vCard.keys()) {
+            if (key.contains("PHOTO"))
+                profileInfo.avatar = vCard[key];
+        }
     }
     profileInfo.alias = alias;
     return {profileInfo, "", type == api::profile::Type::JAMI, false};
 }
+
+QString
+avatar(const QString& accountId, const QString& contactId)
+{
+    if (contactId.isEmpty())
+        return getAccountAvatar(accountId);
+    auto accountLocalPath = getPath() + accountId + "/";
+    QString b64filePath;
+    b64filePath = profileVcardPath(accountId, contactId);
+    QFile file(b64filePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        return {};
+    }
+    QTextStream in(&file);
+    in.setCodec("UTF-8");
+    QByteArray vcard = in.readAll().toUtf8();
+    const auto vCard = lrc::vCard::utils::toHashMap(vcard);
+    for (const auto& key : vCard.keys()) {
+        if (key.contains("PHOTO"))
+            return vCard[key];
+    }
+    return {};
+}
+
 
 VectorString
 getAllConversations(Database& db)
