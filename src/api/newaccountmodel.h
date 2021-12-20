@@ -259,6 +259,10 @@ public:
      * Get notifications count across accounts
      */
     int notificationsCount() const;
+    /**
+     * Retrieve account's avatar
+     */
+    QString avatar(const QString& accountId) const;
 
 Q_SIGNALS:
     /**
