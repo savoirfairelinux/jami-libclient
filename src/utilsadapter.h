@@ -89,6 +89,7 @@ public:
     Q_INVOKABLE void setRunOnStartUp(bool state);
     Q_INVOKABLE void setDownloadPath(QString dir);
     Q_INVOKABLE void monitor(const bool& continuous);
+    Q_INVOKABLE void clearInteractionsCache(const QString& accountId, const QString& convUid);
 
 Q_SIGNALS:
     void debugMessageReceived(const QString& message);

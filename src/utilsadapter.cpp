@@ -400,3 +400,15 @@ UtilsAdapter::monitor(const bool& continuous)
                                });
     lrcInstance_->monitor(continuous);
 }
+
+void
+UtilsAdapter::clearInteractionsCache(const QString& accountId, const QString& convId)
+{
+    if (lrcInstance_->get_selectedConvUid() != convId) {
+        try {
+            auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId);
+            auto& convModel = accInfo.conversationModel;
+            convModel->clearInteractionsCache(convId);
+        } catch (...) {}
+    }
+}
