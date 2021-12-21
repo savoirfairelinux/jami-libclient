@@ -42,6 +42,8 @@ Window {
     property string currentPreview: ""
     property var screens: []
 
+    title: JamiStrings.selectScreen
+
     // How many rows the ScrollView should have.
     function calculateRepeaterModel() {
         screens = []
@@ -51,7 +53,7 @@ Window {
         AvAdapter.getListWindows()
         for (var idx in AvAdapter.windowsNames) {
             screens.push(AvAdapter.windowsNames[idx])
-        } 
+        }
 
         return screens.length
     }
@@ -83,20 +85,7 @@ Window {
 
         color: JamiTheme.backgroundColor
 
-        Text {
-            id: screenListText
-
-            anchors.top: selectScreenWindowRect.top
-            anchors.topMargin: JamiTheme.preferredMarginSize
-            anchors.horizontalCenter: selectScreenWindowRect.horizontalCenter
-
-            font.pointSize: JamiTheme.textFontSize + 2
-            font.bold: true
-            text: JamiStrings.selectScreen
-            color: JamiTheme.textColor
-        }
-
-        JamiFlickable {
+        ScrollView {
             id: screenSelectionScrollView
 
             anchors.topMargin: JamiTheme.preferredMarginSize
@@ -106,7 +95,9 @@ Window {
             height: selectScreenWindowRect.height -
                     (selectButton.height + JamiTheme.preferredMarginSize * 4)
 
-            contentHeight: screenSelectionScrollViewColumn.implicitHeight
+            clip: true
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
 
             Flow {
                 id: screenSelectionScrollViewFlow
