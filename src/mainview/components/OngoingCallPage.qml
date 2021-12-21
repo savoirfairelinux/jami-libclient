@@ -33,7 +33,7 @@ Rectangle {
     id: root
 
     property var accountPeerPair: ["", ""]
-    property string clickPos: "1,1"
+    property variant clickPos: "1,1"
     property int previewMargin: 15
     property int previewMarginYTop: previewMargin + 42
     property int previewMarginYBottom: previewMargin + 84
