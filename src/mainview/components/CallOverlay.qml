@@ -41,6 +41,7 @@ Item {
     property bool isAudioMuted
     property bool isVideoMuted
     property bool isRecording
+    property bool remoteRecording
     property bool isSIP
     property bool isModerator
     property bool isConferenceCall
@@ -55,12 +56,6 @@ Item {
         anchors.fill: parent
     }
 
-    function setRecording(localIsRecording) {
-        callViewContextMenu.localIsRecording = localIsRecording
-        mainOverlay.recordingVisible = localIsRecording
-                || callViewContextMenu.peerIsRecording
-    }
-
     function updateUI(isPaused, isAudioOnly, isAudioMuted,
                       isVideoMuted, isSIP,
                       isConferenceCall, isGrid) {
@@ -73,7 +68,6 @@ Item {
             root.isSIP = isSIP
             root.isConferenceCall = isConferenceCall
             root.isGrid = isGrid
-            mainOverlay.recordingVisible = isRecording
             root.localHandRaised = CallAdapter.isHandRaised()
         }
         root.isRecording = CallAdapter.isRecordingThisCall()
@@ -113,16 +107,13 @@ Item {
         }
 
         mainOverlay.remoteRecordingLabel = state ? label : JamiStrings.peerStoppedRecording
-        callViewContextMenu.peerIsRecording = state
-        mainOverlay.recordingVisible = callViewContextMenu.localIsRecording
-                || callViewContextMenu.peerIsRecording
+        root.remoteRecording = state
         callOverlayRectMouseArea.entered()
     }
 
     function resetRemoteRecording() {
         mainOverlay.remoteRecordingLabel = ""
-        callViewContextMenu.peerIsRecording = false
-        mainOverlay.recordingVisible = callViewContextMenu.localIsRecording
+        root.remoteRecording = false
     }
 
     SipInputPanel {
@@ -194,10 +185,17 @@ Item {
         PluginHandlerPickerCreation.openPluginHandlerPicker()
     }
 
+    function recordClicked() {
+        CallAdapter.recordThisCallToggle()
+        updateUI()
+    }
+
     MainOverlay {
         id: mainOverlay
 
         anchors.fill: parent
+        isRecording: root.isRecording
+        remoteRecording: root.remoteRecording
 
         Connections {
             target: mainOverlay.callActionBar
@@ -209,6 +207,7 @@ Item {
             function onShareScreenClicked() { openShareScreen() }
             function onStopSharingClicked() { AvAdapter.stopSharing() }
             function onShareScreenAreaClicked() { openShareScreenArea() }
+            function onRecordCallClicked() { recordClicked() }
             function onShareFileClicked() { jamiFileDialog.open() }
             function onPluginsClicked() { openPluginsMenu() }
         }
@@ -219,9 +218,10 @@ Item {
 
         isSIP: root.isSIP
         isPaused: root.isPaused
-        localIsRecording: root.isRecording
+        isRecording: root.isRecording
 
         onTransferCallButtonClicked: openContactPicker(ContactList.TRANSFER)
         onPluginItemClicked: openPluginsMenu()
+        onRecordCallClicked: root.recordClicked()
     }
 }

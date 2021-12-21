@@ -38,7 +38,6 @@ Control {
     property bool subMenuOpen: false
 
     property real itemSpacing: 2
-    property bool localIsRecording: false
 
     signal chatClicked
     signal addToConferenceClicked
@@ -50,6 +49,7 @@ Control {
     signal shareScreenAreaClicked
     signal shareFileClicked
     signal pluginsClicked
+    signal recordCallClicked
 
     Component {
         id: buttonDelegate
@@ -275,7 +275,7 @@ Control {
         },
         Action {
             id: recordAction
-            onTriggered: CallAdapter.recordThisCallToggle()
+            onTriggered: root.recordCallClicked()
             checkable: true
             icon.source: JamiResources.record_black_24dp_svg
             icon.color: checked ? "red" : "white"

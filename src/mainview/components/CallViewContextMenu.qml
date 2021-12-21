@@ -35,11 +35,11 @@ ContextMenuAutoLoader {
     property bool isSIP: false
     property bool isPaused: false
     property bool isVideoMuted: false
-    property bool localIsRecording: false
-    property bool peerIsRecording: false
+    property bool isRecording: false
 
     signal pluginItemClicked
     signal transferCallButtonClicked
+    signal recordCallClicked
 
     property list<GeneralMenuItem> menuItems: [
         GeneralMenuItem {
@@ -78,12 +78,11 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: localRecord
 
-            itemName: localIsRecording ? JamiStrings.stopRec : JamiStrings.startRec
+            itemName: root.isRecording ? JamiStrings.stopRec : JamiStrings.startRec
             iconSource: JamiResources.fiber_manual_record_24dp_svg
             iconColor: JamiTheme.recordIconColor
             onClicked: {
-                CallAdapter.recordThisCallToggle()
-                localIsRecording = CallAdapter.isRecordingThisCall()
+                root.recordCallClicked()
             }
         },
         GeneralMenuItem {

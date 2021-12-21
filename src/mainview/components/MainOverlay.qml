@@ -34,7 +34,6 @@ Item {
     property string timeText: "00:00"
     property string remoteRecordingLabel: ""
 
-    property alias recordingVisible: recordingRect.visible
     property alias callActionBar: __callActionBar
 
     property bool frozen: callActionBar.overflowOpen ||
@@ -44,6 +43,8 @@ Item {
 
     property string muteAlertMessage: ""
     property bool muteAlertActive: false
+    property bool remoteRecording: false
+    property bool isRecording: false
 
     onMuteAlertActiveChanged: {
         if (muteAlertActive) {
@@ -93,7 +94,7 @@ Item {
             root.timeText = CallAdapter.getCallDurationTime(
                         LRCInstance.currentAccountId,
                         LRCInstance.selectedConvUid)
-            if (root.opacity === 0 && !callViewContextMenu.peerIsRecording)
+            if (root.opacity === 0 && !root.remoteRecording)
                 root.remoteRecordingLabel = ""
         }
     }
@@ -199,6 +200,7 @@ Item {
 
             Rectangle {
                 id: recordingRect
+                visible: root.isRecording || root.remoteRecording
 
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
                 Layout.rightMargin: JamiTheme.preferredMarginSize
