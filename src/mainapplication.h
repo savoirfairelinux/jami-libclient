@@ -70,7 +70,7 @@ private:
     void fileDebug(QFile* debugFile);
 
     void loadTranslations();
-    void initLrc(const QString& downloadUrl, ConnectivityMonitor* cm, bool muteDaemon);
+    void initLrc(const QString& downloadUrl, ConnectivityMonitor* cm, bool logDaemon);
     const QVariantMap parseArguments();
     void setApplicationFont();
     void initQmlLayer();

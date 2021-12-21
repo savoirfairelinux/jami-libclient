@@ -187,7 +187,7 @@ MainApplication::init()
 
     initLrc(results[opts::UPDATEURL].toString(),
             connectivityMonitor_.get(),
-            results[opts::MUTEDAEMON].toBool());
+            results[opts::DEBUG].toBool() && !results[opts::MUTEDAEMON].toBool());
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
     using namespace Interfaces;
@@ -309,7 +309,7 @@ MainApplication::loadTranslations()
 }
 
 void
-MainApplication::initLrc(const QString& downloadUrl, ConnectivityMonitor* cm, bool muteDaemon)
+MainApplication::initLrc(const QString& downloadUrl, ConnectivityMonitor* cm, bool logDaemon)
 {
     /*
      * Init mainwindow and finish splash when mainwindow shows up.
@@ -333,7 +333,7 @@ MainApplication::initLrc(const QString& downloadUrl, ConnectivityMonitor* cm, bo
         },
         downloadUrl,
         cm,
-        muteDaemon));
+        !logDaemon));
     lrcInstance_->subscribeToDebugReceived();
 }
 
@@ -377,7 +377,7 @@ MainApplication::parseArguments()
     parser.addOption(updateUrlOption);
 #endif
 
-    QCommandLineOption muteDaemonOption({"q", "quiet"}, "Mute daemon logging.");
+    QCommandLineOption muteDaemonOption({"q", "quiet"}, "Mute daemon logging. (only if debug)");
     parser.addOption(muteDaemonOption);
 
     parser.process(*this);
