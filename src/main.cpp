@@ -77,14 +77,15 @@ main(int argc, char* argv[])
     qtWebEngineChromiumFlags << disableWebSecurity;
     qtWebEngineChromiumFlags << singleProcess;
 
-    QtWebEngineQuick::initialize();
-
     QApplication::setApplicationName("Jami");
     QApplication::setOrganizationDomain("jami.net");
     QApplication::setQuitOnLastWindowClosed(false);
     QCoreApplication::setApplicationVersion(QString(VERSION_STRING));
     QApplication::setHighDpiScaleFactorRoundingPolicy(
         Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+#if defined(__APPLE__)
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::Metal);
+#endif
 
     auto newArgv = parseInputArgument(argc, argv, qtWebEngineChromiumFlags);
 
