@@ -155,7 +155,11 @@ MainApplication::MainApplication(int& argc, char** argv)
     QObject::connect(this, &QApplication::aboutToQuit, [this] { cleanup(); });
 }
 
-MainApplication::~MainApplication() {}
+MainApplication::~MainApplication()
+{
+    engine_.reset();
+    lrcInstance_.reset();
+}
 
 bool
 MainApplication::init()

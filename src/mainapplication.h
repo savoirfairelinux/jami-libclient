@@ -80,7 +80,6 @@ private:
 private:
     QScopedPointer<QFile> debugFile_;
     QScopedPointer<QQmlApplicationEngine> engine_;
-
     QScopedPointer<LRCInstance> lrcInstance_;
 
     QScopedPointer<ConnectivityMonitor> connectivityMonitor_;
