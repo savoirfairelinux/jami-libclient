@@ -10,11 +10,8 @@ RUN apt-get update && \
 
 RUN apt install gnupg dirmngr ca-certificates curl --no-install-recommends
 RUN curl -s https://dl.jami.net/public-key.gpg | tee /usr/share/keyrings/jami-archive-keyring.gpg > /dev/null
-RUN sh -c "echo 'deb [signed-by=/usr/share/keyrings/jami-archive-keyring.gpg] https://dl.jami.net/nightly/ubuntu_20.04/ jami main' > /etc/apt/sources.list.d/jami.list"
+RUN sh -c "echo 'deb [signed-by=/usr/share/keyrings/jami-archive-keyring.gpg] https://dl.jami.net/internal/ubuntu_20.04/ jami main' > /etc/apt/sources.list.d/jami.list"
 RUN apt-get update && apt-get install libqt-jami -y
-
-ENV QT5_PATH=/usr/lib/libqt-jami/
-ENV QT5_VER=5.15.2
 
 RUN apt-get install -y -o Acquire::Retries=10 \
         python3 \
