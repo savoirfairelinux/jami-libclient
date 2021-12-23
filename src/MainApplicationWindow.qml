@@ -47,10 +47,13 @@ ApplicationWindow {
     }
 
     property ApplicationWindow appWindow : root
-    property bool isFullScreen: false
 
     function toggleFullScreen() {
-        isFullScreen = !isFullScreen
+        if (visibility !== Window.FullScreen) {
+            showFullScreen()
+        } else {
+            showNormal()
+        }
     }
 
     function checkLoadedSource() {
@@ -85,11 +88,6 @@ ApplicationWindow {
         } else
             hide()
     }
-
-    visibility: !visible ?
-                   Window.Hidden : (isFullScreen ?
-                                        Window.FullScreen :
-                                        Window.Windowed)
 
     title: JamiStrings.appTitle
 
@@ -150,6 +148,9 @@ ApplicationWindow {
         }
 
         onLoaded: {
+            if (UtilsAdapter.getAppValue(Settings.StartMinimized)) {
+                showMinimized()
+            }
             // Quiet check for updates on start if set to.
             if (UtilsAdapter.getAppValue(Settings.AutoUpdate)) {
                 UpdateManager.checkForUpdates(true)
@@ -163,21 +164,16 @@ ApplicationWindow {
 
         function onRestoreAppRequested() {
             requestActivate()
-            if (isFullScreen)
-                showFullScreen()
-            else
+            if (visibility === Window.Hidden || visibility === Window.Minimized) {
                 showNormal()
+            }
         }
 
         function onNotificationClicked() {
             requestActivate()
             raise()
-            if (visibility === Window.Hidden ||
-                    visibility === Window.Minimized) {
-                if (isFullScreen)
-                    showFullScreen()
-                else
-                    showNormal()
+            if (visibility === Window.Hidden || visibility === Window.Minimized) {
+                showNormal()
             }
         }
     }

@@ -247,6 +247,9 @@ MainApplication::init()
     lrcInstance_->accountModel().autoTransferSizeThreshold = acceptTransferBelow;
 
     initQmlLayer();
+
+    settingsManager_->setValue(Settings::Key::StartMinimized, results[opts::STARTMINIMIZED].toBool());
+
     initSystray();
 
     return true;

@@ -43,6 +43,7 @@ const QString defaultDownloadPath = QStandardPaths::writableLocation(
     X(DisplayHyperlinkPreviews, true) \
     X(EnableDarkTheme, false) \
     X(AutoUpdate, true) \
+    X(StartMinimized, false) \
     X(NeverShowMeAgain, false)
 
 /*
