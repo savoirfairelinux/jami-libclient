@@ -27,8 +27,12 @@ if(CMAKE_GENERATOR_SHORT MATCHES "Visual Studio ")
     message(STATUS "Generating VS project")
     set(CMAKE_CXX_COMPILER_ID "MSVC")
     set(ENABLE_TEST false)
+    set(ENABLE_SHARED false)
     set(ENABLE_STATIC true)
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /Zi /W0 /MP")
+    add_definitions(-DUNICODE -D_UNICODE)
+    remove_definitions(-D_MBCS)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zi /W0 /MP")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /Zi /W0 /MP")
 endif()
 
 if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
@@ -751,10 +755,3 @@ CONFIGURE_FILE(
 
 ADD_CUSTOM_TARGET(uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
-
-
-if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    add_definitions(-DUNICODE -D_UNICODE)
-    remove_definitions(-D_MBCS)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-endif()
