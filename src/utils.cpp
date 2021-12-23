@@ -765,28 +765,6 @@ Utils::setupQRCode(QString ringID, int margin)
     return result;
 }
 
-QString
-Utils::formattedTime(int duration)
-{
-    if (duration == 0)
-        return {};
-    std::string formattedString;
-    auto minutes = duration / 60;
-    auto seconds = duration % 60;
-    if (minutes > 0) {
-        formattedString += std::to_string(minutes) + ":";
-        if (formattedString.length() == 2) {
-            formattedString = "0" + formattedString;
-        }
-    } else {
-        formattedString += "00:";
-    }
-    if (seconds < 10)
-        formattedString += "0";
-    formattedString += std::to_string(seconds);
-    return QString::fromStdString(formattedString);
-}
-
 QByteArray
 Utils::QByteArrayFromFile(const QString& filename)
 {

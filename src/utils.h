@@ -116,7 +116,6 @@ bool isImage(const QString& fileExt);
 QString generateUid();
 
 // Misc
-QString formattedTime(int seconds);
 QString humanFileSize(qint64 fileSize);
 
 } // namespace Utils
