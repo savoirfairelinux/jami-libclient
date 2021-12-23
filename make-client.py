@@ -11,7 +11,7 @@ import multiprocessing
 import fileinput
 from enum import Enum
 
-qt_version_default = '6.2.0'
+qt_version_default = '6.2.1'
 
 vs_where_path = os.path.join(
     os.environ['ProgramFiles(x86)'], 'Microsoft Visual Studio', 'Installer', 'vswhere.exe'
@@ -77,11 +77,6 @@ def findVSLatestDir():
         return output.splitlines()[0]
     else:
         return
-
-
-def getQtVersionNumber(qt_version, version_type):
-    version_list = qt_version.split('.')
-    return version_list[version_type.value]
 
 
 def findMSBuild():
@@ -173,7 +168,7 @@ def init_submodules():
             print('Submodule recursive checkout finished.')
 
 
-def build_deps(arch):
+def build_deps():
     print('Patching and building qrencode')
     apply_cmd = [
         'git',
@@ -195,14 +190,14 @@ def build_deps(arch):
     msbuild = findMSBuild()
     if not os.path.isfile(msbuild):
         raise IOError('msbuild.exe not found. path=' + msbuild)
-    msbuild_args = getMSBuildArgs(arch, 'Release-Lib')
+    msbuild_args = getMSBuildArgs('x64', 'Release-Lib')
     proj_path = os.path.join(qrencode_dir, 'qrencode-win32',
                              'vc8', 'qrcodelib', 'qrcodelib.vcxproj')
 
     build_project(msbuild, msbuild_args, proj_path, vs_env_vars)
 
 
-def build(arch, config_str, qtver, tests=False):
+def build(config_str, qtver, tests=False):
     print("Building with Qt " + qtver)
 
     vs_env_vars = {}
@@ -220,37 +215,25 @@ def build(arch, config_str, qtver, tests=False):
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
 
-    config_str = 'Release'
     cmd = ['cmake', '..']
     if (config_str == 'Beta'):
         cmake_options.append('-DBETA=1')
 
-    print('Generating project using cmake ' + config_str + '|' + arch)
+    print('Generating…')
     cmd.extend(cmake_options)
     if(execute_cmd(cmd, False, vs_env_vars, build_dir)):
         print("Cmake generate error")
         sys.exit(1)
 
-    print('Building projects in ' + config_str + '|' + arch)
-    cmd = ['cmake', '--build', '.', '--config', config_str]
+    print('Building…')
+    cmd = [
+        'cmake', '--build', '.',
+        '--config', config_str,
+        '--', '-m'
+    ]
     if(execute_cmd(cmd, False, vs_env_vars, build_dir)):
         print("Cmake build error")
         sys.exit(1)
-
-
-def build_tests_projects(arch, config_str, msbuild, vs_env_vars, toolset,
-                         sdk_version, force_option=True):
-    print('Building test projects')
-
-    test_projects_application_list = [unit_test_project, qml_test_project]
-
-    # unit tests, qml tests
-    for project in test_projects_application_list:
-        if (force_option):
-            replace_necessary_vs_prop(project, toolset, sdk_version)
-
-        msbuild_args = getMSBuildArgs(arch, config_str, toolset)
-        build_project(msbuild, msbuild_args, project, vs_env_vars)
 
 
 def run_tests(mute_jamid, output_to_files):
@@ -283,9 +266,6 @@ def parse_args():
     ap = argparse.ArgumentParser(description="Client qt build tool")
     subparser = ap.add_subparsers(dest="subparser_name")
 
-    ap.add_argument(
-        '-a', '--arch', default='x64',
-        help='Sets the build architecture')
     ap.add_argument(
         '-t', '--runtests', action='store_true',
         help='Build and run tests')
@@ -325,14 +305,13 @@ def main():
 
     if parsed_args.subparser_name == 'init':
         init_submodules()
-        build_deps(parsed_args.arch)
+        build_deps()
     elif parsed_args.subparser_name == 'pack':
         print('Package generation is not yet implemented.')
         sys.exit(1)
     else:
         config = ('Release', 'Beta')[parsed_args.beta]
-        build(parsed_args.arch, config,
-              qt_version_default, parsed_args.runtests)
+        build(config, qt_version_default, parsed_args.runtests)
         if parsed_args.runtests:
             run_tests(parsed_args.mutejamid, parsed_args.outputtofiles)
 
