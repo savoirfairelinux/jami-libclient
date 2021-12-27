@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pt" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pt" sourcelanguage="en">
 <context>
     <name>QObject</name>
     <message>
@@ -72,7 +72,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="218"/>
         <location filename="../src/authority/storagehelper.cpp" line="136"/>
-        <location filename="../src/authority/storagehelper.cpp" line="941"/>
+        <location filename="../src/authority/storagehelper.cpp" line="938"/>
         <source>Invitation received</source>
         <translation>Convite recebido</translation>
     </message>
@@ -84,14 +84,14 @@
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
         <location filename="../src/authority/storagehelper.cpp" line="133"/>
-        <location filename="../src/authority/storagehelper.cpp" line="939"/>
+        <location filename="../src/authority/storagehelper.cpp" line="936"/>
         <source>Contact added</source>
         <translation>Contacto adicionado</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="110"/>
         <location filename="../src/authority/storagehelper.cpp" line="116"/>
-        <location filename="../src/authority/storagehelper.cpp" line="937"/>
+        <location filename="../src/authority/storagehelper.cpp" line="934"/>
         <source>Outgoing call</source>
         <translation>Chamada efetuada</translation>
     </message>
@@ -103,7 +103,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="118"/>
-        <location filename="../src/authority/storagehelper.cpp" line="935"/>
+        <location filename="../src/authority/storagehelper.cpp" line="932"/>
         <source>Missed outgoing call</source>
         <translation>Chamadas efetuadas perdidas</translation>
     </message>
@@ -115,7 +115,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="138"/>
-        <location filename="../src/authority/storagehelper.cpp" line="943"/>
+        <location filename="../src/authority/storagehelper.cpp" line="940"/>
         <source>Invitation accepted</source>
         <translation>Convite aceite</translation>
     </message>

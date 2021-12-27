@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_CN" sourcelanguage="en" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_CN" sourcelanguage="en">
 <context>
     <name>QObject</name>
     <message>
@@ -72,26 +72,26 @@
     <message>
         <location filename="../src/api/interaction.h" line="218"/>
         <location filename="../src/authority/storagehelper.cpp" line="136"/>
-        <location filename="../src/authority/storagehelper.cpp" line="941"/>
+        <location filename="../src/authority/storagehelper.cpp" line="938"/>
         <source>Invitation received</source>
         <translation>已接受邀请</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>联系人离开了会话</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
         <location filename="../src/authority/storagehelper.cpp" line="133"/>
-        <location filename="../src/authority/storagehelper.cpp" line="939"/>
+        <location filename="../src/authority/storagehelper.cpp" line="936"/>
         <source>Contact added</source>
         <translation>已加入通讯录</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="110"/>
         <location filename="../src/authority/storagehelper.cpp" line="116"/>
-        <location filename="../src/authority/storagehelper.cpp" line="937"/>
+        <location filename="../src/authority/storagehelper.cpp" line="934"/>
         <source>Outgoing call</source>
         <translation>去电</translation>
     </message>
@@ -103,7 +103,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="118"/>
-        <location filename="../src/authority/storagehelper.cpp" line="935"/>
+        <location filename="../src/authority/storagehelper.cpp" line="932"/>
         <source>Missed outgoing call</source>
         <translation>去电未接</translation>
     </message>
@@ -115,7 +115,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="138"/>
-        <location filename="../src/authority/storagehelper.cpp" line="943"/>
+        <location filename="../src/authority/storagehelper.cpp" line="940"/>
         <source>Invitation accepted</source>
         <translation>已接受邀请</translation>
     </message>
@@ -480,22 +480,22 @@
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>向您发送了会话请求。</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>您好，要加入会话吗？</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>您已接受会话请求。</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>正在等待另一个设备同步会话。</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
