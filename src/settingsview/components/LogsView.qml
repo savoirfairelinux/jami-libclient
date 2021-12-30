@@ -239,7 +239,7 @@ Window {
                 font.hintingPreference: Font.PreferNoHinting
 
                 readOnly: true
-                color: JamiTheme.textColor
+                color: JamiTheme.blackColor
                 wrapMode: TextArea.Wrap
                 selectByMouse: true
 
