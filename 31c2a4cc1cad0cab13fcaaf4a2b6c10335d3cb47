@@ -18,6 +18,24 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48f7fa43_0bdbfa1b",
+        "filename": "src/api/contactmodel.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-12-30T19:48:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d070732c_83855a70",
+      "revId": "31c2a4cc1cad0cab13fcaaf4a2b6c10335d3cb47",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5632b09f_9a3706b2",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-12-30T19:40:00Z",
       "side": 1,
       "message": "in the next line we will save profile. Should we update contactInfo.profileInfo.avatar even when lrc does not cache avatars to save a new avatar to vcard?",
+      "revId": "31c2a4cc1cad0cab13fcaaf4a2b6c10335d3cb47",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "374f61a2_0c562982",
+        "filename": "src/contactmodel.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 938,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2021-12-30T19:48:45Z",
+      "side": 1,
+      "message": "nice catch",
+      "parentUuid": "5632b09f_9a3706b2",
       "revId": "31c2a4cc1cad0cab13fcaaf4a2b6c10335d3cb47",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
