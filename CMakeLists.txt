@@ -122,6 +122,7 @@ if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
 # Enable some useful warnings
     ADD_DEFINITIONS(
        -Wall
+       -pedantic
        -Wextra
        -Wmissing-declarations
        -Wmissing-noreturn
@@ -130,27 +131,13 @@ if (NOT (CMAKE_CXX_COMPILER_ID MATCHES "MSVC"))
        -Wwrite-strings
        -Wformat-nonliteral
        -Wformat-security
-       -Wswitch-enum
-       -Winit-self
        -Wmissing-include-dirs
        -Wundef
        -Wmissing-format-attribute
        -Wno-reorder
        -Wunused
-       -Wuninitialized
        -Woverloaded-virtual
-       -Wunused-value
-       -pedantic
-       -Wnonnull
-       -Wsequence-point
-       #-Wsystem-headers
-       -Wsizeof-pointer-memaccess
-       #-Wuseless-cast
        -Wvarargs
-
-       #See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55578
-       -Wno-unused-function
-       -Wno-attributes
     )
 endif()
 
@@ -163,25 +150,17 @@ endif()
 IF (CMAKE_COMPILER_IS_GNUCC)
    IF (GCC_VERSION VERSION_GREATER 4.9 OR GCC_VERSION VERSION_EQUAL 4.9)
       ADD_DEFINITIONS(
-         -Wunused-but-set-parameter
          -Wconditionally-supported
-         #-Wsuggest-attribute=const
          -Wno-cpp
          -Wdouble-promotion
          -Wdate-time
-         -Wdelete-incomplete
          -Wfloat-conversion
       )
    ENDIF()
 
    if (GCC_VERSION VERSION_GREATER 5.1 OR GCC_VERSION VERSION_EQUAL 5.1)
       ADD_DEFINITIONS(
-         #-Wsuggest-override
-         #-Wsuggest-final-types
-         #-Wsuggest-final-methods
-         -Wbool-compare
          -Wformat-signedness
-         -Wlogical-not-parentheses
          -Wnormalized
          -Wshift-count-negative
          -Wshift-count-overflow
@@ -196,7 +175,6 @@ IF (CMAKE_COMPILER_IS_GNUCC)
          -Wshift-negative-value
          -Wshift-overflow
          -Wduplicated-cond
-         -Wmisleading-indentation
       )
    ENDIF()
 ENDIF()

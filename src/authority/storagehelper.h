@@ -349,58 +349,6 @@ QString conversationIdFromInteractionId(Database& db, const QString& interaction
 uint64_t getLastTimestamp(Database& db);
 
 /**
- * JSON parsing functions intended for use with the
- * extra_data columns(conversations and interactions)
- */
-namespace {
-/**
- * Transforms a URI so it can be used as a filename across platforms
- * and constructs the vCard filepath
- * @param uri
- * @return the account's vCard path if uri is left empty,
- * otherwise uri's vCard filepath
- */
-QString profileVcardPath(const QString& accountId, const QString& uri = {});
-
-/**
- * Build a string from a QJsonObject
- * @param  json
- * @return a JSON as a QString
- */
-QString stringFromJSON(const QJsonObject& json);
-
-/**
- * Build a QJsonObject from a QString
- * @param  str
- * @return a JSON object
- */
-QJsonObject JSONFromString(const QString& str);
-
-/**
- * Build a string from an initializer list of key/value pairs
- * @param  args
- * @return a JSON as a QString
- */
-QString JSONStringFromInitList(const std::initializer_list<QPair<QString, QJsonValue>> args);
-
-/**
- * Get the value at a key from a JSON object
- * @param  json
- * @param  key
- * @return the value as a QString
- */
-QString readJSONValue(const QJsonObject& json, const QString& key);
-
-/**
- * Store a value at a key in a JSON object
- * @param  json
- * @param  key
- * @param  value
- */
-void writeJSONValue(QJsonObject& json, const QString& key, const QString& value);
-} // namespace
-
-/**
  * Retrieve a list of account database via a migration
  * procedure from the legacy "ring.db", if it exists
  * @param accountIds of the accounts to attempt migration upon

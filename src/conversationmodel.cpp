@@ -632,6 +632,8 @@ ConversationModel::getFilteredConversations(const profile::Type& profileType,
     case lrc::api::profile::Type::SIP:
         filterType = lrc::api::FilterType::SIP;
         break;
+    default:
+        break;
     }
 
     return getFilteredConversations(filterType, forceUpdate, includeBanned);

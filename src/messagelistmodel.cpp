@@ -312,7 +312,7 @@ MessageListModel::contains(const QString& msgId)
 }
 
 int
-MessageListModel::rowCount(const QModelIndex& parent) const
+MessageListModel::rowCount(const QModelIndex&) const
 {
     return interactions_.size();
 }
@@ -329,7 +329,7 @@ MessageListModel::roleNames() const
 }
 
 QVariant
-MessageListModel::dataForItem(item_t item, int indexRow, int role) const
+MessageListModel::dataForItem(item_t item, int, int role) const
 {
     switch (role) {
     case Role::Id:

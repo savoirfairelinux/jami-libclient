@@ -60,6 +60,66 @@ getPath()
     return dataDir.absolutePath() + "/jami/";
 }
 
+static QString
+profileVcardPath(const QString& accountId, const QString& uri)
+{
+    auto accountLocalPath = getPath() + accountId + QDir::separator();
+    if (uri.isEmpty())
+        return accountLocalPath + "profile.vcf";
+
+    auto fileName = QString(uri.toUtf8().toBase64());
+    return accountLocalPath + "profiles" + QDir::separator() + fileName + ".vcf";
+}
+
+static QString
+stringFromJSON(const QJsonObject& json)
+{
+    QJsonDocument doc(json);
+    return QString::fromLocal8Bit(doc.toJson(QJsonDocument::Compact));
+}
+
+static QJsonObject
+JSONFromString(const QString& str)
+{
+    QJsonObject json;
+    QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
+
+    if (!doc.isNull()) {
+        if (doc.isObject()) {
+            json = doc.object();
+        } else {
+            qDebug() << "Document is not a JSON object: " << str;
+        }
+    } else {
+        qDebug() << "Invalid JSON: " << str;
+    }
+    return json;
+}
+
+static QString
+JSONStringFromInitList(const std::initializer_list<QPair<QString, QJsonValue>> args)
+{
+    QJsonObject jsonObject(args);
+    return stringFromJSON(jsonObject);
+}
+
+static QString
+readJSONValue(const QJsonObject& json, const QString& key)
+{
+    if (!json.isEmpty() && json.contains(key) && json[key].isString()) {
+        if (json[key].isString()) {
+            return json[key].toString();
+        }
+    }
+    return {};
+}
+
+static void
+writeJSONValue(QJsonObject& json, const QString& key, const QString& value)
+{
+    json[key] = value;
+}
+
 QString
 prepareUri(const QString& uri, api::profile::Type type)
 {
@@ -725,68 +785,6 @@ getLastTimestamp(Database& db)
     }
     return result;
 }
-
-namespace {
-QString
-profileVcardPath(const QString& accountId, const QString& uri)
-{
-    auto accountLocalPath = getPath() + accountId + QDir::separator();
-    if (uri.isEmpty())
-        return accountLocalPath + "profile.vcf";
-
-    auto fileName = QString(uri.toUtf8().toBase64());
-    return accountLocalPath + "profiles" + QDir::separator() + fileName + ".vcf";
-}
-
-QString
-stringFromJSON(const QJsonObject& json)
-{
-    QJsonDocument doc(json);
-    return QString::fromLocal8Bit(doc.toJson(QJsonDocument::Compact));
-}
-
-QJsonObject
-JSONFromString(const QString& str)
-{
-    QJsonObject json;
-    QJsonDocument doc = QJsonDocument::fromJson(str.toUtf8());
-
-    if (!doc.isNull()) {
-        if (doc.isObject()) {
-            json = doc.object();
-        } else {
-            qDebug() << "Document is not a JSON object: " << str;
-        }
-    } else {
-        qDebug() << "Invalid JSON: " << str;
-    }
-    return json;
-}
-
-QString
-JSONStringFromInitList(const std::initializer_list<QPair<QString, QJsonValue>> args)
-{
-    QJsonObject jsonObject(args);
-    return stringFromJSON(jsonObject);
-}
-
-QString
-readJSONValue(const QJsonObject& json, const QString& key)
-{
-    if (!json.isEmpty() && json.contains(key) && json[key].isString()) {
-        if (json[key].isString()) {
-            return json[key].toString();
-        }
-    }
-    return {};
-}
-
-void
-writeJSONValue(QJsonObject& json, const QString& key, const QString& value)
-{
-    json[key] = value;
-}
-} // namespace
 
 //================================================================================
 // This section provides migration helpers from ring.db

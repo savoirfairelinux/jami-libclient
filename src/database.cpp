@@ -156,14 +156,14 @@ Database::createTables()
     // add conversations table
     if (!db_.tables().contains("conversations", Qt::CaseInsensitive)) {
         if (!query.exec(tableConversations) || !query.exec(indexConversations)) {
-            throw QueryError(query);
+            throw QueryError(std::move(query));
         }
     }
 
     // add interactions table
     if (!db_.tables().contains("interactions", Qt::CaseInsensitive)) {
         if (!query.exec(tableInteractions) || !query.exec(indexInteractions)) {
-            throw QueryError(query);
+            throw QueryError(std::move(query));
         }
     }
 
@@ -202,7 +202,7 @@ Database::storeVersion(const QString& version)
     auto storeVersionQuery = "PRAGMA user_version = " + version;
 
     if (not query.exec(storeVersionQuery))
-        throw QueryError(query);
+        throw QueryError(std::move(query));
 
     qDebug() << "database " << databaseFullPath_ << " version set to:" << version;
 }
@@ -213,7 +213,7 @@ Database::getVersion()
     QSqlQuery query(db_);
     auto getVersionQuery = "pragma user_version";
     if (not query.exec(getVersionQuery))
-        throw QueryError(query);
+        throw QueryError(std::move(query));
     query.first();
     return query.value(0).toString();
 }
@@ -245,10 +245,10 @@ Database::insertInto(
         query.bindValue(entry.first, entry.second);
 
     if (not query.exec())
-        throw QueryInsertError(query, table, bindCol, bindsSet);
+        throw QueryInsertError(std::move(query), table, bindCol, bindsSet);
 
     if (not query.exec("SELECT last_insert_rowid()"))
-        throw QueryInsertError(query, table, bindCol, bindsSet);
+        throw QueryInsertError(std::move(query), table, bindCol, bindsSet);
 
     if (!query.next())
         return QString::number(-1);
@@ -276,7 +276,7 @@ Database::update(const QString& table,              // "tests"
         query.bindValue(entry.first, entry.second);
 
     if (not query.exec())
-        throw QueryUpdateError(query, table, set, bindsSet, where, bindsWhere);
+        throw QueryUpdateError(std::move(query), table, set, bindsSet, where, bindsWhere);
 }
 
 Database::Result
@@ -296,7 +296,7 @@ Database::select(const QString& select,             // "id", "body", ...
         query.bindValue(entry.first, entry.second);
 
     if (not query.exec())
-        throw QuerySelectError(query, select, table, where, bindsWhere);
+        throw QuerySelectError(std::move(query), select, table, where, bindsWhere);
 
     QSqlRecord rec = query.record();
     const auto col_num = rec.count();
@@ -326,7 +326,7 @@ Database::count(const QString& count,              // "id", "body", ...
         query.bindValue(entry.first, entry.second);
 
     if (not query.exec())
-        throw QueryError(query);
+        throw QueryError(std::move(query));
 
     query.next();
     return query.value(0).toInt();
@@ -346,19 +346,19 @@ Database::deleteFrom(const QString& table,              // "tests"
         query.bindValue(entry.first, entry.second);
 
     if (not query.exec())
-        throw QueryDeleteError(query, table, where, bindsWhere);
+        throw QueryDeleteError(std::move(query), table, where, bindsWhere);
 }
 
-Database::QueryError::QueryError(const QSqlQuery& query)
+Database::QueryError::QueryError(QSqlQuery&& query)
     : std::runtime_error(query.lastError().text().toStdString())
-    , query(query)
+    , query(std::move(query))
 {}
 
-Database::QueryInsertError::QueryInsertError(const QSqlQuery& query,
+Database::QueryInsertError::QueryInsertError(QSqlQuery&& query,
                                              const QString& table,
                                              const MapStringString& bindCol,
                                              const MapStringString& bindsSet)
-    : QueryError(query)
+    : QueryError(std::move(query))
     , table(table)
     , bindCol(bindCol)
     , bindsSet(bindsSet)
@@ -377,13 +377,13 @@ Database::QueryInsertError::details()
     return qts.readAll();
 }
 
-Database::QueryUpdateError::QueryUpdateError(const QSqlQuery& query,
+Database::QueryUpdateError::QueryUpdateError(QSqlQuery&& query,
                                              const QString& table,
                                              const QString& set,
                                              const MapStringString& bindsSet,
                                              const QString& where,
                                              const MapStringString& bindsWhere)
-    : QueryError(query)
+    : QueryError(std::move(query))
     , table(table)
     , set(set)
     , bindsSet(bindsSet)
@@ -408,12 +408,12 @@ Database::QueryUpdateError::details()
     return qts.readAll();
 }
 
-Database::QuerySelectError::QuerySelectError(const QSqlQuery& query,
+Database::QuerySelectError::QuerySelectError(QSqlQuery&& query,
                                              const QString& select,
                                              const QString& table,
                                              const QString& where,
                                              const MapStringString& bindsWhere)
-    : QueryError(query)
+    : QueryError(std::move(query))
     , select(select)
     , table(table)
     , where(where)
@@ -434,11 +434,11 @@ Database::QuerySelectError::details()
     return qts.readAll();
 }
 
-Database::QueryDeleteError::QueryDeleteError(const QSqlQuery& query,
+Database::QueryDeleteError::QueryDeleteError(QSqlQuery&& query,
                                              const QString& table,
                                              const QString& where,
                                              const MapStringString& bindsWhere)
-    : QueryError(query)
+    : QueryError(std::move(query))
     , table(table)
     , where(where)
     , bindsWhere(bindsWhere)
@@ -457,8 +457,8 @@ Database::QueryDeleteError::details()
     return qts.readAll();
 }
 
-Database::QueryTruncateError::QueryTruncateError(const QSqlQuery& query, const QString& table)
-    : QueryError(query)
+Database::QueryTruncateError::QueryTruncateError(QSqlQuery&& query, const QString& table)
+    : QueryError(std::move(query))
     , table(table)
 {}
 
@@ -554,25 +554,25 @@ LegacyDatabase::createTables()
     // add profiles table
     if (not db_.tables().contains("profiles", Qt::CaseInsensitive)
         and not query.exec(tableProfiles)) {
-        throw QueryError(query);
+        throw QueryError(std::move(query));
     }
 
     // add conversations table
     if (not db_.tables().contains("conversations", Qt::CaseInsensitive)
         and not query.exec(tableConversations)) {
-        throw QueryError(query);
+        throw QueryError(std::move(query));
     }
 
     // add interactions table
     if (not db_.tables().contains("interactions", Qt::CaseInsensitive)
         and not query.exec(tableInteractions)) {
-        throw QueryError(query);
+        throw QueryError(std::move(query));
     }
 
     // add profiles accounts table
     if (not db_.tables().contains("profiles_accounts", Qt::CaseInsensitive)
         and not query.exec(tableProfileAccounts)) {
-        throw QueryError(query);
+        throw QueryError(std::move(query));
     }
 
     storeVersion(version_);
@@ -889,7 +889,7 @@ LegacyDatabase::migrateSchemaFromVersion1()
     // add profiles accounts table
     if (not db_.tables().contains("profiles_accounts", Qt::CaseInsensitive)
         and not query.exec(tableProfileAccounts)) {
-        throw QueryError(query);
+        throw QueryError(std::move(query));
     }
     linkRingProfilesWithAccounts(false);
 }
