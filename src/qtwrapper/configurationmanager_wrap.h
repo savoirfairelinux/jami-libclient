@@ -530,12 +530,6 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
-    MapStringString getShortcuts()
-    {
-        MapStringString temp = convertMap(DRing::getShortcuts());
-        return temp;
-    }
-
     QStringList getSupportedTlsMethod()
     {
         QStringList temp = convertStringList(DRing::getSupportedTlsMethod());
