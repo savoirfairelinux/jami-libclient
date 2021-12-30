@@ -84,7 +84,7 @@ public:
     class QueryError : public std::runtime_error
     {
     public:
-        explicit QueryError(const QSqlQuery& query);
+        explicit QueryError(QSqlQuery&& query);
         virtual QString details() { return {}; }
 
         const QSqlQuery query;
@@ -97,7 +97,7 @@ public:
     class QueryInsertError final : public QueryError
     {
     public:
-        explicit QueryInsertError(const QSqlQuery& query,
+        explicit QueryInsertError(QSqlQuery&& query,
                                   const QString& table,
                                   const MapStringString& bindCol,
                                   const MapStringString& bindsSet);
@@ -115,7 +115,7 @@ public:
     class QueryUpdateError final : public QueryError
     {
     public:
-        explicit QueryUpdateError(const QSqlQuery& query,
+        explicit QueryUpdateError(QSqlQuery&& query,
                                   const QString& table,
                                   const QString& set,
                                   const MapStringString& bindsSet,
@@ -137,7 +137,7 @@ public:
     class QuerySelectError final : public QueryError
     {
     public:
-        explicit QuerySelectError(const QSqlQuery& query,
+        explicit QuerySelectError(QSqlQuery&& query,
                                   const QString& select,
                                   const QString& table,
                                   const QString& where,
@@ -157,7 +157,7 @@ public:
     class QueryDeleteError final : public QueryError
     {
     public:
-        explicit QueryDeleteError(const QSqlQuery& query,
+        explicit QueryDeleteError(QSqlQuery&& query,
                                   const QString& table,
                                   const QString& where,
                                   const MapStringString& bindsWhere);
@@ -175,7 +175,7 @@ public:
     class QueryTruncateError final : public QueryError
     {
     public:
-        explicit QueryTruncateError(const QSqlQuery& query, const QString& table);
+        explicit QueryTruncateError(QSqlQuery&& query, const QString& table);
         QString details() override;
 
         const QString table;

@@ -36,6 +36,7 @@ InstanceManager::instance(bool muteDring)
 #else
     if (!dbus_metaTypeInit)
         registerCommTypes();
+    Q_UNUSED(muteDring)
 
     static auto interface = new InstanceManagerInterface("cx.ring.Ring",
                                                          "/cx/ring/Ring/Instance",

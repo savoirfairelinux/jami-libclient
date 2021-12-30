@@ -105,6 +105,7 @@ Renderer::update(const QString& res, const QString& shmPath)
     pimpl_->renderer->setSize(size);
 
 #ifdef ENABLE_LIBWRAP
+    Q_UNUSED(shmPath)
     if (pimpl_->usingAVFrame_) {
         VideoManager::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avTarget());
     } else {
@@ -191,6 +192,7 @@ RendererPimpl::RendererPimpl(Renderer& linked,
 {
     QSize size = stringToQSize(videoSettings.size);
 #ifdef ENABLE_LIBWRAP
+    Q_UNUSED(shmPath)
     renderer = std::make_unique<Video::DirectRenderer>(id, size, usingAVFrame_);
 #else // ENABLE_LIBWRAP
     renderer = std::make_unique<Video::ShmRenderer>(id, shmPath, size);
