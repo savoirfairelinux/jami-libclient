@@ -118,18 +118,31 @@ inline void
 registerCommTypes()
 {
 #ifndef ENABLE_LIBWRAP
+    qRegisterMetaType<MapStringString>("MapStringString");
     qDBusRegisterMetaType<MapStringString>();
+    qRegisterMetaType<MapStringInt>("MapStringInt");
     qDBusRegisterMetaType<MapStringInt>();
+    qRegisterMetaType<VectorMapStringString>("VectorMapStringString");
     qDBusRegisterMetaType<VectorMapStringString>();
+    qRegisterMetaType<MapStringMapStringVectorString>("MapStringMapStringVectorString");
     qDBusRegisterMetaType<MapStringMapStringVectorString>();
+    qRegisterMetaType<VectorInt>("VectorInt");
     qDBusRegisterMetaType<VectorInt>();
+    qRegisterMetaType<VectorUInt>("VectorUInt");
     qDBusRegisterMetaType<VectorUInt>();
+    qRegisterMetaType<VectorULongLong>("VectorULongLong");
     qDBusRegisterMetaType<VectorULongLong>();
+    qRegisterMetaType<VectorString>("VectorString");
     qDBusRegisterMetaType<VectorString>();
+    qRegisterMetaType<MapStringVectorString>("MapStringVectorString");
     qDBusRegisterMetaType<MapStringVectorString>();
+    qRegisterMetaType<VectorVectorByte>("VectorVectorByte");
     qDBusRegisterMetaType<VectorVectorByte>();
+    qRegisterMetaType<DataTransferInfo>("DataTransferInfo");
     qDBusRegisterMetaType<DataTransferInfo>();
+    qRegisterMetaType<Message>("Message");
     qDBusRegisterMetaType<Message>();
+    qRegisterMetaType<QVector<Message>>("QVector<Message>");
     qDBusRegisterMetaType<QVector<Message>>();
     dbus_metaTypeInit = true;
 #endif
