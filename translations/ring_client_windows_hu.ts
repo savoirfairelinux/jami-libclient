@@ -1996,12 +1996,12 @@ csatlakozzon a beszélgetés összehangolásához.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Keyboard Shortcut Table</source>
-        <translation type="unfinished"/>
+        <translation>Billentyűparancsok táblázata</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="424"/>
         <source>Conversation</source>
-        <translation type="unfinished"/>
+        <translation>Beszélgetés</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="425"/>
@@ -2391,7 +2391,7 @@ Másolja ki, és ossza meg barátaival!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="115"/>
         <source>Plugin settings</source>
-        <translation type="unfinished"/>
+        <translation>Beépülő modul beállításai</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="119"/>
@@ -2401,7 +2401,7 @@ Másolja ki, és ossza meg barátaival!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="123"/>
         <source>Open keyboard shortcut table</source>
-        <translation type="unfinished"/>
+        <translation>Billentyűparancsok táblázatának megnyitása</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="132"/>
@@ -2422,17 +2422,17 @@ Másolja ki, és ossza meg barátaival!</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="434"/>
+        <location filename="../src/mainapplication.cpp" line="435"/>
         <source>E&amp;xit</source>
         <translation>&amp;Kilépés</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="436"/>
+        <location filename="../src/mainapplication.cpp" line="437"/>
         <source>&amp;Quit</source>
         <translation>&amp;Kilépés</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="442"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>&amp;Show Jami</source>
         <translation>Jami &amp;megjelenítése</translation>
     </message>

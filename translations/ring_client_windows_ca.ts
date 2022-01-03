@@ -828,7 +828,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="138"/>
         <source>Name Server</source>
-        <translation type="unfinished"/>
+        <translation>Servidor de noms</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="141"/>
@@ -898,13 +898,13 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="159"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Compte</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="160"/>
         <location filename="../src/constant/JamiStrings.qml" line="423"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>General</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="161"/>
@@ -2000,12 +2000,12 @@ connects to synchronize the conversation.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="425"/>
         <source>Call</source>
-        <translation type="unfinished"/>
+        <translation>Trucada</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Opcions</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="434"/>
@@ -2242,7 +2242,7 @@ Copiï&apos;l i comparteixi&apos;l amb els seus amics!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="560"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Suprimeix</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="563"/>
@@ -2305,7 +2305,7 @@ Copiï&apos;l i comparteixi&apos;l amb els seus amics!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="41"/>
         <source>Open account list</source>
-        <translation type="unfinished"/>
+        <translation>Obre la llista de comptes</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="45"/>
@@ -2340,27 +2340,27 @@ Copiï&apos;l i comparteixi&apos;l amb els seus amics!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="74"/>
         <source>Start an audio call</source>
-        <translation type="unfinished"/>
+        <translation>Comença una trucada de veu.</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="78"/>
         <source>Start a video call</source>
-        <translation type="unfinished"/>
+        <translation>Comença una videotrucada</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="82"/>
         <source>Clear history</source>
-        <translation type="unfinished"/>
+        <translation>Neteja historial</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="86"/>
         <source>Block contact</source>
-        <translation type="unfinished"/>
+        <translation>Bloqueja el contacte</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="90"/>
         <source>Remove conversation</source>
-        <translation type="unfinished"/>
+        <translation>Esborra conversa</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="94"/>
@@ -2375,7 +2375,7 @@ Copiï&apos;l i comparteixi&apos;l amb els seus amics!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="107"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Preferències generals</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="111"/>
@@ -2405,7 +2405,7 @@ Copiï&apos;l i comparteixi&apos;l amb els seus amics!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="136"/>
         <source>End call</source>
-        <translation type="unfinished"/>
+        <translation>Finalitza la trucada</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="140"/>
@@ -2416,17 +2416,17 @@ Copiï&apos;l i comparteixi&apos;l amb els seus amics!</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="434"/>
+        <location filename="../src/mainapplication.cpp" line="435"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="436"/>
+        <location filename="../src/mainapplication.cpp" line="437"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="442"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>&amp;Show Jami</source>
         <translation type="unfinished"/>
     </message>

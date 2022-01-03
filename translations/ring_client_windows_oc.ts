@@ -2416,17 +2416,17 @@ Copiatz-lo e partejatz-lo a vòstres amics !</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="434"/>
+        <location filename="../src/mainapplication.cpp" line="435"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="436"/>
+        <location filename="../src/mainapplication.cpp" line="437"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="442"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>&amp;Show Jami</source>
         <translation type="unfinished"/>
     </message>

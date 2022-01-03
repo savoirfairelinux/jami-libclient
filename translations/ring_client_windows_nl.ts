@@ -828,7 +828,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="138"/>
         <source>Name Server</source>
-        <translation type="unfinished"/>
+        <translation>Naamserver</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="141"/>
@@ -893,18 +893,18 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="158"/>
         <source>Account Settings</source>
-        <translation type="unfinished"/>
+        <translation>Accountinstellingen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="159"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Account</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="160"/>
         <location filename="../src/constant/JamiStrings.qml" line="423"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Algemeen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="161"/>
@@ -914,7 +914,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="163"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation>Audio/video</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="166"/>
@@ -2000,12 +2000,12 @@ connects to synchronize the conversation.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="425"/>
         <source>Call</source>
-        <translation type="unfinished"/>
+        <translation>Oproep</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Instellingen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="434"/>
@@ -2242,7 +2242,7 @@ Deel deze met uw vrienden!</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="560"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Verwijderen</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="563"/>
@@ -2305,7 +2305,7 @@ Deel deze met uw vrienden!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="41"/>
         <source>Open account list</source>
-        <translation type="unfinished"/>
+        <translation>Accountlijst openen</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="45"/>
@@ -2340,27 +2340,27 @@ Deel deze met uw vrienden!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="74"/>
         <source>Start an audio call</source>
-        <translation type="unfinished"/>
+        <translation>Start een audio-oproep</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="78"/>
         <source>Start a video call</source>
-        <translation type="unfinished"/>
+        <translation>Start een video-oproep</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="82"/>
         <source>Clear history</source>
-        <translation type="unfinished"/>
+        <translation>Geschiedenis wissen</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="86"/>
         <source>Block contact</source>
-        <translation type="unfinished"/>
+        <translation>Contact blokkeren</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="90"/>
         <source>Remove conversation</source>
-        <translation type="unfinished"/>
+        <translation>Gesprek verwijderen</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="94"/>
@@ -2375,7 +2375,7 @@ Deel deze met uw vrienden!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="107"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Algemene instellingen</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="111"/>
@@ -2405,7 +2405,7 @@ Deel deze met uw vrienden!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="136"/>
         <source>End call</source>
-        <translation type="unfinished"/>
+        <translation>Oproep beëindigen</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="140"/>
@@ -2416,17 +2416,17 @@ Deel deze met uw vrienden!</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="434"/>
+        <location filename="../src/mainapplication.cpp" line="435"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="436"/>
+        <location filename="../src/mainapplication.cpp" line="437"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="442"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>&amp;Show Jami</source>
         <translation type="unfinished"/>
     </message>

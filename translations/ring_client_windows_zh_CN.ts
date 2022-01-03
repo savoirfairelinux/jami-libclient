@@ -194,12 +194,13 @@
         <location filename="../src/DaemonReconnectWindow.qml" line="93"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>无法连接至 Jami 守护进程(jamid)。
+Jami 将立即退出。</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="94"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
-        <translation type="unfinished"/>
+        <translation>正在尝试连接至 Jami 守护进程(jamid)...</translation>
     </message>
     <message>
         <location filename="../src/DaemonReconnectWindow.qml" line="149"/>
@@ -693,17 +694,17 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="33"/>
         <source>Accept in audio</source>
-        <translation type="unfinished"/>
+        <translation>以语音接受</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="34"/>
         <source>Accept in video</source>
-        <translation type="unfinished"/>
+        <translation>以视频接受</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="43"/>
         <source>You are viewing a conversation where all participants other than you have left. New interactions will not be possible.</source>
-        <translation type="unfinished"/>
+        <translation>您正在查看一个所有除了您以外所有参与者已经离开的对话。将不会有新的互动。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="44"/>
@@ -723,7 +724,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="83"/>
         <source>Send and receive receipts indicating that a message have been displayed</source>
-        <translation type="unfinished"/>
+        <translation>发送并接受消息已显示的回执</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="108"/>
@@ -788,7 +789,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="125"/>
         <source>Allow IP Auto Rewrite</source>
-        <translation type="unfinished"/>
+        <translation>允许 IP 自动重写</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="126"/>
@@ -828,7 +829,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="138"/>
         <source>Name Server</source>
-        <translation type="unfinished"/>
+        <translation>名称服务器</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="141"/>
@@ -893,28 +894,28 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="158"/>
         <source>Account Settings</source>
-        <translation type="unfinished"/>
+        <translation>账户设置</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="159"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>账户</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="160"/>
         <location filename="../src/constant/JamiStrings.qml" line="423"/>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>通用</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="161"/>
         <source>Plugin</source>
-        <translation type="unfinished"/>
+        <translation>插件</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="163"/>
         <source>Audio/Video</source>
-        <translation type="unfinished"/>
+        <translation>音频/视频</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="166"/>
@@ -1126,12 +1127,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="228"/>
         <source>You are still muted by moderator</source>
-        <translation type="unfinished"/>
+        <translation>您仍然被管理员静音。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="229"/>
         <source>You are muted by a moderator</source>
-        <translation type="unfinished"/>
+        <translation>您已被管理员静音</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="230"/>
@@ -1141,22 +1142,22 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="231"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>主持人</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="232"/>
         <source>Local and Moderator muted</source>
-        <translation type="unfinished"/>
+        <translation>本机和管理员已静音</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="233"/>
         <source>Moderator muted</source>
-        <translation type="unfinished"/>
+        <translation>管理员已静音</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="234"/>
         <source>Not muted</source>
-        <translation type="unfinished"/>
+        <translation>未静音</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="238"/>
@@ -1276,7 +1277,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="266"/>
         <source>Lower hand</source>
-        <translation type="unfinished"/>
+        <translation>放下手</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="267"/>
@@ -1316,7 +1317,7 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="278"/>
         <source>{} is typing…</source>
-        <translation type="unfinished"/>
+        <translation>{} 正在输入…</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="279"/>
@@ -1326,12 +1327,12 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="280"/>
         <source>Several people are typing…</source>
-        <translation type="unfinished"/>
+        <translation>多个人正在输入...</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="281"/>
         <source> and </source>
-        <translation type="unfinished"/>
+        <translation>与</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="284"/>
@@ -1644,7 +1645,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="382"/>
         <source>Accept transfer limit</source>
-        <translation type="unfinished"/>
+        <translation>接受传输限制</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="383"/>
@@ -1669,7 +1670,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="393"/>
         <source>Open location</source>
-        <translation type="unfinished"/>
+        <translation>开启位置</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="396"/>
@@ -1802,7 +1803,7 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="478"/>
         <source>Clear avatar image</source>
-        <translation type="unfinished"/>
+        <translation>清除头像图片</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="494"/>
@@ -1862,33 +1863,34 @@ Please try again later.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="570"/>
         <source>Local muted</source>
-        <translation type="unfinished"/>
+        <translation>本机已静音</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="581"/>
         <source>Trying to reconnect to the Jami daemon (jamid)…</source>
-        <translation type="unfinished"/>
+        <translation>正在尝试连接至 Jami 守护进程(jamid)...</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="582"/>
         <source>Could not re-connect to the Jami daemon (jamid).
 Jami will now quit.</source>
-        <translation type="unfinished"/>
+        <translation>无法连接至 Jami 守护进程(jamid)。
+Jami 将立即退出。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="585"/>
         <source>Is swarm:</source>
-        <translation type="unfinished"/>
+        <translation>是 swarm:</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="586"/>
         <source>True</source>
-        <translation type="unfinished"/>
+        <translation>真</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="587"/>
         <source>False</source>
-        <translation type="unfinished"/>
+        <translation>假</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="590"/>
@@ -1923,30 +1925,33 @@ Jami will now quit.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="596"/>
         <source>Write to %1</source>
-        <translation type="unfinished"/>
+        <translation>写入至 %1</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="599"/>
         <source>%1 has sent you a request for a conversation.</source>
-        <translation type="unfinished"/>
+        <translation>%1 已向您发送对话请求。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="600"/>
         <source>Hello,
 Would you like to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>您好，
+您想要加入会话吗？</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="601"/>
         <source>You have accepted
 the conversation request</source>
-        <translation type="unfinished"/>
+        <translation>您已接受
+对话请求</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="602"/>
         <source>Waiting until %1
 connects to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>等待直到 %1
+连接以同步对话。</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="237"/>
@@ -1957,12 +1962,12 @@ connects to synchronize the conversation.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="226"/>
         <source>Participant is still muted on their device</source>
-        <translation type="unfinished"/>
+        <translation>参与者在他们的设备上仍然被静音</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="227"/>
         <source>You are still muted on your device</source>
-        <translation type="unfinished"/>
+        <translation>您在您的设备上仍然被静音</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="259"/>
@@ -1992,22 +1997,22 @@ connects to synchronize the conversation.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Keyboard Shortcut Table</source>
-        <translation type="unfinished"/>
+        <translation>键盘快捷键列表</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="424"/>
         <source>Conversation</source>
-        <translation type="unfinished"/>
+        <translation>对话</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="425"/>
         <source>Call</source>
-        <translation type="unfinished"/>
+        <translation>通话</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="426"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="434"/>
@@ -2182,7 +2187,7 @@ connects to synchronize the conversation.</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="516"/>
         <source>Windows</source>
-        <translation type="unfinished"/>
+        <translation>窗口</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="519"/>
@@ -2244,7 +2249,7 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="560"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>删除</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="563"/>
@@ -2307,128 +2312,128 @@ Copy and share it with your friends!</source>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="41"/>
         <source>Open account list</source>
-        <translation type="unfinished"/>
+        <translation>打开账户列表</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="45"/>
         <source>Focus conversations list</source>
-        <translation type="unfinished"/>
+        <translation>聚焦会话列表</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="49"/>
         <source>Requests list</source>
-        <translation type="unfinished"/>
+        <translation>请求列表</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="53"/>
         <source>Previous conversation</source>
-        <translation type="unfinished"/>
+        <translation>上一个会话</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="57"/>
         <source>Next conversation</source>
-        <translation type="unfinished"/>
+        <translation>下一个会话</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="61"/>
         <source>Search bar</source>
-        <translation type="unfinished"/>
+        <translation>搜索栏</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="65"/>
         <source>Full screen</source>
-        <translation type="unfinished"/>
+        <translation>全屏</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="74"/>
         <source>Start an audio call</source>
-        <translation type="unfinished"/>
+        <translation>发起语音通话</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="78"/>
         <source>Start a video call</source>
-        <translation type="unfinished"/>
+        <translation>发起视频通话</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="82"/>
         <source>Clear history</source>
-        <translation type="unfinished"/>
+        <translation>清除历史记录</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="86"/>
         <source>Block contact</source>
-        <translation type="unfinished"/>
+        <translation>屏蔽联系人</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="90"/>
         <source>Remove conversation</source>
-        <translation type="unfinished"/>
+        <translation>移除会话</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="94"/>
         <source>Accept contact request</source>
-        <translation type="unfinished"/>
+        <translation>接受联系人请求</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="103"/>
         <source>Media settings</source>
-        <translation type="unfinished"/>
+        <translation>媒体设置</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="107"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>常规设置</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="111"/>
         <source>Account settings</source>
-        <translation type="unfinished"/>
+        <translation>账户设置</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="115"/>
         <source>Plugin settings</source>
-        <translation type="unfinished"/>
+        <translation>插件设置</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="119"/>
         <source>Open account creation wizard</source>
-        <translation type="unfinished"/>
+        <translation>打开账户创建向导</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="123"/>
         <source>Open keyboard shortcut table</source>
-        <translation type="unfinished"/>
+        <translation>打开键盘快捷键列表</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="132"/>
         <source>Answer an incoming call</source>
-        <translation type="unfinished"/>
+        <translation>接听来电</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="136"/>
         <source>End call</source>
-        <translation type="unfinished"/>
+        <translation>结束通话</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="140"/>
         <source>Decline the call request</source>
-        <translation type="unfinished"/>
+        <translation>拒绝呼叫请求</translation>
     </message>
 </context>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="434"/>
+        <location filename="../src/mainapplication.cpp" line="435"/>
         <source>E&amp;xit</source>
         <translation>退出(&amp;X)</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="436"/>
+        <location filename="../src/mainapplication.cpp" line="437"/>
         <source>&amp;Quit</source>
         <translation>退出(&amp;Q)</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="442"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>&amp;Show Jami</source>
         <translation>打开 Jami (&amp;S)</translation>
     </message>

@@ -1997,12 +1997,12 @@ eine Verbindung herstellt, um die Konversation zu synchronisieren.</translation>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="422"/>
         <source>Keyboard Shortcut Table</source>
-        <translation type="unfinished"/>
+        <translation>Tastaturkürzeltabelle</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="424"/>
         <source>Conversation</source>
-        <translation type="unfinished"/>
+        <translation>Unterhaltung</translation>
     </message>
     <message>
         <location filename="../src/constant/JamiStrings.qml" line="425"/>
@@ -2392,7 +2392,7 @@ Kopieren und teilen Sie diesen mit Ihren Freunden!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="115"/>
         <source>Plugin settings</source>
-        <translation type="unfinished"/>
+        <translation>Plugin-Einstellungen</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="119"/>
@@ -2402,7 +2402,7 @@ Kopieren und teilen Sie diesen mit Ihren Freunden!</translation>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="123"/>
         <source>Open keyboard shortcut table</source>
-        <translation type="unfinished"/>
+        <translation>Tastaturkürzeltabelle öffnen</translation>
     </message>
     <message>
         <location filename="../src/mainview/components/KeyboardShortcutTable.qml" line="132"/>
@@ -2423,17 +2423,17 @@ Kopieren und teilen Sie diesen mit Ihren Freunden!</translation>
 <context>
     <name>MainApplication</name>
     <message>
-        <location filename="../src/mainapplication.cpp" line="434"/>
+        <location filename="../src/mainapplication.cpp" line="435"/>
         <source>E&amp;xit</source>
         <translation>Schließen</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="436"/>
+        <location filename="../src/mainapplication.cpp" line="437"/>
         <source>&amp;Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/mainapplication.cpp" line="442"/>
+        <location filename="../src/mainapplication.cpp" line="443"/>
         <source>&amp;Show Jami</source>
         <translation>&amp;Jami anzeigen</translation>
     </message>
