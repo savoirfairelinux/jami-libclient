@@ -71,51 +71,51 @@
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="218"/>
-        <location filename="../src/authority/storagehelper.cpp" line="136"/>
-        <location filename="../src/authority/storagehelper.cpp" line="938"/>
+        <location filename="../src/authority/storagehelper.cpp" line="197"/>
+        <location filename="../src/authority/storagehelper.cpp" line="962"/>
         <source>Invitation received</source>
         <translation>Inbjudan mottagen</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt lämnade konversationen</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
-        <location filename="../src/authority/storagehelper.cpp" line="133"/>
-        <location filename="../src/authority/storagehelper.cpp" line="936"/>
+        <location filename="../src/authority/storagehelper.cpp" line="194"/>
+        <location filename="../src/authority/storagehelper.cpp" line="960"/>
         <source>Contact added</source>
         <translation>Kontakt tillagt</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="110"/>
-        <location filename="../src/authority/storagehelper.cpp" line="116"/>
-        <location filename="../src/authority/storagehelper.cpp" line="934"/>
+        <location filename="../src/authority/storagehelper.cpp" line="171"/>
+        <location filename="../src/authority/storagehelper.cpp" line="177"/>
+        <location filename="../src/authority/storagehelper.cpp" line="958"/>
         <source>Outgoing call</source>
         <translation>Utgående samtal</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="112"/>
-        <location filename="../src/authority/storagehelper.cpp" line="122"/>
+        <location filename="../src/authority/storagehelper.cpp" line="173"/>
+        <location filename="../src/authority/storagehelper.cpp" line="183"/>
         <source>Incoming call</source>
         <translation>Inkommande samtal</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="118"/>
-        <location filename="../src/authority/storagehelper.cpp" line="932"/>
+        <location filename="../src/authority/storagehelper.cpp" line="179"/>
+        <location filename="../src/authority/storagehelper.cpp" line="956"/>
         <source>Missed outgoing call</source>
         <translation>Missat utgående samtal</translation>
     </message>
     <message>
-        <location filename="../src/authority/storagehelper.cpp" line="124"/>
+        <location filename="../src/authority/storagehelper.cpp" line="185"/>
         <source>Missed incoming call</source>
         <translation>Missat inkommande samtal</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="220"/>
-        <location filename="../src/authority/storagehelper.cpp" line="138"/>
-        <location filename="../src/authority/storagehelper.cpp" line="940"/>
+        <location filename="../src/authority/storagehelper.cpp" line="199"/>
+        <location filename="../src/authority/storagehelper.cpp" line="964"/>
         <source>Invitation accepted</source>
         <translation>Inbjudan accepterad</translation>
     </message>
@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="61"/>
         <source>Being Forwarded</source>
-        <translation type="unfinished"/>
+        <translation>Vidarebefordras</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="62"/>
@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="63"/>
         <source>Progress</source>
-        <translation type="unfinished"/>
+        <translation>Framsteg</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
@@ -194,43 +194,43 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="71"/>
         <source>Bad Request</source>
-        <translation type="unfinished"/>
+        <translation>Dålig förfrågan</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="72"/>
         <source>Unauthorized</source>
-        <translation type="unfinished"/>
+        <translation>Obehörig</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="73"/>
         <source>Payment Required</source>
-        <translation type="unfinished"/>
+        <translation>Betalning krävs</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="74"/>
         <source>Forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Förbjuden</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="75"/>
         <source>Not Found</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte hittas</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Method Not Allowed</source>
-        <translation type="unfinished"/>
+        <translation>Metod är inte tillåten</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="77"/>
         <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Not Acceptable</source>
-        <translation type="unfinished"/>
+        <translation>Inte acceptabelt</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Proxy Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Proxyautentisering krävs</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
@@ -240,7 +240,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Gone</source>
-        <translation type="unfinished"/>
+        <translation>Borta</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="81"/>
@@ -250,12 +250,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Request URI Too Long</source>
-        <translation type="unfinished"/>
+        <translation>Begäran URI är för lång</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Unsupported Media Type</source>
-        <translation type="unfinished"/>
+        <translation>Mediatyp som inte stöds</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="84"/>
@@ -270,7 +270,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Extension Required</source>
-        <translation type="unfinished"/>
+        <translation>Tillägg krävs</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="87"/>
@@ -285,7 +285,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Temporarily Unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Tillfälligt otillgänglig</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="90"/>
@@ -300,17 +300,17 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="92"/>
         <source>Too Many Hops</source>
-        <translation type="unfinished"/>
+        <translation>För många hopp</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Address Incomplete</source>
-        <translation type="unfinished"/>
+        <translation>Adress inkompatibel</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Ambiguous</source>
-        <translation type="unfinished"/>
+        <translation>Tvetydig</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="95"/>
@@ -330,37 +330,37 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Request Updated</source>
-        <translation type="unfinished"/>
+        <translation>Begäran uppdaterad</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Request Pending</source>
-        <translation type="unfinished"/>
+        <translation>Begäran väntar</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Undecipherable</source>
-        <translation type="unfinished"/>
+        <translation>Otydlig</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Internal Server Error</source>
-        <translation type="unfinished"/>
+        <translation>Internt serverfel</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Not Implemented</source>
-        <translation type="unfinished"/>
+        <translation>Inte implementerat</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Bad Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Dålig Gateway</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Service Unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Tjänst ej tillgänglig</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="106"/>
@@ -370,12 +370,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Version Not Supported</source>
-        <translation type="unfinished"/>
+        <translation>Version stöds inte</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Message Too Large</source>
-        <translation type="unfinished"/>
+        <translation>Meddelandet är för stort</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="109"/>
@@ -385,7 +385,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="110"/>
         <source>Busy Everywhere</source>
-        <translation type="unfinished"/>
+        <translation>Upptagen överallt</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="111"/>
@@ -395,12 +395,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="112"/>
         <source>Does Not Exist Anywhere</source>
-        <translation type="unfinished"/>
+        <translation>Finns inte någonstans</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="113"/>
         <source>Not Acceptable Anywhere</source>
-        <translation type="unfinished"/>
+        <translation>Inte acceptabelt någonstans</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
@@ -440,7 +440,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Alternativ</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
@@ -455,17 +455,17 @@
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Add emoji</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till emoji</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Lämna videomeddelande</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Lämna ljudmeddelande</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
@@ -475,7 +475,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Skriv till {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
@@ -490,7 +490,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Du har accepterat konversationsförfrågan.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
@@ -520,7 +520,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="77"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Inkommande överföring</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="78"/>
@@ -540,7 +540,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="48"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>finns inte i dina kontakter</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="58"/>
@@ -550,17 +550,17 @@
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} dagar sedan</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} timmar sedan</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="62"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} minuter sedan</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
@@ -570,7 +570,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="75"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>Pågående</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
@@ -626,17 +626,17 @@
         <translation>Söker...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="999"/>
+        <location filename="../src/contactmodel.cpp" line="1007"/>
         <source>Invalid ID</source>
         <translation>Ogiltigt ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1002"/>
+        <location filename="../src/contactmodel.cpp" line="1010"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Användarnamnet hittades inte</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1005"/>
+        <location filename="../src/contactmodel.cpp" line="1013"/>
         <source>Couldn&apos;t lookup…</source>
         <translation type="unfinished"/>
     </message>
