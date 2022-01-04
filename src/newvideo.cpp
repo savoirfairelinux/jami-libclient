@@ -89,6 +89,8 @@ Renderer::~Renderer()
     } else {
         VideoManager::instance().registerSinkTarget(pimpl_->id_, {});
     }
+#else
+    VideoManager::instance().startShmTransfer(pimpl_->id_, false);
 #endif // ENABLE_LIBWRAP
 
     pimpl_.reset();
@@ -113,6 +115,7 @@ Renderer::update(const QString& res, const QString& shmPath)
     }
 #else // ENABLE_LIBWRAP
     pimpl_->renderer->setShmPath(shmPath);
+    VideoManager::instance().startShmTransfer(pimpl_->id_, true);
 #endif
 }
 
@@ -230,6 +233,8 @@ RendererPimpl::RendererPimpl(Renderer& linked,
     } else {
         VideoManager::instance().registerSinkTarget(id_, renderer->target());
     }
+#else
+    VideoManager::instance().startShmTransfer(id_, true);
 #endif
 
     thread_.start();
