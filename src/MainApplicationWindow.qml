@@ -47,12 +47,13 @@ ApplicationWindow {
     }
 
     property ApplicationWindow appWindow : root
+    property bool isFullscreen: visibility === Window.FullScreen
 
     function toggleFullScreen() {
-        if (visibility !== Window.FullScreen) {
-            showFullScreen()
-        } else {
+        if (isFullscreen) {
             showNormal()
+        } else {
+            showFullScreen()
         }
     }
 

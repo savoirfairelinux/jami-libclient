@@ -26,9 +26,10 @@ import net.jami.Constants 1.1
 import "../../commoncomponents"
 
 Rectangle {
-    id: callStackViewWindow
+    id: root
 
     property bool isAudioOnly: false
+    property bool changeWindowVisibility: false
     property var sipKeys: [
         "1", "2", "3", "A",
         "4", "5", "6", "B",
@@ -116,10 +117,13 @@ Rectangle {
 
         // manual toggle here because of our fake fullscreen mode (F11)
         // TODO: handle and save window states, not just a boolean isFullScreen
-        if (!appWindow.isFullScreen && !JamiQmlUtils.callIsFullscreen)
-            appWindow.isFullScreen = true
-        else if (JamiQmlUtils.callIsFullscreen)
-            appWindow.isFullScreen = false
+        if (!appWindow.isFullscreen && !JamiQmlUtils.callIsFullscreen) {
+            root.changeWindowVisibility = true
+            appWindow.showFullScreen()
+        } else if (JamiQmlUtils.callIsFullscreen && root.changeWindowVisibility) {
+            root.changeWindowVisibility = false
+            appWindow.showNormal()
+        }
 
         JamiQmlUtils.callIsFullscreen = !JamiQmlUtils.callIsFullscreen
         callPage.parent = JamiQmlUtils.callIsFullscreen ?
@@ -134,7 +138,7 @@ Rectangle {
         target: JamiQmlUtils
 
         function onFullScreenCallEnded() {
-            if (appWindow.isFullScreen) {
+            if (appWindow.isFullscreen) {
                 toggleFullScreen()
             }
         }
@@ -173,7 +177,7 @@ Rectangle {
         anchors.fill: parent
         property int stackNumber: CallStackView.OngoingPageStack
 
-        isAudioOnly: callStackViewWindow.isAudioOnly
+        isAudioOnly: root.isAudioOnly
 
         visible: callStackMainView.currentItem.stackNumber === stackNumber
     }
@@ -184,7 +188,7 @@ Rectangle {
         anchors.fill: parent
         property int stackNumber: CallStackView.InitialPageStack
 
-        isAudioOnly: callStackViewWindow.isAudioOnly
+        isAudioOnly: root.isAudioOnly
 
         onCallAccepted: {
             CallAdapter.acceptACall(responsibleAccountId, responsibleConvUid)

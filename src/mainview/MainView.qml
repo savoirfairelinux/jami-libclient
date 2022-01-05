@@ -562,7 +562,7 @@ Rectangle {
         onActivated: {
             if (JamiQmlUtils.callIsFullscreen)
                 callStackView.toggleFullScreen()
-            else if (appWindow.isFullScreen)
+            else if (appWindow.visibility === Window.FullScreen)
                 appWindow.toggleFullScreen()
         }
     }
