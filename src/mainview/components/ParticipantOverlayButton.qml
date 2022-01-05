@@ -32,6 +32,7 @@ PushButton {
     pressedColor: JamiTheme.buttonConferencePressed
 
     imageColor: JamiTheme.whiteColor
+    hoverEnabled: false
 
     Rectangle {
         id: toolTipRect
@@ -44,7 +45,7 @@ PushButton {
         }
         color : isBarLayout? JamiTheme.darkGreyColorOpacity
                            : "transparent"
-        visible: root.hovered && !isSmall
+        visible: hover.hovered && !isSmall
         radius: 2
 
         Text {
@@ -54,5 +55,10 @@ PushButton {
             color: JamiTheme.whiteColor
             font.pointSize: JamiTheme.tinyFontSize
         }
+    }
+    Item {
+        anchors.fill: parent
+
+        HoverHandler { id: hover }
     }
 }

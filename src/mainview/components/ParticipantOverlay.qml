@@ -61,8 +61,6 @@ Item {
         }
     }
 
-    z: 1
-
     function setAvatar(show, uri, isLocal) {
         if (!show)
             avatar.active = false
@@ -136,47 +134,56 @@ Item {
         }
     }
 
-    // Participant background and buttons for moderation
-    MouseArea {
-        id: participantRect
-
-        anchors.fill: parent
-        opacity: 0
-        z: 1
-
-        propagateComposedEvents: true
-        hoverEnabled: true
-        onPositionChanged: {
+    HoverHandler {
+        onPointChanged: {
             participantRect.opacity = 1
             fadeOutTimer.restart()
-            // Here we could call: root.parent.positionChanged(mouse)
-            // to relay the event to a main overlay mouse area, either
-            // as a parent object or some property passed in. But, this
-            // will still fail when hovering over menus, etc.
-        }
-        onExited: {
-            root.z = 1
-            participantRect.opacity = 0
-        }
-        onEntered: {
-            root.z = 2
-            participantRect.opacity = 1
         }
 
-        // Timer to decide when ParticipantOverlay fade out
-        Timer {
-            id: fadeOutTimer
-            interval: JamiTheme.overlayFadeDelay
-            onTriggered: {
-                if (overlayMenu.hovered)
-                    return
-                participantRect.opacity = 0
+        onHoveredChanged: {
+            if (overlayMenu.hovered) {
+                participantRect.opacity = 1
+                fadeOutTimer.restart()
+                return
             }
+            participantRect.opacity = hovered ? 1 : 0
         }
+    }
+
+    // Timer to decide when ParticipantOverlay fade out
+    Timer {
+        id: fadeOutTimer
+        interval: JamiTheme.overlayFadeDelay
+        onTriggered: {
+            if (overlayMenu.hovered) {
+                fadeOutTimer.restart()
+                return
+            }
+            participantRect.opacity = 0
+        }
+    }
+
+    // Participant background and buttons for moderation
+    Rectangle {
+        id: participantRect
+
+        width: parent.width
+        height: parent.height
+        color: "transparent"
+        opacity: 0
 
         ParticipantOverlayMenu {
             id: overlayMenu
             visible: isMe || meModerator
+
+            onHoveredChanged: {
+                if (hovered) {
+                    participantRect.opacity = 1
+                    fadeOutTimer.restart()
+                } else {
+                    participantRect.opacity = 0
+                }
+            }
         }
 
         // Participant footer with host, moderator and mute indicators

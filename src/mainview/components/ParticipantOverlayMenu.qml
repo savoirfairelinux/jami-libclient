@@ -49,9 +49,11 @@ Item {
     property int buttonPreferredSize: 24
     property int iconButtonPreferredSize: 16
 
-    property bool hovered: false
+    property alias hovered: hover.hovered
 
     anchors.fill: parent
+
+    HoverHandler { id: hover }
 
     Loader { sourceComponent: isBarLayout ? barComponent : rectComponent }
 
@@ -61,8 +63,7 @@ Item {
         Control {
             width: root.width
             height: root.height
-
-            onHoveredChanged: root.hovered = hovered
+            hoverEnabled: false
 
             background: Rectangle {
                 property int buttonsSize: buttonsRect.visibleButtons * 24 + 8 * 2
@@ -77,16 +78,9 @@ Item {
                 height: isOverlayRect ? 80 : parent.height
             }
 
-            ColumnLayout {
+            ParticipantControlLayout {
+                id: buttonsRect
                 anchors.centerIn: parent
-
-                ParticipantControlLayout {
-                    id: buttonsRect
-
-                    Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                    Layout.preferredWidth: implicitWidth
-                    Layout.preferredHeight: shapeHeight
-                }
             }
         }
     }
@@ -95,18 +89,17 @@ Item {
         id: barComponent
 
         Control {
-            width: buttonsRect.implicitWidth
+            width: barButtons.implicitWidth
             height: shapeHeight
-
-            onHoveredChanged: root.hovered = hovered
+            hoverEnabled: false
 
             background: Item {
                 clip: true
                 Rectangle {
                     color: JamiTheme.darkGreyColorOpacity
                     radius: shapeRadius
-                    width: parent.width + radius
-                    height: parent.height + radius
+                    width: parent.width + 2 * radius
+                    height: parent.height + 2 * radius
                     anchors.fill: parent
                     anchors.leftMargin: -radius
                     anchors.topMargin: -radius
@@ -114,11 +107,7 @@ Item {
             }
 
             ParticipantControlLayout {
-                id: buttonsRect
-
-                Layout.rightMargin: 8
-                Layout.preferredWidth: implicitWidth
-                Layout.preferredHeight: shapeHeight
+                id: barButtons
             }
         }
     }
