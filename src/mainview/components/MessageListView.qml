@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 by Savoir-faire Linux
+ * Copyright (C) 2021-2022 Savoir-faire Linux Inc.
  * Author: Trevor Tabah <trevor.tabah@savoirfairelinux.com>
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *

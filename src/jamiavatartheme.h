@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017-2020 by Savoir-faire Linux
+ * Copyright (C) 2017-2022 Savoir-faire Linux Inc.
  * Author: Edric Ladent Milaret <edric.ladent-milaret@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify

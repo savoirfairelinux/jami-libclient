@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2020-2022 Savoir-faire Linux Inc.
  * Author: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -45,7 +45,7 @@ Item {
 
     // AboutPopUp
     property string version: qsTr("Version") + (UpdateManager.isCurrentVersionBeta() ? " (BETA)" : "")
-    property string companyDeclarationYear: "© 2015-2021 Savoir-faire Linux Inc."
+    property string companyDeclarationYear: "© 2015-2022 Savoir-faire Linux Inc."
     property string slogan: "Taranis"
     property string declaration: qsTr("Jami is a free software for universal communication which respects the freedom and privacy of its users.")
     property string credits: qsTr("Credits")

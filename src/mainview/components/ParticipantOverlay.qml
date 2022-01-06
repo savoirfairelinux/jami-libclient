@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 by Savoir-faire Linux
+ * Copyright (C) 2020-2022 Savoir-faire Linux Inc.
  * Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
  * Author: Albert Babí <albert.babi@savoirfairelinux.com>
  *

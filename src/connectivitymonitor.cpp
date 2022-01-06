@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2020 by Savoir-faire Linux
+ * Copyright (C) 2019-2022 Savoir-faire Linux Inc.
  * Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
  *
  * This program is free software; you can redistribute it and/or modify
