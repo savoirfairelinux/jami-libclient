@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1bff484_6a001812",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 892
+      },
+      "writtenOn": "2022-01-06T15:43:24Z",
+      "side": 1,
+      "message": "also, two things i noticed:\n\n1. several files don\u0027t have any copyright notice\n2. some files\u0027 copyright year hadn\u0027t been updated for\n   some years (e.g. since 2020 or since 2016 in one case)",
+      "revId": "e98f59025649778e700b61d7decb87077ef0005a",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
