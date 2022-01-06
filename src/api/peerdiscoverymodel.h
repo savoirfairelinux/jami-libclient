@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2019-2021 Savoir-faire Linux Inc.                       *
+ *    Copyright (C) 2019-2022 Savoir-faire Linux Inc.                       *
  *   Author: Mingrui Zhang <mingrui.zhang@savoirfairelinux.com>             *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *

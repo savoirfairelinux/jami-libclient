@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2009-2021 Savoir-faire Linux Inc.                          *
+ *    Copyright (C) 2009-2022 Savoir-faire Linux Inc.                       *
  *   Authors : Alexandre Lision alexandre.lision@savoirfairelinux.com       *
  *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
  *                                                                          *

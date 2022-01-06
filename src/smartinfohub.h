@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2016-2021 Savoir-faire Linux Inc.                               *
+ *    Copyright (C) 2016-2022 Savoir-faire Linux Inc.                       *
  *   Author: Olivier Grégoire <olivier.gregoire@savoirfairelinux.com>       *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *

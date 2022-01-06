@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2012-2021 Savoir-faire Linux Inc.                       *
+ *    Copyright (C) 2012-2022 Savoir-faire Linux Inc.                       *
  *   Author : Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com> *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *

@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2018-2021 Savoir-faire Linux Inc.                                  *
+ *    Copyright (C) 2018-2022 Savoir-faire Linux Inc.                       *
  *   Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>       *
  *                                                                          *
  *   This library is free software; you can redistribute it and/or          *

@@ -1,5 +1,5 @@
 /****************************************************************************
- *    Copyright (C) 2013-2021 Savoir-faire Linux Inc.                          *
+ *    Copyright (C) 2013-2022 Savoir-faire Linux Inc.                       *
  *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
  *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
  *                                                                          *
