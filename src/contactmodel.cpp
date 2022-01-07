@@ -549,10 +549,6 @@ ContactModel::bestIdForContact(const QString& contactUri) const
 {
     try {
         auto contact = getContact(contactUri);
-        auto alias = contact.profileInfo.alias.simplified();
-        if (alias.isEmpty()) {
-            return {};
-        }
         return bestIdFromContactInfo(contact);
     } catch (const std::out_of_range& e) {
         qDebug() << "ContactModel::bestIdForContact" << e.what();
@@ -930,7 +926,9 @@ ContactModelPimpl::addToContacts(const QString& contactUri,
         updateProfile = true;
         contactInfo.profileInfo.alias = profileInfo.alias;
     }
-    auto oldAvatar = lrc::api::Lrc::cacheAvatars.load()? contactInfo.profileInfo.avatar : storage::avatar(linked.owner.id, contactUri);
+    auto oldAvatar = lrc::api::Lrc::cacheAvatars.load()
+                         ? contactInfo.profileInfo.avatar
+                         : storage::avatar(linked.owner.id, contactUri);
     if (!profileInfo.avatar.isEmpty() && oldAvatar != profileInfo.avatar) {
         updateProfile = true;
         contactInfo.profileInfo.avatar = profileInfo.avatar;
