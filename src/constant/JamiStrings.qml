@@ -340,6 +340,7 @@ Item {
     // LinkedDevices
     property string tipLinkNewDevice: qsTr("Link a new device to this account")
     property string linkAnotherDevice: qsTr("Link another device")
+    property string linkNewDevice: qsTr("Exporting account…")
     property string removeDevice: qsTr("Remove Device")
     property string sureToRemoveDevice: qsTr("Are you sure you wish to remove this device?")
     property string linkedDevices: qsTr("Linked Devices")

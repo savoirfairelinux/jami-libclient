@@ -213,7 +213,7 @@ BaseModalDialog {
                 Label {
                     Layout.alignment: Qt.AlignCenter
 
-                    text: JamiStrings.backupAccount
+                    text: JamiStrings.linkNewDevice
                     color: JamiTheme.textColor
                     font.pointSize: JamiTheme.headerFontSize
                     font.kerning: true
