@@ -43,6 +43,10 @@ ItemDelegate {
     icon.source: ""
     text: ""
 
+    Accessible.role: Accessible.Button
+    Accessible.name: text
+    Accessible.description: text
+
     z: index
 
     // TODO: remove this when output volume control is implemented
@@ -140,7 +144,7 @@ ItemDelegate {
 
     // custom anchor for the tooltips
     Item {
-        anchors.top: !isVertical ? parent.bottom : undefined
+        anchors.bottom: !isVertical ? parent.top : undefined
         anchors.topMargin: 25
         anchors.horizontalCenter: !isVertical ? parent.horizontalCenter : undefined
 
