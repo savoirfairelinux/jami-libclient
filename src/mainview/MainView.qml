@@ -528,13 +528,13 @@ Rectangle {
     Shortcut {
         sequence: "F11"
         context: Qt.ApplicationShortcut
-        onActivated: {
-            // Don't toggle fullscreen mode when we're already
-            // in a fullscreen call.
-            if (JamiQmlUtils.callIsFullscreen)
-                return
-            appWindow.toggleFullScreen()
-        }
+        onActivated: layoutManager.toggleWindowFullScreen()
+    }
+
+    Shortcut {
+        sequence: "Escape"
+        context: Qt.ApplicationShortcut
+        onActivated: layoutManager.popFullScreenItem()
     }
 
     Shortcut {
@@ -554,17 +554,6 @@ Rectangle {
         sequence: "Ctrl+Shift+N"
         context: Qt.ApplicationShortcut
         onActivated: startWizard()
-    }
-
-    Shortcut {
-        sequence: "Escape"
-        context: Qt.ApplicationShortcut
-        onActivated: {
-            if (JamiQmlUtils.callIsFullscreen)
-                callStackView.toggleFullScreen()
-            else if (appWindow.visibility === Window.FullScreen)
-                appWindow.toggleFullScreen()
-        }
     }
 
     Shortcut {

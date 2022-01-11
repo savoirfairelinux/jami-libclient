@@ -88,9 +88,10 @@ ContextMenuAutoLoader {
         GeneralMenuItem {
             id: fullScreen
 
-            itemName: JamiQmlUtils.callIsFullscreen ?
-                          JamiStrings.exitFullScreen : JamiStrings.fullScreen
-            iconSource: JamiQmlUtils.callIsFullscreen ?
+            itemName: layoutManager.callIsFullscreen ?
+                          JamiStrings.exitFullScreen :
+                          JamiStrings.fullScreen
+            iconSource: layoutManager.callIsFullscreen ?
                             JamiResources.close_fullscreen_24dp_svg :
                             JamiResources.open_in_full_24dp_svg
             onClicked: {

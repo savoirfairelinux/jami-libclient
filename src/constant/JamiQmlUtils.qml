@@ -33,9 +33,6 @@ Item {
 
     property var mainApplicationScreen: ""
 
-    property bool callIsFullscreen: false
-    signal fullScreenCallEnded
-
     property var accountCreationInputParaObject: ({})
 
     function setUpAccountCreationInputPara(inputPara) {
@@ -68,15 +65,6 @@ Item {
                     messageBarButtonsRowObj.mapToItem(mainViewRectObj,
                                                       emojiPickerButtonObj.x,
                                                       emojiPickerButtonObj.y)
-        }
-    }
-
-    Connections {
-        target: CallAdapter
-
-        function onHasCallChanged() {
-            if (!CallAdapter.hasCall && callIsFullscreen)
-                fullScreenCallEnded()
         }
     }
 

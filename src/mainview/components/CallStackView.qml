@@ -29,7 +29,6 @@ Rectangle {
     id: root
 
     property bool isAudioOnly: false
-    property bool changeWindowVisibility: false
     property var sipKeys: [
         "1", "2", "3", "A",
         "4", "5", "6", "B",
@@ -111,36 +110,22 @@ Rectangle {
     }
 
     function toggleFullScreen() {
-        var callPage = callStackMainView.currentItem
-        if (!callPage)
-            return
-
-        // manual toggle here because of our fake fullscreen mode (F11)
-        // TODO: handle and save window states, not just a boolean isFullScreen
-        if (!appWindow.isFullscreen && !JamiQmlUtils.callIsFullscreen) {
-            root.changeWindowVisibility = true
-            appWindow.showFullScreen()
-        } else if (JamiQmlUtils.callIsFullscreen && root.changeWindowVisibility) {
-            root.changeWindowVisibility = false
-            appWindow.showNormal()
-        }
-
-        JamiQmlUtils.callIsFullscreen = !JamiQmlUtils.callIsFullscreen
-        callPage.parent = JamiQmlUtils.callIsFullscreen ?
-                    appContainer :
-                    callStackMainView
-        if (!root.isAudioOnly) {
-            ongoingCallPage.handleParticipantsInfo(CallAdapter.getConferencesInfos())
-        }
-    }
-
-    Connections {
-        target: JamiQmlUtils
-
-        function onFullScreenCallEnded() {
-            if (appWindow.isFullscreen) {
-                toggleFullScreen()
+        const transitionCb = function() {
+            if (!root.isAudioOnly) {
+                ongoingCallPage.handleParticipantsInfo(
+                            CallAdapter.getConferencesInfos())
             }
+        }
+
+        if (!layoutManager.isCallFullscreen) {
+            layoutManager.pushFullScreenItem(
+                        callStackMainView.currentItem,
+                        callStackMainView,
+                        transitionCb,
+                        transitionCb)
+        } else {
+            layoutManager.removeFullScreenItem(
+                        callStackMainView.currentItem)
         }
     }
 

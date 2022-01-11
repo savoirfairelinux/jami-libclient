@@ -33,6 +33,7 @@ import net.jami.Helpers 1.1
 import net.jami.Constants 1.1
 
 import "mainview"
+import "mainview/components"
 import "wizardview"
 import "commoncomponents"
 
@@ -46,15 +47,9 @@ ApplicationWindow {
         None
     }
 
-    property ApplicationWindow appWindow : root
-    property bool isFullscreen: visibility === Window.FullScreen
-
-    function toggleFullScreen() {
-        if (isFullscreen) {
-            showNormal()
-        } else {
-            showFullScreen()
-        }
+    property ApplicationWindow appWindow: root
+    property LayoutManager layoutManager: LayoutManager {
+        appContainer: appContainer
     }
 
     function checkLoadedSource() {
@@ -165,17 +160,13 @@ ApplicationWindow {
 
         function onRestoreAppRequested() {
             requestActivate()
-            if (visibility === Window.Hidden || visibility === Window.Minimized) {
-                showNormal()
-            }
+            layoutManager.restoreApp()
         }
 
         function onNotificationClicked() {
             requestActivate()
             raise()
-            if (visibility === Window.Hidden || visibility === Window.Minimized) {
-                showNormal()
-            }
+            layoutManager.restoreApp()
         }
     }
 
