@@ -3449,6 +3449,15 @@ ConversationModelPimpl::slotUpdateInteractionStatus(const QString& accountId,
                 auto previous = conversation.interactions->getRead(peerId);
                 if (peerId != linked.owner.profileInfo.uri)
                     conversation.interactions->setRead(peerId, messageId);
+                else {
+                    conversation.unreadMessages = ConfigurationManager::instance()
+                                                      .countInteractions(linked.owner.id,
+                                                                         conversationId,
+                                                                         messageId,
+                                                                         "",
+                                                                         peerId);
+                    Q_EMIT linked.dataChanged(indexOf(conversationId));
+                }
                 emit linked.displayedInteractionChanged(conversationId, peerId, previous, messageId);
             }
         }
