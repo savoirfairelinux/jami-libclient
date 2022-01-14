@@ -65,6 +65,18 @@ main(int argc, char* argv[])
 #ifdef Q_OS_LINUX
     setenv("QT_QPA_PLATFORMTHEME", "gtk3", true);
     setenv("QML_DISABLE_DISK_CACHE", "1", true);
+
+    /*
+     * Some GNU/Linux distros, like Zorin OS, set QT_STYLE_OVERRIDE
+     * to force a particular Qt style.  This has been fine with Qt5
+     * even when using our own Qt package which may not have that
+     * style available.  However, with Qt6, attempting to override
+     * to a nonexistent style seems to result in the main window
+     * simply not showing.  So here we unset this variable, also
+     * because we currently hard-code the Material style anyway.
+     * https://bugreports.qt.io/browse/QTBUG-99889
+     */
+    unsetenv("QT_STYLE_OVERRIDE");
 #ifdef __GLIBC__
     // Current glibc is causing some bugs with font loading
     // See https://bugreports.qt.io/browse/QTBUG-92969
