@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/api/call.h" line="61"/>
         <source>Hold</source>
-        <translation>Așteptare</translation>
+        <translation>Pauză</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="63"/>
