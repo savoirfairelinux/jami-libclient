@@ -294,12 +294,12 @@ AVModel::setDeviceSettings(video::Settings& settings)
 
     // If the preview is running, reload it
     // doing this during a call will cause re-invite, this is unwanted
-    if (pimpl_->renderers_[video::PREVIEW_RENDERER_ID]) {
-        if (pimpl_->renderers_[video::PREVIEW_RENDERER_ID]->isRendering()
-            && pimpl_->renderers_.size() == 1) {
-            stopPreview(video::PREVIEW_RENDERER_ID);
-            startPreview(video::PREVIEW_RENDERER_ID);
-        }
+    std::unique_lock<std::mutex> lk(pimpl_->renderers_mtx_);
+    auto it = pimpl_->renderers_.find(video::PREVIEW_RENDERER_ID);
+    if (it->second && it->second->isRendering() && pimpl_->renderers_.size() == 1) {
+        lk.unlock();
+        stopPreview(video::PREVIEW_RENDERER_ID);
+        startPreview(video::PREVIEW_RENDERER_ID);
     }
 }
 
@@ -516,6 +516,7 @@ void
 AVModel::useAVFrame(bool useAVFrame)
 {
     pimpl_->useAVFrame_ = useAVFrame;
+    std::lock_guard<std::mutex> lk(pimpl_->renderers_mtx_);
     for (auto it = pimpl_->renderers_.cbegin(); it != pimpl_->renderers_.cend(); ++it) {
         it->second->useAVFrame(pimpl_->useAVFrame_);
     }
@@ -538,10 +539,10 @@ AVModel::getRenderer(const QString& id) const
 {
     std::lock_guard<std::mutex> lk(pimpl_->renderers_mtx_);
     auto search = pimpl_->renderers_.find(id);
-    if (search == pimpl_->renderers_.end() || !pimpl_->renderers_[id]) {
+    if (search == pimpl_->renderers_.end() || !search->second) {
         throw std::out_of_range("Can't find renderer " + id.toStdString());
     }
-    return *pimpl_->renderers_[id];
+    return *search->second;
 }
 
 #if defined(Q_OS_UNIX) && !defined(__APPLE__)
