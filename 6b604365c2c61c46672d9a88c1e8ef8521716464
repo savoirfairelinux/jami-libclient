@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44c2e267_fcdcad8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2022-01-19T14:28:43Z",
+      "side": 1,
+      "message": "LGTM, but should have a gitlab issue linked.",
+      "revId": "6b604365c2c61c46672d9a88c1e8ef8521716464",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
