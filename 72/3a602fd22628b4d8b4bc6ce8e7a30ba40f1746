@@ -1,0 +1,9 @@
+Code-Review+1: Adrien Béraud <adrien.beraud@savoirfairelinux.com>
+Code-Review+2: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+Code-Review+1: Aline Gondim Santos <aline.gondimsantos@savoirfairelinux.com>
+Verified+1: Jenkins CI <jenkins@ring-packaging.cx>
+Submitted-by: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+Submitted-at: Wed, 19 Jan 2022 16:59:11 -0500
+Reviewed-on: https://review.jami.net/c/jami-libclient/+/20179
+Project: jami-libclient
+Branch: refs/heads/master
