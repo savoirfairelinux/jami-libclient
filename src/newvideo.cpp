@@ -79,7 +79,9 @@ Renderer::Renderer(const QString& id,
                    const QString& shmPath,
                    const bool useAVFrame)
     : pimpl_(std::make_unique<RendererPimpl>(*this, id, videoSettings, shmPath, useAVFrame))
-{}
+{
+    qDebug() << QString("[id %1] Renderer instance created").arg(id);
+}
 
 Renderer::~Renderer()
 {
@@ -90,8 +92,10 @@ Renderer::~Renderer()
         VideoManager::instance().registerSinkTarget(pimpl_->id_, {});
     }
 #endif // ENABLE_LIBWRAP
-
+    auto id = pimpl_->id_;
     pimpl_.reset();
+
+    qDebug() << QString("[id %1] Renderer instance destroyed").arg(id);
 }
 
 void
@@ -233,12 +237,15 @@ RendererPimpl::RendererPimpl(Renderer& linked,
 #endif
 
     thread_.start();
+
+    qDebug() << QString("[id %1] RendererImpl instance created").arg(id);
 }
 
 RendererPimpl::~RendererPimpl()
 {
     thread_.quit();
     thread_.wait();
+    qDebug() << QString("[id %1] RendererImpl instance destroyed").arg(id_);
 }
 
 QSize

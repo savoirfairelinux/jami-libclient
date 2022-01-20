@@ -57,6 +57,7 @@ public:
     mutable QMutex directmutex;
     mutable DRing::SinkTarget::FrameBufferPtr daemonFramePtr_;
     std::unique_ptr<AVFrame, void (*)(AVFrame*)> avframe;
+    size_t frameCounter_ {0};
 
 private:
     Video::DirectRenderer* q_ptr;
@@ -69,6 +70,9 @@ Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* paren
     , q_ptr(parent)
     , avframe {nullptr, AVFrameDeleter}
 {
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("Direct renderer private created");
+
     using namespace std::placeholders;
     if (useAVFrame) {
         av_target.push = std::bind(&Video::DirectRendererPrivate::onNewAVFrame, this, _1);
@@ -84,6 +88,7 @@ Video::DirectRenderer::DirectRenderer(const QString& id, const QSize& res, bool 
     , d_ptr(std::make_unique<DirectRendererPrivate>(this, useAVFrame))
 {
     setObjectName("Video::DirectRenderer:" + id);
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16) << QString("Direct renderer created");
 }
 
 /// Destructor
@@ -93,17 +98,26 @@ Video::DirectRenderer::~DirectRenderer()
     stopRendering();
 
     d_ptr.reset();
+
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("Direct renderer destroyed");
 }
 
 void
 Video::DirectRenderer::startRendering()
 {
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("Starting direct renderer");
+
     Video::Renderer::d_ptr->m_isRendering = true;
     emit started();
 }
 void
 Video::DirectRenderer::stopRendering()
 {
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("Stopping direct renderer");
+
     Video::Renderer::d_ptr->m_isRendering = false;
     emit stopped();
 }
@@ -178,6 +192,12 @@ Video::DirectRenderer::currentAVFrame() const
 lrc::api::video::Frame
 Video::DirectRenderer::currentFrame() const
 {
+    if (d_ptr->frameCounter_ % 100 == 0) {
+        qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+                 << QString("currentFrame %1").arg(d_ptr->frameCounter_);
+    }
+    d_ptr->frameCounter_++;
+
     if (not isRendering())
         return {};
 
