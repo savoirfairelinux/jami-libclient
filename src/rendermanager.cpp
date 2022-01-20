@@ -27,11 +27,14 @@ FrameWrapper::FrameWrapper(AVModel& avModel, const QString& id)
     : avModel_(avModel)
     , id_(id)
     , isRendering_(false)
-{}
+{
+    qDebug() << QString("[id %1] Frame wrapped created").arg(id_);
+}
 
 FrameWrapper::~FrameWrapper()
 {
     avModel_.stopPreview(id_);
+    qDebug() << QString("[id %1] Frame wrapper destroyed").arg(id_);
 }
 
 void
@@ -47,6 +50,8 @@ FrameWrapper::connectStartRendering()
 bool
 FrameWrapper::startRendering()
 {
+    qDebug() << QString("[id %1] Starting renderer").arg(id_);
+
     if (isRendering())
         return true;
 
@@ -71,6 +76,8 @@ FrameWrapper::startRendering()
                                                   &FrameWrapper::slotRenderingStopped,
                                                   Qt::DirectConnection);
 
+    qDebug() << QString("[id %1] Renderer started").arg(id_);
+
     return true;
 }
 
@@ -78,6 +85,7 @@ void
 FrameWrapper::stopRendering()
 {
     isRendering_ = false;
+    qDebug() << QString("[id " + id_ + "] Renderer stopped");
 }
 
 QImage*
@@ -110,12 +118,13 @@ FrameWrapper::frameMutexUnlock()
 void
 FrameWrapper::slotRenderingStarted(const QString& id)
 {
+    qDebug() << QString("[slot %1] Rendering started").arg(id);
+
     if (id != id_) {
         return;
     }
 
     if (!startRendering()) {
-        qWarning() << "Couldn't start rendering for id: " << id_;
         return;
     }
 
@@ -173,6 +182,8 @@ FrameWrapper::slotFrameUpdated(const QString& id)
 void
 FrameWrapper::slotRenderingStopped(const QString& id)
 {
+    qDebug() << QString("[slot %1] Rendering stopped").arg(id);
+
     if (id != id_) {
         return;
     }
@@ -192,28 +203,38 @@ FrameWrapper::slotRenderingStopped(const QString& id)
 
 RenderManager::RenderManager(AVModel& avModel)
     : avModel_(avModel)
-{}
+{
+    qDebug() << QString("Instance created");
+}
 
 RenderManager::~RenderManager()
 {
     for (auto& dfw : distantFrameWrapperMap_) {
         dfw.second.reset();
     }
+
+    qDebug() << QString("Instance destroyed");
 }
 
 void
 RenderManager::stopPreviewing(const QString& id)
 {
+    qDebug() << QString("[id %1] Stopping preview").arg(id);
+
     auto dfwIt = distantFrameWrapperMap_.find(id);
     if (dfwIt != distantFrameWrapperMap_.end()) {
         dfwIt->second->stopRendering();
         avModel_.stopPreview(id);
+    } else {
+        qWarning() << QString("[id %1] Stopping preview failed. Renderer not found").arg(id);
     }
 }
 
 const QString
 RenderManager::startPreviewing(const QString& id, bool force)
 {
+    qDebug() << QString("[id %1] Starting preview").arg(id);
+
     auto dfwIt = distantFrameWrapperMap_.find(id);
     if (dfwIt != distantFrameWrapperMap_.end()) {
         if (dfwIt->second->isRendering() && !force) {
@@ -224,6 +245,8 @@ RenderManager::startPreviewing(const QString& id, bool force)
             avModel_.stopPreview(id);
         }
         return avModel_.startPreview(id);
+    } else {
+        qWarning() << QString("[id %1] Starting preview failed. Renderer not found").arg(id);
     }
     return "";
 }
@@ -231,6 +254,7 @@ RenderManager::startPreviewing(const QString& id, bool force)
 void
 RenderManager::addDistantRenderer(const QString& id)
 {
+    qDebug() << QString("[id %1] Adding distant renderer").arg(id);
     /*
      * Check if a FrameWrapper with this id exists.
      */
@@ -279,6 +303,8 @@ RenderManager::addDistantRenderer(const QString& id)
 void
 RenderManager::removeDistantRenderer(const QString& id)
 {
+    qDebug() << QString("[id %1] Removing distant renderer").arg(id);
+
     auto dfwIt = distantFrameWrapperMap_.find(id);
     if (dfwIt != distantFrameWrapperMap_.end()) {
         /*
@@ -290,11 +316,12 @@ RenderManager::removeDistantRenderer(const QString& id)
             QObject::disconnect(dcIt->second.updated);
             QObject::disconnect(dcIt->second.stopped);
         }
-
         /*
          * Erase.
          */
         distantFrameWrapperMap_.erase(dfwIt);
+    } else {
+        qWarning() << QString("[id %1] Removing distant renderer. Renderer not found").arg(id);
     }
 }
 
