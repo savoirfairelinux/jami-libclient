@@ -29,6 +29,13 @@
 
 #include <clocale>
 
+#ifdef Q_OS_LINUX
+#include <unistd.h>
+#include <sys/syscall.h>
+#else
+#include <thread>
+#endif
+
 #ifndef ENABLE_TESTS
 
 static char**
@@ -55,10 +62,78 @@ static char noSandbox[] {"--no-sandbox"};
 static char disableWebSecurity[] {"--disable-web-security"};
 static char singleProcess[] {"--single-process"};
 
+#if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
+static char TIMESTAMP_FORMAT[] {"hh:mm:ss.zzz"};
+
+static QString
+messageLevel(QtMsgType type)
+{
+    if (type == QtDebugMsg)
+        return QString("D");
+    if (type == QtInfoMsg)
+        return QString("I");
+    if (type == QtWarningMsg)
+        return QString("W");
+    if (type == QtCriticalMsg)
+        return QString("E");
+    if (type == QtFatalMsg)
+        return QString("F");
+    return QString("Unknown message type");
+}
+#endif
+
+#ifdef Q_OS_LINUX
+static long
+getCurrentTid()
+{
+    return syscall(__NR_gettid) & 0xffff;
+}
+#elif defined(Q_OS_WIN)
+static thread::id
+getCurrentTid()
+{
+    return std::this_thread::get_id();
+}
+#endif
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
+static QString
+getFileBaseName(const QMessageLogContext& context)
+{
+    QFileInfo info(context.file);
+    return info.baseName() + "." + info.suffix();
+}
+
+static void
+messageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+{
+    QTextStream strm(stdout);
+    strm << "[";
+    strm << QDateTime::currentDateTime().toString(TIMESTAMP_FORMAT);
+    strm << "|";
+    strm << getCurrentTid();
+    strm << "|";
+    strm << messageLevel(type);
+    strm << "|";
+    strm << getFileBaseName(context) << ":" << context.line;
+    strm << "] ";
+    strm << msg;
+    strm << Qt::endl;
+}
+#endif
+
 int
 main(int argc, char* argv[])
 {
     setlocale(LC_ALL, "en_US.utf8");
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
+    // Set the default logging handler. Do not override if the
+    // user defines its own format.
+    if (getenv("QT_MESSAGE_PATTERN") == nullptr) {
+        qInstallMessageHandler(messageHandler);
+    }
+#endif
 
     QList<char*> qtWebEngineChromiumFlags;
 
