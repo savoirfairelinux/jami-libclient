@@ -59,6 +59,7 @@ class AVModelPimpl : public QObject
     Q_OBJECT
 public:
     AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler);
+    ~AVModelPimpl();
 
     const CallbacksHandler& callbacksHandler;
     QString getRecordingPath() const;
@@ -150,6 +151,8 @@ AVModel::AVModel(const CallbacksHandler& callbacksHandler)
     : QObject(nullptr)
     , pimpl_(std::make_unique<AVModelPimpl>(*this, callbacksHandler))
 {
+    qDebug() << QString("Instance created");
+
 #ifndef ENABLE_LIBWRAP
     // Because the client uses DBUS, if a crash occurs, the daemon will not
     // be able to know it. So, stop the camera if the user was just previewing.
@@ -164,6 +167,8 @@ AVModel::~AVModel()
     for (auto r = pimpl_->renderers_.begin(); r != pimpl_->renderers_.end(); ++r) {
         (*r).second.reset();
     }
+
+    qDebug() << QString("Instance destroyed");
 }
 
 bool
@@ -722,6 +727,15 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
     if (startedPreview)
         restartRenderers({"local"});
     currentVideoCaptureDevice_ = VideoManager::instance().getDefaultDevice();
+
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("AVModelImpl instance created");
+}
+
+AVModelPimpl::~AVModelPimpl()
+{
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("AVModelImpl instance destroyed");
 }
 
 QString
@@ -877,9 +891,9 @@ AVModelPimpl::removeRenderer(const QString& id)
         return;
     }
     disconnect(search->second.get(),
-                &video::Renderer::frameUpdated,
-                this,
-                &AVModelPimpl::slotFrameUpdated);
+               &video::Renderer::frameUpdated,
+               this,
+               &AVModelPimpl::slotFrameUpdated);
     connect(
         search->second.get(),
         &video::Renderer::stopped,
