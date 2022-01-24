@@ -47,10 +47,10 @@ public:
     virtual ~DirectRenderer();
 
     // Getter
-    const DRing::SinkTarget& target() const;
-    const DRing::AVSinkTarget& avTarget() const;
+    const DRing::SinkTarget& sinkTarget() const;
+    const DRing::AVSinkTarget& avSinkTarget() const;
     virtual ColorSpace colorSpace() const override;
-    virtual lrc::api::video::Frame currentFrame() const override;
+    virtual FrameBufferBasePtr currentFrame() const override;
     virtual std::unique_ptr<AVFrame, void (*)(AVFrame*)> currentAVFrame() const override;
     void configureTarget(bool useAVFrame);
 
