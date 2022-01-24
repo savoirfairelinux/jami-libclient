@@ -23,6 +23,7 @@
 #include <QtCore/QSize>
 
 #include "api/newvideo.h"
+#include "api/frame_buffer.h"
 
 // Std
 #include <atomic>
@@ -45,7 +46,8 @@ public:
     QMutex* m_pMutex;
     QString m_Id;
     QSize m_pSize;
-    std::shared_ptr<lrc::api::video::Frame> m_pFrame; // frame given by daemon for direct rendering
+    std::unique_ptr<lrc::api::video::FrameBufferBase>
+        m_pFrame; // frame given by daemon for direct rendering
 private:
     Video::Renderer* q_ptr;
 };
