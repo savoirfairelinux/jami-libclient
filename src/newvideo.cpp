@@ -111,9 +111,9 @@ Renderer::update(const QString& res, const QString& shmPath)
 #ifdef ENABLE_LIBWRAP
     Q_UNUSED(shmPath)
     if (pimpl_->usingAVFrame_) {
-        VideoManager::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avTarget());
+        VideoManager::instance().registerAVSinkTarget(pimpl_->id_, pimpl_->renderer->avSinkTarget());
     } else {
-        VideoManager::instance().registerSinkTarget(pimpl_->id_, pimpl_->renderer->target());
+        VideoManager::instance().registerSinkTarget(pimpl_->id_, pimpl_->renderer->sinkTarget());
     }
 #else // ENABLE_LIBWRAP
     pimpl_->renderer->setShmPath(shmPath);
@@ -153,18 +153,13 @@ Renderer::getId() const
     return pimpl_->id_;
 }
 
-Frame
+FrameBufferPtr
 Renderer::currentFrame() const
 {
     // TODO(sblin) remove Video::Frame when deleting old models.
-    auto frame = pimpl_->renderer->currentFrame();
-    Frame result;
-    result.ptr = frame.ptr;
-    result.size = frame.size;
-    result.storage = frame.storage;
-    result.height = frame.height;
-    result.width = frame.width;
-    return result;
+    assert(pimpl_);
+    assert(pimpl_->renderer);
+    return std::move(pimpl_->renderer->currentFrame());
 }
 
 #if defined(ENABLE_LIBWRAP)
@@ -230,9 +225,9 @@ RendererPimpl::RendererPimpl(Renderer& linked,
 
 #ifdef ENABLE_LIBWRAP
     if (usingAVFrame_) {
-        VideoManager::instance().registerAVSinkTarget(id_, renderer->avTarget());
+        VideoManager::instance().registerAVSinkTarget(id_, renderer->avSinkTarget());
     } else {
-        VideoManager::instance().registerSinkTarget(id_, renderer->target());
+        VideoManager::instance().registerSinkTarget(id_, renderer->sinkTarget());
     }
 #endif
 
