@@ -354,6 +354,7 @@ SET(libringclient_api_LIB_HDRS
   src/api/datatransfermodel.h
   src/api/datatransfer.h
   src/api/newvideo.h
+  src/api/frame_buffer.h
 )
 
 SET(libringclient_WEB_chatview
