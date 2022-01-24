@@ -134,7 +134,8 @@ private:
     /*
      * A local copy of the renderer's current frame.
      */
-    video::Frame frame_;
+    std::shared_ptr<lrc::api::video::FrameBufferBase> frame_;
+    size_t frameCount_ {0};
 
     /*
      * A the frame's storage data used to set the image.
@@ -180,6 +181,7 @@ class RenderManager final : public QObject
 
 public:
     explicit RenderManager(AVModel& avModel);
+    RenderManager() = delete;
     ~RenderManager();
 
     using DrawFrameCallback = std::function<void(QImage*)>;

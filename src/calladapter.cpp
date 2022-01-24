@@ -284,7 +284,8 @@ CallAdapter::onRemoteRecordingChanged(const QString& callId,
 void
 CallAdapter::onCallAddedToConference(const QString& callId, const QString& confId)
 {
-    Q_UNUSED(callId)
+    qDebug() << QString("Add call %1 to conf %2]").arg(callId, confId);
+
     lrcInstance_->renderer()->addDistantRenderer(confId);
     saveConferenceSubcalls();
 }
@@ -447,6 +448,8 @@ CallAdapter::updateCall(const QString& convUid, const QString& accountId, bool f
     if (!call) {
         return;
     }
+
+    qDebug() << QString("Update call %1").arg(call->id);
 
     if (convInfo.uid == lrcInstance_->get_selectedConvUid()) {
         auto& accInfo = lrcInstance_->accountModel().getAccountInfo(accountId_);

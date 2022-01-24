@@ -439,8 +439,8 @@ if(MSVC)
 
     target_link_libraries(${PROJECT_NAME} PRIVATE
                           ${RINGCLIENT_STATIC_LIB}
-                          ${QTWRAPPER_LIB}
                           ${DRING_LIB}
+                          ${QTWRAPPER_LIB}
                           ${GNUTLS_LIB})
 
     # translations

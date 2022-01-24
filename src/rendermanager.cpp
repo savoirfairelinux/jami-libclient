@@ -28,13 +28,15 @@ FrameWrapper::FrameWrapper(AVModel& avModel, const QString& id)
     , id_(id)
     , isRendering_(false)
 {
-    qDebug() << QString("[id %1] Frame wrapped created").arg(id_);
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("[id %1] Frame wrapper created").arg(id_);
 }
 
 FrameWrapper::~FrameWrapper()
 {
     avModel_.stopPreview(id_);
-    qDebug() << QString("[id %1] Frame wrapper destroyed").arg(id_);
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("[id %1] Frame wrapper destroyed").arg(id_);
 }
 
 void
@@ -50,7 +52,8 @@ FrameWrapper::connectStartRendering()
 bool
 FrameWrapper::startRendering()
 {
-    qDebug() << QString("[id %1] Starting renderer").arg(id_);
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("[id %1] Starting renderer").arg(id_);
 
     if (isRendering())
         return true;
@@ -73,10 +76,11 @@ FrameWrapper::startRendering()
     renderConnections_.stopped = QObject::connect(&avModel_,
                                                   &AVModel::rendererStopped,
                                                   this,
-                                                  &FrameWrapper::slotRenderingStopped,
-                                                  Qt::DirectConnection);
+                                                  &FrameWrapper::slotRenderingStopped);
+    // Qt::DirectConnection);
 
-    qDebug() << QString("[id %1] Renderer started").arg(id_);
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("[id %1] Renderer started").arg(id_);
 
     return true;
 }
@@ -85,7 +89,8 @@ void
 FrameWrapper::stopRendering()
 {
     isRendering_ = false;
-    qDebug() << QString("[id " + id_ + "] Renderer stopped");
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("[id " + id_ + "] Renderer stopped");
 }
 
 QImage*
@@ -118,13 +123,17 @@ FrameWrapper::frameMutexUnlock()
 void
 FrameWrapper::slotRenderingStarted(const QString& id)
 {
-    qDebug() << QString("[slot %1] Rendering started").arg(id);
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("[slot %1] Received  slotRenderingStarted cb").arg(id_);
 
     if (id != id_) {
+        qWarning() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+                   << QString("[slot %1] Wrong id %2").arg(id_).arg(id);
         return;
     }
 
     if (!startRendering()) {
+        qWarning() << QString("[slot %1] Failed to start the renderer").arg(id);
         return;
     }
 
@@ -136,6 +145,13 @@ FrameWrapper::slotRenderingStarted(const QString& id)
 void
 FrameWrapper::slotFrameUpdated(const QString& id)
 {
+    if (frameCount_ % 100 == 0) {
+        qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+                 << QString("[slot %1] Update frame %2").arg(id).arg(frameCount_);
+    }
+
+    frameCount_++;
+
     if (id != id_) {
         return;
     }
@@ -147,33 +163,63 @@ FrameWrapper::slotFrameUpdated(const QString& id)
     {
         QMutexLocker lock(&mutex_);
 
-        frame_ = renderer_->currentFrame();
+        // if (frame_) {
+        //     qWarning()
+        //         << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+        //         << QString("[slot %1] Already rendering. Ignore").arg(id);
+        //     return;
+        // }
 
+        frame_ = std::move(renderer_->currentFrame());
+        if (not frame_) {
+            qWarning() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+                       << QString("[slot %1] No frame to render").arg(id);
+            return;
+        }
         unsigned int width = renderer_->size().width();
         unsigned int height = renderer_->size().height();
-        unsigned int size;
+        // if (width != frame_->width or height != frame_->height) {
+        //     qWarning()
+        //         << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+        //         << QString("[slot %1] Size mismatch between renderer (%2 x %3) and frame (%4 x %5)")
+        //                .arg(id)
+        //                .arg(width)
+        //                .arg(height)
+        //                .arg(frame_->width)
+        //                .arg(frame_->height);
+        //     return;
+        // }
+
+        // assert(width == frame_->width);
+        // assert(height == frame_->height);
+
+        auto size = frame_->size();
         QImage::Format imageFormat;
         if (renderer_->useDirectRenderer()) {
-            size = frame_.storage.size();
             imageFormat = QImage::Format_ARGB32_Premultiplied;
         } else {
-            size = frame_.size;
             imageFormat = QImage::Format_ARGB32;
         }
         /*
          * If the frame is empty or not the expected size,
          * do nothing and keep the last rendered QImage.
          */
-        if (size != 0 && size == width * height * 4) {
-            if (renderer_->useDirectRenderer()) {
-                buffer_ = std::move(frame_.storage);
-            } else {
-                // TODO remove this path. storage should work everywhere
-                // https://git.jami.net/savoirfairelinux/jami-libclient/-/issues/492
-                buffer_.resize(size);
-                std::move(frame_.ptr, frame_.ptr + size, buffer_.begin());
+
+        if (renderer_->useDirectRenderer()) {
+            qsizetype stride = size / height;
+            if (size != 0 && size == stride * height) {
+                image_.reset(new QImage((uchar*) frame_->ptr(), width, height, stride, imageFormat));
             }
-            image_.reset(new QImage((uchar*) buffer_.data(), width, height, imageFormat));
+        } else {
+            // TODO remove this path. storage should work everywhere
+            // https://git.jami.net/savoirfairelinux/jami-libclient/-/issues/492
+            qsizetype stride = size / height;
+            if (size != 0 && size == stride * height) {
+                buffer_.resize(size);
+                std::memcpy(&buffer_[0], frame_->ptr(), size);
+                image_.reset(
+                    new QImage((uchar*) buffer_.data(), width, height, stride, imageFormat));
+            }
         }
     }
     Q_EMIT frameUpdated(id);
@@ -182,9 +228,12 @@ FrameWrapper::slotFrameUpdated(const QString& id)
 void
 FrameWrapper::slotRenderingStopped(const QString& id)
 {
-    qDebug() << QString("[slot %1] Rendering stopped").arg(id);
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("[slot %1] received slotRenderingStopped cb").arg(id_);
 
     if (id != id_) {
+        qWarning() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+                   << QString("[slot %1] wrong id: %2").arg(id_).arg(id);
         return;
     }
     isRendering_ = false;
@@ -204,7 +253,8 @@ FrameWrapper::slotRenderingStopped(const QString& id)
 RenderManager::RenderManager(AVModel& avModel)
     : avModel_(avModel)
 {
-    qDebug() << QString("Instance created");
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("RenderManager instance created");
 }
 
 RenderManager::~RenderManager()
@@ -213,13 +263,15 @@ RenderManager::~RenderManager()
         dfw.second.reset();
     }
 
-    qDebug() << QString("Instance destroyed");
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("RenderManager instance destroyed");
 }
 
 void
 RenderManager::stopPreviewing(const QString& id)
 {
-    qDebug() << QString("[id %1] Stopping preview").arg(id);
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("[id %1] Stopping preview").arg(id);
 
     auto dfwIt = distantFrameWrapperMap_.find(id);
     if (dfwIt != distantFrameWrapperMap_.end()) {
@@ -233,7 +285,8 @@ RenderManager::stopPreviewing(const QString& id)
 const QString
 RenderManager::startPreviewing(const QString& id, bool force)
 {
-    qDebug() << QString("[id %1] Starting preview").arg(id);
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("[id %1] Starting preview").arg(id);
 
     auto dfwIt = distantFrameWrapperMap_.find(id);
     if (dfwIt != distantFrameWrapperMap_.end()) {
@@ -254,7 +307,8 @@ RenderManager::startPreviewing(const QString& id, bool force)
 void
 RenderManager::addDistantRenderer(const QString& id)
 {
-    qDebug() << QString("[id %1] Adding distant renderer").arg(id);
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("[id %1] Adding distant renderer").arg(id);
     /*
      * Check if a FrameWrapper with this id exists.
      */
@@ -303,7 +357,8 @@ RenderManager::addDistantRenderer(const QString& id)
 void
 RenderManager::removeDistantRenderer(const QString& id)
 {
-    qDebug() << QString("[id %1] Removing distant renderer").arg(id);
+    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+             << QString("[id %1] Removing distant renderer").arg(id);
 
     auto dfwIt = distantFrameWrapperMap_.find(id);
     if (dfwIt != distantFrameWrapperMap_.end()) {
