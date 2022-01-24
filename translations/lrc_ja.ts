@@ -626,17 +626,17 @@
         <translation>検索中…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1007"/>
+        <location filename="../src/contactmodel.cpp" line="1005"/>
         <source>Invalid ID</source>
         <translation>不正なID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1010"/>
+        <location filename="../src/contactmodel.cpp" line="1008"/>
         <source>Username not found</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1013"/>
+        <location filename="../src/contactmodel.cpp" line="1011"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>見つけられませんでした...</translation>
     </message>

@@ -626,17 +626,17 @@
         <translation>正在搜索…</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1007"/>
+        <location filename="../src/contactmodel.cpp" line="1005"/>
         <source>Invalid ID</source>
         <translation>非法 ID</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1010"/>
+        <location filename="../src/contactmodel.cpp" line="1008"/>
         <source>Username not found</source>
         <translation>未找到用户名</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1013"/>
+        <location filename="../src/contactmodel.cpp" line="1011"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>无法查找...</translation>
     </message>

@@ -626,17 +626,17 @@
         <translation>Etsitään...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1007"/>
+        <location filename="../src/contactmodel.cpp" line="1005"/>
         <source>Invalid ID</source>
         <translation>Virheellinen tunnus</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1010"/>
+        <location filename="../src/contactmodel.cpp" line="1008"/>
         <source>Username not found</source>
         <translation>Käyttäjää ei löydy</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1013"/>
+        <location filename="../src/contactmodel.cpp" line="1011"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Ei voitu etsiä...</translation>
     </message>

@@ -626,17 +626,17 @@
         <translation>Ricerca in corso...</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1007"/>
+        <location filename="../src/contactmodel.cpp" line="1005"/>
         <source>Invalid ID</source>
         <translation>ID non valido</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1010"/>
+        <location filename="../src/contactmodel.cpp" line="1008"/>
         <source>Username not found</source>
         <translation>Nome utente non trovato</translation>
     </message>
     <message>
-        <location filename="../src/contactmodel.cpp" line="1013"/>
+        <location filename="../src/contactmodel.cpp" line="1011"/>
         <source>Couldn&apos;t lookup…</source>
         <translation>Impossibile cercare…</translation>
     </message>
