@@ -30,6 +30,7 @@
 // Qt
 class QMutex;
 struct AVFrame;
+struct FrameBuffer;
 
 namespace Video {
 
@@ -38,23 +39,6 @@ class ShmRendererPrivate;
 class ShmRenderer;
 class DirectRendererPrivate;
 class DirectRenderer;
-
-/**
- * This class is used by Renderer class to expose video data frame
- * that could be owned by instances of this class or shared.
- * If an instance carries data, "storage.size()" is greater than 0
- * and equals to "size", "ptr" is equals to "storage.data()".
- * If shared data is carried, only "ptr" and "size" are set.
- */
-struct Frame
-{
-    uint8_t* ptr {nullptr};
-    std::size_t size {0};
-    std::vector<uint8_t> storage {};
-    // Next variables are currently used with DirectRenderer only
-    unsigned int height {0};
-    unsigned int width {0};
-};
 
 /**
  * This class provide a rendering object to be used by clients
@@ -91,7 +75,7 @@ public:
 
     // Getters
     virtual bool isRendering() const;
-    virtual lrc::api::video::Frame currentFrame() const = 0;
+    virtual std::unique_ptr<lrc::api::video::FrameBufferBase> currentFrame() const = 0;
     virtual QSize size() const;
     virtual QMutex* mutex() const;
     virtual ColorSpace colorSpace() const = 0;

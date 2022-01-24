@@ -22,7 +22,7 @@
 // Base
 #include "video/renderer.h"
 #include "typedefs.h"
-#include "api/newvideo.h"
+#include "api/frame_buffer.h"
 
 // Qt
 class QMutex;
@@ -33,6 +33,7 @@ struct AVFrame;
 
 namespace Video {
 class ShmRendererPrivate;
+/* FrameBuffer is a generic video frame container */
 
 /// Manage shared memory and convert it to QByteArray
 class LIB_EXPORT ShmRenderer final : public Renderer
@@ -53,7 +54,7 @@ public:
 
     // Getters
     int fps() const;
-    virtual lrc::api::video::Frame currentFrame() const override;
+    virtual std::unique_ptr<lrc::api::video::FrameBufferBase> currentFrame() const override;
     virtual ColorSpace colorSpace() const override;
 
     // Setters
