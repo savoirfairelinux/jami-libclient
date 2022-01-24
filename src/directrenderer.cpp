@@ -34,70 +34,23 @@
 
 #include "private/videorenderer_p.h"
 #include "videomanager_interface.h"
+#include "video_frame_buffer.h"
 
-extern "C" {
-struct AVFrame;
-auto AVFrameDeleter = [](AVFrame* p) {
-};
-}
-
-namespace Video {
-class DirectRendererPrivate : public QObject
-{
-    Q_OBJECT
-public:
-    DirectRendererPrivate(Video::DirectRenderer* parent, bool useAVFrame);
-    DRing::SinkTarget::FrameBufferPtr requestFrameBuffer(std::size_t bytes);
-    void onNewFrame(DRing::SinkTarget::FrameBufferPtr buf);
-    void onNewAVFrame(std::unique_ptr<DRing::VideoFrame> frame);
-    void configureTarget(bool useAVFrame);
-
-    DRing::SinkTarget target;
-    DRing::AVSinkTarget av_target;
-    mutable QMutex directmutex;
-    mutable DRing::SinkTarget::FrameBufferPtr daemonFramePtr_;
-    std::unique_ptr<AVFrame, void (*)(AVFrame*)> avframe;
-    size_t frameCounter_ {0};
-
-private:
-    Video::DirectRenderer* q_ptr;
-};
-
-} // namespace Video
-
-Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* parent, bool useAVFrame)
-    : QObject(parent)
-    , q_ptr(parent)
-    , avframe {nullptr, AVFrameDeleter}
-{
-    qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
-             << QString("Direct renderer private created");
-
-    using namespace std::placeholders;
-    if (useAVFrame) {
-        av_target.push = std::bind(&Video::DirectRendererPrivate::onNewAVFrame, this, _1);
-        return;
-    }
-    target.pull = std::bind(&Video::DirectRendererPrivate::requestFrameBuffer, this, _1);
-    target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
-}
-
-/// Constructor
-Video::DirectRenderer::DirectRenderer(const QString& id, const QSize& res, bool useAVFrame)
+Video::DirectRenderer::DirectRenderer(const QString& id, const QSize& res)
     : Renderer(id, res)
-    , d_ptr(std::make_unique<DirectRendererPrivate>(this, useAVFrame))
 {
     setObjectName("Video::DirectRenderer:" + id);
     qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16) << QString("Direct renderer created");
+    using namespace std::placeholders;
+    sinkTarget_.pullFrame = nullptr;
+    sinkTarget_.pushFrame = std::bind(&Video::DirectRenderer::pushFrameBuffer, this, _1);
+    sinkTarget_.bufferType = VideoBufferType::AV_FRAME;
 }
 
-/// Destructor
 Video::DirectRenderer::~DirectRenderer()
 {
     QMutexLocker lk(mutex());
     stopRendering();
-
-    d_ptr.reset();
 
     qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
              << QString("Direct renderer destroyed");
@@ -121,110 +74,73 @@ Video::DirectRenderer::stopRendering()
     Video::Renderer::d_ptr->m_isRendering = false;
     emit stopped();
 }
-void
-Video::DirectRenderer::configureTarget(bool useAVFrame)
-{
-    d_ptr->configureTarget(useAVFrame);
-}
 
-DRing::SinkTarget::FrameBufferPtr
-Video::DirectRendererPrivate::requestFrameBuffer(std::size_t bytes)
+VideoFrameBufferIfPtr Video::DirectRenderer::pullFrameBuffer(std::size_t /*bytes*/)
 {
-    QMutexLocker lk(q_ptr->mutex());
-    if (not daemonFramePtr_)
-        daemonFramePtr_.reset(new DRing::FrameBuffer);
-    daemonFramePtr_->storage.resize(bytes);
-    daemonFramePtr_->ptr = daemonFramePtr_->storage.data();
-    daemonFramePtr_->ptrSize = bytes;
-    return std::move(daemonFramePtr_);
+    qCritical() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
+                << QString("Unexpected call to an unimplemented method");
+    return {};
 }
 
 void
-Video::DirectRendererPrivate::configureTarget(bool useAVFrame)
+Video::DirectRenderer::configureTarget()
 {
     using namespace std::placeholders;
-    if (useAVFrame) {
-        target.pull = nullptr;
-        target.push = nullptr;
-        av_target.push = std::bind(&Video::DirectRendererPrivate::onNewAVFrame, this, _1);
-        return;
-    }
-    target.pull = std::bind(&Video::DirectRendererPrivate::requestFrameBuffer, this, _1);
-    target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
-    av_target.push = nullptr;
+
+    sinkTarget_.pullFrame = nullptr;
+    sinkTarget_.pushFrame = std::bind(&Video::DirectRenderer::pushFrameBuffer, this, _1);
+    sinkTarget_.bufferType = VideoBufferType::AV_FRAME;
 }
 
 void
-Video::DirectRendererPrivate::onNewFrame(DRing::SinkTarget::FrameBufferPtr buf)
+Video::DirectRenderer::pushFrameBuffer(VideoFrameBufferIfPtr buf)
 {
-    if (not q_ptr->isRendering())
+    if (not isRendering())
         return;
 
     {
-        QMutexLocker lk(q_ptr->mutex());
+        QMutexLocker lk(mutex());
         daemonFramePtr_ = std::move(buf);
     }
 
-    emit q_ptr->frameUpdated();
-}
-
-void
-Video::DirectRendererPrivate::onNewAVFrame(std::unique_ptr<DRing::VideoFrame> frame)
-{
-    if (not q_ptr->isRendering())
-        return;
-    {
-        QMutexLocker lk(q_ptr->mutex());
-        avframe = std::move(frame->getFrame());
-    }
-    emit q_ptr->frameUpdated();
+    emit frameUpdated();
 }
 
 std::unique_ptr<AVFrame, void (*)(AVFrame*)>
 Video::DirectRenderer::currentAVFrame() const
 {
-    if (not isRendering())
-        return {nullptr, AVFrameDeleter};
+    if (isRendering())
+        return {nullptr, nullptr};
     QMutexLocker lock(mutex());
-    return std::move(d_ptr->avframe);
+    // We only give a copy of the raw, we still own the buffer.
+    // TODO. Should we give the ownership
+    std::unique_ptr<AVFrame, void (*)(AVFrame*)> avframe = {daemonFramePtr_->avframe(), nullptr};
+    return avframe;
 }
 
-lrc::api::video::Frame
+VideoFrameBufferIfPtr
 Video::DirectRenderer::currentFrame() const
 {
-    if (d_ptr->frameCounter_ % 100 == 0) {
+    if (frameCounter_ % 100 == 0) {
         qDebug() << QString("(0x%1) ").arg((size_t)(this), 0, 16)
-                 << QString("currentFrame %1").arg(d_ptr->frameCounter_);
+                 << QString("currentFrame %1").arg(frameCounter_);
     }
-    d_ptr->frameCounter_++;
+    frameCounter_++;
 
     if (not isRendering())
         return {};
 
     QMutexLocker lock(mutex());
-    if (not d_ptr->daemonFramePtr_)
+
+    if (not daemonFramePtr_)
         return {};
-
-    lrc::api::video::Frame frame;
-    frame.storage = std::move(d_ptr->daemonFramePtr_->storage);
-    frame.ptr = frame.storage.data();
-    frame.size = frame.storage.size();
-    frame.height = d_ptr->daemonFramePtr_->height;
-    frame.width = d_ptr->daemonFramePtr_->width;
-
-    return std::move(frame);
+    return std::move(daemonFramePtr_);
 }
 
 const DRing::SinkTarget&
-Video::DirectRenderer::target() const
+Video::DirectRenderer::sinkTarget() const
 {
-    return d_ptr->target;
-}
-
-const DRing::AVSinkTarget&
-Video::DirectRenderer::avTarget() const
-{
-    return d_ptr->av_target;
+    return sinkTarget_;
 }
 
 Video::Renderer::ColorSpace

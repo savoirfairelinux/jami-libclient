@@ -41,6 +41,7 @@
 #include <chrono>
 
 #include "private/videorenderer_p.h"
+#include "dbus/videomanager.h"
 
 // Uncomment following line to output in console the FPS value
 //#define DEBUG_FPS
@@ -70,6 +71,14 @@ struct SHMHeader
 };
 
 namespace Video {
+
+static VideoFrameBufferIfPtr
+createVideoFrameBufferInstance(std::size_t size, uint8_t* buf)
+{
+    if (buf != nullptr)
+        return std::move(std::make_unique<lrc::api::video::GenericVideoFrameBuffer>(buf, size));
+    return std::move(std::make_unique<lrc::api::video::GenericVideoFrameBuffer>(size));
+}
 
 class ShmRendererPrivate final : public QObject
 {
@@ -174,10 +183,10 @@ ShmRendererPrivate::getNewFrame(bool wait)
 
     auto& frame_ptr = q_ptr->Video::Renderer::d_ptr->m_pFrame;
     if (not frame_ptr)
-        frame_ptr.reset(new lrc::api::video::Frame);
-    frame_ptr->storage.clear();
-    frame_ptr->ptr = m_pShmArea->data + m_pShmArea->readOffset;
-    frame_ptr->size = m_pShmArea->frameSize;
+        frame_ptr = std::move(
+            createVideoFrameBufferInstance(m_pShmArea->frameSize,
+                                           m_pShmArea->data + m_pShmArea->readOffset));
+
     m_FrameGen = m_pShmArea->frameGen;
 
     shmUnlock();
@@ -331,6 +340,7 @@ ShmRenderer::startRendering()
 
     if (!d_ptr->m_pTimer) {
         d_ptr->m_pTimer = new QTimer(this);
+        // TODO. Where did the '33' come from?
         d_ptr->m_pTimer->setInterval(33);
         connect(d_ptr->m_pTimer, &QTimer::timeout, [this]() { emit this->frameUpdated(); });
     }
@@ -359,18 +369,15 @@ ShmRenderer::fps() const
 }
 
 /// Get frame data pointer from shared memory
-lrc::api::video::Frame
+VideoFrameBufferIfPtr
 ShmRenderer::currentFrame() const
 {
     if (not isRendering())
         return {};
 
     QMutexLocker lk {mutex()};
-    if (d_ptr->getNewFrame(false)) {
-        if (auto frame_ptr = Video::Renderer::d_ptr->m_pFrame)
-            return std::move(*frame_ptr);
-    }
-    return {};
+    d_ptr->getNewFrame(false);
+    return std::move(Video::Renderer::d_ptr->m_pFrame);
 }
 
 Video::Renderer::ColorSpace

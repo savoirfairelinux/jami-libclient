@@ -68,7 +68,6 @@ public:
 
     std::mutex renderers_mtx_;
     std::map<QString, std::unique_ptr<video::Renderer>> renderers_;
-    bool useAVFrame_ = false;
     QString currentVideoCaptureDevice_ {};
 
 #ifndef ENABLE_LIBWRAP
@@ -518,16 +517,6 @@ AVModel::setRecordQuality(const int& rec) const
     ConfigurationManager::instance().setRecordQuality(rec);
 }
 
-void
-AVModel::useAVFrame(bool useAVFrame)
-{
-    pimpl_->useAVFrame_ = useAVFrame;
-    std::lock_guard<std::mutex> lk(pimpl_->renderers_mtx_);
-    for (auto it = pimpl_->renderers_.cbegin(); it != pimpl_->renderers_.cend(); ++it) {
-        it->second->useAVFrame(pimpl_->useAVFrame_);
-    }
-}
-
 QString
 AVModel::startPreview(const QString& resource)
 {
@@ -857,14 +846,12 @@ AVModelPimpl::addRenderer(const QString& id, const video::Settings& settings, co
         std::lock_guard<std::mutex> lk(renderers_mtx_);
         auto search = renderers_.find(id);
         if (search == renderers_.end()) {
-            renderers_
-                .emplace(id, std::make_unique<video::Renderer>(id, settings, shmPath, useAVFrame_));
+            renderers_.emplace(id, std::make_unique<video::Renderer>(id, settings, shmPath));
             renderers_.at(id)->startRendering();
         } else {
             if (search->second) {
                 search->second->update(settings.size, shmPath);
             } else {
-                search->second.reset(new video::Renderer(id, settings, shmPath, useAVFrame_));
                 renderers_.at(id)->startRendering();
             }
         }

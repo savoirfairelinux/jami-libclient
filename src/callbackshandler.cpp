@@ -40,7 +40,7 @@
 #ifdef ENABLE_LIBWRAP
 // For the debugMessageReceived connection that queues const std::string refs
 // when not using dbus
-Q_DECLARE_METATYPE(std::string);
+Q_DECLARE_METATYPE(std::string)
 #endif
 
 namespace lrc {

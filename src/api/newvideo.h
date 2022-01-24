@@ -33,6 +33,9 @@
 #include <QObject>
 #include <QThread>
 
+// Hacky. Fix me.
+#include "api/video_frame_buffer.h"
+
 struct AVFrame;
 
 namespace lrc {
@@ -61,15 +64,6 @@ using Capabilities = QMap<Channel, ResRateList>;
  * and equals to "size", "ptr" is equals to "storage.data()".
  * If shared data is carried, only "ptr" and "size" are set.
  */
-struct Frame
-{
-    uint8_t* ptr {nullptr};
-    std::size_t size {0};
-    std::vector<uint8_t> storage {};
-    // Next variables are currently used with DirectRenderer only
-    unsigned int height {0};
-    unsigned int width {0};
-};
 
 enum class DeviceType { CAMERA, DISPLAY, FILE, INVALID };
 Q_ENUM_NS(DeviceType)
@@ -99,10 +93,7 @@ class LIB_EXPORT Renderer : public QObject
 {
     Q_OBJECT
 public:
-    Renderer(const QString& id,
-             Settings videoSettings,
-             const QString& shmPath = "",
-             const bool useAVFrame = false);
+    Renderer(const QString& id, Settings videoSettings, const QString& shmPath = "");
     ~Renderer();
 
     /**
@@ -124,7 +115,7 @@ public:
     /**
      * @return current rendered frame
      */
-    Frame currentFrame() const;
+    VideoFrameBufferIfPtr currentFrame() const;
 
 #if defined(ENABLE_LIBWRAP)
     /**
@@ -137,12 +128,6 @@ public:
      * @return current size
      */
     QSize size() const; // TODO convert into std format!
-
-    // Utils
-    /**
-     * set to true to receive AVFrames from render
-     */
-    void useAVFrame(bool useAVFrame);
 
     bool useDirectRenderer() const;
 
