@@ -1,0 +1,7 @@
+Code-Review+2: Maxim Cournoyer <maxim.cournoyer@savoirfairelinux.com>
+Verified+1: Jenkins CI <jenkins@ring-packaging.cx>
+Submitted-by: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+Submitted-at: Thu, 27 Jan 2022 14:36:05 -0500
+Reviewed-on: https://review.jami.net/c/jami-libclient/+/20222
+Project: jami-libclient
+Branch: refs/heads/master
