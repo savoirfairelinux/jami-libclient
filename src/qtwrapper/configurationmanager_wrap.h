@@ -526,8 +526,7 @@ public Q_SLOTS: // METHODS
 
     QStringList getSupportedAudioManagers()
     {
-        QStringList temp;
-        return temp;
+        return convertStringList(DRing::getSupportedAudioManagers());
     }
 
     QStringList getSupportedTlsMethod()
