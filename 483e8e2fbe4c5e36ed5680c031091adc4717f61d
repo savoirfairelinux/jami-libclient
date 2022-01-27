@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7103200b_2e3d8fb1",
+        "filename": "src/directrenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2022-01-27T20:52:02Z",
+      "side": 1,
+      "message": "qDebug already got overloads for pointer\n\neg qDebug() \u003c\u003c \"@@@\" \u003c\u003c this; will print something like \"@@@ MainApplication(0x7ffe27088260)\"\n\nalso quintptr/QT_POINTER_SIZE exists",
+      "range": {
+        "startLine": 73,
+        "startChar": 16,
+        "endLine": 73,
+        "endChar": 61
+      },
+      "revId": "483e8e2fbe4c5e36ed5680c031091adc4717f61d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
