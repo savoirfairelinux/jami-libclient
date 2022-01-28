@@ -296,7 +296,8 @@ AVModel::setDeviceSettings(video::Settings& settings)
     // doing this during a call will cause re-invite, this is unwanted
     std::unique_lock<std::mutex> lk(pimpl_->renderers_mtx_);
     auto it = pimpl_->renderers_.find(video::PREVIEW_RENDERER_ID);
-    if (it->second && it->second->isRendering() && pimpl_->renderers_.size() == 1) {
+    if (it != pimpl_->renderers_.end() && it->second && it->second->isRendering()
+        && pimpl_->renderers_.size() == 1) {
         lk.unlock();
         stopPreview(video::PREVIEW_RENDERER_ID);
         startPreview(video::PREVIEW_RENDERER_ID);
@@ -877,9 +878,9 @@ AVModelPimpl::removeRenderer(const QString& id)
         return;
     }
     disconnect(search->second.get(),
-                &video::Renderer::frameUpdated,
-                this,
-                &AVModelPimpl::slotFrameUpdated);
+               &video::Renderer::frameUpdated,
+               this,
+               &AVModelPimpl::slotFrameUpdated);
     connect(
         search->second.get(),
         &video::Renderer::stopped,
