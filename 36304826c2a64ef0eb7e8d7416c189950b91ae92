@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72681bfb_647f9c5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 938
+      },
+      "writtenOn": "2022-01-28T00:55:15Z",
+      "side": 1,
+      "message": "Could `jdAppdataEdit` https://flathub.org/apps/details/com.gitlab.JakobDev.jdAppdataEdit be used to create the Jami appdata files?\n\nThere seems to be many more fields that can be added.\n\nWhat do you think?\n\nThe https://git.jami.net/savoirfairelinux/jami-libclient/-/issues/795 link give us a 404 error.\n\nThank you",
+      "revId": "36304826c2a64ef0eb7e8d7416c189950b91ae92",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
