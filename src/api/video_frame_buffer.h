@@ -18,8 +18,10 @@
 
 // TODO. A big hack, fix me.
 // This is a duplicate of what declared in daemon
+#include <cstddef>
+#include <assert.h>
 
-#if ENABLE_LIBWRAP
+#ifdef ENABLE_LIBWRAP
 
 #include "videomanager_interface.h"
 
@@ -35,16 +37,14 @@ namespace lrc {
 namespace api {
 namespace video {
 
-class VideoFrameBufferIf
+class LIB_EXPORT VideoFrameBufferIf
 {
 public:
-    VideoFrameBufferIf() = delete;
+    VideoFrameBufferIf() = default;
     VideoFrameBufferIf(const VideoFrameBufferIf&) = delete;
     VideoFrameBufferIf(const VideoFrameBufferIf&&) = delete;
 
-    VideoFrameBufferIf(std::size_t size);
-    VideoFrameBufferIf(uint8_t* buf, size_t size);
-    virtual ~VideoFrameBufferIf();
+    virtual ~VideoFrameBufferIf() {};
 
     virtual void allocateMemory(int format, int width, int height, int align) = 0;
     virtual std::size_t size() const = 0;
@@ -59,9 +59,59 @@ public:
     virtual int format() const = 0;
 };
 
+class LIB_EXPORT GenericVideoFrameBuffer : public VideoFrameBufferIf
+{
+public:
+    GenericVideoFrameBuffer() {};
+    GenericVideoFrameBuffer(const GenericVideoFrameBuffer&) = delete;
+    GenericVideoFrameBuffer(const GenericVideoFrameBuffer&&) = delete;
+    GenericVideoFrameBuffer(std::size_t size)
+        : bufferSize_(size) {};
+
+    GenericVideoFrameBuffer(uint8_t* buf, std::size_t size)
+        : videoBuffer_(buf)
+        , bufferSize_(size) {};
+
+    ~GenericVideoFrameBuffer() {};
+
+    void allocateMemory(int format, int width, int height, int align) override {};
+    std::size_t size() const override { return bufferSize_; };
+    int width() const override { return width_; };
+    int height() const override { return height_; };
+    int planes() const override { return 1; };
+    int stride(int plane = 0) const override
+    {
+        assert(plane == 0);
+        assert(height_ > 0);
+        return bufferSize_ / height_;
+    };
+    uint8_t* ptr(int plane = 0) override
+    {
+        assert(plane == 0);
+        return videoBuffer_;
+    };
+    int format() const override { return format_; };
+    AVFrame* avframe() override
+    {
+        assert(false);
+        return {};
+    };
+
+private:
+    int format_ {0};
+    int width_ {0};
+    int height_ {0};
+
+    // True if the instance own the inner buffer.
+    bool owner_ {false};
+    uint8_t* videoBuffer_ {nullptr};
+    std::size_t bufferSize_ {0};
+};
+
 } // namespace video
 } // namespace api
 } // namespace lrc
 
 using VideoFrameBufferIfPtr = std::unique_ptr<lrc::api::video::VideoFrameBufferIf>;
+
 #endif

@@ -22,7 +22,7 @@
 // Base
 #include "video/renderer.h"
 #include "typedefs.h"
-#include "api/frame_buffer.h"
+#include "api/video_frame_buffer.h"
 
 // Qt
 class QMutex;

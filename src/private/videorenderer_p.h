@@ -23,7 +23,7 @@
 #include <QtCore/QSize>
 
 #include "api/newvideo.h"
-#include "api/frame_buffer.h"
+#include "api/video_frame_buffer.h"
 
 // Std
 #include <atomic>
