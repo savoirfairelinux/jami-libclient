@@ -260,10 +260,6 @@ public:
      */
     const QVariantMap getListWindows() const;
     /**
-     * set to true to receive AVFrames from render
-     */
-    void useAVFrame(bool useAVFrame);
-    /**
      * set current using device
      * @param device name
      */
