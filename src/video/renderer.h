@@ -36,7 +36,6 @@ namespace Video {
 class RendererPrivate;
 class ShmRendererPrivate;
 class ShmRenderer;
-class DirectRendererPrivate;
 class DirectRenderer;
 
 /**
@@ -55,7 +54,7 @@ class LIB_EXPORT Renderer : public QObject
 
     friend class Video::ShmRendererPrivate;
     friend class Video::ShmRenderer;
-    friend class Video::DirectRendererPrivate;
+
     friend class Video::DirectRenderer;
 
 public:
@@ -79,7 +78,11 @@ public:
     virtual QMutex* mutex() const;
     virtual ColorSpace colorSpace() const = 0;
 #if defined(ENABLE_LIBWRAP)
-    virtual std::unique_ptr<AVFrame, void (*)(AVFrame*)> currentAVFrame() const = 0;
+    // TODO. Kept for backward compatibility. Should use more
+    // versatil VideoFrameBufferIfPtr abstraction.
+    [[deprecated(
+        "Must use currentFrame() instead")]] virtual std::unique_ptr<AVFrame, void (*)(AVFrame*)>
+    currentAVFrame() const = 0;
 #endif
     void setSize(const QSize& size) const;
 
