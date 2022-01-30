@@ -31,7 +31,6 @@ class QTimer;
 class QThread;
 
 namespace Video {
-class DirectRendererPrivate;
 
 /// Manage shared memory and convert it to QByteArray
 class LIB_EXPORT DirectRenderer final : public Renderer
@@ -43,23 +42,28 @@ class LIB_EXPORT DirectRenderer final : public Renderer
 
 public:
     // Constructor
-    DirectRenderer(const QString& id, const QSize& res, bool useAVFrame);
+    DirectRenderer(const QString& id, const QSize& res);
     virtual ~DirectRenderer();
 
     // Getter
     const DRing::SinkTarget& sinkTarget() const;
-    const DRing::AVSinkTarget& avSinkTarget() const;
     virtual ColorSpace colorSpace() const override;
     virtual VideoFrameBufferIfPtr currentFrame() const override;
     virtual std::unique_ptr<AVFrame, void (*)(AVFrame*)> currentAVFrame() const override;
-    void configureTarget(bool useAVFrame);
+    void configureTarget();
+
+    // SinkTarget callbacks
+    VideoFrameBufferIfPtr pullFrameBuffer(std::size_t bytes);
+    void pushFrameBuffer(VideoFrameBufferIfPtr buf);
+
+private:
+    DRing::SinkTarget sinkTarget_;
+    mutable VideoFrameBufferIfPtr daemonFramePtr_;
+    mutable size_t frameCounter_ {0};
 
 public Q_SLOTS:
     virtual void startRendering() override;
     virtual void stopRendering() override;
-
-private:
-    std::unique_ptr<DirectRendererPrivate> d_ptr;
 };
 
 } // namespace Video

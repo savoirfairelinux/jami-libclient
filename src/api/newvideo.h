@@ -93,10 +93,7 @@ class LIB_EXPORT Renderer : public QObject
 {
     Q_OBJECT
 public:
-    Renderer(const QString& id,
-             Settings videoSettings,
-             const QString& shmPath = "",
-             const bool useAVFrame = false);
+    Renderer(const QString& id, Settings videoSettings, const QString& shmPath = "");
     ~Renderer();
 
     /**
@@ -131,12 +128,6 @@ public:
      * @return current size
      */
     QSize size() const; // TODO convert into std format!
-
-    // Utils
-    /**
-     * set to true to receive AVFrames from render
-     */
-    void useAVFrame(bool useAVFrame);
 
     bool useDirectRenderer() const;
 
