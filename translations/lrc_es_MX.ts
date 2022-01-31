@@ -93,24 +93,24 @@
         <location filename="../src/authority/storagehelper.cpp" line="177"/>
         <location filename="../src/authority/storagehelper.cpp" line="958"/>
         <source>Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Lllamando a </translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="173"/>
         <location filename="../src/authority/storagehelper.cpp" line="183"/>
         <source>Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Llamada entrante</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="179"/>
         <location filename="../src/authority/storagehelper.cpp" line="956"/>
         <source>Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Lllamada saliente perdida</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="185"/>
         <source>Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Llamada entrante perdida</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="220"/>
@@ -120,8 +120,8 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="346"/>
-        <location filename="../src/avmodel.cpp" line="365"/>
+        <location filename="../src/avmodel.cpp" line="347"/>
+        <location filename="../src/avmodel.cpp" line="366"/>
         <source>default</source>
         <translation type="unfinished"/>
     </message>
@@ -435,7 +435,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Envíar</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>

@@ -120,8 +120,8 @@
         <translation>招待を受け入れました</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="346"/>
-        <location filename="../src/avmodel.cpp" line="365"/>
+        <location filename="../src/avmodel.cpp" line="347"/>
+        <location filename="../src/avmodel.cpp" line="366"/>
         <source>default</source>
         <translation>既定</translation>
     </message>

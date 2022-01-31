@@ -120,8 +120,8 @@
         <translation>已接受邀请</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="346"/>
-        <location filename="../src/avmodel.cpp" line="365"/>
+        <location filename="../src/avmodel.cpp" line="347"/>
+        <location filename="../src/avmodel.cpp" line="366"/>
         <source>default</source>
         <translation>默认</translation>
     </message>

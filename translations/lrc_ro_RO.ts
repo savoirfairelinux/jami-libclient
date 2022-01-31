@@ -120,8 +120,8 @@
         <translation>Invitație acceptată</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="346"/>
-        <location filename="../src/avmodel.cpp" line="365"/>
+        <location filename="../src/avmodel.cpp" line="347"/>
+        <location filename="../src/avmodel.cpp" line="366"/>
         <source>default</source>
         <translation>prestabilit</translation>
     </message>
