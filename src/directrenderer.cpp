@@ -36,7 +36,7 @@
 #include "videomanager_interface.h"
 
 extern "C" {
-struct AVFrame;
+#include "libavutil/frame.h"
 auto AVFrameDeleter = [](AVFrame* p) {
 };
 }
@@ -117,11 +117,12 @@ DRing::SinkTarget::FrameBufferPtr
 Video::DirectRendererPrivate::requestFrameBuffer(std::size_t bytes)
 {
     QMutexLocker lk(q_ptr->mutex());
-    if (not daemonFramePtr_)
+    if (not daemonFramePtr_) {
         daemonFramePtr_.reset(new DRing::FrameBuffer);
-    daemonFramePtr_->storage.resize(bytes);
-    daemonFramePtr_->ptr = daemonFramePtr_->storage.data();
-    daemonFramePtr_->ptrSize = bytes;
+        // We only allocate the avframe container. The
+        // inner buffer will be allocated by the daemon.
+        daemonFramePtr_->avframe.reset(av_frame_alloc());
+    }
     return std::move(daemonFramePtr_);
 }
 
@@ -178,21 +179,18 @@ Video::DirectRenderer::currentAVFrame() const
 lrc::api::video::Frame
 Video::DirectRenderer::currentFrame() const
 {
+    lrc::api::video::Frame frame;
+
     if (not isRendering())
-        return {};
+        return frame;
 
     QMutexLocker lock(mutex());
-    if (not d_ptr->daemonFramePtr_)
-        return {};
+    if (not d_ptr->daemonFramePtr_ or not d_ptr->daemonFramePtr_->avframe)
+        return frame;
 
-    lrc::api::video::Frame frame;
-    frame.storage = std::move(d_ptr->daemonFramePtr_->storage);
-    frame.ptr = frame.storage.data();
-    frame.size = frame.storage.size();
-    frame.height = d_ptr->daemonFramePtr_->height;
-    frame.width = d_ptr->daemonFramePtr_->width;
+    frame.avframe = std::move(d_ptr->daemonFramePtr_->avframe);
 
-    return std::move(frame);
+    return frame;
 }
 
 const DRing::SinkTarget&
