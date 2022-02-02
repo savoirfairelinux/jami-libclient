@@ -42,6 +42,8 @@
 
 #include "private/videorenderer_p.h"
 
+#include "libavutil/frame.h"
+
 // Uncomment following line to output in console the FPS value
 //#define DEBUG_FPS
 
@@ -175,7 +177,6 @@ ShmRendererPrivate::getNewFrame(bool wait)
     auto& frame_ptr = q_ptr->Video::Renderer::d_ptr->m_pFrame;
     if (not frame_ptr)
         frame_ptr.reset(new lrc::api::video::Frame);
-    frame_ptr->storage.clear();
     frame_ptr->ptr = m_pShmArea->data + m_pShmArea->readOffset;
     frame_ptr->size = m_pShmArea->frameSize;
     m_FrameGen = m_pShmArea->frameGen;

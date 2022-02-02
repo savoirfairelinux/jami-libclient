@@ -42,6 +42,10 @@ class RendererPimpl;
 namespace api {
 
 namespace video {
+// Enclosed in lrc namespace to avoid possible collision
+// with other definitions if any.
+void AVFrameRelease(AVFrame* p);
+
 Q_NAMESPACE
 Q_CLASSINFO("RegisterEnumClassesUnscoped", "false")
 
@@ -57,18 +61,18 @@ using Capabilities = QMap<Channel, ResRateList>;
 /**
  * This class is used by Renderer class to expose video data frame
  * that could be owned by instances of this class or shared.
- * If an instance carries data, "storage.size()" is greater than 0
- * and equals to "size", "ptr" is equals to "storage.data()".
- * If shared data is carried, only "ptr" and "size" are set.
+ * Currently, DirectRenderer implementation (libwrap) uses avframe
+ * containers and ShmRenderer implementations uses raw buffers.
  */
+
 struct Frame
 {
+    // Used by SHM renderer
     uint8_t* ptr {nullptr};
-    std::size_t size {0};
-    std::vector<uint8_t> storage {};
-    // Next variables are currently used with DirectRenderer only
-    unsigned int height {0};
-    unsigned int width {0};
+    size_t size {0};
+
+    // Used by direct renderer
+    std::unique_ptr<AVFrame, void (*)(AVFrame*)> avframe {nullptr, AVFrameRelease};
 };
 
 enum class DeviceType { CAMERA, DISPLAY, FILE, INVALID };
