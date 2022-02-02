@@ -50,6 +50,7 @@ public:
     const DRing::SinkTarget& target() const;
     const DRing::AVSinkTarget& avTarget() const;
     virtual ColorSpace colorSpace() const override;
+    // Must not be called. Use currentAVFrame() instead.
     virtual lrc::api::video::Frame currentFrame() const override;
     virtual std::unique_ptr<AVFrame, void (*)(AVFrame*)> currentAVFrame() const override;
     void configureTarget(bool useAVFrame);
