@@ -31,6 +31,13 @@
 
 namespace lrc {
 
+namespace api::video {
+void
+AVFrameRelease(AVFrame* frame)
+{
+    av_frame_free(&frame);
+}
+} // namespace api::video
 using namespace api::video;
 
 class RendererPimpl : public QObject
@@ -155,15 +162,7 @@ Renderer::getId() const
 Frame
 Renderer::currentFrame() const
 {
-    // TODO(sblin) remove Video::Frame when deleting old models.
-    auto frame = pimpl_->renderer->currentFrame();
-    Frame result;
-    result.ptr = frame.ptr;
-    result.size = frame.size;
-    result.storage = frame.storage;
-    result.height = frame.height;
-    result.width = frame.width;
-    return result;
+    return std::move(pimpl_->renderer->currentFrame());
 }
 
 #if defined(ENABLE_LIBWRAP)
