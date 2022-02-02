@@ -63,12 +63,15 @@ using Capabilities = QMap<Channel, ResRateList>;
  */
 struct Frame
 {
+    Frame()
+        : avframe({nullptr, nullptr}) {};
+
+    // Used for SHM render
     uint8_t* ptr {nullptr};
-    std::size_t size {0};
-    std::vector<uint8_t> storage {};
-    // Next variables are currently used with DirectRenderer only
-    unsigned int height {0};
-    unsigned int width {0};
+    size_t size {0};
+
+    // Used for direct renderer
+    std::unique_ptr<AVFrame, void (*)(AVFrame*)> avframe;
 };
 
 enum class DeviceType { CAMERA, DISPLAY, FILE, INVALID };

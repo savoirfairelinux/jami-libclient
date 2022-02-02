@@ -54,6 +54,7 @@ struct Frame
     // Next variables are currently used with DirectRenderer only
     unsigned int height {0};
     unsigned int width {0};
+    std::unique_ptr<AVFrame, void (*)(AVFrame*)> avframe;
 };
 
 /**
