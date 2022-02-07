@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa42c138_4282dd9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-02-07T14:24:45Z",
+      "side": 1,
+      "message": "Need to fix the compilation on Windows and macosx (missing ffmpeg/libavutil path)",
+      "revId": "edd50c11e23a861d3eb8b5b61a8f476644c921a6",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
