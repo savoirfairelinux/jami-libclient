@@ -728,12 +728,7 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
 QString
 AVModelPimpl::getRecordingPath() const
 {
-#if defined(_WIN32) || defined(__APPLE__)
-    const QDir dir = linked_.getRecordPath() + "/" + recorderSavesSubdir;
-#else
     const QDir dir = authority::storage::getPath() + "/" + recorderSavesSubdir;
-#endif
-
     dir.mkpath(".");
 
     std::chrono::time_point<std::chrono::system_clock> time_now = std::chrono::system_clock::now();
