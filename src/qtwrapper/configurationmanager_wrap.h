@@ -670,7 +670,10 @@ public Q_SLOTS: // METHODS
         DRing::setAudioMeterState(id.toStdString(), state);
     }
 
-    void setRecordPath(const QString& rec) { DRing::setRecordPath(rec.toStdString()); }
+    void setRecordPath(const QString& rec) { 
+        qDebug() << "lrc conf setRecordPath" << rec;
+        DRing::setRecordPath(rec.toStdString()); 
+        }
 
     void setRecordPreview(const bool& rec) { DRing::setRecordPreview(rec); }
 
