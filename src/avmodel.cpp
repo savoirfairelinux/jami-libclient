@@ -108,13 +108,13 @@ public Q_SLOTS:
      * @param width
      * @param height
      */
-    void startedDecoding(const QString& id, const QString& shmPath, int width, int height);
+    void onDecodingStarted(const QString& id, const QString& shmPath, int width, int height);
     /**
      * Listen from CallbacksHandler when a renderer stops
      * @param id
      * @param shmPath
      */
-    void stoppedDecoding(const QString& id, const QString& shmPath);
+    void onDecodingStopped(const QString& id, const QString& shmPath);
     /**
      * Detect when the current frame is updated
      * @param id
@@ -692,13 +692,13 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
 
     // render connections
     connect(&callbacksHandler,
-            &CallbacksHandler::startedDecoding,
+            &CallbacksHandler::decodingStarted,
             this,
-            &AVModelPimpl::startedDecoding);
+            &AVModelPimpl::onDecodingStarted);
     connect(&callbacksHandler,
-            &CallbacksHandler::stoppedDecoding,
+            &CallbacksHandler::decodingStopped,
             this,
-            &AVModelPimpl::stoppedDecoding);
+            &AVModelPimpl::onDecodingStopped);
 
     auto startedPreview = false;
     auto restartRenderers = [&](const QStringList& callList) {
@@ -709,7 +709,7 @@ AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHan
             auto height = rendererInfos[DRing::Media::Details::HEIGHT].toInt();
             if (width > 0 && height > 0) {
                 startedPreview = true;
-                startedDecoding(callId, shmPath, width, height);
+                onDecodingStarted(callId, shmPath, width, height);
             }
         }
     };
@@ -753,7 +753,7 @@ AVModelPimpl::getRecordingPath() const
 }
 
 void
-AVModelPimpl::startedDecoding(const QString& id, const QString& shmPath, int width, int height)
+AVModelPimpl::onDecodingStarted(const QString& id, const QString& shmPath, int width, int height)
 {
     if (id != "" && id != "local" && !id.contains("://")) // Else managed by callmodel
         return;
@@ -763,7 +763,7 @@ AVModelPimpl::startedDecoding(const QString& id, const QString& shmPath, int wid
 }
 
 void
-AVModelPimpl::stoppedDecoding(const QString& id, const QString& shmPath)
+AVModelPimpl::onDecodingStopped(const QString& id, const QString& shmPath)
 {
     Q_UNUSED(shmPath)
     removeRenderer(id);
