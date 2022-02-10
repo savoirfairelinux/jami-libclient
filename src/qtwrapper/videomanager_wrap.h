@@ -39,40 +39,6 @@
 #include "typedefs.h"
 #include "conversions_wrap.hpp"
 
-class VideoManagerInterface;
-
-class VideoManagerSignalProxy : public QObject
-{
-    Q_OBJECT
-public:
-    VideoManagerSignalProxy(VideoManagerInterface* parent);
-
-public Q_SLOTS:
-    void slotDeviceEvent();
-    void slotStartedDecoding(
-        const QString& id, const QString& shmPath, int width, int height, bool isMixer);
-    void slotStoppedDecoding(const QString& id, const QString& shmPath, bool isMixer);
-
-private:
-    VideoManagerInterface* m_pParent;
-};
-
-class VideoManagerProxySender : public QObject
-{
-    Q_OBJECT
-    friend class VideoManagerInterface;
-
-public:
-Q_SIGNALS:
-    void deviceEvent();
-    void startedDecoding(
-        const QString& id, const QString& shmPath, int width, int height, bool isMixer);
-    void stoppedDecoding(const QString& id, const QString& shmPath, bool isMixer);
-};
-
-/*
- * Proxy class for interface org.ring.Ring.VideoManager
- */
 class VideoManagerInterface : public QObject
 {
     Q_OBJECT
@@ -87,10 +53,6 @@ public:
     std::map<std::string, std::shared_ptr<DRing::CallbackWrapperBase>> videoHandlers;
 #endif
 
-private:
-    VideoManagerSignalProxy* proxy;
-    VideoManagerProxySender* sender;
-
 public Q_SLOTS: // METHODS
     void applySettings(const QString& name, MapStringString settings)
     {
@@ -102,7 +64,6 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
-    // TODO: test!!!!!!!!!!!!!!!
     MapStringMapStringVectorString getCapabilities(const QString& name)
     {
         MapStringMapStringVectorString ret;
@@ -222,9 +183,9 @@ public Q_SLOTS: // METHODS
 
 Q_SIGNALS: // SIGNALS
     void deviceEvent();
-    void startedDecoding(
+    void decodingStarted(
         const QString& id, const QString& shmPath, int width, int height, bool isMixer);
-    void stoppedDecoding(const QString& id, const QString& shmPath, bool isMixer);
+    void decodingStopped(const QString& id, const QString& shmPath, bool isMixer);
 };
 
 namespace org {

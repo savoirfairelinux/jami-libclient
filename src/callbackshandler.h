@@ -297,14 +297,14 @@ Q_SIGNALS:
      * @param width
      * @param height
      */
-    void startedDecoding(const QString& id, const QString& shmPath, int width, int height);
+    void decodingStarted(const QString& id, const QString& shmPath, int width, int height);
 
     /**
      * Renderer is stopped
      * @param id
      * @param shmrenderer
      */
-    void stoppedDecoding(const QString& id, const QString& shmPath);
+    void decodingStopped(const QString& id, const QString& shmPath);
 
     /**
      * Emitted when a video device is plugged or unplugged
@@ -608,27 +608,6 @@ private Q_SLOTS:
      * @param message
      */
     void slotDebugMessageReceived(const QString& message);
-
-    /**
-     * Renderer is started
-     * @param id
-     * @param shmrenderer
-     * @param width
-     * @param height
-     */
-    void slotStartedDecoding(const QString& id, const QString& shmPath, int width, int height);
-
-    /**
-     * Renderer is stopped
-     * @param id
-     * @param shmrenderer
-     */
-    void slotStoppedDecoding(const QString& id, const QString& shmPath);
-
-    /**
-     * Detect when a video device is plugged or unplugged
-     */
-    void slotDeviceEvent();
 
     /**
      * Detect when an audio device is plugged or unplugged
