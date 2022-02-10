@@ -270,22 +270,23 @@ CallbacksHandler::CallbacksHandler(const Lrc& parent)
             Qt::QueuedConnection);
 
     connect(&VideoManager::instance(),
-            &VideoManagerInterface::startedDecoding,
+            &VideoManagerInterface::decodingStarted,
             this,
-            &CallbacksHandler::slotStartedDecoding,
+            &CallbacksHandler::decodingStarted,
             Qt::QueuedConnection);
 
     connect(&VideoManager::instance(),
-            &VideoManagerInterface::stoppedDecoding,
+            &VideoManagerInterface::decodingStopped,
             this,
-            &CallbacksHandler::slotStoppedDecoding,
+            &CallbacksHandler::decodingStopped,
             Qt::QueuedConnection);
 
     connect(&VideoManager::instance(),
             &VideoManagerInterface::deviceEvent,
             this,
-            &CallbacksHandler::slotDeviceEvent,
+            &CallbacksHandler::deviceEvent,
             Qt::QueuedConnection);
+
     connect(&ConfigurationManager::instance(),
             &ConfigurationManagerInterface::audioDeviceEvent,
             this,
@@ -703,27 +704,6 @@ void
 CallbacksHandler::slotDebugMessageReceived(const QString& message)
 {
     emit parent.getBehaviorController().debugMessageReceived(message);
-}
-
-void
-CallbacksHandler::slotStartedDecoding(const QString& id,
-                                      const QString& shmPath,
-                                      int width,
-                                      int height)
-{
-    emit startedDecoding(id, shmPath, width, height);
-}
-
-void
-CallbacksHandler::slotStoppedDecoding(const QString& id, const QString& shmPath)
-{
-    emit stoppedDecoding(id, shmPath);
-}
-
-void
-CallbacksHandler::slotDeviceEvent()
-{
-    emit deviceEvent();
 }
 
 void

@@ -256,7 +256,7 @@ public Q_SLOTS:
      * @param width
      * @param height
      */
-    void startedDecoding(const QString& id, const QString& shmPath, int width, int height);
+    void onDecodingStarted(const QString& id, const QString& shmPath, int width, int height);
 };
 
 NewCallModel::NewCallModel(const account::Info& owner,
@@ -918,9 +918,9 @@ NewCallModelPimpl::NewCallModelPimpl(const NewCallModel& linked,
             this,
             &NewCallModelPimpl::remoteRecordingChanged);
     connect(&callbacksHandler,
-            &CallbacksHandler::startedDecoding,
+            &CallbacksHandler::decodingStarted,
             this,
-            &NewCallModelPimpl::startedDecoding);
+            &NewCallModelPimpl::onDecodingStarted);
 
 #ifndef ENABLE_LIBWRAP
     // Only necessary with dbus since the daemon runs separately
@@ -1591,7 +1591,7 @@ NewCallModelPimpl::remoteRecordingChanged(const QString& callId,
 }
 
 void
-NewCallModelPimpl::startedDecoding(const QString& id, const QString& shmPath, int width, int height)
+NewCallModelPimpl::onDecodingStarted(const QString& id, const QString& shmPath, int width, int height)
 {
     auto it = calls.find(id);
     if (it == calls.end())
