@@ -849,16 +849,15 @@ AVModelPimpl::addRenderer(const QString& id, const video::Settings& settings, co
                 renderers_.at(id)->startRendering();
             }
         }
-        connect(
-            renderers_.at(id).get(),
-            &video::Renderer::started,
-            this,
-            [this](const QString& id) { emit linked_.rendererStarted(id); },
-            Qt::UniqueConnection);
+        connect(renderers_.at(id).get(),
+                &video::Renderer::started,
+                &linked_,
+                &AVModel::rendererStarted,
+                Qt::UniqueConnection);
         connect(renderers_.at(id).get(),
                 &video::Renderer::frameUpdated,
-                this,
-                &AVModelPimpl::slotFrameUpdated,
+                &linked_,
+                &AVModel::frameUpdated,
                 Qt::UniqueConnection);
     }
 }

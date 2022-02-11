@@ -537,6 +537,17 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
     )
 ENDIF()
 
+# For avframe dependency on Windows/macOS.
+if(NOT DEFINED LIBAV_INCLUDE_PATH)
+   set(LIBJAMI_CONTRIB_DIR "${PROJECT_SOURCE_DIR}/../daemon/contrib/")
+   if(WIN32)
+      set(LIBAV_INCLUDE_PATH ${LIBJAMI_CONTRIB_DIR}/build/ffmpeg/Build/win32/x64/include/)
+   elseif(APPLE)
+      set(LIBAV_INCLUDE_PATH ${LIBJAMI_CONTRIB_DIR}/native/ffmpeg)
+   endif()
+endif()
+include_directories(${LIBAV_INCLUDE_PATH})
+
 if (ENABLE_SHARED)
     message(STATUS "Configuring as shared lib")
     add_library(ringclient SHARED ${libringclient_LIB_SRCS} ${libringclient_api_LIB_HDRS} ${LIB_HEADER_MOC} )

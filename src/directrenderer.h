@@ -25,6 +25,10 @@
 #include "video/renderer.h"
 #include "videomanager_interface.h"
 
+extern "C" {
+#include "libavutil/frame.h"
+}
+
 // Qt
 class QMutex;
 class QTimer;

@@ -154,6 +154,7 @@ Q_SIGNALS:
     void frameUpdated(const QString& id);
     void started(const QString& id);
     void stopped(const QString& id);
+    void frameBufferRequested(const QString& id, AVFrame* avFrame);
 
     /**
      * Start rendering
