@@ -1081,6 +1081,17 @@ ConversationModel::description(const QString& conversationId) const
     return conversation.infos["description"];
 }
 
+QString
+ConversationModel::avatar(const QString& conversationId) const
+{
+    auto conversationOpt = getConversationForUid(conversationId);
+    if (!conversationOpt.has_value()) {
+        return {};
+    }
+    auto& conversation = conversationOpt->get();
+    return conversation.infos["avatar"];
+}
+
 void
 ConversationModel::sendMessage(const QString& uid, const QString& body, const QString& parentId)
 {
@@ -2228,7 +2239,7 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
 
     try {
         auto& conversation = getConversationForUid(conversationId).get();
-        for (const auto& message: messages) {
+        for (const auto& message : messages) {
             if (message["type"].isEmpty() || message["type"] == "application/update-profile") {
                 continue;
             }
