@@ -210,9 +210,13 @@ RendererPimpl::RendererPimpl(Renderer& linked,
             &Video::Renderer::startRendering,
             Qt::QueuedConnection);
 
-    connect(renderer.get(), &Video::Renderer::frameUpdated, [this] {
+    connect(renderer.get(), &Video::Renderer::frameUpdated, this, [this] {
         emit linked_.frameUpdated(id_);
     });
+
+    connect(renderer.get(), &Video::Renderer::frameBufferRequested, this, [this](AVFrame* avFrame) {
+        emit linked_.frameBufferRequested(id_, avFrame);
+    }, Qt::DirectConnection);
 
     connect(
         renderer.get(),

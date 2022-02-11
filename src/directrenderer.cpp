@@ -36,7 +36,6 @@
 #include "videomanager_interface.h"
 
 extern "C" {
-struct AVFrame;
 auto AVFrameDeleter = [](AVFrame* p) {
 };
 }
@@ -55,7 +54,7 @@ public:
     DRing::SinkTarget target;
     DRing::AVSinkTarget av_target;
     mutable QMutex directmutex;
-    mutable DRing::SinkTarget::FrameBufferPtr daemonFramePtr_;
+    mutable DRing::SinkTarget::FrameBufferPtr frameBufferPtr_;
     std::unique_ptr<AVFrame, void (*)(AVFrame*)> avframe;
 
 private:
@@ -69,13 +68,7 @@ Video::DirectRendererPrivate::DirectRendererPrivate(Video::DirectRenderer* paren
     , q_ptr(parent)
     , avframe {nullptr, AVFrameDeleter}
 {
-    using namespace std::placeholders;
-    if (useAVFrame) {
-        av_target.push = std::bind(&Video::DirectRendererPrivate::onNewAVFrame, this, _1);
-        return;
-    }
-    target.pull = std::bind(&Video::DirectRendererPrivate::requestFrameBuffer, this, _1);
-    target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
+    configureTarget(useAVFrame);
 }
 
 /// Constructor
@@ -113,18 +106,6 @@ Video::DirectRenderer::configureTarget(bool useAVFrame)
     d_ptr->configureTarget(useAVFrame);
 }
 
-DRing::SinkTarget::FrameBufferPtr
-Video::DirectRendererPrivate::requestFrameBuffer(std::size_t bytes)
-{
-    QMutexLocker lk(q_ptr->mutex());
-    if (not daemonFramePtr_)
-        daemonFramePtr_.reset(new DRing::FrameBuffer);
-    daemonFramePtr_->storage.resize(bytes);
-    daemonFramePtr_->ptr = daemonFramePtr_->storage.data();
-    daemonFramePtr_->ptrSize = bytes;
-    return std::move(daemonFramePtr_);
-}
-
 void
 Video::DirectRendererPrivate::configureTarget(bool useAVFrame)
 {
@@ -133,11 +114,36 @@ Video::DirectRendererPrivate::configureTarget(bool useAVFrame)
         target.pull = nullptr;
         target.push = nullptr;
         av_target.push = std::bind(&Video::DirectRendererPrivate::onNewAVFrame, this, _1);
-        return;
+    } else {
+        target.pull = std::bind(&Video::DirectRendererPrivate::requestFrameBuffer, this, _1);
+        target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
+        av_target.push = nullptr;
     }
-    target.pull = std::bind(&Video::DirectRendererPrivate::requestFrameBuffer, this, _1);
-    target.push = std::bind(&Video::DirectRendererPrivate::onNewFrame, this, _1);
-    av_target.push = nullptr;
+}
+
+DRing::SinkTarget::FrameBufferPtr
+Video::DirectRendererPrivate::requestFrameBuffer(std::size_t bytes)
+{
+    QMutexLocker lk(q_ptr->mutex());
+    if (!frameBufferPtr_) {
+        frameBufferPtr_.reset(new DRing::FrameBuffer);
+        frameBufferPtr_->avframe.reset(av_frame_alloc());
+    }
+    
+    // A response to this signal should be used to provide client
+    // allocated buffer specs via the AVFrame structure.
+    // Important: Subscription to this signal MUST be synchronous(Qt::DirectConnection).
+    Q_EMIT q_ptr->frameBufferRequested(frameBufferPtr_->avframe.get());
+
+    // If no subscription to frameBufferRequested filled avFrame, then
+    // we revert to legacy storage and the use of currentFrame.
+    if (frameBufferPtr_->avframe->data[0] == nullptr) {
+        frameBufferPtr_->storage.resize(bytes);
+        frameBufferPtr_->ptr = frameBufferPtr_->storage.data();
+        frameBufferPtr_->ptrSize = bytes;
+    }
+    
+    return std::move(frameBufferPtr_);
 }
 
 void
@@ -148,7 +154,7 @@ Video::DirectRendererPrivate::onNewFrame(DRing::SinkTarget::FrameBufferPtr buf)
 
     {
         QMutexLocker lk(q_ptr->mutex());
-        daemonFramePtr_ = std::move(buf);
+        frameBufferPtr_ = std::move(buf);
     }
 
     emit q_ptr->frameUpdated();
@@ -182,15 +188,15 @@ Video::DirectRenderer::currentFrame() const
         return {};
 
     QMutexLocker lock(mutex());
-    if (not d_ptr->daemonFramePtr_)
+    if (not d_ptr->frameBufferPtr_)
         return {};
 
     lrc::api::video::Frame frame;
-    frame.storage = std::move(d_ptr->daemonFramePtr_->storage);
+    frame.storage = std::move(d_ptr->frameBufferPtr_->storage);
     frame.ptr = frame.storage.data();
     frame.size = frame.storage.size();
-    frame.height = d_ptr->daemonFramePtr_->height;
-    frame.width = d_ptr->daemonFramePtr_->width;
+    frame.height = d_ptr->frameBufferPtr_->height;
+    frame.width = d_ptr->frameBufferPtr_->width;
 
     return std::move(frame);
 }
