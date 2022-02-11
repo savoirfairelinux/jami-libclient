@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85dc50f7_9cfa7afc",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 8
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-02-11T19:12:04Z",
+      "side": 1,
+      "message": "we should not use WIN32, we do not even support 32-bit. I guess we may use _WINDOWS instead.",
+      "revId": "a8b4a4ea9aeb2fd1bc153a07ed9ba2b106529d54",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
