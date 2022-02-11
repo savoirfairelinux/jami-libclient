@@ -1,6 +1,6 @@
 /*
- *  Copyright (C) 2012-2022 Savoir-faire Linux Inc.
- *  Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>
+ *  Copyright (C) 2018-2022 Savoir-faire Linux Inc.
+ *  Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -16,36 +16,41 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
+#include "renderer.h"
 
-#include "video/renderer.h"
-#include "typedefs.h"
+#include <QSize>
+#include <QMutex>
 
 namespace lrc {
 namespace video {
 
-class ShmRenderer final : public Renderer
+using namespace lrc::api::video;
+
+Renderer::Renderer(const QString& id, const QSize& res)
+    : id_(id)
+    , size_(res)
+    , QObject(nullptr)
+{}
+
+Renderer::~Renderer() {}
+
+QString
+Renderer::id() const
 {
-    Q_OBJECT
-public:
-    ShmRenderer(const QString& id, const QSize& res, const QString& shmPath);
-    ~ShmRenderer();
+    return id_;
+}
 
-    // Renderer interface.
-    void update(const QSize& res, const QString& shmPath) override;
-    lrc::api::video::Frame currentFrame() const override;
+QSize
+Renderer::size() const
+{
+    return size_;
+}
 
-    void stopShm();
-    bool startShm();
-
-public Q_SLOTS:
-    void startRendering() override;
-    void stopRendering() override;
-
-private:
-    struct Impl;
-    std::unique_ptr<Impl> pimpl_;
-};
+void
+Renderer::update(const QSize& size, const QString&)
+{
+    size_ = size;
+}
 
 } // namespace video
 } // namespace lrc
