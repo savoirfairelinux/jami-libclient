@@ -33,7 +33,7 @@
 #include "dbus/callmanager.h"
 #include "dbus/videomanager.h"
 #include "vcard.h"
-#include "video/renderer.h"
+#include "renderer.h"
 #include "typedefs.h"
 #include "uri.h"
 
@@ -45,6 +45,7 @@
 #include <QObject>
 #include <QString>
 #include <QUrl>
+#include <QSize>
 
 // std
 #include <chrono>
@@ -118,6 +119,7 @@ using namespace api;
 
 class NewCallModelPimpl : public QObject
 {
+    Q_OBJECT
 public:
     NewCallModelPimpl(const NewCallModel& linked,
                       Lrc& lrc,
@@ -773,7 +775,7 @@ NewCallModel::getPendingConferencees()
     return pimpl_->pendingConferencees_;
 }
 
-video::RenderedDevice
+api::video::RenderedDevice
 NewCallModel::getCurrentRenderedDevice(const QString& call_id) const
 {
     video::RenderedDevice result;
@@ -1591,16 +1593,18 @@ NewCallModelPimpl::remoteRecordingChanged(const QString& callId,
 }
 
 void
-NewCallModelPimpl::onDecodingStarted(const QString& id, const QString& shmPath, int width, int height)
+NewCallModelPimpl::onDecodingStarted(const QString& id,
+                                     const QString& shmPath,
+                                     int width,
+                                     int height)
 {
     auto it = calls.find(id);
     if (it == calls.end())
         return;
-    video::Settings settings;
-    settings.size = toQString(width) + "x" + toQString(height);
-    lrc.getAVModel().addRenderer(id, settings, shmPath);
+    lrc.getAVModel().addRenderer(id, QSize(width, height), shmPath);
 }
 
 } // namespace lrc
 
 #include "api/moc_newcallmodel.cpp"
+#include "newcallmodel.moc"
