@@ -385,6 +385,12 @@ public:
      * @return the description to display
      */
     QString description(const QString& conversationId) const;
+    /**
+     * Get conversation's avatar.
+     * @param conversationId
+     * @return the avatar to display
+     */
+    QString avatar(const QString& conversationId) const;
 
     /**
      * Get member's role in conversation
