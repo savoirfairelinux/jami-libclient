@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="222"/>
         <source>Contact left conversation</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt opuścił konwersacje</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
@@ -128,7 +128,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>
         <source>Null</source>
-        <translation type="unfinished"/>
+        <translation>Null</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Method Not Allowed</source>
-        <translation type="unfinished"/>
+        <translation>Metoda nie dozwolona</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="77"/>
@@ -250,7 +250,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Request URI Too Long</source>
-        <translation type="unfinished"/>
+        <translation>Żądanie URI za długie</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="83"/>
@@ -265,27 +265,27 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Bad Extension</source>
-        <translation type="unfinished"/>
+        <translation>Złe rozszeżenie</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Extension Required</source>
-        <translation type="unfinished"/>
+        <translation>Rozszerzenie jest wymagane</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Session Timer Too Small</source>
-        <translation type="unfinished"/>
+        <translation>Zbyt mały zegar sesji</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Interval Too Brief</source>
-        <translation type="unfinished"/>
+        <translation>Interwał zbyt krótki</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Temporarily Unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Tymczasowo niedostępny</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="90"/>
@@ -305,7 +305,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Address Incomplete</source>
-        <translation type="unfinished"/>
+        <translation>Adres niekompletny</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
@@ -365,17 +365,17 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Server Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Przekroczony czas odpowiedzi serwera</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Version Not Supported</source>
-        <translation type="unfinished"/>
+        <translation>Wersja nie jest wpierana</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Message Too Large</source>
-        <translation type="unfinished"/>
+        <translation>Wiadomość zbyt długa</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="109"/>
@@ -385,7 +385,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="110"/>
         <source>Busy Everywhere</source>
-        <translation type="unfinished"/>
+        <translation>Zajęty wszędzie</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="111"/>
