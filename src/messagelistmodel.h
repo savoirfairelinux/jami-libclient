@@ -40,7 +40,8 @@ struct Info;
     X(Type) \
     X(Status) \
     X(IsRead) \
-    X(Commit) \
+    X(ContactAction) \
+    X(ActionUri) \
     X(LinkPreviewInfo) \
     X(Linkified) \
     X(TransferName) \

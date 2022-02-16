@@ -352,6 +352,10 @@ MessageListModel::dataForItem(item_t item, int, int role) const
         return QVariant(item.second.linkPreviewInfo);
     case Role::Linkified:
         return QVariant(item.second.linkified);
+    case Role::ActionUri:
+        return QVariant(item.second.commit["uri"]);
+    case Role::ContactAction:
+        return QVariant(item.second.commit["action"]);
     case Role::TransferName:
         return QVariant(item.second.commit["displayName"]);
     case Role::Readers:
