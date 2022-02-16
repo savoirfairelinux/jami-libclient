@@ -1041,17 +1041,28 @@ ConversationModel::title(const QString& conversationId) const
     }
     // NOTE: Do not call any daemon method there as title() is called a lot for drawing
     QString title;
-    auto idx = 0;
+    auto idx = 0u;
+    auto others = 0;
     for (const auto& member : conversation.participants) {
+        QString name;
         if (member.uri == owner.profileInfo.uri) {
-            title += owner.accountModel->bestNameForAccount(owner.id);
+            name = owner.accountModel->bestNameForAccount(owner.id);
         } else {
-            title += owner.contactModel->bestNameForContact(member.uri);
+            name = owner.contactModel->bestNameForContact(member.uri);
         }
+        if (title.length() + name.length() > 32) {
+            // Avoid too long titles
+            others += 1;
+            continue;
+        }
+        title += name;
         idx += 1;
-        if (idx != conversation.participants.size()) {
+        if (idx != conversation.participants.size() || others != 0) {
             title += ", ";
         }
+    }
+    if (others != 0) {
+        title += QString("+ %1").arg(others);
     }
     return title;
 }
