@@ -2819,13 +2819,14 @@ ConversationModelPimpl::slotContactRemoved(const QString& uri)
 void
 ConversationModelPimpl::slotContactModelUpdated(const QString& uri)
 {
-    try {
-        auto& conversation = getConversationForPeerUri(uri, true).get();
-        invalidateModel();
-        emit linked.conversationUpdated(conversation.uid);
-        Q_EMIT linked.dataChanged(indexOf(conversation.uid));
-    } catch (std::out_of_range&) {
-        qDebug() << "contact update attempted for inexistent conversation";
+    // Update presence for all conversations with this peer
+    for (auto& conversation : conversations) {
+        auto members = peersForConversation(conversation);
+        if (members.indexOf(uri) != -1) {
+            invalidateModel();
+            emit linked.conversationUpdated(conversation.uid);
+            Q_EMIT linked.dataChanged(indexOf(conversation.uid));
+        }
     }
 
     if (currentFilter.isEmpty()) {
