@@ -206,7 +206,7 @@ to_action(const QString& action)
         return ContactAction::JOIN;
     else if (action == "remove")
         return ContactAction::LEAVE;
-    else if (action == "banned")
+    else if (action == "ban")
         return ContactAction::BANNED;
     return ContactAction::INVALID;
 }
@@ -219,12 +219,13 @@ getContactInteractionString(const QString& authorUri, const ContactAction& actio
         if (authorUri.isEmpty()) {
             return QObject::tr("Contact added");
         }
-        return QObject::tr("Invitation received");
+        return QObject::tr("%1 was invited to join").arg(authorUri);
     case ContactAction::JOIN:
-        return QObject::tr("Invitation accepted");
+        return QObject::tr("%1 joined").arg(authorUri);
     case ContactAction::LEAVE:
-        return QObject::tr("Contact left conversation");
+        return QObject::tr("%1 left").arg(authorUri);
     case ContactAction::BANNED:
+        return QObject::tr("%1 was kicked").arg(authorUri);
     case ContactAction::INVALID:
         return {};
     }
@@ -289,7 +290,6 @@ struct Info
         isRead = false;
         if (type == Type::CONTACT) {
             authorUri = accountURI == message["uri"] ? "" : message["uri"];
-            body = getContactInteractionString(authorUri, to_action(message["action"]));
         } else if (type == Type::INITIAL) {
             body = QObject::tr("Swarm created");
         } else if (type == Type::CALL) {
