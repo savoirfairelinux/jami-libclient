@@ -2282,6 +2282,13 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
                 downloadFile = (bytesProgress == 0);
             } else if (msg.type == interaction::Type::CALL) {
                 msg.body = storage::getCallInteractionString(msg.authorUri, msg.duration);
+            } else if (msg.type == interaction::Type::CONTACT) {
+                auto bestName = msg.authorUri == linked.owner.profileInfo.uri
+                                    ? linked.owner.accountModel->bestNameForAccount(linked.owner.id)
+                                    : linked.owner.contactModel->bestNameForContact(msg.authorUri);
+                msg.body = interaction::getContactInteractionString(bestName,
+                                                                    interaction::to_action(
+                                                                        message["action"]));
             }
             insertSwarmInteraction(msgId, msg, conversation, true);
             if (downloadFile) {
