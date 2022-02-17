@@ -206,7 +206,7 @@ to_action(const QString& action)
         return ContactAction::JOIN;
     else if (action == "remove")
         return ContactAction::LEAVE;
-    else if (action == "banned")
+    else if (action == "ban")
         return ContactAction::BANNED;
     return ContactAction::INVALID;
 }
@@ -219,12 +219,13 @@ getContactInteractionString(const QString& authorUri, const ContactAction& actio
         if (authorUri.isEmpty()) {
             return QObject::tr("Contact added");
         }
-        return QObject::tr("Invitation received");
+        return QObject::tr("Contact invited to join");
     case ContactAction::JOIN:
-        return QObject::tr("Invitation accepted");
+        return QObject::tr("Contact joined the conversation");
     case ContactAction::LEAVE:
         return QObject::tr("Contact left conversation");
     case ContactAction::BANNED:
+        return QObject::tr("Contact was kicked from conversation");
     case ContactAction::INVALID:
         return {};
     }
