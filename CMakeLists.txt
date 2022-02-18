@@ -292,9 +292,6 @@ SET( libringclient_LIB_SRCS
   src/callbackshandler.cpp
   src/behaviorcontroller.cpp
   src/datatransfermodel.cpp
-  src/newvideo.cpp
-  src/shmrenderer.cpp
-  src/directrenderer.cpp
   src/messagelistmodel.cpp
 
   #Communication
@@ -327,8 +324,6 @@ SET( libringclient_LIB_HDRS
   src/smartinfohub.h
   src/vcard.h
   src/namedirectory.h
-  src/shmrenderer.h
-  src/directrenderer.h
   src/messagelistmodel.h
 )
 
@@ -375,11 +370,6 @@ SET(libringclient_WEB_chatview
    src/web-chatview/web.gresource.xml
 )
 
-SET(libringclient_video_LIB_HDRS
-  src/video/renderer.h
-  #The renderer implementations are not exported on purpose
-)
-
 SET(libringclient_interface_LIB_HDRS
   src/interfaces/pixmapmanipulatori.h
   src/interfaces/dbuserrorhandleri.h
@@ -389,6 +379,20 @@ SET( libringclient_extra_LIB_HDRS
   src/typedefs.h
   src/containerview.h
 )
+
+# video
+list(APPEND libringclient_video_LIB_HDRS src/video/renderer.h)
+if(ENABLE_LIBWRAP)
+   list(APPEND libringclient_video_LIB_HDRS src/directrenderer.h)
+   if(USE_AVFRAME)
+      list(APPEND libringclient_LIB_SRCS src/avframerenderer.cpp)
+   else()
+      list(APPEND libringclient_LIB_SRCS src/clientrenderer.cpp)
+   endif()
+else()
+   list(APPEND libringclient_video_LIB_HDRS src/shmrenderer.h)
+   list(APPEND libringclient_LIB_SRCS src/shmrenderer.cpp)
+endif()
 
 IF(${ENABLE_LIBWRAP} MATCHES true OR ${ENABLE_TEST} MATCHES true)
    # done this way because of bug in cmake 2.8
