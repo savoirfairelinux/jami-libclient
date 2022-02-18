@@ -1,24 +1,45 @@
-/****************************************************************************
- *    Copyright (C) 2018-2022 Savoir-faire Linux Inc.                       *
- *   Author: Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>             *
- *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
- *                                                                          *
- *   This library is free software; you can redistribute it and/or          *
- *   modify it under the terms of the GNU Lesser General Public             *
- *   License as published by the Free Software Foundation; either           *
- *   version 2.1 of the License, or (at your option) any later version.     *
- *                                                                          *
- *   This library is distributed in the hope that it will be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU      *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU General Public License      *
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
- ***************************************************************************/
+/*
+ *  Copyright (C) 2018-2022 Savoir-faire Linux Inc.
+ *  Author: Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>
+ *  Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "api/avmodel.h"
 
-// Std
+#include "api/newvideo.h"
+#include "api/call.h"
+#include "api/lrc.h"
+#ifdef ENABLE_LIBWRAP
+#include "directrenderer.h"
+#else
+#include "shmrenderer.h"
+#endif
+#include "callbackshandler.h"
+#include "dbus/callmanager.h"
+#include "dbus/configurationmanager.h"
+#include "dbus/videomanager.h"
+#include "authority/storagehelper.h"
+
+#include <media_const.h>
+
+#include <QtCore/QStandardPaths>
+#include <QtCore/QDir>
+#include <QUrl>
+#include <QSize>
+
 #include <algorithm> // std::sort
 #include <chrono>
 #include <csignal>
@@ -29,23 +50,6 @@
 #include <string>
 #include <sstream>
 
-// Qt
-#include <QtCore/QStandardPaths>
-#include <QtCore/QDir>
-#include <QUrl>
-
-// Ring daemon
-#include <media_const.h>
-
-// LRC
-#include "api/call.h"
-#include "api/lrc.h"
-#include "callbackshandler.h"
-#include "dbus/callmanager.h"
-#include "dbus/configurationmanager.h"
-#include "dbus/videomanager.h"
-#include "authority/storagehelper.h"
-
 #if defined(Q_OS_UNIX) && !defined(__APPLE__)
 #include <xcb/xcb.h>
 #endif
@@ -53,6 +57,7 @@
 namespace lrc {
 
 using namespace api;
+using namespace lrc::video;
 
 class AVModelPimpl : public QObject
 {
@@ -66,8 +71,7 @@ public:
     AVModel& linked_;
 
     std::mutex renderers_mtx_;
-    std::map<QString, std::unique_ptr<video::Renderer>> renderers_;
-    bool useAVFrame_ = false;
+    std::map<QString, std::unique_ptr<Renderer>> renderers_;
     QString currentVideoCaptureDevice_ {};
 
 #ifndef ENABLE_LIBWRAP
@@ -87,18 +91,19 @@ public:
     /**
      * Add video::Renderer to renderers_ and start it
      * @param id
-     * @param settings
+     * @param size
      * @param shmPath
      */
-    void addRenderer(const QString& id,
-                     const video::Settings& settings,
-                     const QString& shmPath = {});
+    void addRenderer(const QString& id, const QSize& res, const QString& shmPath = {});
 
     /**
      * Remove renderer from renderers_
      * @param id
      */
     void removeRenderer(const QString& id);
+
+    bool hasRenderer(const QString& id);
+    QSize getRendererSize(const QString& id);
 
 public Q_SLOTS:
     /**
@@ -115,11 +120,6 @@ public Q_SLOTS:
      * @param shmPath
      */
     void onDecodingStopped(const QString& id, const QString& shmPath);
-    /**
-     * Detect when the current frame is updated
-     * @param id
-     */
-    void slotFrameUpdated(const QString& id);
     /**
      * Detect when a video device is plugged or unplugged
      */
@@ -228,7 +228,7 @@ AVModel::setDefaultDevice(const QString& deviceId)
     VideoManager::instance().setDefaultDevice(deviceId);
 }
 
-video::Settings
+api::video::Settings
 AVModel::getDeviceSettings(const QString& deviceId) const
 {
     if (deviceId.isEmpty()) {
@@ -247,7 +247,7 @@ AVModel::getDeviceSettings(const QString& deviceId) const
     return result;
 }
 
-video::Capabilities
+api::video::Capabilities
 AVModel::getDeviceCapabilities(const QString& deviceId) const
 {
     // Channel x Resolution x Framerate
@@ -296,8 +296,7 @@ AVModel::setDeviceSettings(video::Settings& settings)
     // doing this during a call will cause re-invite, this is unwanted
     std::unique_lock<std::mutex> lk(pimpl_->renderers_mtx_);
     auto it = pimpl_->renderers_.find(video::PREVIEW_RENDERER_ID);
-    if (it != pimpl_->renderers_.end() && it->second && it->second->isRendering()
-        && pimpl_->renderers_.size() == 1) {
+    if (it != pimpl_->renderers_.end() && it->second && pimpl_->renderers_.size() == 1) {
         lk.unlock();
         stopPreview(video::PREVIEW_RENDERER_ID);
         startPreview(video::PREVIEW_RENDERER_ID);
@@ -513,15 +512,15 @@ AVModel::setRecordQuality(const int& rec) const
     ConfigurationManager::instance().setRecordQuality(rec);
 }
 
-void
-AVModel::useAVFrame(bool useAVFrame)
-{
-    pimpl_->useAVFrame_ = useAVFrame;
-    std::lock_guard<std::mutex> lk(pimpl_->renderers_mtx_);
-    for (auto it = pimpl_->renderers_.cbegin(); it != pimpl_->renderers_.cend(); ++it) {
-        it->second->useAVFrame(pimpl_->useAVFrame_);
-    }
-}
+// void
+// AVModel::useAVFrame(bool useAVFrame)
+//{
+//    pimpl_->useAVFrame_ = useAVFrame;
+//    std::lock_guard<std::mutex> lk(pimpl_->renderers_mtx_);
+//    for (auto it = pimpl_->renderers_.cbegin(); it != pimpl_->renderers_.cend(); ++it) {
+//        it->second->useAVFrame(pimpl_->useAVFrame_);
+//    }
+//}
 
 QString
 AVModel::startPreview(const QString& resource)
@@ -535,16 +534,16 @@ AVModel::stopPreview(const QString& resource)
     VideoManager::instance().closeVideoInput(resource);
 }
 
-const video::Renderer&
-AVModel::getRenderer(const QString& id) const
-{
-    std::lock_guard<std::mutex> lk(pimpl_->renderers_mtx_);
-    auto search = pimpl_->renderers_.find(id);
-    if (search == pimpl_->renderers_.end() || !search->second) {
-        throw std::out_of_range("Can't find renderer " + id.toStdString());
-    }
-    return *search->second;
-}
+// const video::Renderer&
+// AVModel::getRenderer(const QString& id) const
+//{
+//    std::lock_guard<std::mutex> lk(pimpl_->renderers_mtx_);
+//    auto search = pimpl_->renderers_.find(id);
+//    if (search == pimpl_->renderers_.end() || !search->second) {
+//        throw std::out_of_range("Can't find renderer " + id.toStdString());
+//    }
+//    return *search->second;
+//}
 
 #if defined(Q_OS_UNIX) && !defined(__APPLE__)
 static xcb_atom_t
@@ -660,15 +659,21 @@ AVModel::clearCurrentVideoCaptureDevice()
 }
 
 void
-AVModel::addRenderer(const QString& id, const video::Settings& settings, const QString& shmPath)
+AVModel::addRenderer(const QString& id, const QSize& res, const QString& shmPath)
 {
-    pimpl_->addRenderer(id, settings, shmPath);
+    pimpl_->addRenderer(id, res, shmPath);
 }
 
-void
-AVModel::removeRenderer(const QString& id)
+bool
+AVModel::hasRenderer(const QString& id)
 {
-    pimpl_->removeRenderer(id);
+    return pimpl_->hasRenderer(id);
+}
+
+QSize
+AVModel::getRendererSize(const QString& id)
+{
+    return pimpl_->getRendererSize(id);
 }
 
 AVModelPimpl::AVModelPimpl(AVModel& linked, const CallbacksHandler& callbacksHandler)
@@ -752,9 +757,7 @@ AVModelPimpl::onDecodingStarted(const QString& id, const QString& shmPath, int w
 {
     if (id != "" && id != "local" && !id.contains("://")) // Else managed by callmodel
         return;
-    video::Settings settings;
-    settings.size = toQString(width) + "x" + toQString(height);
-    addRenderer(id, settings, shmPath);
+    addRenderer(id, QSize(width, height), shmPath);
 }
 
 void
@@ -831,34 +834,70 @@ AVModelPimpl::getDevice(int type) const
     return result;
 }
 
+static std::unique_ptr<Renderer>
+createRenderer(const QString& id, const QSize& res, const QString& shmPath = {})
+{
+#ifdef ENABLE_LIBWRAP
+    Q_UNUSED(shmPath)
+    return std::make_unique<DirectRenderer>(id, res);
+#else
+    return std::make_unique<ShmRenderer>(id, res, shmPath);
+#endif
+}
+
 void
-AVModelPimpl::addRenderer(const QString& id, const video::Settings& settings, const QString& shmPath)
+AVModelPimpl::addRenderer(const QString& id, const QSize& res, const QString& shmPath)
 {
     {
+        auto connectRenderer = [this](Renderer* renderer, const QString& id) {
+            connect(
+                renderer,
+                &Renderer::started,
+                this,
+                [this, id, renderer] {
+                    connect(
+                        renderer,
+                        &Renderer::frameBufferRequested,
+                        this,
+                        [this, id](AVFrame* frame) {
+                            Q_EMIT linked_.frameBufferRequested(id, frame);
+                        },
+                        Qt::DirectConnection);
+                    connect(
+                        renderer,
+                        &Renderer::frameUpdated,
+                        this,
+                        [this, id] { Q_EMIT linked_.frameUpdated(id); },
+                        Qt::DirectConnection);
+                    connect(
+                        renderer,
+                        &Renderer::stopped,
+                        this,
+                        [this, id] { Q_EMIT linked_.rendererStopped(id); },
+                        Qt::DirectConnection);
+                    Q_EMIT linked_.rendererStarted(id);
+                },
+                Qt::QueuedConnection);
+        };
         std::lock_guard<std::mutex> lk(renderers_mtx_);
-        auto search = renderers_.find(id);
-        if (search == renderers_.end()) {
-            renderers_
-                .emplace(id, std::make_unique<video::Renderer>(id, settings, shmPath, useAVFrame_));
-            renderers_.at(id)->startRendering();
+        Renderer* renderer {nullptr};
+        auto it = renderers_.find(id);
+        if (it == renderers_.end()) {
+            renderers_.emplace(id, createRenderer(id, res, shmPath));
+            renderer = renderers_.at(id).get();
+            connectRenderer(renderer, id);
+            renderer->startRendering();
         } else {
-            if (search->second) {
-                search->second->update(settings.size, shmPath);
+            renderer = it->second.get();
+            if (renderer) {
+                renderer->update(res, shmPath);
             } else {
-                search->second.reset(new video::Renderer(id, settings, shmPath, useAVFrame_));
-                renderers_.at(id)->startRendering();
+                it->second.reset(createRenderer(id, res, shmPath).get());
+                renderer = it->second.get();
+                connectRenderer(renderer, id);
+                renderer->startRendering();
             }
         }
-        connect(renderers_.at(id).get(),
-                &video::Renderer::started,
-                &linked_,
-                &AVModel::rendererStarted,
-                Qt::UniqueConnection);
-        connect(renderers_.at(id).get(),
-                &video::Renderer::frameUpdated,
-                &linked_,
-                &AVModel::frameUpdated,
-                Qt::UniqueConnection);
     }
 }
 
@@ -866,31 +905,43 @@ void
 AVModelPimpl::removeRenderer(const QString& id)
 {
     std::lock_guard<std::mutex> lk(renderers_mtx_);
-    auto search = renderers_.find(id);
-    if (search == renderers_.end()) {
+    auto it = renderers_.find(id);
+    if (it == renderers_.end()) {
         qWarning() << "Cannot remove renderer. " << id << "not found";
         return;
     }
-    disconnect(search->second.get(),
-               &video::Renderer::frameUpdated,
-               this,
-               &AVModelPimpl::slotFrameUpdated);
     connect(
-        search->second.get(),
-        &video::Renderer::stopped,
+        it->second.get(),
+        &Renderer::stopped,
         this,
-        [this](const QString& id) {
+        [this, id] {
             renderers_.erase(id);
             emit linked_.rendererStopped(id);
         },
         Qt::DirectConnection);
-    search->second.reset();
+    it->second.reset();
 }
 
-void
-AVModelPimpl::slotFrameUpdated(const QString& id)
+bool
+AVModelPimpl::hasRenderer(const QString& id)
 {
-    emit linked_.frameUpdated(id);
+    std::lock_guard<std::mutex> lk(renderers_mtx_);
+    auto it = renderers_.find(id);
+    if (it != renderers_.end()) {
+        return true;
+    }
+    return false;
+}
+
+QSize
+AVModelPimpl::getRendererSize(const QString& id)
+{
+    std::lock_guard<std::mutex> lk(renderers_mtx_);
+    auto it = renderers_.find(id);
+    if (it != renderers_.end()) {
+        return it->second->size();
+    }
+    return {};
 }
 
 void
