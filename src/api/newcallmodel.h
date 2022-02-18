@@ -21,17 +21,13 @@
 #include "api/behaviorcontroller.h"
 #include "api/call.h"
 #include "api/account.h"
-#include "api/newvideo.h"
+#include "api/video.h"
 #include "typedefs.h"
 
 #include <QObject>
 
 #include <memory>
 #include <map>
-
-namespace Video {
-class Renderer;
-}
 
 namespace lrc {
 
