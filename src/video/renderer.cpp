@@ -1,83 +1,58 @@
-/****************************************************************************
- *    Copyright (C) 2012-2022 Savoir-faire Linux Inc.                       *
- *   Author : Alexandre Lision <alexandre.lision@savoirfairelinux.com>      *
- *                                                                          *
- *   This library is free software; you can redistribute it and/or          *
- *   modify it under the terms of the GNU Lesser General Public             *
- *   License as published by the Free Software Foundation; either           *
- *   version 2.1 of the License, or (at your option) any later version.     *
- *                                                                          *
- *   This library is distributed in the hope that it will be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU      *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU General Public License      *
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
- ***************************************************************************/
+/*
+ *  Copyright (C) 2018-2022 Savoir-faire Linux Inc.
+ *  Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "renderer.h"
 
-// Ring
-#include "private/videorenderer_p.h"
+#include <QSize>
+#include <QMutex>
 
-// Qt
-#include <QtCore/QMutex>
+namespace lrc {
+namespace video {
 
-Video::RendererPrivate::RendererPrivate(Video::Renderer* parent)
-    : QObject(parent)
-    , m_isRendering(false)
-    , m_pMutex(new QMutex())
-    , q_ptr(parent)
+using namespace lrc::api::video;
+
+Renderer::Renderer(const QString& id, const QSize& res)
+    : id_(id)
+    , size_(res)
 {}
 
-Video::Renderer::Renderer(const QString& id, const QSize& res)
-    : d_ptr(new RendererPrivate(this))
+Renderer::~Renderer() {}
+
+QString
+Renderer::id() const
 {
-    setObjectName("Renderer:" + id);
-    d_ptr->m_pSize = res;
-    d_ptr->m_Id = id;
+    return id_;
 }
 
-Video::Renderer::~Renderer()
-{
-    delete d_ptr;
-}
-
-/*****************************************************************************
- *                                                                           *
- *                                 Getters                                   *
- *                                                                           *
- ****************************************************************************/
-
-/// Return if the rendering is currently active or not
-bool
-Video::Renderer::isRendering() const
-{
-    return d_ptr->m_isRendering;
-}
-
-/// Get mutex, in case renderer and views are not in the same thread
-QMutex*
-Video::Renderer::mutex() const
-{
-    return d_ptr->m_pMutex;
-}
-
-/// Return the current resolution
 QSize
-Video::Renderer::size() const
+Renderer::size() const
 {
-    return d_ptr->m_pSize;
+    return size_;
 }
-
-/*****************************************************************************
- *                                                                           *
- *                                 Setters                                   *
- *                                                                           *
- ****************************************************************************/
 
 void
-Video::Renderer::setSize(const QSize& size) const
+Renderer::update(const QSize& size, const QString&)
 {
-    d_ptr->m_pSize = size;
+    size_ = size;
 }
+
+} // namespace video
+} // namespace lrc
+
+#include "video/moc_renderer.cpp"
+#include "video/renderer.moc"

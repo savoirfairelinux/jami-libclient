@@ -1,28 +1,30 @@
-/****************************************************************************
- *    Copyright (C) 2012-2022 Savoir-faire Linux Inc.                       *
- *   Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com> *
- *   Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>      *
- *                                                                          *
- *   This library is free software; you can redistribute it and/or          *
- *   modify it under the terms of the GNU Lesser General Public             *
- *   License as published by the Free Software Foundation; either           *
- *   version 2.1 of the License, or (at your option) any later version.     *
- *                                                                          *
- *   This library is distributed in the hope that it will be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU      *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU General Public License      *
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
- ***************************************************************************/
-#ifndef ENABLE_LIBWRAP
+/*
+ *  Copyright (C) 2012-2022 Savoir-faire Linux Inc.
+ *  Author : Emmanuel Lepage Vallee <emmanuel.lepage@savoirfairelinux.com>
+ *  Author : Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "shmrenderer.h"
 
-#include <QtCore/QDebug>
-#include <QtCore/QMutex>
-#include <QtCore/QThread>
+#include "dbus/videomanager.h"
+#include "videomanager_interface.h"
+
+#include <QDebug>
+#include <QMutex>
+#include <QThread>
 
 #include <sys/ipc.h>
 #include <sys/sem.h>
@@ -37,10 +39,15 @@
 #define CLOCK_REALTIME 0
 #endif
 
-#include <QtCore/QTimer>
+#include <QTimer>
+
 #include <chrono>
 
-#include "private/videorenderer_p.h"
+namespace lrc {
+
+using namespace api::video;
+
+namespace video {
 
 // Uncomment following line to output in console the FPS value
 //#define DEBUG_FPS
@@ -69,330 +76,274 @@ struct SHMHeader
 #pragma GCC diagnostic pop
 };
 
-namespace Video {
-
-class ShmRendererPrivate final : public QObject
+struct ShmRenderer::Impl final : public QObject
 {
     Q_OBJECT
-
 public:
-    ShmRendererPrivate(ShmRenderer* parent);
+    Impl(ShmRenderer* parent)
+        : QObject(nullptr)
+        , parent_(parent)
+        , fd(-1)
+        , shmArea((SHMHeader*) MAP_FAILED)
+        , shmAreaLen(0)
+        , frameGen(0)
+        , fpsC(0)
+        , fps(0)
+        , timer(new QTimer(this))
+#ifdef DEBUG_FPS
+        , frameCount(0)
+        , lastFrameDebug(std::chrono::system_clock::now())
+#endif
+    {
+        timer->setInterval(33);
+        connect(timer, &QTimer::timeout, [this]() { Q_EMIT parent_->frameUpdated(); });
+        VideoManager::instance().startShmSink(parent_->id(), true);
 
-    // Types
-    using TimePoint = std::chrono::time_point<std::chrono::system_clock>;
-
-    // Attributes
-    QString m_ShmPath;
-    int m_fd;
-    SHMHeader* m_pShmArea;
-    unsigned m_ShmAreaLen;
-    uint m_FrameGen;
-    int m_fpsC;
-    int m_Fps;
-    TimePoint m_lastFrameDebug;
-    QTimer* m_pTimer;
+        parent_->moveToThread(&thread);
+        connect(&thread, &QThread::finished, [this] { parent_->stopRendering(); });
+        thread.start();
+    };
+    ~Impl()
+    {
+        thread.quit();
+        thread.wait();
+    }
 
     // Constants
     constexpr static const int FPS_RATE_SEC = 1;
     constexpr static const int FRAME_CHECK_RATE_HZ = 120;
 
-    // Helpers
-    timespec createTimeout();
-    bool shmLock();
-    void shmUnlock();
-    bool getNewFrame(bool wait);
-    bool remapShm();
+    // Lock the memory while the copy is being made
+    bool shmLock() { return ::sem_wait(&shmArea->mutex) >= 0; };
+
+    // Remove the lock, allow a new frame to be drawn
+    void shmUnlock() { ::sem_post(&shmArea->mutex); };
+
+    // Wait for new frame data from shared memory and save pointer.
+    bool getNewFrame(bool wait)
+    {
+        if (!shmLock())
+            return false;
+
+        if (frameGen == shmArea->frameGen) {
+            shmUnlock();
+
+            if (not wait)
+                return false;
+
+            // wait for a new frame, max 33ms
+            static const struct timespec timeout = {0, 33000000};
+            if (::sem_timedwait(&shmArea->frameGenMutex, &timeout) < 0)
+                return false;
+
+            if (!shmLock())
+                return false;
+        }
+
+        // valid frame to render (daemon may have stopped)?
+        if (!shmArea->frameSize) {
+            shmUnlock();
+            return false;
+        }
+
+        // map frame data
+        if (!remapShm()) {
+            qDebug() << "Could not resize shared memory";
+            return false;
+        }
+
+        if (not frame)
+            frame.reset(new lrc::api::video::Frame);
+        frame->ptr = shmArea->data + shmArea->readOffset;
+        frame->size = shmArea->frameSize;
+        frameGen = shmArea->frameGen;
+
+        shmUnlock();
+
+        ++fpsC;
+
+        // Compute the FPS shown to the client
+        auto currentTime = std::chrono::system_clock::now();
+        const std::chrono::duration<double> seconds = currentTime - lastFrameDebug;
+        if (seconds.count() >= FPS_RATE_SEC) {
+            fps = (int) (fpsC / seconds.count());
+            fpsC = 0;
+            lastFrameDebug = currentTime;
+#ifdef DEBUG_FPS
+            qDebug() << this << ": FPS " << fps;
+#endif
+        }
+
+        return true;
+    };
+
+    // Remap the shared memory.
+    // Shared memory is in an unlocked state if returns false (resize failed).
+    bool remapShm()
+    {
+        // This loop handles case where daemon resize shared memory
+        // during time we unlock it for remapping.
+        while (shmAreaLen != shmArea->mapSize) {
+            auto mapSize = shmArea->mapSize;
+            shmUnlock();
+
+            if (::munmap(shmArea, shmAreaLen)) {
+                qDebug() << "Could not unmap shared area: " << strerror(errno);
+                return false;
+            }
+
+            shmArea
+                = (SHMHeader*) ::mmap(nullptr, mapSize, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+
+            if (shmArea == MAP_FAILED) {
+                qDebug() << "Could not remap shared area: " << strerror(errno);
+                return false;
+            }
+
+            if (!shmLock())
+                return false;
+
+            shmAreaLen = mapSize;
+        }
+
+        return true;
+    };
 
 private:
-    Video::ShmRenderer* q_ptr;
+    ShmRenderer* parent_;
+
+public:
+    QString path;
+    int fd;
+    SHMHeader* shmArea;
+    unsigned shmAreaLen;
+    uint frameGen;
+
+    int fpsC;
+    int fps;
+    std::chrono::time_point<std::chrono::system_clock> lastFrameDebug;
+
+    QTimer* timer;
+    QMutex mutex;
+    QThread thread;
+    std::shared_ptr<lrc::api::video::Frame> frame;
 };
 
-ShmRendererPrivate::ShmRendererPrivate(ShmRenderer* parent)
-    : QObject(parent)
-    , q_ptr(parent)
-    , m_fd(-1)
-    , m_fpsC(0)
-    , m_Fps(0)
-    , m_pShmArea((SHMHeader*) MAP_FAILED)
-    , m_ShmAreaLen(0)
-    , m_FrameGen(0)
-    , m_pTimer(nullptr)
-#ifdef DEBUG_FPS
-    , m_frameCount(0)
-    , m_lastFrameDebug(std::chrono::system_clock::now())
-#endif
-{}
-
-/// Constructor
-ShmRenderer::ShmRenderer(const QString& id, const QString& shmPath, const QSize& res)
+ShmRenderer::ShmRenderer(const QString& id, const QSize& res, const QString& shmPath)
     : Renderer(id, res)
-    , d_ptr(std::make_unique<ShmRendererPrivate>(this))
+    , pimpl_(std::make_unique<ShmRenderer::Impl>(this))
 {
-    d_ptr->m_ShmPath = shmPath;
-    setObjectName("Video::Renderer:" + id);
+    pimpl_->path = shmPath;
 }
 
-/// Destructor
 ShmRenderer::~ShmRenderer()
 {
+    VideoManager::instance().startShmSink(id(), false);
     stopShm();
 }
 
-/// Wait new frame data from shared memory and save pointer
-bool
-ShmRendererPrivate::getNewFrame(bool wait)
+void
+ShmRenderer::update(const QSize& res, const QString& shmPath)
 {
-    if (!shmLock())
-        return false;
+    Renderer::update(res);
 
-    if (m_FrameGen == m_pShmArea->frameGen) {
-        shmUnlock();
+    if (!pimpl_->thread.isRunning())
+        pimpl_->thread.start();
 
-        if (not wait)
-            return false;
-
-        // wait for a new frame, max 33ms
-        static const struct timespec timeout = {0, 33000000};
-        if (::sem_timedwait(&m_pShmArea->frameGenMutex, &timeout) < 0)
-            return false;
-
-        if (!shmLock())
-            return false;
-    }
-
-    // valid frame to render (daemon may have stopped)?
-    if (!m_pShmArea->frameSize) {
-        shmUnlock();
-        return false;
-    }
-
-    // map frame data
-    if (!remapShm()) {
-        qDebug() << "Could not resize shared memory";
-        return false;
-    }
-
-    auto& frame_ptr = q_ptr->Video::Renderer::d_ptr->m_pFrame;
-    if (not frame_ptr)
-        frame_ptr.reset(new lrc::api::video::Frame);
-    frame_ptr->storage.clear();
-    frame_ptr->ptr = m_pShmArea->data + m_pShmArea->readOffset;
-    frame_ptr->size = m_pShmArea->frameSize;
-    m_FrameGen = m_pShmArea->frameGen;
-
-    shmUnlock();
-
-    ++m_fpsC;
-
-    // Compute the FPS shown to the client
-    auto currentTime = std::chrono::system_clock::now();
-    const std::chrono::duration<double> seconds = currentTime - m_lastFrameDebug;
-    if (seconds.count() >= FPS_RATE_SEC) {
-        m_Fps = (int) (m_fpsC / seconds.count());
-        m_fpsC = 0;
-        m_lastFrameDebug = currentTime;
-#ifdef DEBUG_FPS
-        qDebug() << this << ": FPS " << m_fps;
-#endif
-    }
-
-    return true;
+    pimpl_->path = shmPath;
+    VideoManager::instance().startShmSink(id(), true);
 }
 
-/// Remap the shared memory
-/// Shared memory in unlocked state if returns false (resize failed).
-bool
-ShmRendererPrivate::remapShm()
+Frame
+ShmRenderer::currentFrame() const
 {
-    // This loop handles case where daemon resize shared memory
-    // during time we unlock it for remapping.
-    while (m_ShmAreaLen != m_pShmArea->mapSize) {
-        auto mapSize = m_pShmArea->mapSize;
-        shmUnlock();
-
-        if (::munmap(m_pShmArea, m_ShmAreaLen)) {
-            qDebug() << "Could not unmap shared area: " << strerror(errno);
-            return false;
-        }
-
-        m_pShmArea
-            = (SHMHeader*) ::mmap(nullptr, mapSize, PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, 0);
-
-        if (m_pShmArea == MAP_FAILED) {
-            qDebug() << "Could not remap shared area: " << strerror(errno);
-            return false;
-        }
-
-        if (!shmLock())
-            return false;
-
-        m_ShmAreaLen = mapSize;
+    QMutexLocker lk {&pimpl_->mutex};
+    if (pimpl_->getNewFrame(false)) {
+        if (auto frame_ptr = pimpl_->frame)
+            return std::move(*frame_ptr);
     }
-
-    return true;
+    return {};
 }
 
-/// Connect to the shared memory
 bool
 ShmRenderer::startShm()
 {
-    if (d_ptr->m_fd != -1) {
+    if (pimpl_->fd != -1) {
         qWarning() << "fd must be -1";
         return false;
     }
 
-    d_ptr->m_fd = ::shm_open(d_ptr->m_ShmPath.toLatin1(), O_RDWR, 0);
+    pimpl_->fd = ::shm_open(pimpl_->path.toLatin1(), O_RDWR, 0);
 
-    if (d_ptr->m_fd < 0) {
-        qWarning() << "could not open shm area" << d_ptr->m_ShmPath
+    if (pimpl_->fd < 0) {
+        qWarning() << "could not open shm area" << pimpl_->path
                    << ", shm_open failed:" << strerror(errno);
         return false;
     }
 
     // Map only header data
     const auto mapSize = sizeof(SHMHeader);
-    d_ptr->m_pShmArea
-        = (SHMHeader*) ::mmap(nullptr, mapSize, PROT_READ | PROT_WRITE, MAP_SHARED, d_ptr->m_fd, 0);
+    pimpl_->shmArea
+        = (SHMHeader*) ::mmap(nullptr, mapSize, PROT_READ | PROT_WRITE, MAP_SHARED, pimpl_->fd, 0);
 
-    if (d_ptr->m_pShmArea == MAP_FAILED) {
+    if (pimpl_->shmArea == MAP_FAILED) {
         qWarning() << "Could not remap shared area";
         return false;
     }
 
-    d_ptr->m_ShmAreaLen = mapSize;
+    pimpl_->shmAreaLen = mapSize;
     return true;
 }
 
-/// Disconnect from the shared memory
 void
 ShmRenderer::stopShm()
 {
-    if (d_ptr->m_fd < 0)
+    if (pimpl_->fd < 0)
         return;
 
-    Video::Renderer::d_ptr->m_isRendering = false;
-
-    if (d_ptr->m_pTimer) {
-        d_ptr->m_pTimer->stop();
-        d_ptr->m_pTimer = nullptr;
-    }
+    pimpl_->timer->stop();
 
     // Emit the signal before closing the file, this lower the risk of invalid
     // memory access
-    emit stopped();
+    Q_EMIT stopped();
 
     {
-        QMutexLocker lk {mutex()};
+        QMutexLocker lk(&pimpl_->mutex);
         // reset the frame so it doesn't point to an old value
-        Video::Renderer::d_ptr->m_pFrame.reset();
+        pimpl_->frame.reset();
     }
 
-    ::close(d_ptr->m_fd);
-    d_ptr->m_fd = -1;
+    ::close(pimpl_->fd);
+    pimpl_->fd = -1;
 
-    if (d_ptr->m_pShmArea == MAP_FAILED)
+    if (pimpl_->shmArea == MAP_FAILED)
         return;
 
-    ::munmap(d_ptr->m_pShmArea, d_ptr->m_ShmAreaLen);
-    d_ptr->m_ShmAreaLen = 0;
-    d_ptr->m_pShmArea = (SHMHeader*) MAP_FAILED;
+    ::munmap(pimpl_->shmArea, pimpl_->shmAreaLen);
+    pimpl_->shmAreaLen = 0;
+    pimpl_->shmArea = (SHMHeader*) MAP_FAILED;
 }
 
-/// Lock the memory while the copy is being made
-bool
-ShmRendererPrivate::shmLock()
-{
-    return ::sem_wait(&m_pShmArea->mutex) >= 0;
-}
-
-/// Remove the lock, allow a new frame to be drawn
-void
-ShmRendererPrivate::shmUnlock()
-{
-    ::sem_post(&m_pShmArea->mutex);
-}
-
-/*****************************************************************************
- *                                                                           *
- *                                   Slots                                   *
- *                                                                           *
- ****************************************************************************/
-
-/// Start the rendering loop
 void
 ShmRenderer::startRendering()
 {
-    QMutexLocker locker {mutex()};
+    QMutexLocker lk(&pimpl_->mutex);
 
-    if (!startShm() || Video::Renderer::d_ptr->m_isRendering)
+    if (!startShm())
         return;
 
-    Video::Renderer::d_ptr->m_isRendering = true;
+    pimpl_->timer->start();
 
-    if (!d_ptr->m_pTimer) {
-        d_ptr->m_pTimer = new QTimer(this);
-        d_ptr->m_pTimer->setInterval(33);
-        connect(d_ptr->m_pTimer, &QTimer::timeout, [this]() { emit this->frameUpdated(); });
-    }
-    // FIXME This is a temporary hack as frameUpdated() is no longer emitted
-    d_ptr->m_pTimer->start();
-
-    emit started();
+    Q_EMIT started();
 }
 
-/// Done on destroy instead
+// Done on destroy instead
 void
 ShmRenderer::stopRendering()
 {}
 
-/*****************************************************************************
- *                                                                           *
- *                                 Getters                                   *
- *                                                                           *
- ****************************************************************************/
+} // namespace video
+} // namespace lrc
 
-/// Get the current frame rate of this renderer
-int
-ShmRenderer::fps() const
-{
-    return d_ptr->m_Fps;
-}
-
-/// Get frame data pointer from shared memory
-lrc::api::video::Frame
-ShmRenderer::currentFrame() const
-{
-    if (not isRendering())
-        return {};
-
-    QMutexLocker lk {mutex()};
-    if (d_ptr->getNewFrame(false)) {
-        if (auto frame_ptr = Video::Renderer::d_ptr->m_pFrame)
-            return std::move(*frame_ptr);
-    }
-    return {};
-}
-
-Video::Renderer::ColorSpace
-ShmRenderer::colorSpace() const
-{
-    return Video::Renderer::ColorSpace::BGRA;
-}
-
-/*****************************************************************************
- *                                                                           *
- *                                 Setters                                   *
- *                                                                           *
- ****************************************************************************/
-
-void
-ShmRenderer::setShmPath(const QString& path)
-{
-    d_ptr->m_ShmPath = path;
-}
-
-} // namespace Video
-
-#include <shmrenderer.moc>
-
-#endif
+#include "moc_shmrenderer.cpp"
+#include "shmrenderer.moc"
