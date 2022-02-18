@@ -118,6 +118,7 @@ using namespace api;
 
 class NewCallModelPimpl : public QObject
 {
+    Q_OBJECT
 public:
     NewCallModelPimpl(const NewCallModel& linked,
                       Lrc& lrc,
