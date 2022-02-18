@@ -288,12 +288,6 @@ public:
                      const video::Settings& settings,
                      const QString& shmPath = {});
 
-    /**
-     * Remove renderer from renderers_
-     * @param id
-     */
-    void removeRenderer(const QString& id);
-
 Q_SIGNALS:
     /**
      * Emitted when a renderer is started

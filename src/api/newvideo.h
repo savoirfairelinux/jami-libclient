@@ -1,43 +1,37 @@
-/****************************************************************************
- *    Copyright (C) 2018-2022 Savoir-faire Linux Inc.                       *
- *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
- *                                                                          *
- *   This library is free software; you can redistribute it and/or          *
- *   modify it under the terms of the GNU Lesser General Public             *
- *   License as published by the Free Software Foundation; either           *
- *   version 2.1 of the License, or (at your option) any later version.     *
- *                                                                          *
- *   This library is distributed in the hope that it will be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU      *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU General Public License      *
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
- ***************************************************************************/
+/*
+ *  Copyright (C) 2018-2022 Savoir-faire Linux Inc.
+ *
+ *  Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>  
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #pragma once
 
-// Std
+#include "typedefs.h"
+
+#include <QObject>
+#include <QThread>
+
 #include <map>
 #include <memory>
 #include <string>
 #include <vector>
 
-// Qt
-#include <qobject.h>
-
-// Lrc
-#include "typedefs.h"
-
-// Qt
-#include <QObject>
-#include <QThread>
-
 struct AVFrame;
 
 namespace lrc {
-
-class RendererPimpl;
 
 namespace api {
 
@@ -63,12 +57,11 @@ using Capabilities = QMap<Channel, ResRateList>;
  */
 struct Frame
 {
-    uint8_t* ptr {nullptr};
-    std::size_t size {0};
+#if defined(ENABLE_LIBWRAP)
+    std::unique_ptr<AVFrame, void (*)(AVFrame*)> storage;
+#else
     std::vector<uint8_t> storage {};
-    // Next variables are currently used with DirectRenderer only
-    unsigned int height {0};
-    unsigned int width {0};
+#endif
 };
 
 enum class DeviceType { CAMERA, DISPLAY, FILE, INVALID };
@@ -94,6 +87,12 @@ struct Settings
     Framerate rate = 0;
     Resolution size = "";
 };
+
+} // namespace video
+} // namespace api
+} // namespace lrc
+
+using namespace lrc::api::video;
 
 class LIB_EXPORT Renderer : public QObject
 {
@@ -126,49 +125,18 @@ public:
      */
     Frame currentFrame() const;
 
-#if defined(ENABLE_LIBWRAP)
-    /**
-     * @return current avframe
-     */
-    std::unique_ptr<AVFrame, void (*)(AVFrame*)> currentAVFrame() const;
-#endif
-
-    /**
-     * @return current size
-     */
     QSize size() const; // TODO convert into std format!
 
-    // Utils
-    /**
-     * set to true to receive AVFrames from render
-     */
-    void useAVFrame(bool useAVFrame);
-
-    bool useDirectRenderer() const;
-
 Q_SIGNALS:
-    /**
-     * Emitted when a new frame is ready
-     * @param id
-     */
     void frameUpdated(const QString& id);
     void started(const QString& id);
     void stopped(const QString& id);
     void frameBufferRequested(const QString& id, AVFrame* avFrame);
 
-    /**
-     * Start rendering
-     */
     void startRendering();
-    /**
-     * Stop rendering
-     */
     void stopRendering();
 
 private:
-    std::unique_ptr<RendererPimpl> pimpl_;
+    struct Impl;
+    std::unique_ptr<Impl> pimpl_;
 };
-
-} // namespace video
-} // namespace api
-} // namespace lrc
