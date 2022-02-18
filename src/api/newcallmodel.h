@@ -29,10 +29,6 @@
 #include <memory>
 #include <map>
 
-namespace Video {
-class Renderer;
-}
-
 namespace lrc {
 
 class CallbacksHandler;

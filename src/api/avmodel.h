@@ -1,34 +1,32 @@
-/****************************************************************************
- *    Copyright (C) 2018-2022 Savoir-faire Linux Inc.                       *
- *   Author: Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>             *
- *   Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>           *
- *                                                                          *
- *   This library is free software; you can redistribute it and/or          *
- *   modify it under the terms of the GNU Lesser General Public             *
- *   License as published by the Free Software Foundation; either           *
- *   version 2.1 of the License, or (at your option) any later version.     *
- *                                                                          *
- *   This library is distributed in the hope that it will be useful,        *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of         *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU      *
- *   Lesser General Public License for more details.                        *
- *                                                                          *
- *   You should have received a copy of the GNU General Public License      *
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.  *
- ***************************************************************************/
+/*
+ *  Copyright (C) 2018-2022 Savoir-faire Linux Inc.
+ *  Author: Hugo Lefeuvre <hugo.lefeuvre@savoirfairelinux.com>
+ *  Author: Sébastien Blin <sebastien.blin@savoirfairelinux.com>
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #pragma once
 
-// std
+#include "api/newvideo.h"
+#include "typedefs.h"
+
+#include <QObject>
+
 #include <memory>
 #include <string>
 #include <vector>
-
-// Qt
-#include <qobject.h>
-
-// LRC
-#include "api/newvideo.h"
-#include "typedefs.h"
 
 namespace lrc {
 
@@ -247,22 +245,11 @@ public:
      */
     Q_INVOKABLE void stopPreview(const QString& resource);
     /**
-     * Get a renderer from a call
-     * @param id the callid or "local"
-     * @return the linked renderer
-     * @throw std::out_of_range if not found
-     */
-    const video::Renderer& getRenderer(const QString& id) const;
-    /**
      * Get the list of available windows ids
      * X11: a id is of the form 0x0000000
      * @return map with windows names and ids
      */
     const QVariantMap getListWindows() const;
-    /**
-     * set to true to receive AVFrames from render
-     */
-    void useAVFrame(bool useAVFrame);
     /**
      * set current using device
      * @param device name
@@ -277,22 +264,16 @@ public:
      * clear current using device
      */
     void clearCurrentVideoCaptureDevice();
-
     /**
-     * Add video::Renderer to renderers_ and start it
+     * Add Renderer to renderers_ and start it
      * @param id
      * @param settings
      * @param shmPath
      */
-    void addRenderer(const QString& id,
-                     const video::Settings& settings,
-                     const QString& shmPath = {});
+    void addRenderer(const QString& id, const QSize& res, const QString& shmPath = {});
 
-    /**
-     * Remove renderer from renderers_
-     * @param id
-     */
-    void removeRenderer(const QString& id);
+    bool hasRenderer(const QString& id);
+    QSize getRendererSize(const QString& id);
 
 Q_SIGNALS:
     /**
@@ -305,6 +286,11 @@ Q_SIGNALS:
      * @param id of the renderer
      */
     void rendererStopped(const QString& id);
+    /**
+     * Emitted when a new frame is requested
+     * @param id
+     */
+    void frameBufferRequested(const QString& id, AVFrame* frame);
     /**
      * Emitted when a new frame is ready
      * @param id
