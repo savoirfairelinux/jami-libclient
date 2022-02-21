@@ -123,7 +123,7 @@
         <location filename="../src/avmodel.cpp" line="347"/>
         <location filename="../src/avmodel.cpp" line="366"/>
         <source>default</source>
-        <translation>padrão</translation>
+        <translation>predefinição</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>

@@ -123,7 +123,7 @@
         <location filename="../src/avmodel.cpp" line="347"/>
         <location filename="../src/avmodel.cpp" line="366"/>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>за замовчуванням</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>
