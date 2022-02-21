@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "176f42a3_f38c3a29",
+        "filename": "src/api/interaction.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 938
+      },
+      "writtenOn": "2022-02-21T21:18:44Z",
+      "side": 1,
+      "message": "Would changing the string to \"%1 blocked\" be an improvement? Thank you",
+      "range": {
+        "startLine": 228,
+        "startChar": 28,
+        "endLine": 228,
+        "endChar": 41
+      },
+      "revId": "0dc44c16453d98ad5d397a3d01267aeb6bfa0ccb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
