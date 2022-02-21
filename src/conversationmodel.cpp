@@ -1392,8 +1392,9 @@ ConversationModel::clearInteractionsCache(const QString& convId)
                 std::lock_guard<std::mutex> lk(pimpl_->interactionsLocks[convId]);
                 conversation.interactions->clear();
             }
-            ConfigurationManager::instance().loadConversationMessages(owner.id, convId, "", 1);
             conversation.allMessagesLoaded = false;
+            conversation.lastMessageUid = "";
+            ConfigurationManager::instance().loadConversationMessages(owner.id, convId, "", 1);
         }
     } catch (const std::out_of_range& e) {
         qDebug() << "can't find interaction from conversation: " << e.what();
