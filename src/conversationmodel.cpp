@@ -2764,8 +2764,11 @@ ConversationModelPimpl::addConversationRequest(const MapStringString& convReques
         return;
     linked.owner.contactModel->addToContacts(peerUri);
 
+    const MapStringString& details = ConfigurationManager::instance()
+                                         .conversationInfos(linked.owner.id, convId);
     conversation::Info conversation;
     conversation.uid = convId;
+    conversation.infos = details;
     conversation.accountId = linked.owner.id;
     conversation.participants = {{linked.owner.profileInfo.uri, member::Role::INVITED},
                                  {peerUri, member::Role::MEMBER}};
