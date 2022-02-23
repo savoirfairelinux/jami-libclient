@@ -813,10 +813,10 @@ ConversationModel::removeConversation(const QString& uid, bool banned)
         return;
     }
     if (conversation.isSwarm()) {
-        ConfigurationManager::instance().removeConversation(owner.id, uid);
-        pimpl_->eraseConversation(conversationIdx);
-        pimpl_->invalidateModel();
-        emit conversationRemoved(uid);
+        if (conversation.isRequest)
+            ConfigurationManager::instance().declineConversationRequest(owner.id, uid);
+        else
+            ConfigurationManager::instance().removeConversation(owner.id, uid);
 
         // Still some other conversation, do nothing else
         if (!banned && getConversationForPeerUri(peers.front()) != std::nullopt)
@@ -1647,23 +1647,6 @@ ConversationModel::acceptConversationRequest(const QString& conversationId)
     pimpl_->invalidateModel();
     emit modelChanged();
     ConfigurationManager::instance().acceptConversationRequest(owner.id, conversationId);
-}
-
-void
-ConversationModel::declineConversationRequest(const QString& conversationId, bool banned)
-{
-    auto conversationOpt = getConversationForUid(conversationId);
-    if (!conversationOpt.has_value()) {
-        return;
-    }
-    auto& conversation = conversationOpt->get();
-    // for non-swarm and one-to-one conversation remove contact.
-    if (conversation.mode == conversation::Mode::ONE_TO_ONE
-        || conversation.mode == conversation::Mode::NON_SWARM) {
-        removeConversation(conversationId, banned);
-    } else {
-        ConfigurationManager::instance().declineConversationRequest(owner.id, conversationId);
-    }
 }
 
 const VectorString
@@ -2560,6 +2543,7 @@ ConversationModelPimpl::slotConversationRemoved(const QString& accountId,
         auto removeConversation = [&]() {
             // remove swarm conversation
             eraseConversation(conversationIndex);
+            invalidateModel();
             Q_EMIT linked.conversationRemoved(conversationId);
         };
 
