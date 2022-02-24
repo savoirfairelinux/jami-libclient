@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bc9022a_e5c062f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2022-02-24T21:28:43Z",
+      "side": 1,
+      "message": "Do not merge before a release with https://review.jami.net/c/jami-project/+/21141 else will break fedora + suse",
+      "revId": "0685b003cbb1316aa09e81eaca435d99640fc1bb",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cac92bf_7579858e",
