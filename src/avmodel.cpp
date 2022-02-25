@@ -854,7 +854,7 @@ createRenderer(const QString& id, const QSize& res, const QString& shmPath = {})
 {
 #ifdef ENABLE_LIBWRAP
     Q_UNUSED(shmPath)
-    return std::make_unique<DirectRenderer>(id, res);
+    return DirectRenderer::CreateInstance(id, res);
 #else
     return std::make_unique<ShmRenderer>(id, res, shmPath);
 #endif

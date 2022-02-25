@@ -29,6 +29,7 @@ using namespace lrc::api::video;
 Renderer::Renderer(const QString& id, const QSize& res)
     : id_(id)
     , size_(res)
+    , QObject(nullptr)
 {}
 
 Renderer::~Renderer() {}

@@ -20,9 +20,6 @@
 
 #include "directrenderer.h"
 
-#include "dbus/videomanager.h"
-#include "videomanager_interface.h"
-
 #include <QMutex>
 
 namespace lrc {
@@ -30,29 +27,30 @@ namespace video {
 
 using namespace lrc::api::video;
 
-struct DirectRenderer::Impl : public QObject
+class DirectRendererImpl_1 : public DirectRenderer
 {
     Q_OBJECT
 public:
-    Impl(DirectRenderer* parent)
-        : QObject(nullptr)
-        , parent_(parent)
+    DirectRendererImpl_1(const QString& sinkId, const QSize& res)
+        : DirectRenderer(sinkId, res)
     {
         configureTarget();
-        VideoManager::instance().registerSinkTarget(parent_->id(), target);
+        VideoManager::instance().registerSinkTarget(id(), getTarget());
     };
-    ~Impl()
+    ~DirectRendererImpl_1()
     {
-        parent_->stopRendering();
-        VideoManager::instance().registerSinkTarget(parent_->id(), {});
+        stopRendering();
+        VideoManager::instance().registerSinkTarget(id(), {});
     }
+
+    DRing::SinkTarget& getTarget() override { return target; }
 
     // sink target callbacks
     void configureTarget()
     {
         using namespace std::placeholders;
-        target.pull = std::bind(&Impl::pullCallback, this, _1);
-        target.push = std::bind(&Impl::pushCallback, this, _1);
+        target.pull = std::bind(&DirectRendererImpl_1::pullCallback, this, _1);
+        target.push = std::bind(&DirectRendererImpl_1::pushCallback, this, _1);
     };
 
     DRing::SinkTarget::FrameBufferPtr pullCallback(std::size_t bytes)
@@ -70,7 +68,7 @@ public:
         // A response to this signal should be used to provide client
         // allocated buffer specs via the AVFrame structure.
         // Important: Subscription to this signal MUST be synchronous(Qt::DirectConnection).
-        Q_EMIT parent_->frameBufferRequested(avframe.get());
+        Q_EMIT frameBufferRequested(avframe.get());
 
         // If no subscription to frameBufferRequested provided avFrame
         // internal buffer, then we provide one.
@@ -95,11 +93,8 @@ public:
             frameBufferPtr = std::move(buf);
         }
 
-        Q_EMIT parent_->frameUpdated();
+        Q_EMIT frameUpdated();
     };
-
-private:
-    DirectRenderer* parent_;
 
 public:
     DRing::SinkTarget target;
@@ -109,7 +104,7 @@ public:
 
 DirectRenderer::DirectRenderer(const QString& id, const QSize& res)
     : Renderer(id, res)
-    , pimpl_(std::make_unique<DirectRenderer::Impl>(this))
+//, pimpl_(std::make_unique<DirectRenderer::Impl>(this))
 {}
 
 DirectRenderer::~DirectRenderer() {}
@@ -131,13 +126,19 @@ DirectRenderer::update(const QSize& res, const QString&)
 {
     Renderer::update(res);
 
-    VideoManager::instance().registerSinkTarget(id(), pimpl_->target);
+    VideoManager::instance().registerSinkTarget(id(), getTarget());
 }
 
 Frame
 DirectRenderer::currentFrame() const
 {
     return {};
+}
+
+std::unique_ptr<DirectRenderer>
+DirectRenderer::CreateInstance(const QString& id, const QSize& res)
+{
+    return std::move(std::make_unique<DirectRendererImpl_1>(id, res));
 }
 
 } // namespace video
