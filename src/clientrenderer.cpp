@@ -60,22 +60,31 @@ public:
         QMutexLocker lk(&mutex);
         if (!frameBufferPtr) {
             frameBufferPtr.reset(new DRing::FrameBuffer);
+            assert(frameBufferPtr);
             frameBufferPtr->avframe.reset(av_frame_alloc());
         }
+
+        auto& avframe = frameBufferPtr->avframe;
+        assert(avframe);
 
         // A response to this signal should be used to provide client
         // allocated buffer specs via the AVFrame structure.
         // Important: Subscription to this signal MUST be synchronous(Qt::DirectConnection).
-        Q_EMIT parent_->frameBufferRequested(frameBufferPtr->avframe.get());
+        Q_EMIT parent_->frameBufferRequested(avframe.get());
 
-        // If no subscription to frameBufferRequested filled avFrame, then
-        // we revert to legacy storage and the use of currentFrame.
-        if (frameBufferPtr->avframe->data[0] == nullptr) {
-            frameBufferPtr->storage.resize(bytes);
-            frameBufferPtr->ptr = frameBufferPtr->storage.data();
-            frameBufferPtr->ptrSize = bytes;
+        // If no subscription to frameBufferRequested provided avFrame
+        // internal buffer, then we provide one.
+        if (avframe->data[0] == nullptr) {
+            if (avframe->width > 0 and avframe->height > 0) {
+                // Alignment is set to 0 to let the ffmpeg decides,
+                // as recommended in the documentation.
+                // TODO. Not thouroughly tested.
+                if (av_frame_get_buffer(avframe.get(), 0) < 0) {
+                    qCritical() << "Failed to allocate AV frame buffer";
+                    return nullptr;
+                }
+            }
         }
-
         return std::move(frameBufferPtr);
     };
 
