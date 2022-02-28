@@ -405,7 +405,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
-        <translation>Csevegés nézet elrejtése</translation>
+        <translation>Csevegés elrejtése</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="31"/>

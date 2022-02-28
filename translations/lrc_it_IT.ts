@@ -405,7 +405,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
-        <translation>Nascondi vista chat</translation>
+        <translation>Nascondi chat</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
