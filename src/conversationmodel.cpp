@@ -2374,6 +2374,13 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
             linked.owner.dataTransferModel->registerTransferId(fileId, msgId);
         } else if (msg.type == interaction::Type::CALL) {
             msg.body = storage::getCallInteractionString(msg.authorUri, msg.duration);
+        } else if (msg.type == interaction::Type::CONTACT) {
+            auto bestName = msg.authorUri == linked.owner.profileInfo.uri
+                                ? linked.owner.accountModel->bestNameForAccount(linked.owner.id)
+                                : linked.owner.contactModel->bestNameForContact(msg.authorUri);
+            msg.body = interaction::getContactInteractionString(bestName,
+                                                                interaction::to_action(
+                                                                    message["action"]));
         } else if (msg.type == interaction::Type::TEXT
                    && msg.authorUri != linked.owner.profileInfo.uri) {
             conversation.unreadMessages++;
@@ -2584,20 +2591,12 @@ ConversationModelPimpl::slotConversationMemberEvent(const QString& accountId,
     if (accountId != linked.owner.id || indexOf(conversationId) < 0) {
         return;
     }
-    switch (event) {
-    case 0: // add
+    if (event == 0 /* add */) {
         // clear search result
         for (unsigned int i = 0; i < searchResults.size(); ++i) {
             if (searchResults.at(i).uid == memberUri)
                 searchResults.erase(searchResults.begin() + i);
         }
-        break;
-    case 1: // joins
-        break;
-    case 2: // leave
-        break;
-    case 3: // banned
-        break;
     }
     // update participants
     auto& conversation = getConversationForUid(conversationId).get();
