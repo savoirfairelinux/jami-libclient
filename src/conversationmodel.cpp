@@ -2374,6 +2374,13 @@ ConversationModelPimpl::slotMessageReceived(const QString& accountId,
             linked.owner.dataTransferModel->registerTransferId(fileId, msgId);
         } else if (msg.type == interaction::Type::CALL) {
             msg.body = storage::getCallInteractionString(msg.authorUri, msg.duration);
+        } else if (msg.type == interaction::Type::CONTACT) {
+            auto bestName = msg.authorUri == linked.owner.profileInfo.uri
+                                ? linked.owner.accountModel->bestNameForAccount(linked.owner.id)
+                                : linked.owner.contactModel->bestNameForContact(msg.authorUri);
+            msg.body = interaction::getContactInteractionString(bestName,
+                                                                interaction::to_action(
+                                                                    message["action"]));
         } else if (msg.type == interaction::Type::TEXT
                    && msg.authorUri != linked.owner.profileInfo.uri) {
             conversation.unreadMessages++;

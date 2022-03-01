@@ -176,7 +176,7 @@ to_status(const QString& status)
         return Status::INVALID;
 }
 
-enum class ContactAction { ADD, JOIN, LEAVE, BANNED, INVALID };
+enum class ContactAction { ADD, JOIN, LEAVE, BANNED, UNBANNED, INVALID };
 Q_ENUM_NS(ContactAction)
 
 static inline const QString
@@ -191,6 +191,8 @@ to_string(const ContactAction& action)
         return "LEAVE";
     case ContactAction::BANNED:
         return "BANNED";
+    case ContactAction::UNBANNED:
+        return "UNBANNED";
     case ContactAction::INVALID:
         return {};
     }
@@ -208,6 +210,8 @@ to_action(const QString& action)
         return ContactAction::LEAVE;
     else if (action == "ban")
         return ContactAction::BANNED;
+    else if (action == "unban")
+        return ContactAction::UNBANNED;
     return ContactAction::INVALID;
 }
 
@@ -226,6 +230,8 @@ getContactInteractionString(const QString& authorUri, const ContactAction& actio
         return QObject::tr("%1 left").arg(authorUri);
     case ContactAction::BANNED:
         return QObject::tr("%1 was kicked").arg(authorUri);
+    case ContactAction::UNBANNED:
+        return QObject::tr("%1 was re-added").arg(authorUri);
     case ContactAction::INVALID:
         return {};
     }
