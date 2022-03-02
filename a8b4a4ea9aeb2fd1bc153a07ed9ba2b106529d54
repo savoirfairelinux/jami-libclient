@@ -16,6 +16,24 @@
       "message": "we should not use WIN32, we do not even support 32-bit. I guess we may use _WINDOWS instead.",
       "revId": "a8b4a4ea9aeb2fd1bc153a07ed9ba2b106529d54",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cee28b5_f84c419f",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 8
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2022-03-02T15:40:29Z",
+      "side": 1,
+      "message": "No this is okay. Thanks to some unforeseen consequences in early Windows API development, WIN32(at least within a CMake script) generally refers to \"native Windows\" regardless of bitness(https://stackoverflow.com/a/6679822).\nIn c/c++, backward compatibility is maintained by defining WIN32 macros on 64-bit platforms as well. So you\u0027ll often see:\n```\n#if defined(_WIN64)\n    /* Microsoft Windows (64-bit) */\n#elif defined(_WIN32)\n    /* Microsoft Windows (32-bit) */\n#endif\n```\n\n_WINDOWS and Qt\u0027s Q_OS_WIN are defined as aggregations of\n```\nWIN32, _WIN32, __WIN32__, WIN64, _WIN64, __WIN64__, etc.\n```",
+      "parentUuid": "85dc50f7_9cfa7afc",
+      "revId": "a8b4a4ea9aeb2fd1bc153a07ed9ba2b106529d54",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
