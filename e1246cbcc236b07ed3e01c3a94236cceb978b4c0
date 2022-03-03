@@ -1,0 +1,237 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c234a47_eb5d9a31",
+        "filename": "src/api/video.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "you can add yourself as author",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd38e861_5ad35b27",
+        "filename": "src/api/video.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "the destructor is never used.",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "626254db_cea5adaf",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "already included video namespace in line 60: \nusing namespace lrc::video;",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3db7158e_313fed29",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "same",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98c74f0a_b4ace973",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "I know it was there, but why this condition ?",
+      "range": {
+        "startLine": 300,
+        "startChar": 56,
+        "endLine": 300,
+        "endChar": 86
+      },
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20a37695_69ac7b87",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "clean up",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82fcd1a5_095284e1",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "same",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b10864ec_894fe88d",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "should be removed (next iteration ?)",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3542b527_3c04c8b2",
+        "filename": "src/avmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "already in scope",
+      "range": {
+        "startLine": 793,
+        "startChar": 49,
+        "endLine": 793,
+        "endChar": 59
+      },
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f146b50b_752325b4",
+        "filename": "src/clientrenderer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "add author",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db1f4dee_5ed42255",
+        "filename": "src/clientrenderer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "May a minor thing, but I think it would be best if the file and class name match. May it\u0027s not an explicit rule, but I believe that we should follow.\nEither rename the file to directrender, or rename the class to clientrender (and the header file too).",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "467fe1f7_617a1868",
+        "filename": "src/clientrenderer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "should not be needed any more",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a74dcfc_29402d12",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1610,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-03T21:09:57Z",
+      "side": 1,
+      "message": "I am very familiar with Qt style, is it a common practice to include the moc file ?",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
