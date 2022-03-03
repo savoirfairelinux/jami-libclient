@@ -232,6 +232,24 @@
       "message": "I am very familiar with Qt style, is it a common practice to include the moc file ?",
       "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d351694_61846019",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1610,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2022-03-03T21:30:05Z",
+      "side": 1,
+      "message": "This guarantees that make will run the moc before it compiles this file and yes it\u0027s common",
+      "parentUuid": "6a74dcfc_29402d12",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
