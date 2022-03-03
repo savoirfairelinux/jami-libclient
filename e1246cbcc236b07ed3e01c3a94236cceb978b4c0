@@ -392,6 +392,24 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7fd3220_3cc39d87",
+        "filename": "src/clientrenderer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2022-03-03T21:50:24Z",
+      "side": 1,
+      "message": "done more or less in patchset 15",
+      "parentUuid": "db1f4dee_5ed42255",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "467fe1f7_617a1868",

@@ -16,6 +16,24 @@
       "message": "IMHO, lambda should be preferred over bind:\ntarget.pull \u003d [this] (std::size_t bytes) {\n     return pullCallback(bytes);\n};\n\nBut I know, it might be subjective.",
       "revId": "560c6750e170b901b0080ebaa7589e5545c25358",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e13c7ea_b369ca5b",
+        "filename": "src/clientrenderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2022-03-03T21:50:24Z",
+      "side": 1,
+      "message": "reasoning?",
+      "parentUuid": "e5e5bb33_dabc0128",
+      "revId": "560c6750e170b901b0080ebaa7589e5545c25358",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
