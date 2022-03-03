@@ -328,6 +328,24 @@
       "parentUuid": "6d351694_61846019",
       "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49b4de31_2b0da61a",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1610,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2022-03-03T21:41:05Z",
+      "side": 1,
+      "message": "and necessary here due to the Q_Object definition in the .cpp so meta compilation must be executed on this file",
+      "parentUuid": "da52dc03_85a99a62",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
