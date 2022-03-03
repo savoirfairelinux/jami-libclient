@@ -16,6 +16,24 @@
       "message": "Empty file ?",
       "revId": "5d0444be9e0e6fd97f8c77a7561b57e33171aab2",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ecd32bd_2a243b34",
+        "filename": "src/avframerenderer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2022-03-03T21:37:26Z",
+      "side": 0,
+      "message": "removed in patchset 15",
+      "parentUuid": "ed4af028_caf724e4",
+      "revId": "5d0444be9e0e6fd97f8c77a7561b57e33171aab2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
