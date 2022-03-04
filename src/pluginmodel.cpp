@@ -249,6 +249,3 @@ PluginModel::resetPluginPreferencesValues(const QString& path)
 }
 
 } // namespace lrc
-
-#include "api/moc_pluginmodel.cpp"
-#include "pluginmodel.moc"
