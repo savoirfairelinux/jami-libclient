@@ -52,6 +52,24 @@
       "parentUuid": "5e13c7ea_b369ca5b",
       "revId": "560c6750e170b901b0080ebaa7589e5545c25358",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d042404c_cd7f7ec8",
+        "filename": "src/clientrenderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2022-03-04T18:54:30Z",
+      "side": 1,
+      "message": "Reasonable but this can be revised in another change.",
+      "parentUuid": "59272ef9_bc53dccd",
+      "revId": "560c6750e170b901b0080ebaa7589e5545c25358",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
