@@ -34,6 +34,24 @@
       "parentUuid": "e5e5bb33_dabc0128",
       "revId": "560c6750e170b901b0080ebaa7589e5545c25358",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59272ef9_bc53dccd",
+        "filename": "src/clientrenderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-04T14:58:07Z",
+      "side": 1,
+      "message": "I think this article summarizes well: https://abseil.io/tips/108",
+      "parentUuid": "5e13c7ea_b369ca5b",
+      "revId": "560c6750e170b901b0080ebaa7589e5545c25358",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }

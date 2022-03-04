@@ -532,6 +532,24 @@
       "parentUuid": "da52dc03_85a99a62",
       "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "140e7031_c0fda46e",
+        "filename": "src/newcallmodel.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1610,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-04T14:58:07Z",
+      "side": 1,
+      "message": "I meant \"I am not familiar ...\"\nThanks for the explanation.",
+      "parentUuid": "49b4de31_2b0da61a",
+      "revId": "e1246cbcc236b07ed3e01c3a94236cceb978b4c0",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
