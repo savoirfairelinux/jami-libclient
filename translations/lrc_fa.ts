@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>خب</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>لغو شده</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="75"/>
@@ -638,7 +638,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="1011"/>
         <source>Couldn&apos;t lookup…</source>
-        <translation type="unfinished"/>
+        <translation>ناتوانی در جستجو…</translation>
     </message>
 </context>
 <context>

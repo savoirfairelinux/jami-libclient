@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation>Në rregull</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>

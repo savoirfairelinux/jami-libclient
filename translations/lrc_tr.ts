@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>OK</source>
-        <translation>TAMAM</translation>
+        <translation>Tamam</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
@@ -445,7 +445,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation>En sondakine git</translation>
+        <translation>Görüşmenin sonuna kaydır</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>

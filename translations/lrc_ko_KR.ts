@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>확인</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
@@ -445,7 +445,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>대화의 끝으로 스크롤</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>취소됨</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="75"/>

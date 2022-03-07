@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>ശരി</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
@@ -445,7 +445,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>സംഭാഷണത്തിന്‍റെ അവസാനത്തിലേക്ക് സ്‌ക്രോൾ ചെയ്യുക</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>റദ്ദാക്കി</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="75"/>

@@ -445,7 +445,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Gulir ke akhir percakapan</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>Dibatalkan</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="75"/>

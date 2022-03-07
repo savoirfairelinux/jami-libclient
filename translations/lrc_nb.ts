@@ -445,7 +445,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation>Hopp til siste</translation>
+        <translation>Bla til slutten av samtalen</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
@@ -545,7 +545,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="58"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
-        <translation>Merk, du aksepterer automatisk denne invitasjonen ved å sende en melding.</translation>
+        <translation>Merk deg: Ved å sende en melding takker du automatisk ja til denne invitasjonen.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>

@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>Ceart go leor</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>Cealaithe</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="75"/>
