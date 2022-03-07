@@ -445,7 +445,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation>Vai all&apos;ultimo</translation>
+        <translation>Vai alla fine della conversazione</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>

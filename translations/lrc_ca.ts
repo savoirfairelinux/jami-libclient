@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>Cancel·lada</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="75"/>

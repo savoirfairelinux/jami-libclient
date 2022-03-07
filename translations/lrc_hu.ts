@@ -445,7 +445,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation>Ugrás a legújabbra</translation>
+        <translation>Görgetés a beszélgetés végére</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
-        <translation>Törölve</translation>
+        <translation>Megszakítva</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="75"/>

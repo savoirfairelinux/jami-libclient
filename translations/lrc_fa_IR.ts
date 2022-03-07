@@ -638,7 +638,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="1011"/>
         <source>Couldn&apos;t lookup…</source>
-        <translation>ناتوانی در جستجو...</translation>
+        <translation>ناتوانی در جستجو…</translation>
     </message>
 </context>
 <context>

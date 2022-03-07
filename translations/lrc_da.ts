@@ -445,7 +445,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Rul til slutning af samtale</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="si" sourcelanguage="en">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sw" sourcelanguage="en">
 <context>
     <name>QObject</name>
     <message>
@@ -123,7 +123,7 @@
         <location filename="../src/avmodel.cpp" line="347"/>
         <location filename="../src/avmodel.cpp" line="366"/>
         <source>default</source>
-        <translation>පෙරනිමිය</translation>
+        <translation>chaguo-msingi</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="58"/>
@@ -158,7 +158,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>OK</source>
-        <translation>හරි</translation>
+        <translation>Sawa</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
@@ -450,7 +450,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Send file</source>
-        <translation>ගොනුව යවන්න</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
@@ -565,7 +565,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
-        <translation>අවලංගු කළා</translation>
+        <translation>Imeghairiwa</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="75"/>
