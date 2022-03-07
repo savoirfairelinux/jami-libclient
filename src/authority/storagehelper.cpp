@@ -380,26 +380,29 @@ buildContactFromProfile(const QString& accountId,
     auto accountLocalPath = getPath() + accountId + "/";
     QString b64filePath;
     b64filePath = profileVcardPath(accountId, peer_uri);
-    QFile file(b64filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
+    auto binaryInMode = std::ios::in | std::ios::binary;
+    std::ifstream in(b64filePath.toStdString(), binaryInMode);
+    if (!in.is_open()) {
         // try non-base64 path
         QString filePath = accountLocalPath + "profiles/" + peer_uri + ".vcf";
-        file.setFileName(filePath);
-        if (!file.open(QIODevice::ReadOnly)) {
+        in.open(filePath.toStdString(), binaryInMode);
+        if (!in.is_open()) {
             qWarning().noquote() << "Can't open file: " << filePath;
             return {profileInfo, "", true, false};
         }
         // rename it
         qWarning().noquote() << "Renaming profile: " << filePath;
-        file.rename(b64filePath);
+        std::ignore = std::rename(filePath.toStdString().c_str(), b64filePath.toStdString().c_str());
         // reopen it
-        if (!file.open(QIODevice::ReadOnly)) {
+        in.open(b64filePath.toStdString(), binaryInMode);
+        if (!in.is_open()) {
             qWarning().noquote() << "Can't open file: " << b64filePath;
             return {profileInfo, "", true, false};
         }
+        return {profileInfo, "", true, false};
     }
-    QTextStream in(&file);
-    QByteArray vcard = in.readAll().toUtf8();
+    std::vector<char> bytes(std::istreambuf_iterator<char>(in), {});
+    auto vcard = QByteArray::fromRawData(bytes.data(), bytes.size());
     const auto vCard = lrc::vCard::utils::toHashMap(vcard);
     const auto alias = vCard[vCard::Property::FORMATTED_NAME];
     if (lrc::api::Lrc::cacheAvatars.load()) {
@@ -421,11 +424,13 @@ avatar(const QString& accountId, const QString& contactId)
     QString b64filePath;
     b64filePath = profileVcardPath(accountId, contactId);
     QFile file(b64filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
+
+    std::ifstream in(b64filePath.toStdString(), std::ios::binary);
+    if (!in.is_open()) {
         return {};
     }
-    QTextStream in(&file);
-    QByteArray vcard = in.readAll().toUtf8();
+    std::vector<char> bytes(std::istreambuf_iterator<char>(in), {});
+    auto vcard = QByteArray::fromRawData(bytes.data(), bytes.size());
     const auto vCard = lrc::vCard::utils::toHashMap(vcard);
     for (const auto& key : vCard.keys()) {
         if (key.contains("PHOTO"))
@@ -433,7 +438,6 @@ avatar(const QString& accountId, const QString& contactId)
     }
     return {};
 }
-
 
 VectorString
 getAllConversations(Database& db)
