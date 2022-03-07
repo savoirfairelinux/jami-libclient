@@ -398,8 +398,10 @@ buildContactFromProfile(const QString& accountId,
             return {profileInfo, "", true, false};
         }
     }
-    QTextStream in(&file);
-    QByteArray vcard = in.readAll().toUtf8();
+    QDataStream in(&file);
+    QByteArray vcard;
+    vcard.resize(file.size());
+    in.readRawData(vcard.data(), file.size());
     const auto vCard = lrc::vCard::utils::toHashMap(vcard);
     const auto alias = vCard[vCard::Property::FORMATTED_NAME];
     if (lrc::api::Lrc::cacheAvatars.load()) {
@@ -424,8 +426,10 @@ avatar(const QString& accountId, const QString& contactId)
     if (!file.open(QIODevice::ReadOnly)) {
         return {};
     }
-    QTextStream in(&file);
-    QByteArray vcard = in.readAll().toUtf8();
+    QDataStream in(&file);
+    QByteArray vcard;
+    vcard.resize(file.size());
+    in.readRawData(vcard.data(), file.size());
     const auto vCard = lrc::vCard::utils::toHashMap(vcard);
     for (const auto& key : vCard.keys()) {
         if (key.contains("PHOTO"))
@@ -433,7 +437,6 @@ avatar(const QString& accountId, const QString& contactId)
     }
     return {};
 }
-
 
 VectorString
 getAllConversations(Database& db)
