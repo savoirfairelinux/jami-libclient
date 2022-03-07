@@ -298,8 +298,7 @@ setProfile(const QString& accountId, const api::profile::Info& profileInfo, cons
         qWarning().noquote() << "Can't open file for writing: " << file.fileName();
         return;
     }
-    QTextStream in(&file);
-    in << vcard;
+    QTextStream(&file) << vcard;
     file.close();
     lf.unlock();
 }
@@ -361,8 +360,7 @@ getAccountAvatar(const QString& accountId)
         qWarning() << "Can't open file: " << filePath;
         return {};
     }
-    QTextStream in(&file);
-    const auto vCard = lrc::vCard::utils::toHashMap(in.readAll().toUtf8());
+    const auto vCard = lrc::vCard::utils::toHashMap(file.readAll());
     const auto photo = (vCard.find(vCard::Property::PHOTO_PNG) == vCard.end())
                            ? vCard[vCard::Property::PHOTO_JPEG]
                            : vCard[vCard::Property::PHOTO_PNG];
@@ -398,9 +396,7 @@ buildContactFromProfile(const QString& accountId,
             return {profileInfo, "", true, false};
         }
     }
-    QTextStream in(&file);
-    QByteArray vcard = in.readAll().toUtf8();
-    const auto vCard = lrc::vCard::utils::toHashMap(vcard);
+    const auto vCard = lrc::vCard::utils::toHashMap(file.readAll());
     const auto alias = vCard[vCard::Property::FORMATTED_NAME];
     if (lrc::api::Lrc::cacheAvatars.load()) {
         for (const auto& key : vCard.keys()) {
@@ -424,16 +420,13 @@ avatar(const QString& accountId, const QString& contactId)
     if (!file.open(QIODevice::ReadOnly)) {
         return {};
     }
-    QTextStream in(&file);
-    QByteArray vcard = in.readAll().toUtf8();
-    const auto vCard = lrc::vCard::utils::toHashMap(vcard);
+    const auto vCard = lrc::vCard::utils::toHashMap(file.readAll());
     for (const auto& key : vCard.keys()) {
         if (key.contains("PHOTO"))
             return vCard[key];
     }
     return {};
 }
-
 
 VectorString
 getAllConversations(Database& db)
