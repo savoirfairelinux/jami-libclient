@@ -3,7 +3,7 @@
  *  Author: Alexandre Lision <alexandre.lision@savoirfairelinux.com>
  *  Author: Guillaume Roguez <guillaume.roguez@savoirfairelinux.com>
  *  Author: Andreas Traczyk <andreas.traczyk@savoirfairelinux.com>
- * 
+ *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
  *  License as published by the Free Software Foundation; either
@@ -67,6 +67,10 @@ public:
         // allocated buffer specs via the AVFrame structure.
         // Important: Subscription to this signal MUST be synchronous(Qt::DirectConnection).
         Q_EMIT parent_->frameBufferRequested(frameBufferPtr->avframe.get());
+
+        if (frameBufferPtr->avframe->data[0] == nullptr) {
+            return nullptr;
+        }
 
         return std::move(frameBufferPtr);
     };
