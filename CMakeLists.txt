@@ -536,21 +536,22 @@ IF(NOT ${ENABLE_STATIC} MATCHES false)
     )
 ENDIF()
 
-# For avframe dependency on Windows/macOS.
-if(NOT DEFINED LIBAV_INCLUDE_PATH)
-   set(LIBJAMI_CONTRIB_DIR "${PROJECT_SOURCE_DIR}/../daemon/contrib/")
-   if(WIN32)
-      set(LIBAV_INCLUDE_PATH ${LIBJAMI_CONTRIB_DIR}/build/ffmpeg/Build/win32/x64/include/)
-   else()
-      set(LIBAV_INCLUDE_PATH ${LIBJAMI_CONTRIB_DIR}/native/ffmpeg)
-   endif()
-endif()
-include_directories(${LIBAV_INCLUDE_PATH})
-
 if (ENABLE_SHARED)
     message(STATUS "Configuring as shared lib")
     add_library(ringclient SHARED ${libringclient_LIB_SRCS} ${libringclient_api_LIB_HDRS} ${LIB_HEADER_MOC} )
     target_link_libraries(ringclient Qt::Core Qt::Gui)
+endif()
+
+# For libavutil/avframe.
+set(LIBJAMI_CONTRIB_DIR "${PROJECT_SOURCE_DIR}/../daemon/contrib")
+find_path(AVUTIL_INCLUDE_DIR libavutil/avutil.h
+   PATHS
+   ${LIBJAMI_CONTRIB_DIR}/native/ffmpeg
+   ${LIBJAMI_CONTRIB_DIR}/build/ffmpeg/Build/win32/x64/include)
+if(ENABLE_SHARED)
+   target_include_directories(ringclient PRIVATE ${AVUTIL_INCLUDE_DIR})
+elseif(${ENABLE_STATIC} MATCHES true)
+   target_include_directories(ringclient_static PRIVATE ${AVUTIL_INCLUDE_DIR})
 endif()
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
