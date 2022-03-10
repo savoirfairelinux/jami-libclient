@@ -81,7 +81,9 @@ public Q_SLOTS: // METHODS
 
     bool getPluginsEnabled();
 
-    VectorMapStringString getPluginPreferences(const QString& path, const QString& accountId);
+    VectorMapStringString getPluginPreferences(const QString& path,
+                                               const QString& accountId,
+                                               const QString& lang);
 
     bool setPluginPreference(const QString& path,
                              const QString& accountId,

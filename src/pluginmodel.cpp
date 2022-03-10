@@ -221,9 +221,9 @@ PluginModel::getChatHandlerDetails(const QString& chatHandlerId)
 }
 
 VectorMapStringString
-PluginModel::getPluginPreferences(const QString& path, const QString& accountId)
+PluginModel::getPluginPreferences(const QString& path, const QString& accountId, const QString& lang)
 {
-    return PluginManager::instance().getPluginPreferences(path, accountId);
+    return PluginManager::instance().getPluginPreferences(path, accountId, lang);
 }
 
 bool

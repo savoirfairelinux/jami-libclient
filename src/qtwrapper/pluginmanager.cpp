@@ -130,10 +130,14 @@ PluginManagerInterface::getPluginsEnabled()
 }
 
 VectorMapStringString
-PluginManagerInterface::getPluginPreferences(const QString& path, const QString& accountId)
+PluginManagerInterface::getPluginPreferences(const QString& path,
+                                             const QString& accountId,
+                                             const QString& lang)
 {
     VectorMapStringString temp;
-    for (auto x : DRing::getPluginPreferences(path.toStdString(), accountId.toStdString())) {
+    for (auto x : DRing::getPluginPreferences(path.toStdString(),
+                                              accountId.toStdString(),
+                                              lang.toStdString())) {
         temp.push_back(convertMap(x));
     }
     return temp;
