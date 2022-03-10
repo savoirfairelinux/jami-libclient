@@ -157,7 +157,7 @@ public:
      * Get preferences map of installed plugin
      * @return Plugin preferences infos vector
      */
-    Q_INVOKABLE VectorMapStringString getPluginPreferences(const QString& path);
+    Q_INVOKABLE VectorMapStringString getPluginPreferences(const QString& path, const QString& lang);
 
     /**
      * Modify preference of installed plugin

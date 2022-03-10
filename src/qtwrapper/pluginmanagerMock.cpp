@@ -121,7 +121,7 @@ PluginManagerInterface::getPluginsEnabled()
 }
 
 VectorMapStringString
-PluginManagerInterface::getPluginPreferences(const QString& path)
+PluginManagerInterface::getPluginPreferences(const QString& path, const QString& lang)
 {
     return {};
 }
