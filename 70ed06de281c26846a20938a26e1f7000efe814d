@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3696a9a4_aaa72df8",
+        "filename": "CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2022-03-10T23:02:35Z",
+      "side": 1,
+      "message": "this will be ok for system ones, but if we want to include from contrib, it should get ../daemon/contrib as it will not be in the default path, but in daemon\u0027s contrib",
+      "range": {
+        "startLine": 549,
+        "startChar": 20,
+        "endLine": 554,
+        "endChar": 31
+      },
+      "revId": "70ed06de281c26846a20938a26e1f7000efe814d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
