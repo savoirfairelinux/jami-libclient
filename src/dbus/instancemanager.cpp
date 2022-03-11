@@ -29,14 +29,15 @@
 #include "../interfaces/dbuserrorhandleri.h"
 
 InstanceManagerInterface&
-InstanceManager::instance(bool muteDring)
+InstanceManager::instance(bool muteDring, const QString& logPath)
 {
 #ifdef ENABLE_LIBWRAP
-    static auto interface = new InstanceManagerInterface(muteDring);
+    static auto interface = new InstanceManagerInterface(muteDring, logPath);
 #else
     if (!dbus_metaTypeInit)
         registerCommTypes();
     Q_UNUSED(muteDring)
+    Q_UNUSED(logPath)
 
     static auto interface = new InstanceManagerInterface("cx.ring.Ring",
                                                          "/cx/ring/Ring/Instance",

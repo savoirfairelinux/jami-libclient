@@ -38,7 +38,7 @@ class InstanceManagerInterface : public QObject
 {
     Q_OBJECT
 public:
-    InstanceManagerInterface(bool muteDring = false);
+    InstanceManagerInterface(bool muteDring = false, const QString& logPath = {});
     ~InstanceManagerInterface();
 
     // TODO: These are not present in jami.h

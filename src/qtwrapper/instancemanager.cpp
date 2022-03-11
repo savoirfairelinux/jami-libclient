@@ -27,7 +27,7 @@
 
 static int ringFlags = 0;
 
-InstanceManagerInterface::InstanceManagerInterface(bool muteDring)
+InstanceManagerInterface::InstanceManagerInterface(bool muteDring, const QString& logPath)
 {
     using namespace std::placeholders;
 
@@ -60,6 +60,8 @@ InstanceManagerInterface::InstanceManagerInterface(bool muteDring)
     registerSignalHandlers(VideoManager::instance().videoHandlers);
 #endif
     registerSignalHandlers(ConfigurationManager::instance().conversationsHandlers);
+
+    DRing::logging("file", logPath.toStdString().c_str());
 
     if (!DRing::start())
         printf("Error initializing daemon\n");

@@ -32,6 +32,6 @@
 
 namespace InstanceManager {
 
-LIB_EXPORT InstanceManagerInterface& instance(bool muteDring = false);
+LIB_EXPORT InstanceManagerInterface& instance(bool muteDring = false, const QString& logPath = {});
 
 }

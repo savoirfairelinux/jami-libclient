@@ -600,6 +600,8 @@ public Q_SLOTS: // METHODS
 
     void monitor(bool continuous) { DRing::monitor(continuous); }
 
+    void setFileLogging(const QString& filePath) { DRing::logging("file", filePath.toStdString()); }
+
     void removeAccount(const QString& accountID) { DRing::removeAccount(accountID.toStdString()); }
 
     bool changeAccountPassword(const QString& id,

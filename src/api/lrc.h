@@ -47,7 +47,10 @@ public:
      * @param willMigrateCb
      * @param didMigrateCb
      */
-    Lrc(MigrationCb willMigrateCb = {}, MigrationCb didMigrateCb = {}, bool muteDring = false);
+    Lrc(MigrationCb willMigrateCb = {},
+        MigrationCb didMigrateCb = {},
+        bool muteDring = false,
+        const QString& logPath = {});
     ~Lrc();
     /**
      * get a reference on account model.
@@ -123,6 +126,11 @@ public:
      * Make monitor continous or discrete
      */
     static void monitor(bool continous);
+
+    /**
+     * Set logger to target a specified file.
+     */
+    static void setFileLogging(const QString& path = {});
 
 private:
     std::unique_ptr<LrcPimpl> lrcPimpl_;

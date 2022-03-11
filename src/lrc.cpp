@@ -65,7 +65,10 @@ public:
     std::unique_ptr<PluginModel> PluginModel_;
 };
 
-Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb, bool muteDring)
+Lrc::Lrc(MigrationCb willDoMigrationCb,
+         MigrationCb didDoMigrationCb,
+         bool muteDring,
+         const QString& logPath)
 {
     lrc::api::Lrc::holdConferences.store(true);
 #ifndef ENABLE_LIBWRAP
@@ -79,7 +82,7 @@ Lrc::Lrc(MigrationCb willDoMigrationCb, MigrationCb didDoMigrationCb, bool muteD
 #endif
     // Ensure Daemon is running/loaded (especially on non-DBus platforms)
     // before instantiating LRC and its members
-    InstanceManager::instance(muteDring);
+    InstanceManager::instance(muteDring, logPath);
     lrcPimpl_ = std::make_unique<LrcPimpl>(*this, willDoMigrationCb, didDoMigrationCb);
 }
 
@@ -230,6 +233,12 @@ void
 Lrc::monitor(bool continuous)
 {
     ConfigurationManager::instance().monitor(continuous);
+}
+
+void
+Lrc::setFileLogging(const QString& path)
+{
+    ConfigurationManager::instance().setFileLogging(path);
 }
 
 LrcPimpl::LrcPimpl(Lrc& linked, MigrationCb& willMigrateCb, MigrationCb& didMigrateCb)
