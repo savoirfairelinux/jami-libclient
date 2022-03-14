@@ -72,7 +72,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="218"/>
         <location filename="../src/authority/storagehelper.cpp" line="197"/>
-        <location filename="../src/authority/storagehelper.cpp" line="962"/>
+        <location filename="../src/authority/storagehelper.cpp" line="955"/>
         <source>Invitation received</source>
         <translation>Invitație primită</translation>
     </message>
@@ -84,14 +84,14 @@
     <message>
         <location filename="../src/api/interaction.h" line="216"/>
         <location filename="../src/authority/storagehelper.cpp" line="194"/>
-        <location filename="../src/authority/storagehelper.cpp" line="960"/>
+        <location filename="../src/authority/storagehelper.cpp" line="953"/>
         <source>Contact added</source>
         <translation>Contact adăugat</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="171"/>
         <location filename="../src/authority/storagehelper.cpp" line="177"/>
-        <location filename="../src/authority/storagehelper.cpp" line="958"/>
+        <location filename="../src/authority/storagehelper.cpp" line="951"/>
         <source>Outgoing call</source>
         <translation>Apel efectuat</translation>
     </message>
@@ -103,7 +103,7 @@
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="179"/>
-        <location filename="../src/authority/storagehelper.cpp" line="956"/>
+        <location filename="../src/authority/storagehelper.cpp" line="949"/>
         <source>Missed outgoing call</source>
         <translation>Apel efectuat nepreluat</translation>
     </message>
@@ -115,290 +115,290 @@
     <message>
         <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="199"/>
-        <location filename="../src/authority/storagehelper.cpp" line="964"/>
+        <location filename="../src/authority/storagehelper.cpp" line="957"/>
         <source>Invitation accepted</source>
         <translation>Invitație acceptată</translation>
     </message>
     <message>
-        <location filename="../src/avmodel.cpp" line="347"/>
-        <location filename="../src/avmodel.cpp" line="366"/>
+        <location filename="../src/avmodel.cpp" line="348"/>
+        <location filename="../src/avmodel.cpp" line="367"/>
         <source>default</source>
         <translation>implicit</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="58"/>
+        <location filename="../src/newcallmodel.cpp" line="59"/>
         <source>Null</source>
         <translation>Nul</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="59"/>
+        <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Trying</source>
         <translation>Probă</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="60"/>
+        <location filename="../src/newcallmodel.cpp" line="61"/>
         <source>Ringing</source>
         <translation>Sună</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="61"/>
+        <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Being Forwarded</source>
         <translation>Se trimite</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="62"/>
+        <location filename="../src/newcallmodel.cpp" line="63"/>
         <source>Queued</source>
         <translation>În așteptare</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="63"/>
+        <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>Progress</source>
         <translation>În curs</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="64"/>
+        <location filename="../src/newcallmodel.cpp" line="65"/>
         <source>OK</source>
         <translation>Bine</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
-        <location filename="../src/newcallmodel.cpp" line="65"/>
+        <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>Accepted</source>
         <translation>Aceptat</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="66"/>
+        <location filename="../src/newcallmodel.cpp" line="67"/>
         <source>Multiple Choices</source>
         <translation>Alegeri multiple</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="67"/>
+        <location filename="../src/newcallmodel.cpp" line="68"/>
         <source>Moved Permanently</source>
         <translation>Mutat permanent</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="68"/>
+        <location filename="../src/newcallmodel.cpp" line="69"/>
         <source>Moved Temporarily</source>
         <translation>Mutat temporar</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="69"/>
+        <location filename="../src/newcallmodel.cpp" line="70"/>
         <source>Use Proxy</source>
         <translation>Folosește Proxy</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="70"/>
+        <location filename="../src/newcallmodel.cpp" line="71"/>
         <source>Alternative Service</source>
         <translation>Serviciu alternativ</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="71"/>
+        <location filename="../src/newcallmodel.cpp" line="72"/>
         <source>Bad Request</source>
         <translation>Cerere greșită</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="72"/>
+        <location filename="../src/newcallmodel.cpp" line="73"/>
         <source>Unauthorized</source>
         <translation>Neautorizat</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="73"/>
+        <location filename="../src/newcallmodel.cpp" line="74"/>
         <source>Payment Required</source>
         <translation>Plată obligatorie</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="74"/>
+        <location filename="../src/newcallmodel.cpp" line="75"/>
         <source>Forbidden</source>
         <translation>Interzis</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="75"/>
+        <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Not Found</source>
         <translation>Nu a fost găsit</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="76"/>
+        <location filename="../src/newcallmodel.cpp" line="77"/>
         <source>Method Not Allowed</source>
         <translation>Metodă nepermisă</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="77"/>
-        <location filename="../src/newcallmodel.cpp" line="97"/>
+        <location filename="../src/newcallmodel.cpp" line="78"/>
+        <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Not Acceptable</source>
         <translation>Inacceptabil</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="78"/>
+        <location filename="../src/newcallmodel.cpp" line="79"/>
         <source>Proxy Authentication Required</source>
         <translation>Autentificare pentru Proxy</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="79"/>
+        <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Request Timeout</source>
         <translation>Timpul a expirat</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="80"/>
+        <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Gone</source>
         <translation>Indisponibil</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="81"/>
+        <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Request Entity Too Large</source>
         <translation>Elementul cerut este prea mare</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="82"/>
+        <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Request URI Too Long</source>
         <translation>URI-ul cerut este prea lung</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="83"/>
+        <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Unsupported Media Type</source>
         <translation>Tip de media neacceptat</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="84"/>
+        <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Unsupported URI Scheme</source>
         <translation>Schemă URI neacceptată</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="85"/>
+        <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Bad Extension</source>
         <translation>Extensie greșită</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="86"/>
+        <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Extension Required</source>
         <translation>Extensie necesară</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="87"/>
+        <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Session Timer Too Small</source>
         <translation>Timpul sesiunii este prea scurt</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="88"/>
+        <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Interval Too Brief</source>
         <translation>Interval prea scurt</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="89"/>
+        <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Temporarily Unavailable</source>
         <translation>Temporar indisponibil</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="90"/>
+        <location filename="../src/newcallmodel.cpp" line="91"/>
         <source>Call TSX Does Not Exist</source>
         <translation>Apelul TSX nu există</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="91"/>
+        <location filename="../src/newcallmodel.cpp" line="92"/>
         <source>Loop Detected</source>
         <translation>Loop descoperit</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="92"/>
+        <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Too Many Hops</source>
         <translation>Prea multe Hop-uri</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="93"/>
+        <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Address Incomplete</source>
         <translation>Adresă incompletă</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="94"/>
+        <location filename="../src/newcallmodel.cpp" line="95"/>
         <source>Ambiguous</source>
         <translation>Neclar</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="95"/>
+        <location filename="../src/newcallmodel.cpp" line="96"/>
         <source>Busy</source>
         <translation>Ocupat</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="96"/>
+        <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Request Terminated</source>
         <translation>Cerere terminată</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="98"/>
+        <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Bad Event</source>
         <translation>Eveniment greșit</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="99"/>
+        <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Request Updated</source>
         <translation>Cerere actualizată</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="100"/>
+        <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Request Pending</source>
         <translation>Cerere în curs</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="101"/>
+        <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Undecipherable</source>
         <translation>Indescifrabil</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="102"/>
+        <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Internal Server Error</source>
         <translation>Eroare internă a serverului</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="103"/>
+        <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Not Implemented</source>
         <translation>Neimplementat</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="104"/>
+        <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Bad Gateway</source>
         <translation>Poartă greșită</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="105"/>
+        <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Service Unavailable</source>
         <translation>Serviciu indisponibil</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="106"/>
+        <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Server Timeout</source>
         <translation>Timpul a expirat</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="107"/>
+        <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Version Not Supported</source>
         <translation>Versiune incompatibilă</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="108"/>
+        <location filename="../src/newcallmodel.cpp" line="109"/>
         <source>Message Too Large</source>
         <translation>Mesaj prea mare</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="109"/>
+        <location filename="../src/newcallmodel.cpp" line="110"/>
         <source>Precondition Failure</source>
         <translation>Eșec al precondiției</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="110"/>
+        <location filename="../src/newcallmodel.cpp" line="111"/>
         <source>Busy Everywhere</source>
         <translation>Ocupat peste tot</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="111"/>
+        <location filename="../src/newcallmodel.cpp" line="112"/>
         <source>Call Refused</source>
         <translation>Apel refuzat</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="112"/>
+        <location filename="../src/newcallmodel.cpp" line="113"/>
         <source>Does Not Exist Anywhere</source>
         <translation>Nu există nicăieri</translation>
     </message>
     <message>
-        <location filename="../src/newcallmodel.cpp" line="113"/>
+        <location filename="../src/newcallmodel.cpp" line="114"/>
         <source>Not Acceptable Anywhere</source>
         <translation>Nu este acceptat nicăieri</translation>
     </message>
