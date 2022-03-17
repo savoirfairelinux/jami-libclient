@@ -338,11 +338,17 @@ public:
      */
     void removeConversationMember(const QString& conversationId, const QString& memberId);
     /**
-     * get conversation info
+     * get conversation's info
      * @param conversationId conversation's id
      * @return conversation info
      */
     MapStringString getConversationInfos(const QString& conversationId);
+    /**
+     * get conversation's preferences
+     * @param conversationId conversation's id
+     * @return conversation preferences
+     */
+    MapStringString getConversationPreferences(const QString& conversationId);
     /**
      * create a new swarm conversation
      * @param participants  conversation's participants
@@ -352,9 +358,15 @@ public:
     /**
      * update conversation info
      * @param conversationId conversation's id
-     * @param info
+     * @param infos
      */
-    void updateConversationInfos(const QString& conversationId, MapStringString info);
+    void updateConversationInfos(const QString& conversationId, MapStringString infos);
+    /**
+     * update conversation's preferences
+     * @param conversationId conversation's id
+     * @param preferences
+     */
+    void setConversationPreferences(const QString& conversationId, MapStringString preferences);
 
     /**
      * @return if conversations requests exists.
