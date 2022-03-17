@@ -969,6 +969,14 @@ ConversationModel::getConversationInfos(const QString& conversationId)
     return ret;
 }
 
+MapStringString
+ConversationModel::getConversationPreferences(const QString& conversationId)
+{
+    MapStringString ret = ConfigurationManager::instance().conversationPreferences(owner.id,
+                                                                             conversationId);
+    return ret;
+}
+
 void
 ConversationModel::createConversation(const VectorString& participants, const MapStringString& infos)
 {
@@ -977,16 +985,23 @@ ConversationModel::createConversation(const VectorString& participants, const Ma
         ConfigurationManager::instance().addConversationMember(owner.id, convUid, participant);
     }
     if (!infos.isEmpty())
-        updateConversationInfo(convUid, infos);
+        updateConversationInfos(convUid, infos);
     pimpl_->addSwarmConversation(convUid);
     emit newConversation(convUid);
     pimpl_->invalidateModel();
     emit modelChanged();
 }
+
 void
-ConversationModel::updateConversationInfo(const QString& conversationId, const MapStringString info)
+ConversationModel::updateConversationInfos(const QString& conversationId, const MapStringString infos)
 {
-    ConfigurationManager::instance().updateConversationInfos(owner.id, conversationId, info);
+    ConfigurationManager::instance().updateConversationInfos(owner.id, conversationId, infos);
+}
+
+void
+ConversationModel::updateConversationPreferences(const QString& conversationId, const MapStringString prefs)
+{
+    ConfigurationManager::instance().updateConversationPreferences(owner.id, conversationId, prefs);
 }
 
 bool

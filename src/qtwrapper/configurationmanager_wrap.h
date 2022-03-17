@@ -1032,13 +1032,28 @@ public Q_SLOTS: // METHODS
             DRing::conversationInfos(accountId.toStdString(), conversationId.toStdString()));
     }
 
+    MapStringString conversationPreferences(const QString& accountId, const QString& conversationId)
+    {
+        return convertMap(
+            DRing::conversationPreferences(accountId.toStdString(), conversationId.toStdString()));
+    }
+
     void updateConversationInfos(const QString& accountId,
                                  const QString& conversationId,
-                                 const MapStringString& info)
+                                 const MapStringString& infos)
     {
         DRing::updateConversationInfos(accountId.toStdString(),
                                        conversationId.toStdString(),
-                                       convertMap(info));
+                                       convertMap(infos));
+    }
+
+    void updateConversationPreferences(const QString& accountId,
+                                 const QString& conversationId,
+                                 const MapStringString& prefs)
+    {
+        DRing::updateConversationPreferences(accountId.toStdString(),
+                                       conversationId.toStdString(),
+                                       convertMap(prefs));
     }
 
     uint32_t countInteractions(const QString& accountId,
