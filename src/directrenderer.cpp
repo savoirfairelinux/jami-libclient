@@ -51,31 +51,30 @@ public:
     void configureTarget()
     {
         using namespace std::placeholders;
-        target.pull = std::bind(&Impl::pullCallback, this, _1);
+        target.pull = std::bind(&Impl::pullCallback, this);
         target.push = std::bind(&Impl::pushCallback, this, _1);
     };
 
-    DRing::SinkTarget::FrameBufferPtr pullCallback(std::size_t bytes)
+    DRing::FrameBuffer pullCallback()
     {
         QMutexLocker lk(&mutex);
         if (!frameBufferPtr) {
-            frameBufferPtr.reset(new DRing::FrameBuffer);
-            frameBufferPtr->avframe.reset(av_frame_alloc());
+            frameBufferPtr.reset(av_frame_alloc());
         }
 
         // A response to this signal should be used to provide client
         // allocated buffer specs via the AVFrame structure.
         // Important: Subscription to this signal MUST be synchronous(Qt::DirectConnection).
-        Q_EMIT parent_->frameBufferRequested(frameBufferPtr->avframe.get());
+        Q_EMIT parent_->frameBufferRequested(frameBufferPtr.get());
 
-        if (frameBufferPtr->avframe->data[0] == nullptr) {
+        if (frameBufferPtr->data[0] == nullptr) {
             return nullptr;
         }
 
         return std::move(frameBufferPtr);
     };
 
-    void pushCallback(DRing::SinkTarget::FrameBufferPtr buf)
+    void pushCallback(DRing::FrameBuffer buf)
     {
         {
             QMutexLocker lk(&mutex);
@@ -91,7 +90,7 @@ private:
 public:
     DRing::SinkTarget target;
     QMutex mutex;
-    DRing::SinkTarget::FrameBufferPtr frameBufferPtr;
+    DRing::FrameBuffer frameBufferPtr;
 };
 
 DirectRenderer::DirectRenderer(const QString& id, const QSize& res)
