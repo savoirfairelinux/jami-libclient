@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df4da92b_847a961b",
+        "filename": "src/api/interaction.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2022-03-18T21:26:23Z",
+      "side": 1,
+      "message": "I think will read better using past simple e.g.: \"Swarm created\".",
+      "range": {
+        "startLine": 294,
+        "startChar": 32,
+        "endLine": 294,
+        "endChar": 48
+      },
+      "revId": "d37262aec8c80a8969775c5f7050b8e37ba58a6c",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
