@@ -16,6 +16,24 @@
       "message": "Needs clening in videomanager_wrap.h",
       "revId": "e5315b6cba58c4adebebd33de1ee13fe3593e73d",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb2e818a_40f1547d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2022-03-21T20:29:52Z",
+      "side": 1,
+      "message": "you mean as a result of https://review.jami.net/c/jami-daemon/+/21271/2 ??",
+      "parentUuid": "3f14efd4_4edc000f",
+      "revId": "e5315b6cba58c4adebebd33de1ee13fe3593e73d",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
