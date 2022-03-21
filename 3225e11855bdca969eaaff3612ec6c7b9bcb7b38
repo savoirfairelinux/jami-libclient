@@ -39,6 +39,30 @@
       },
       "revId": "3225e11855bdca969eaaff3612ec6c7b9bcb7b38",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "037dd697_6cb221ba",
+        "filename": "src/conversationmodel.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1044,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2022-03-21T21:19:00Z",
+      "side": 1,
+      "message": "0u :)",
+      "parentUuid": "99ff7b8b_a1a1c183",
+      "range": {
+        "startLine": 1044,
+        "startChar": 4,
+        "endLine": 1044,
+        "endChar": 9
+      },
+      "revId": "3225e11855bdca969eaaff3612ec6c7b9bcb7b38",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
