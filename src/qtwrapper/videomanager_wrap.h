@@ -151,15 +151,6 @@ public Q_SLOTS: // METHODS
 #endif
     }
 
-    void registerAVSinkTarget(const QString& sinkID, const DRing::AVSinkTarget& target)
-    {
-        Q_UNUSED(sinkID)
-        Q_UNUSED(target)
-#ifdef ENABLE_VIDEO
-        DRing::registerAVSinkTarget(sinkID.toStdString(), target);
-#endif
-    }
-
     bool getDecodingAccelerated() { return DRing::getDecodingAccelerated(); }
 
     void setDecodingAccelerated(bool state) { DRing::setDecodingAccelerated(state); }
