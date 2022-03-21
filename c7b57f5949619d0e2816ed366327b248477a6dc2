@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fae914e_891cc5b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2022-03-21T21:17:37Z",
+      "side": 1,
+      "message": "Do not merge, client-qt needs https://review.jami.net/c/jami-client-qt/+/20028",
+      "revId": "c7b57f5949619d0e2816ed366327b248477a6dc2",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
