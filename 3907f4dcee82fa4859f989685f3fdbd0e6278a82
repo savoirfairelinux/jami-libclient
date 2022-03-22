@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91969ae6_5d7b4b5d",
+        "filename": "src/api/callparticipantsmodel.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2022-03-22T22:21:02Z",
+      "side": 1,
+      "message": "I know this is done elsewhere, but it\u0027s better to reverse the header.\nThis will prevent sometimes tough to locate breakage.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 21
+      },
+      "revId": "3907f4dcee82fa4859f989685f3fdbd0e6278a82",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc888e47_91f3c1e6",
+        "filename": "src/api/callparticipantsmodel.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 90
+      },
+      "writtenOn": "2022-03-22T22:21:02Z",
+      "side": 1,
+      "message": "candidates for what?",
+      "range": {
+        "startLine": 114,
+        "startChar": 15,
+        "endLine": 114,
+        "endChar": 24
+      },
+      "revId": "3907f4dcee82fa4859f989685f3fdbd0e6278a82",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
