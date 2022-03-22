@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c397bc0_5433f230",
+        "filename": "src/directrenderer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 856
+      },
+      "writtenOn": "2022-03-22T21:41:22Z",
+      "side": 1,
+      "message": "a lambda would do",
+      "revId": "8c9d20e2958657a463bba90239ba1ecaea6d8edf",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
