@@ -977,14 +977,15 @@ ConversationModel::createConversation(const VectorString& participants, const Ma
         ConfigurationManager::instance().addConversationMember(owner.id, convUid, participant);
     }
     if (!infos.isEmpty())
-        updateConversationInfo(convUid, infos);
+        updateConversationInfos(convUid, infos);
     pimpl_->addSwarmConversation(convUid);
     emit newConversation(convUid);
     pimpl_->invalidateModel();
     emit modelChanged();
 }
+
 void
-ConversationModel::updateConversationInfo(const QString& conversationId, const MapStringString info)
+ConversationModel::updateConversationInfos(const QString& conversationId, const MapStringString info)
 {
     ConfigurationManager::instance().updateConversationInfos(owner.id, conversationId, info);
 }
