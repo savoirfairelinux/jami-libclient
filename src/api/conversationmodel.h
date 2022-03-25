@@ -349,7 +349,7 @@ public:
      * @param conversationId conversation's id
      * @param info
      */
-    void updateConversationInfo(const QString& conversationId, MapStringString info);
+    void updateConversationInfos(const QString& conversationId, MapStringString info);
 
     /**
      * @return if conversations requests exists.
