@@ -523,18 +523,15 @@ ContactModel::sendDhtMessage(const QString& contactUri, const QString& body) con
 const QString
 ContactModel::bestNameForContact(const QString& contactUri) const
 {
-    try {
-        auto contact = getContact(contactUri);
+    std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
+    if (pimpl_->contacts.contains(contactUri)) {
+        auto contact = pimpl_->contacts.value(contactUri);
         auto alias = contact.profileInfo.alias.simplified();
-
         if (alias.isEmpty()) {
             return bestIdFromContactInfo(contact);
         }
         return alias;
-    } catch (const std::out_of_range& e) {
-        qDebug() << "ContactModel::bestNameForContact" << e.what();
     }
-
     return contactUri;
 }
 
@@ -547,13 +544,11 @@ ContactModel::avatar(const QString& uri) const
 const QString
 ContactModel::bestIdForContact(const QString& contactUri) const
 {
-    try {
-        auto contact = getContact(contactUri);
+    std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
+    if (pimpl_->contacts.contains(contactUri)) {
+        auto contact = pimpl_->contacts.value(contactUri);
         return bestIdFromContactInfo(contact);
-    } catch (const std::out_of_range& e) {
-        qDebug() << "ContactModel::bestIdForContact" << e.what();
     }
-
     return contactUri;
 }
 
