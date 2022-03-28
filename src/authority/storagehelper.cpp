@@ -356,10 +356,8 @@ getAccountAvatar(const QString& accountId)
     QString filePath;
     filePath = accountLocalPath + "profile.vcf";
     QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Can't open file: " << filePath;
+    if (!file.open(QIODevice::ReadOnly))
         return {};
-    }
     const auto vCard = lrc::vCard::utils::toHashMap(file.readAll());
     const auto photo = (vCard.find(vCard::Property::PHOTO_PNG) == vCard.end())
                            ? vCard[vCard::Property::PHOTO_JPEG]
@@ -384,7 +382,6 @@ buildContactFromProfile(const QString& accountId,
         QString filePath = accountLocalPath + "profiles/" + peer_uri + ".vcf";
         file.setFileName(filePath);
         if (!file.open(QIODevice::ReadOnly)) {
-            qWarning().noquote() << "Can't open file: " << filePath;
             return {profileInfo, "", true, false};
         }
         // rename it
