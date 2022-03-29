@@ -104,10 +104,9 @@ def build(qtver):
 
     cmake_options = [
         '-DCMAKE_PREFIX_PATH=' + qt_dir,
-        '-DCMAKE_BUILD_TYPE=' + config_str,
         '-Dring_BIN=' + daemon_bin,
         '-DRING_INCLUDE_DIR=' + daemon_dir + '\\src\\jami'
-    ] 
+    ]
 
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
