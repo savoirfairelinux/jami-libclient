@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cc855cd_44ccce85",
+        "filename": "src/callparticipantsmodel.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2022-03-31T17:58:35Z",
+      "side": 1,
+      "message": "Must be protected, I have some crashes there\n\n0x00007fffea8be8be in QString::operator\u003d(QString const\u0026) () from /usr/lib64/qt-jami/lib/libQt6Core.so.6\n(gdb) bt\n#0  0x00007fffea8be8be in QString::operator\u003d(QString const\u0026) () at /usr/lib64/qt-jami/lib/libQt6Core.so.6\n#1  0x00007ffff7e54daa in lrc::api::ParticipantInfos::operator\u003d(lrc::api::ParticipantInfos const\u0026) (this\u003d\u003coptimized out\u003e) at /home/amarok/Projects/jami/lrc/src/api/callparticipantsmodel.h:39\n#2  lrc::api::CallParticipants::addParticipant(lrc::api::ParticipantInfos const\u0026) (this\u003d0x68614e0, participant\u003d...) at /home/amarok/Projects/jami/lrc/src/callparticipantsmodel.cpp:115\n#3  0x00007ffff7e565ee in lrc::api::CallParticipants::update(QList\u003cQMap\u003cQString, QString\u003e \u003e const\u0026) (this\u003d0x68614e0, infos\u003d\u003coptimized out\u003e) at /home/amarok/Projects/jami/lrc/src/callparticipantsmodel.cpp:65\n#4  0x00007ffff7e67b0d in lrc::NewCallModelPimpl::slotOnConferenceInfosUpdated(QString const\u0026, QList\u003cQMap\u003cQString, QString\u003e \u003e const\u0026) (this\u003d0x1486a40, confId\u003d..., infos\u003d...) at /usr/include/c++/11/bits/shared_ptr_base.h:1295\n#5  0x00007fffea820d9e in QObject::event(QEvent*) () at /usr/lib64/qt-jami/lib/libQt6Core.so.6\n#6  0x00007fffeb9f8a82 in QApplicationPrivate::notify_helper(QObject*, QEvent*) () at /usr/lib64/qt-jami/lib/libQt6Widgets.so.6\n#7  0x00007fffea7d2b0a in QCoreApplication::notifyInternal2(QObject*, QEvent*) () at /usr/lib64/qt-jami/lib/libQt6Core.so.6\n#8  0x00007fffea7d5a75 in QCoreApplicationPrivate::sendPostedEvents(QObject*, int, QThreadData*) () at /usr/lib64/qt-jami/lib/libQt6Core.so.6\n#9  0x00007fffeaa35473 in postEventSourceDispatch(_GSource*, int (*)(void*), void*) () at /usr/lib64/qt-jami/lib/libQt6Core.so.6\n#10 0x00007ffff775a130 in g_main_dispatch (context\u003d0x7fffd0005010) at ../glib/gmain.c:3381\n#11 g_main_context_dispatch (context\u003d0x7fffd0005010) at ../glib/gmain.c:4099\n#12 0x00007ffff77af208 in g_main_context_iterate.constprop.0 (context\u003dcontext@entry\u003d0x7fffd0005010, block\u003dblock@entry\u003d1, dispatch\u003ddispatch@entry\u003d1, self\u003d\u003coptimized out\u003e) at ../glib/gmain.c:4175\n#13 0x00007ffff7757933 in g_main_context_iteration (context\u003d0x7fffd0005010, may_block\u003d1) at ../glib/gmain.c:4240\n#14 0x00007fffeaa34dda in QEventDispatcherGlib::processEvents(QFlags\u003cQEventLoop::ProcessEventsFlag\u003e) () at /usr/lib64/qt-jami/lib/libQt6Core.so.6\n#15 0x00007fffea7dea6b in QEventLoop::exec(QFlags\u003cQEventLoop::ProcessEventsFlag\u003e) () at /usr/lib64/qt-jami/lib/libQt6Core.so.6\n#16 0x00007fffea7da63b in QCoreApplication::exec() () at /usr/lib64/qt-jami/lib/libQt6Core.so.6\n#17 0x0000000000463a3f in main(int, char**) (argc\u003d\u003coptimized out\u003e, argv\u003d\u003coptimized out\u003e) at /home/amarok/Projects/jami/client-qt/src/main.cpp:124",
+      "range": {
+        "startLine": 88,
+        "startChar": 13,
+        "endLine": 88,
+        "endChar": 26
+      },
+      "revId": "31c2303abc3030ddf330666c510a4723b44799f1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    }
+  ]
+}
