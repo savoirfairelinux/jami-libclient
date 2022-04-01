@@ -22,6 +22,30 @@
       },
       "revId": "31c2303abc3030ddf330666c510a4723b44799f1",
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2ef1adf_af3b1b88",
+        "filename": "src/callparticipantsmodel.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2022-04-01T19:51:25Z",
+      "side": 1,
+      "message": "ditto",
+      "parentUuid": "3cc855cd_44ccce85",
+      "range": {
+        "startLine": 88,
+        "startChar": 13,
+        "endLine": 88,
+        "endChar": 26
+      },
+      "revId": "31c2303abc3030ddf330666c510a4723b44799f1",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     }
   ]
 }
