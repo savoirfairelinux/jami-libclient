@@ -48,6 +48,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a404851e_016311e2",
+        "filename": "src/api/callparticipantsmodel.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 220
+      },
+      "writtenOn": "2022-04-01T20:07:34Z",
+      "side": 1,
+      "message": "fyi Mohamed the fixes seems to be in video split: implement host layouts for your comments",
+      "parentUuid": "08dbef33_1d6dfefc",
+      "range": {
+        "startLine": 126,
+        "startChar": 31,
+        "endLine": 126,
+        "endChar": 34
+      },
+      "revId": "5248c464322a4e4459040818137eaeedff336f37",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39a3f4bd_14493142",
