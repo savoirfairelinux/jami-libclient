@@ -18,6 +18,24 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85ae37ee_c59a37eb",
+        "filename": "src/api/callparticipantsmodel.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2022-04-01T19:51:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ae4f98f_4b71e4f2",
+      "revId": "a0af999df37eb9173b3b949603918d4b69f2fe04",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "760a6a48_462e53ab",
@@ -41,6 +59,30 @@
       "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36466978_3052e99d",
+        "filename": "src/callparticipantsmodel.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2022-04-01T19:51:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "760a6a48_462e53ab",
+      "range": {
+        "startLine": 56,
+        "startChar": 16,
+        "endLine": 56,
+        "endChar": 29
+      },
+      "revId": "a0af999df37eb9173b3b949603918d4b69f2fe04",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b68c5dd_8646bd1a",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-04-01T17:47:56Z",
       "side": 1,
       "message": "please, use const expression, very easy to introduce a bug because of accidental misspelling",
+      "range": {
+        "startLine": 178,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 33
+      },
+      "revId": "a0af999df37eb9173b3b949603918d4b69f2fe04",
+      "serverId": "1e26b4c1-6b8c-47ff-9df7-501b633d3b5a"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d88224fe_3a181af8",
+        "filename": "src/callparticipantsmodel.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 859
+      },
+      "writtenOn": "2022-04-01T19:51:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b68c5dd_8646bd1a",
       "range": {
         "startLine": 178,
         "startChar": 0,
