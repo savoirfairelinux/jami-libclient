@@ -70,23 +70,47 @@
         <translation>Legătură stabilită</translation>
     </message>
     <message>
-        <location filename="../src/api/interaction.h" line="218"/>
         <location filename="../src/authority/storagehelper.cpp" line="197"/>
         <location filename="../src/authority/storagehelper.cpp" line="955"/>
         <source>Invitation received</source>
         <translation>Invitație primită</translation>
     </message>
     <message>
-        <location filename="../src/api/interaction.h" line="222"/>
-        <source>Contact left conversation</source>
-        <translation>Contactul a întrerupt conversația</translation>
-    </message>
-    <message>
-        <location filename="../src/api/interaction.h" line="216"/>
+        <location filename="../src/api/interaction.h" line="224"/>
         <location filename="../src/authority/storagehelper.cpp" line="194"/>
         <location filename="../src/authority/storagehelper.cpp" line="953"/>
         <source>Contact added</source>
         <translation>Contact adăugat</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="226"/>
+        <source>%1 was invited to join</source>
+        <translation>%1 a fost invitat să participe</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="228"/>
+        <source>%1 joined</source>
+        <translation>%1 s-a alăturat</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="230"/>
+        <source>%1 left</source>
+        <translation>%1 a ieșit</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="232"/>
+        <source>%1 was kicked</source>
+        <translation>%1  a fost dat afară</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="234"/>
+        <source>%1 was re-added</source>
+        <translation>%1 a fost reprimit</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="300"/>
+        <source>Swarm created</source>
+        <translation>Grup creat</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="171"/>
@@ -113,7 +137,6 @@
         <translation>Apel pierdut</translation>
     </message>
     <message>
-        <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="199"/>
         <location filename="../src/authority/storagehelper.cpp" line="957"/>
         <source>Invitation accepted</source>
@@ -123,7 +146,7 @@
         <location filename="../src/avmodel.cpp" line="348"/>
         <location filename="../src/avmodel.cpp" line="367"/>
         <source>default</source>
-        <translation>implicit</translation>
+        <translation>prestabilit</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
@@ -164,7 +187,7 @@
         <location filename="../src/chatview.cpp" line="73"/>
         <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>Accepted</source>
-        <translation>Aceptat</translation>
+        <translation>Acceptat</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="67"/>
