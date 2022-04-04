@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ig" sourcelanguage="en">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sr" sourcelanguage="en">
 <context>
     <name>QObject</name>
     <message>
@@ -90,12 +90,12 @@
     <message>
         <location filename="../src/api/interaction.h" line="228"/>
         <source>%1 joined</source>
-        <translation>%1 sonyere</translation>
+        <translation>Korisnik %1 se pridružio</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="230"/>
         <source>%1 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 je napustio/la</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="232"/>
@@ -146,7 +146,7 @@
         <location filename="../src/avmodel.cpp" line="348"/>
         <location filename="../src/avmodel.cpp" line="367"/>
         <source>default</source>
-        <translation>eburupụta</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="59"/>
@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="65"/>
         <source>OK</source>
-        <translation>Dị-mma</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
@@ -458,7 +458,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Send</source>
-        <translation>Zie</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
@@ -473,7 +473,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Send file</source>
-        <translation>Zipu faịlụ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
@@ -588,7 +588,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
-        <translation>A kagbuola ihe omume ahụ.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="75"/>

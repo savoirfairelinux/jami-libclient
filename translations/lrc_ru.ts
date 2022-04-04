@@ -70,23 +70,47 @@
         <translation>Соединение установлено</translation>
     </message>
     <message>
-        <location filename="../src/api/interaction.h" line="218"/>
         <location filename="../src/authority/storagehelper.cpp" line="197"/>
         <location filename="../src/authority/storagehelper.cpp" line="955"/>
         <source>Invitation received</source>
         <translation>Получено приглашение</translation>
     </message>
     <message>
-        <location filename="../src/api/interaction.h" line="222"/>
-        <source>Contact left conversation</source>
-        <translation>Контакт покинул разговор</translation>
-    </message>
-    <message>
-        <location filename="../src/api/interaction.h" line="216"/>
+        <location filename="../src/api/interaction.h" line="224"/>
         <location filename="../src/authority/storagehelper.cpp" line="194"/>
         <location filename="../src/authority/storagehelper.cpp" line="953"/>
         <source>Contact added</source>
         <translation>Контакт добавлен</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="226"/>
+        <source>%1 was invited to join</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="228"/>
+        <source>%1 joined</source>
+        <translation>%1 присоединяется</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="230"/>
+        <source>%1 left</source>
+        <translation>%1 вышел</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="232"/>
+        <source>%1 was kicked</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="234"/>
+        <source>%1 was re-added</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="300"/>
+        <source>Swarm created</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="171"/>
@@ -113,7 +137,6 @@
         <translation>Пропущенный входящий вызов</translation>
     </message>
     <message>
-        <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="199"/>
         <location filename="../src/authority/storagehelper.cpp" line="957"/>
         <source>Invitation accepted</source>

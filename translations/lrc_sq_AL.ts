@@ -70,23 +70,47 @@
         <translation>Komunikimi u vendos</translation>
     </message>
     <message>
-        <location filename="../src/api/interaction.h" line="218"/>
         <location filename="../src/authority/storagehelper.cpp" line="197"/>
         <location filename="../src/authority/storagehelper.cpp" line="955"/>
         <source>Invitation received</source>
         <translation>Ftesa u mor</translation>
     </message>
     <message>
-        <location filename="../src/api/interaction.h" line="222"/>
-        <source>Contact left conversation</source>
-        <translation>Kontakti e braktisi bisedën</translation>
-    </message>
-    <message>
-        <location filename="../src/api/interaction.h" line="216"/>
+        <location filename="../src/api/interaction.h" line="224"/>
         <location filename="../src/authority/storagehelper.cpp" line="194"/>
         <location filename="../src/authority/storagehelper.cpp" line="953"/>
         <source>Contact added</source>
         <translation>Kontakti u shtua</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="226"/>
+        <source>%1 was invited to join</source>
+        <translation>%1 u ftua të vijë</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="228"/>
+        <source>%1 joined</source>
+        <translation>%1 u bashkua</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="230"/>
+        <source>%1 left</source>
+        <translation>%1 iku</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="232"/>
+        <source>%1 was kicked</source>
+        <translation>%1 u përzu</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="234"/>
+        <source>%1 was re-added</source>
+        <translation>%1 u rishtua</translation>
+    </message>
+    <message>
+        <location filename="../src/api/interaction.h" line="300"/>
+        <source>Swarm created</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="171"/>
@@ -113,7 +137,6 @@
         <translation>Thirrje ardhëse të humbura</translation>
     </message>
     <message>
-        <location filename="../src/api/interaction.h" line="220"/>
         <location filename="../src/authority/storagehelper.cpp" line="199"/>
         <location filename="../src/authority/storagehelper.cpp" line="957"/>
         <source>Invitation accepted</source>
