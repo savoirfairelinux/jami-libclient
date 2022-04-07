@@ -523,14 +523,14 @@ ContactModel::sendDhtMessage(const QString& contactUri, const QString& body) con
 const QString
 ContactModel::bestNameForContact(const QString& contactUri) const
 {
-    std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
-    if (pimpl_->contacts.contains(contactUri)) {
-        auto contact = pimpl_->contacts.value(contactUri);
+    try {
+        auto contact = getContact(contactUri);
         auto alias = contact.profileInfo.alias.simplified();
         if (alias.isEmpty()) {
             return bestIdFromContactInfo(contact);
         }
         return alias;
+    } catch(const std::out_of_range&) {
     }
     return contactUri;
 }
