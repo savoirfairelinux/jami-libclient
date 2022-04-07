@@ -530,7 +530,7 @@ ContactModel::bestNameForContact(const QString& contactUri) const
             return bestIdFromContactInfo(contact);
         }
         return alias;
-    } catch(const std::out_of_range&) {
+    } catch (const std::out_of_range&) {
     }
     return contactUri;
 }
@@ -538,6 +538,15 @@ ContactModel::bestNameForContact(const QString& contactUri) const
 QString
 ContactModel::avatar(const QString& uri) const
 {
+    {
+        std::lock_guard<std::mutex> lk(pimpl_->contactsMtx_);
+        // For search results it's loaded and not in storage yet.
+        if (pimpl_->searchResult.contains(uri)) {
+            auto contact = pimpl_->searchResult.value(uri);
+            return contact.profileInfo.avatar;
+        }
+    }
+    // Else search in storage
     return storage::avatar(owner.id, uri);
 }
 

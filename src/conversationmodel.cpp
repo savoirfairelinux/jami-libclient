@@ -1101,6 +1101,13 @@ ConversationModel::avatar(const QString& conversationId) const
         return {};
     }
     auto& conversation = conversationOpt->get();
+    if (conversation.isCoreDialog()) {
+        auto peer = pimpl_->peersForConversation(conversation);
+        if (peer.isEmpty())
+            return {};
+        // In this case, we can just display contact name
+        return owner.contactModel->avatar(peer.at(0));
+    }
     return conversation.infos["avatar"];
 }
 
