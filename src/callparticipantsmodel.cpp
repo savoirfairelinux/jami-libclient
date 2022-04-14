@@ -71,31 +71,6 @@ CallParticipants::update(const VectorMapStringString& infos)
         addParticipant(candidates_[partUri]);
         idx_++;
     }
-
-    verifyLayout();
-}
-
-void
-CallParticipants::verifyLayout()
-{
-    std::lock_guard<std::mutex> lk(participantsMtx_);
-    auto it = std::find_if(participants_.begin(),
-                           participants_.end(),
-                           [](const lrc::api::ParticipantInfos& participant) -> bool {
-                               return participant.active;
-                           });
-
-    auto newLayout = call::Layout::GRID;
-    if (it != participants_.end())
-        if (participants_.size() == 1)
-            newLayout = call::Layout::ONE;
-        else
-            newLayout = call::Layout::ONE_WITH_SMALL;
-    else
-        newLayout = call::Layout::GRID;
-
-    if (newLayout != hostLayout_)
-        hostLayout_ = newLayout;
 }
 
 void
@@ -137,6 +112,8 @@ CallParticipants::filterCandidates(const VectorMapStringString& infos)
     std::lock_guard<std::mutex> lk(participantsMtx_);
     candidates_.clear();
     for (const auto& candidate : infos) {
+        if (!candidate.contains(ParticipantsInfosStrings::URI))
+            continue;
         auto peerId = candidate[ParticipantsInfosStrings::URI];
         peerId.truncate(peerId.lastIndexOf("@"));
         if (peerId.isEmpty()) {
