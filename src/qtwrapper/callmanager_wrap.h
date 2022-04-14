@@ -501,6 +501,11 @@ public Q_SLOTS: // METHODS
         DRing::setConferenceLayout(accountId.toStdString(), confId.toStdString(), layout);
     }
 
+    void setActiveSink(const QString& accountId, const QString& confId, const QString& accountUri, const QString& deviceId, const QString& sinkId, bool state)
+    {
+        DRing::setActiveSink(accountId.toStdString(), confId.toStdString(), accountUri.toStdString(), deviceId.toStdString(), sinkId.toStdString(), state);
+    }
+
     void setActiveParticipant(const QString& accountId, const QString& confId, const QString& callId)
     {
         DRing::setActiveParticipant(accountId.toStdString(),
@@ -533,35 +538,43 @@ public Q_SLOTS: // METHODS
                             state);
     }
 
-    void muteParticipant(const QString& accountId,
-                         const QString& confId,
-                         const QString& peerId,
-                         const bool& state)
+    void muteSinkAudio(const QString& accountId,
+                        const QString& confId,
+                        const QString& accountUri,
+                        const QString& deviceId,
+                        const QString& sinkId,
+                        bool state)
     {
-        DRing::muteParticipant(accountId.toStdString(),
-                               confId.toStdString(),
-                               peerId.toStdString(),
-                               state);
+        DRing::muteSinkAudio(accountId.toStdString(),
+                             confId.toStdString(),
+                             accountUri.toStdString(),
+                             deviceId.toStdString(),
+                             sinkId.toStdString(),
+                             state);
     }
 
-    void hangupParticipant(const QString& accountId,
+    void kickDevice(const QString& accountId,
                            const QString& confId,
-                           const QString& participant)
+                           const QString& accountUri,
+                           const QString& deviceId)
     {
-        DRing::hangupParticipant(accountId.toStdString(),
+        DRing::kickDevice(accountId.toStdString(),
                                  confId.toStdString(),
-                                 participant.toStdString());
+                                 accountUri.toStdString(),
+                                 deviceId.toStdString());
     }
 
-    void raiseParticipantHand(const QString& accountId,
-                              const QString& confId,
-                              const QString& peerId,
-                              const bool& state)
+    void raiseHand(const QString& accountId,
+                   const QString& confId,
+                   const QString& accountUri,
+                   const QString& deviceId,
+                   const bool& state)
     {
-        DRing::raiseParticipantHand(accountId.toStdString(),
-                                    confId.toStdString(),
-                                    peerId.toStdString(),
-                                    state);
+        DRing::raiseHand(accountId.toStdString(),
+                         confId.toStdString(),
+                         accountUri.toStdString(),
+                         deviceId.toStdString(),
+                         state);
     }
 
 Q_SIGNALS: // SIGNALS
