@@ -257,9 +257,16 @@ public:
     /**
      * Set the shown participant
      * @param confId        The call to change
-     * @param participant   Use contact URI
+     * @param accountUri    Peer's uri
+     * @param deviceId      Peer's device
+     * @param sinkId        Peer's sinkId
+     * @param state         new state wanted
      */
-    void setActiveParticipant(const QString& confId, const QString& participant);
+    void setActiveStream(const QString& confId,
+                         const QString& accountUri,
+                         const QString& deviceId,
+                         const QString& sinkId,
+                         bool state);
 
     /**
      * Check if a participant is a moderator or not
@@ -288,28 +295,36 @@ public:
     /**
      * Set/unset a moderator
      * @param confId        The conference to change
-     * @param peerId        Uri of the participant to change
+     * @param accountUri    Uri of the participant to change
+     * @param deviceId      DeviceId of the participant to change
      * @param state         State of the change (true set hand raised / false unset hand raised)
      */
-    void setHandRaised(const QString& accountId,
-                       const QString& confId,
-                       const QString& peerId,
-                       bool state);
+    void raiseHand(const QString& confId,
+                   const QString& accountUri,
+                   const QString& deviceId,
+                   bool state);
 
     /**
-     * Mute/unmute participant
+     * Mute/unmute sink
      * @param confId        The conference to change
-     * @param peerId        Uri of the participant to mute
+     * @param accountUri    Uri of the participant to mute
+     * @param deviceId      Device Id of the participant to mute
+     * @param streamId      Stream to mute
      * @param state         State of the change (true mute participant / false unmute participant)
      */
-    void muteParticipant(const QString& confId, const QString& peerId, const bool& state);
+    void muteStream(const QString& confId,
+                    const QString& accountUri,
+                    const QString& deviceId,
+                    const QString& streamId,
+                    const bool& state);
 
     /**
-     * Hangup participant
+     * Hangup participant from the conference
      * @param confId        The call to change
-     * @param participant   Use contact URI
+     * @param accountUri    Uri of the participant to mute
+     * @param deviceId      Device Id of the participant to mute
      */
-    void hangupParticipant(const QString& confId, const QString& participant);
+    void hangupParticipant(const QString& confId, const QString& accountUri, const QString& deviceId);
 
     /**
      * Check if a call is a conference or not
