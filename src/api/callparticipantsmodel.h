@@ -52,7 +52,7 @@ const QString AUDIOLOCALMUTED = "audioLocalMuted";
 const QString AUDIOMODERATORMUTED = "audioModeratorMuted";
 const QString ISMODERATOR = "isModerator";
 const QString HANDRAISED = "handRaised";
-const QString SINKID = "sinkId";
+const QString STREAMID = "sinkId"; // TODO update
 const QString BESTNAME = "bestName";
 const QString ISLOCAL = "isLocal";
 const QString ISCONTACT = "isContact";
@@ -82,10 +82,10 @@ struct ParticipantInfos
         isModerator = infos[ParticipantsInfosStrings::ISMODERATOR] == "true";
         handRaised = infos[ParticipantsInfosStrings::HANDRAISED] == "true";
 
-        if (infos[ParticipantsInfosStrings::SINKID].isEmpty())
+        if (infos[ParticipantsInfosStrings::STREAMID].isEmpty())
             sinkId = callId + uri + device;
         else
-            sinkId = infos[ParticipantsInfosStrings::SINKID];
+            sinkId = infos[ParticipantsInfosStrings::STREAMID];
 
         bestName = "";
     }

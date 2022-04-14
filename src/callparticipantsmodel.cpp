@@ -84,7 +84,6 @@ CallParticipants::verifyLayout()
                            [](const lrc::api::ParticipantInfos& participant) -> bool {
                                return participant.active;
                            });
-
     auto newLayout = call::Layout::GRID;
     if (it != participants_.end())
         if (participants_.size() == 1)
@@ -93,7 +92,6 @@ CallParticipants::verifyLayout()
             newLayout = call::Layout::ONE_WITH_SMALL;
     else
         newLayout = call::Layout::GRID;
-
     if (newLayout != hostLayout_)
         hostLayout_ = newLayout;
 }
@@ -137,6 +135,8 @@ CallParticipants::filterCandidates(const VectorMapStringString& infos)
     std::lock_guard<std::mutex> lk(participantsMtx_);
     candidates_.clear();
     for (const auto& candidate : infos) {
+        if (!candidate.contains(ParticipantsInfosStrings::URI))
+            continue;
         auto peerId = candidate[ParticipantsInfosStrings::URI];
         peerId.truncate(peerId.lastIndexOf("@"));
         if (peerId.isEmpty()) {
@@ -182,7 +182,7 @@ CallParticipants::toQJsonObject(uint index) const
 
     ret[ParticipantsInfosStrings::URI] = participant->uri;
     ret[ParticipantsInfosStrings::DEVICE] = participant->device;
-    ret[ParticipantsInfosStrings::SINKID] = participant->sinkId;
+    ret[ParticipantsInfosStrings::STREAMID] = participant->sinkId;
     ret[ParticipantsInfosStrings::BESTNAME] = participant->bestName;
     ret[ParticipantsInfosStrings::AVATAR] = participant->avatar;
     ret[ParticipantsInfosStrings::ACTIVE] = participant->active;
