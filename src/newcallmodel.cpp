@@ -1112,9 +1112,9 @@ NewCallModel::setConferenceLayout(const QString& confId, const call::Layout& lay
 }
 
 void
-NewCallModel::setActiveParticipant(const QString& confId, const QString& participant)
+NewCallModel::setActiveSink(const QString& confId, const QString& accountUri, const QString& deviceId, const QString& sinkId, bool state)
 {
-    CallManager::instance().setActiveParticipant(owner.id, confId, participant);
+    CallManager::instance().setActiveSink(owner.id, confId, accountUri, deviceId, sinkId, state);
 }
 
 bool
@@ -1177,29 +1177,28 @@ NewCallModel::isHandRaised(const QString& confId, const QString& uri) noexcept
 }
 
 void
-NewCallModel::setHandRaised(const QString& accountId,
-                            const QString& confId,
-                            const QString& peerId,
-                            bool state)
+NewCallModel::raiseHand(const QString& confId,
+                        const QString& accountUri,
+                        const QString& deviceId,
+                        bool state)
 {
-    auto ownerUri = owner.profileInfo.uri;
-    auto uriToCheck = peerId;
-    if (uriToCheck.isEmpty()) {
-        uriToCheck = ownerUri;
-    }
-    CallManager::instance().raiseParticipantHand(accountId, confId, uriToCheck, state);
+    CallManager::instance().raiseHand(owner.id, confId, accountUri, deviceId, state);
 }
 
 void
-NewCallModel::muteParticipant(const QString& confId, const QString& peerId, const bool& state)
+NewCallModel::muteSinkAudio(const QString& confId,
+                            const QString& accountUri,
+                            const QString& deviceId,
+                            const QString& sinkId,
+                            const bool& state)
 {
-    CallManager::instance().muteParticipant(owner.id, confId, peerId, state);
+    CallManager::instance().muteSinkAudio(owner.id, confId, accountUri, deviceId, sinkId, state);
 }
 
 void
-NewCallModel::hangupParticipant(const QString& confId, const QString& participant)
+NewCallModel::kickDevice(const QString& confId, const QString& accountUri, const QString& deviceId)
 {
-    CallManager::instance().hangupParticipant(owner.id, confId, participant);
+    CallManager::instance().kickDevice(owner.id, confId, accountUri, deviceId);
 }
 
 void
