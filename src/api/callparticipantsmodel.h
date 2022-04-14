@@ -140,20 +140,10 @@ public:
     void update(const VectorMapStringString& infos);
 
     /**
-     * Update conference layout value
-     */
-    void verifyLayout();
-
-    /**
      * @param uri participant
      * @return True if participant is a moderator
      */
     bool checkModerator(const QString& uri) const;
-
-    /**
-     * @return the conference layout
-     */
-    call::Layout getLayout() const { return hostLayout_; }
 
     /**
      * @param index participant index
@@ -186,7 +176,6 @@ private:
     std::mutex updateMtx_ {};
 
     const QString callId_;
-    call::Layout hostLayout_ = call::Layout::GRID;
 };
 } // end namespace api
 } // end namespace lrc
