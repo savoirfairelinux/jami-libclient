@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Calling</source>
-        <translation type="unfinished"/>
+        <translation>통화 중</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
@@ -523,7 +523,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>수락</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="68"/>
