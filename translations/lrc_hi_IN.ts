@@ -117,24 +117,24 @@
         <location filename="../src/authority/storagehelper.cpp" line="177"/>
         <location filename="../src/authority/storagehelper.cpp" line="948"/>
         <source>Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>आउटगोइंग कॉल</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="173"/>
         <location filename="../src/authority/storagehelper.cpp" line="183"/>
         <source>Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>फोन आ रहा है </translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="179"/>
         <location filename="../src/authority/storagehelper.cpp" line="946"/>
         <source>Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>मिस्ड आउटगोइंग कॉल</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="185"/>
         <source>Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>मिस्ड इनकमिंग कॉल</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="199"/>
