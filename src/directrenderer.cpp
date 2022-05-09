@@ -39,7 +39,9 @@ public:
         , parent_(parent)
     {
         configureTarget();
-        VideoManager::instance().registerSinkTarget(parent_->id(), target);
+        if (!VideoManager::instance().registerSinkTarget(parent_->id(), target)) {
+            qWarning() << "Cannot register " << target;
+        }
     };
     ~Impl()
     {
@@ -117,7 +119,8 @@ DirectRenderer::update(const QSize& res, const QString&)
 {
     Renderer::update(res);
 
-    VideoManager::instance().registerSinkTarget(id(), pimpl_->target);
+    if (!VideoManager::instance().registerSinkTarget(id(), pimpl_->target))
+        qWarning() << "Cannot register " << pimpl_->target;
 }
 
 Frame

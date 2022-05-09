@@ -141,13 +141,14 @@ public Q_SLOTS: // METHODS
 
     void stopAudioDevice() { DRing::stopAudioDevice(); }
 
-    void registerSinkTarget(const QString& sinkID, const DRing::SinkTarget& target)
+    bool registerSinkTarget(const QString& sinkID, const DRing::SinkTarget& target)
     {
 #ifdef ENABLE_VIDEO
-        DRing::registerSinkTarget(sinkID.toStdString(), target);
+        return DRing::registerSinkTarget(sinkID.toStdString(), target);
 #else
         Q_UNUSED(sinkID)
         Q_UNUSED(target)
+        return false;
 #endif
     }
 
