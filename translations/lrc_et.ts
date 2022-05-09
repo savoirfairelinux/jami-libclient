@@ -29,13 +29,13 @@
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Calling</source>
-        <translation type="unfinished"/>
+        <translation>Helistab</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
         <location filename="../src/chatview.cpp" line="72"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Ühendab</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="73"/>
@@ -161,7 +161,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Ringing</source>
-        <translation type="unfinished"/>
+        <translation>Heliseb</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="63"/>
@@ -338,7 +338,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Kinni</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="98"/>

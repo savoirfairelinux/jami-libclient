@@ -35,7 +35,7 @@
         <location filename="../src/api/call.h" line="71"/>
         <location filename="../src/chatview.cpp" line="72"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Povezivanje</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="73"/>
@@ -73,14 +73,14 @@
         <location filename="../src/authority/storagehelper.cpp" line="197"/>
         <location filename="../src/authority/storagehelper.cpp" line="952"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Primljen poziv</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="224"/>
         <location filename="../src/authority/storagehelper.cpp" line="194"/>
         <location filename="../src/authority/storagehelper.cpp" line="950"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Kontakt dodat</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="226"/>
@@ -117,24 +117,24 @@
         <location filename="../src/authority/storagehelper.cpp" line="177"/>
         <location filename="../src/authority/storagehelper.cpp" line="948"/>
         <source>Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Poziva se</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="173"/>
         <location filename="../src/authority/storagehelper.cpp" line="183"/>
         <source>Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Dolazeći poziv</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="179"/>
         <location filename="../src/authority/storagehelper.cpp" line="946"/>
         <source>Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Propušten odlazeći poziv</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="185"/>
         <source>Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Propušten dolazeći poziv</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="199"/>
@@ -146,7 +146,7 @@
         <location filename="../src/avmodel.cpp" line="348"/>
         <location filename="../src/avmodel.cpp" line="367"/>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>podrazumevano</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="60"/>
@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="66"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>U redu</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="73"/>
@@ -458,7 +458,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Pošalji</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
@@ -468,12 +468,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>Pomerite se na kraj razgovora</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
         <source>Send file</source>
-        <translation type="unfinished"/>
+        <translation>Pošalji podatak</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
@@ -523,12 +523,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Prihvati</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="68"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Odbij</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="71"/>
@@ -553,7 +553,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
         <source>Block</source>
-        <translation type="unfinished"/>
+        <translation>Blokiraj</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="47"/>
@@ -588,7 +588,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
         <source>Canceled</source>
-        <translation type="unfinished"/>
+        <translation>Otkazan</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="75"/>
@@ -633,7 +633,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="69"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="70"/>
