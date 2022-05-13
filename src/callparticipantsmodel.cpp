@@ -48,9 +48,9 @@ void
 CallParticipants::update(const VectorMapStringString& infos)
 {
     std::lock_guard<std::mutex> lk(updateMtx_);
-    validUris_.clear();
+    validMedias_.clear();
     filterCandidates(infos);
-    validUris_.sort();
+    validMedias_.sort();
 
     idx_ = 0;
     QList<QString> keys {};
@@ -59,16 +59,16 @@ CallParticipants::update(const VectorMapStringString& infos)
         keys = participants_.keys();
     }
     for (const auto& key : keys) {
-        auto keyIdx = validUris_.indexOf(key);
-        if (keyIdx < 0 || keyIdx >= validUris_.size())
+        auto keyIdx = validMedias_.indexOf(key);
+        if (keyIdx < 0 || keyIdx >= validMedias_.size())
             removeParticipant(idx_);
         else
             idx_++;
     }
 
     idx_ = 0;
-    for (const auto& partUri : validUris_) {
-        addParticipant(candidates_[partUri]);
+    for (const auto& partMedia : validMedias_) {
+        addParticipant(candidates_[partMedia]);
         idx_++;
     }
 
@@ -115,9 +115,9 @@ CallParticipants::addParticipant(const ParticipantInfos& participant)
     bool added {false};
     {
         std::lock_guard<std::mutex> lk(participantsMtx_);
-        auto it = participants_.find(participant.uri);
+        auto it = participants_.find(participant.sinkId);
         if (it == participants_.end()) {
-            participants_.insert(participants_.begin() + idx_, participant.uri, participant);
+            participants_.insert(participants_.begin() + idx_, participant.sinkId, participant);
             added = true;
         } else {
             if (participant == (*it))
@@ -137,23 +137,11 @@ CallParticipants::filterCandidates(const VectorMapStringString& infos)
     std::lock_guard<std::mutex> lk(participantsMtx_);
     candidates_.clear();
     for (const auto& candidate : infos) {
-        auto peerId = candidate[ParticipantsInfosStrings::URI];
-        peerId.truncate(peerId.lastIndexOf("@"));
-        if (peerId.isEmpty()) {
-            for (const auto& accId : linked_.owner.accountModel->getAccountList()) {
-                try {
-                    auto& accountInfo = linked_.owner.accountModel->getAccountInfo(accId);
-                    if (accountInfo.callModel->hasCall(callId_)) {
-                        peerId = accountInfo.profileInfo.uri;
-                    }
-                } catch (...) {
-                }
-            }
-        }
+        auto media = candidate[ParticipantsInfosStrings::SINKID];
         if (candidate[ParticipantsInfosStrings::W].toInt() != 0
             && candidate[ParticipantsInfosStrings::H].toInt() != 0) {
-            validUris_.append(peerId);
-            candidates_.insert(peerId, ParticipantInfos(candidate, callId_, peerId));
+            validMedias_.append(media);
+            candidates_.insert(media, ParticipantInfos(candidate, callId_, media));
         }
     }
 }

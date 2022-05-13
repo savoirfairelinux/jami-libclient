@@ -416,6 +416,16 @@ NewCallModel::requestMediaChange(const QString& callId,
     // Main video: video_0
 
     auto& callInfo = pimpl_->calls[callId];
+    if (callInfo->type == call::Type::CONFERENCE) {
+        QStringList callList = CallManager::instance().getParticipantList(owner.id, callId);
+        for (const auto& call: callList) {
+            if (hasCall(call)) {
+                // conference has no media list but underlying calls yes.
+                callInfo = pimpl_->calls[call];
+                break;
+            }
+        }
+    }
     if (!callInfo)
         return;
 
@@ -434,6 +444,13 @@ NewCallModel::requestMediaChange(const QString& callId,
     QString resource {};
     QString srctype {};
     auto proposedList = callInfo->mediaList;
+
+    qWarning() << "@@@ PROPOSED";
+    for (const auto& m: proposedList) {
+        qWarning() << "@@@ label: " << m[MediaAttributeKey::LABEL];
+        qWarning() << "@@@ source: " << m[MediaAttributeKey::SOURCE];
+    }
+
 
     int found = 0;
 
@@ -471,7 +488,7 @@ NewCallModel::requestMediaChange(const QString& callId,
         return;
     }
 
-    if (callInfo->type == call::Type::CONFERENCE) {
+    //if (callInfo->type == call::Type::CONFERENCE) {
         MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE, mediaType},
                                           {MediaAttributeKey::ENABLED, "true"},
                                           {MediaAttributeKey::MUTED, mute ? "true" : "false"},
@@ -479,7 +496,7 @@ NewCallModel::requestMediaChange(const QString& callId,
                                           {MediaAttributeKey::SOURCE, resource},
                                           {MediaAttributeKey::LABEL, mediaLabel}};
         proposedList.push_back(mediaAttribute);
-    }
+    //}
 
     for (auto& item : proposedList) {
         if (item[MediaAttributeKey::LABEL] == mediaLabel) {
@@ -508,6 +525,12 @@ NewCallModel::requestMediaChange(const QString& callId,
                                           {MediaAttributeKey::SOURCE, resource},
                                           {MediaAttributeKey::LABEL, mediaLabel}};
         proposedList.push_back(mediaAttribute);
+    }
+
+    qWarning() << "@@@ PROPOSED";
+    for (const auto& m: proposedList) {
+        qWarning() << "@@@ label: " << m[MediaAttributeKey::LABEL];
+        qWarning() << "@@@ source: " << m[MediaAttributeKey::SOURCE];
     }
 
     CallManager::instance().requestMediaChange(owner.id, callId, proposedList);
