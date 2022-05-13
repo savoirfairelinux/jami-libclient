@@ -306,6 +306,13 @@ public Q_SLOTS: // METHODS
         return temp;
     }
 
+    VectorMapStringString currentMediaList(const QString& accountId, const QString& callId)
+    {
+        VectorMapStringString temp = convertVecMap(
+            DRing::currentMediaList(accountId.toStdString(), callId.toStdString()));
+        return temp;
+    }
+
     VectorMapStringString getConferenceInfos(const QString& accountId, const QString& confId)
     {
         VectorMapStringString temp = convertVecMap(
