@@ -99,6 +99,9 @@ public:
                             MediaRequestType type,
                             bool mute);
 
+    void addMedia(const QString& callId, const QString& source, MediaRequestType type, bool mute = false);
+    void removeMedia(const QString& callId, const QString& mediaType, const QString& srcType, bool muteCamera);
+
     /**
      * Get the call from its call id
      * @param  uid

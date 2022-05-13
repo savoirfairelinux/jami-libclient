@@ -175,7 +175,7 @@ private:
     QMap<QString, ParticipantInfos> candidates_;
     // Participants ordered
     QMap<QString, ParticipantInfos> participants_;
-    QList<QString> validUris_;
+    QList<QString> validMedias_;
     int idx_ = 0;
 
     const NewCallModel& linked_;
