@@ -140,6 +140,13 @@ struct Info
     VectorMapStringString mediaList = {};
     QSet<QString> peerRec {};
     bool isConference = false;
+
+    bool hasMediaWithType(const QString& type) const {
+        for (const auto& m: mediaList)
+            if (m["SOURCE_TYPE"] == type)
+                return true;
+        return false;
+    }
 };
 
 static inline bool

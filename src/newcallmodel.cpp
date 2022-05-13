@@ -416,6 +416,16 @@ NewCallModel::requestMediaChange(const QString& callId,
     // Main video: video_0
 
     auto& callInfo = pimpl_->calls[callId];
+    if (callInfo->type == call::Type::CONFERENCE) {
+        QStringList callList = CallManager::instance().getParticipantList(owner.id, callId);
+        for (const auto& call: callList) {
+            if (hasCall(call)) {
+                // conference has no media list but underlying calls yes.
+                callInfo = pimpl_->calls[call];
+                break;
+            }
+        }
+    }
     if (!callInfo)
         return;
 
@@ -434,6 +444,13 @@ NewCallModel::requestMediaChange(const QString& callId,
     QString resource {};
     QString srctype {};
     auto proposedList = callInfo->mediaList;
+
+    qWarning() << "@@@ PROPOSED";
+    for (const auto& m: proposedList) {
+        qWarning() << "@@@ label: " << m[MediaAttributeKey::LABEL];
+        qWarning() << "@@@ source: " << m[MediaAttributeKey::SOURCE];
+    }
+
 
     int found = 0;
 
@@ -471,7 +488,7 @@ NewCallModel::requestMediaChange(const QString& callId,
         return;
     }
 
-    if (callInfo->type == call::Type::CONFERENCE) {
+    //if (callInfo->type == call::Type::CONFERENCE) {
         MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE, mediaType},
                                           {MediaAttributeKey::ENABLED, "true"},
                                           {MediaAttributeKey::MUTED, mute ? "true" : "false"},
@@ -479,7 +496,7 @@ NewCallModel::requestMediaChange(const QString& callId,
                                           {MediaAttributeKey::SOURCE, resource},
                                           {MediaAttributeKey::LABEL, mediaLabel}};
         proposedList.push_back(mediaAttribute);
-    }
+    //}
 
     for (auto& item : proposedList) {
         if (item[MediaAttributeKey::LABEL] == mediaLabel) {
@@ -510,6 +527,12 @@ NewCallModel::requestMediaChange(const QString& callId,
         proposedList.push_back(mediaAttribute);
     }
 
+    qWarning() << "@@@ PROPOSED";
+    for (const auto& m: proposedList) {
+        qWarning() << "@@@ label: " << m[MediaAttributeKey::LABEL];
+        qWarning() << "@@@ source: " << m[MediaAttributeKey::SOURCE];
+    }
+
     CallManager::instance().requestMediaChange(owner.id, callId, proposedList);
 
     // If media existed and its mute state was changed here, then we should
@@ -525,6 +548,120 @@ NewCallModel::requestMediaChange(const QString& callId,
         if (callInfo->status == call::Status::IN_PROGRESS)
             emit callInfosChanged(owner.id, callId);
     }
+}
+
+void
+NewCallModel::addMedia(const QString& callId, const QString& source, MediaRequestType type)
+{
+    auto& callInfo = pimpl_->calls[callId];
+    if (callInfo->type == call::Type::CONFERENCE) {
+        QStringList callList = CallManager::instance().getParticipantList(owner.id, callId);
+        for (const auto& call: callList) {
+            if (hasCall(call)) {
+                // conference has no media list but underlying calls yes.
+                callInfo = pimpl_->calls[call];
+                break;
+            }
+        }
+    }
+    if (!callInfo)
+        return;
+
+    QString resource {};
+    QString srctype {};
+    QString sep = DRing::Media::VideoProtocolPrefix::SEPARATOR;
+    switch (type) {
+    case MediaRequestType::FILESHARING: {
+        // File sharing
+        resource = !source.isEmpty() ? QString("%1%2%3")
+                                        .arg(DRing::Media::VideoProtocolPrefix::FILE)
+                                        .arg(sep)
+                                        .arg(QUrl(source).toLocalFile())
+                                  : DRing::Media::VideoProtocolPrefix::NONE;
+        if (not resource.isEmpty())
+            srctype = MediaAttributeValue::SRC_TYPE_FILE;
+        break;
+    }
+    case MediaRequestType::SCREENSHARING: {
+        // Screen/window sharing
+        resource = source;
+        srctype = MediaAttributeValue::SRC_TYPE_DISPLAY;
+        break;
+    }
+    case MediaRequestType::CAMERA: {
+        // Camera device
+        resource = not source.isEmpty() ? QString("%1%2%3")
+                                            .arg(DRing::Media::VideoProtocolPrefix::CAMERA)
+                                            .arg(sep)
+                                            .arg(source)
+                                        : DRing::Media::VideoProtocolPrefix::NONE;
+        srctype = MediaAttributeValue::SRC_TYPE_CAPTURE_DEVICE;
+        break;
+    }
+    default:
+        return;
+    }
+
+
+    auto proposedList = callInfo->mediaList;
+    // TODO audio
+    QString mediaLabel = "video_1";
+
+    MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE, MediaAttributeValue::VIDEO /* TODO */},
+                                        {MediaAttributeKey::ENABLED, "true"},
+                                        {MediaAttributeKey::MUTED, "false" /* TODO mute ? "true" : "false" */},
+                                        {MediaAttributeKey::SOURCE_TYPE, srctype},
+                                        {MediaAttributeKey::SOURCE, resource},
+                                        {MediaAttributeKey::LABEL, mediaLabel}};
+    proposedList.push_back(mediaAttribute);
+    qWarning() << "@@@ " << callInfo->mediaList.size() << " vs " << proposedList.size();
+    callInfo->mediaList = proposedList; // TODO from daemon
+
+    CallManager::instance().requestMediaChange(owner.id, callId, proposedList);
+}
+
+void
+NewCallModel::removeMedia(const QString& callId, const QString& label)
+{
+    // TODO remove duplicate part
+    auto& callInfo = pimpl_->calls[callId];
+    if (callInfo->type == call::Type::CONFERENCE) {
+        QStringList callList = CallManager::instance().getParticipantList(owner.id, callId);
+        for (const auto& call: callList) {
+            if (hasCall(call)) {
+                // conference has no media list but underlying calls yes.
+                callInfo = pimpl_->calls[call];
+                break;
+            }
+        }
+    }
+    if (!callInfo)
+        return;
+    auto isVideo = label.contains("video");
+    auto newIdx = 0;
+    auto replaceIdx = false;
+    VectorMapStringString newList;
+    for (const auto& media: callInfo->mediaList) {
+        if (media[MediaAttributeKey::LABEL] == label) {
+            replaceIdx = true;
+        } else {
+            if ((isVideo && media[MediaAttributeKey::MEDIA_TYPE] == MediaAttributeValue::VIDEO) || (!isVideo && media[MediaAttributeKey::MEDIA_TYPE] == "audio")) {
+                auto newMedia = media;
+                if (replaceIdx) {
+                    QString idxStr = QString::number(newIdx);
+                    newMedia[MediaAttributeKey::LABEL] = isVideo? "video_" + idxStr : "audio_" + idxStr;
+                }
+                newList.push_back(newMedia);
+                newIdx++;
+            } else {
+                newList.push_back(media);
+            }
+        }
+    }
+    qWarning() << "@@@ " << callInfo->mediaList.size() << " vs " << newList.size();
+    callInfo->mediaList = newList; // TODO from daemon
+
+    CallManager::instance().requestMediaChange(owner.id, callId, newList);
 }
 
 void

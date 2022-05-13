@@ -99,6 +99,9 @@ public:
                             MediaRequestType type,
                             bool mute);
 
+    void addMedia(const QString& callId, const QString& source, MediaRequestType type);
+    void removeMedia(const QString& label, const QString& source);
+
     /**
      * Get the call from its call id
      * @param  uid
