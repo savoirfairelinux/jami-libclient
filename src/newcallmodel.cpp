@@ -435,6 +435,13 @@ NewCallModel::requestMediaChange(const QString& callId,
     QString srctype {};
     auto proposedList = callInfo->mediaList;
 
+    qWarning() << "@@@ PROPOSED";
+    for (const auto& m: proposedList) {
+        qWarning() << "@@@ label: " << m[MediaAttributeKey::LABEL];
+        qWarning() << "@@@ source: " << m[MediaAttributeKey::SOURCE];
+    }
+
+
     int found = 0;
 
     switch (type) {
@@ -471,7 +478,7 @@ NewCallModel::requestMediaChange(const QString& callId,
         return;
     }
 
-    if (callInfo->type == call::Type::CONFERENCE) {
+    //if (callInfo->type == call::Type::CONFERENCE) {
         MapStringString mediaAttribute = {{MediaAttributeKey::MEDIA_TYPE, mediaType},
                                           {MediaAttributeKey::ENABLED, "true"},
                                           {MediaAttributeKey::MUTED, mute ? "true" : "false"},
@@ -479,7 +486,7 @@ NewCallModel::requestMediaChange(const QString& callId,
                                           {MediaAttributeKey::SOURCE, resource},
                                           {MediaAttributeKey::LABEL, mediaLabel}};
         proposedList.push_back(mediaAttribute);
-    }
+    //}
 
     for (auto& item : proposedList) {
         if (item[MediaAttributeKey::LABEL] == mediaLabel) {
@@ -508,6 +515,12 @@ NewCallModel::requestMediaChange(const QString& callId,
                                           {MediaAttributeKey::SOURCE, resource},
                                           {MediaAttributeKey::LABEL, mediaLabel}};
         proposedList.push_back(mediaAttribute);
+    }
+
+    qWarning() << "@@@ PROPOSED";
+    for (const auto& m: proposedList) {
+        qWarning() << "@@@ label: " << m[MediaAttributeKey::LABEL];
+        qWarning() << "@@@ source: " << m[MediaAttributeKey::SOURCE];
     }
 
     CallManager::instance().requestMediaChange(owner.id, callId, proposedList);
