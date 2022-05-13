@@ -83,21 +83,10 @@ public:
     QString createCall(const QString& uri,
                        bool isAudioOnly = false,
                        VectorMapStringString mediaList = {});
-
-    /**
-     * Request a media change in a ongoing call.
-     * @param  accountId
-     * @param  callId
-     * @param  mediaLabel label of media to be changed
-     * @param source
-     * @param type
-     * @param mute
-     */
-    void requestMediaChange(const QString& callId,
-                            const QString& mediaLabel,
-                            const QString& source,
-                            MediaRequestType type,
-                            bool mute);
+    // TODO
+    void addMedia(const QString& callId, const QString& source, MediaRequestType type, bool mute = false);
+    void muteMedia(const QString& callId, const QString& label, bool mute);
+    void removeMedia(const QString& callId, const QString& mediaType, const QString& srcType, bool muteCamera);
 
     /**
      * Get the call from its call id
@@ -187,14 +176,6 @@ public:
      * @param callId
      */
     void togglePause(const QString& callId) const;
-
-    /**
-     * @deprecated Use requestMediaChange instead
-     * Toggle a media on a call
-     * @param callId
-     * @param media {AUDIO, VIDEO}
-     */
-    void toggleMedia(const QString& callId, const NewCallModel::Media media);
 
     /**
      * Not implemented yet
