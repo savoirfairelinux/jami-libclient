@@ -57,7 +57,7 @@
     <message>
         <location filename="../src/api/call.h" line="79"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Время ожидания</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="81"/>
@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="226"/>
         <source>%1 was invited to join</source>
-        <translation type="unfinished"/>
+        <translation>%1 был приглашен присоединиться</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="228"/>
@@ -100,12 +100,12 @@
     <message>
         <location filename="../src/api/interaction.h" line="232"/>
         <source>%1 was kicked</source>
-        <translation type="unfinished"/>
+        <translation>% 1 был выгнан</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="234"/>
         <source>%1 was re-added</source>
-        <translation type="unfinished"/>
+        <translation>%1 был повторно добавлен</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="300"/>
@@ -151,7 +151,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Null</source>
-        <translation type="unfinished"/>
+        <translation>Пустой</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="61"/>
@@ -263,7 +263,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Gone</source>
-        <translation type="unfinished"/>
+        <translation>Прошло</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="83"/>
@@ -288,12 +288,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Bad Extension</source>
-        <translation type="unfinished"/>
+        <translation>Неверное расширение</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Extension Required</source>
-        <translation type="unfinished"/>
+        <translation>Требуется расширение</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="89"/>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Interval Too Brief</source>
-        <translation type="unfinished"/>
+        <translation>Интервал слишком короткий</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
@@ -328,12 +328,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="95"/>
         <source>Address Incomplete</source>
-        <translation type="unfinished"/>
+        <translation>Неполный адрес</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="96"/>
         <source>Ambiguous</source>
-        <translation type="unfinished"/>
+        <translation>Двусмысленный</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="97"/>
@@ -348,7 +348,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Bad Event</source>
-        <translation type="unfinished"/>
+        <translation>Некорректное событие</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="101"/>
@@ -358,12 +358,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Request Pending</source>
-        <translation type="unfinished"/>
+        <translation>Запрос ожидает выполнения</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Undecipherable</source>
-        <translation type="unfinished"/>
+        <translation>Неразборчивый</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="104"/>
@@ -373,12 +373,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Not Implemented</source>
-        <translation type="unfinished"/>
+        <translation>Не реализовано</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Bad Gateway</source>
-        <translation type="unfinished"/>
+        <translation>Некорректный шлюз</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="107"/>
@@ -403,12 +403,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="111"/>
         <source>Precondition Failure</source>
-        <translation type="unfinished"/>
+        <translation>Сбой предусловия</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="112"/>
         <source>Busy Everywhere</source>
-        <translation type="unfinished"/>
+        <translation>Занят везде</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="113"/>
@@ -418,12 +418,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="114"/>
         <source>Does Not Exist Anywhere</source>
-        <translation type="unfinished"/>
+        <translation>Не существует нигде</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="115"/>
         <source>Not Acceptable Anywhere</source>
-        <translation type="unfinished"/>
+        <translation>Не приемлемо нигде</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
@@ -433,17 +433,17 @@
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
-        <translation type="unfinished"/>
+        <translation>Сделать видеозвонок</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Показать доступные плагины</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
         <source>Place audio call</source>
-        <translation type="unfinished"/>
+        <translation>Сделать аудиозвонок</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="34"/>
@@ -453,7 +453,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="35"/>
         <source>Unban contact</source>
-        <translation type="unfinished"/>
+        <translation>Разблокировать контакт</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
@@ -478,7 +478,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Add emoji</source>
-        <translation type="unfinished"/>
+        <translation>Добавить эмоджи</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
@@ -493,32 +493,32 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>Копировать в загрузки</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Запись в {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>отправил вам запрос на беседу.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Привет, вы хотите присоедениться к разговору?</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Вы приняли запрос на беседу.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Мы ожидаем пока другое устройство синхронизирует переписку.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
@@ -533,22 +533,22 @@
     <message>
         <location filename="../src/chatview.cpp" line="71"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось установить контакт</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="76"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Ожидание контакта</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="77"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Входящий перевод</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="78"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Тайм-аут ожидания контакта</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
@@ -593,7 +593,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="75"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>Текущий</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
@@ -656,7 +656,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="1012"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Имя пользователя не найдено</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="1015"/>

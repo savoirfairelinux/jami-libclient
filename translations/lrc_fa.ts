@@ -4,83 +4,83 @@
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="450"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>من</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="61"/>
         <source>Hold</source>
-        <translation type="unfinished"/>
+        <translation>نگه داشتن</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="63"/>
         <source>Talking</source>
-        <translation type="unfinished"/>
+        <translation>در حال صحبت</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="65"/>
         <source>ERROR</source>
-        <translation type="unfinished"/>
+        <translation>خطا</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="67"/>
         <source>Incoming</source>
-        <translation type="unfinished"/>
+        <translation>تماس ورودی</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Calling</source>
-        <translation type="unfinished"/>
+        <translation>در حال تماس</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
         <location filename="../src/chatview.cpp" line="72"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>در حال اتصال</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="73"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>در حال  جستجو</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="75"/>
         <source>Inactive</source>
-        <translation type="unfinished"/>
+        <translation>غیر فعال</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="77"/>
         <location filename="../src/api/call.h" line="83"/>
         <location filename="../src/chatview.cpp" line="79"/>
         <source>Finished</source>
-        <translation type="unfinished"/>
+        <translation>پایان یافته</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="79"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>انقضا</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="81"/>
         <source>Peer busy</source>
-        <translation type="unfinished"/>
+        <translation>همتا مشغول</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="85"/>
         <source>Communication established</source>
-        <translation type="unfinished"/>
+        <translation>ارتباط برقرار شد.</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="197"/>
         <location filename="../src/authority/storagehelper.cpp" line="952"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>دعوت نامه دریافت شد</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="224"/>
         <location filename="../src/authority/storagehelper.cpp" line="194"/>
         <location filename="../src/authority/storagehelper.cpp" line="950"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>مخاطب افزوده شد</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="226"/>
@@ -117,7 +117,7 @@
         <location filename="../src/authority/storagehelper.cpp" line="177"/>
         <location filename="../src/authority/storagehelper.cpp" line="948"/>
         <source>Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>تماس خروجی</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="173"/>
@@ -140,7 +140,7 @@
         <location filename="../src/authority/storagehelper.cpp" line="199"/>
         <location filename="../src/authority/storagehelper.cpp" line="954"/>
         <source>Invitation accepted</source>
-        <translation type="unfinished"/>
+        <translation>دعوت پذیرفته شد</translation>
     </message>
     <message>
         <location filename="../src/avmodel.cpp" line="348"/>
@@ -151,32 +151,32 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="60"/>
         <source>Null</source>
-        <translation type="unfinished"/>
+        <translation>خالی</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="61"/>
         <source>Trying</source>
-        <translation type="unfinished"/>
+        <translation>در حال تلاش</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Ringing</source>
-        <translation type="unfinished"/>
+        <translation>در حال زنگ خوردن</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="63"/>
         <source>Being Forwarded</source>
-        <translation type="unfinished"/>
+        <translation>فرستاده شده است</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="64"/>
         <source>Queued</source>
-        <translation type="unfinished"/>
+        <translation>در صف</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="65"/>
         <source>Progress</source>
-        <translation type="unfinished"/>
+        <translation>در جریان</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="66"/>
@@ -187,288 +187,288 @@
         <location filename="../src/chatview.cpp" line="73"/>
         <location filename="../src/newcallmodel.cpp" line="67"/>
         <source>Accepted</source>
-        <translation type="unfinished"/>
+        <translation>پذیرفته‌شده</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="68"/>
         <source>Multiple Choices</source>
-        <translation type="unfinished"/>
+        <translation>چندین انتخاب</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="69"/>
         <source>Moved Permanently</source>
-        <translation type="unfinished"/>
+        <translation>برای همیشه منتقل شد</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="70"/>
         <source>Moved Temporarily</source>
-        <translation type="unfinished"/>
+        <translation>به طور موقت منتقل شد</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="71"/>
         <source>Use Proxy</source>
-        <translation type="unfinished"/>
+        <translation>استفاده از پروکسی</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="72"/>
         <source>Alternative Service</source>
-        <translation type="unfinished"/>
+        <translation>سرویس جایگزین</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="73"/>
         <source>Bad Request</source>
-        <translation type="unfinished"/>
+        <translation>درخواست بی‌اعتبار</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="74"/>
         <source>Unauthorized</source>
-        <translation type="unfinished"/>
+        <translation>غیرمجاز</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="75"/>
         <source>Payment Required</source>
-        <translation type="unfinished"/>
+        <translation>مستلزم پرداخت</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="76"/>
         <source>Forbidden</source>
-        <translation type="unfinished"/>
+        <translation>ممنوع</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="77"/>
         <source>Not Found</source>
-        <translation type="unfinished"/>
+        <translation>یافت نشد</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="78"/>
         <source>Method Not Allowed</source>
-        <translation type="unfinished"/>
+        <translation>روش مجاز نمی‌باشد</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="79"/>
         <location filename="../src/newcallmodel.cpp" line="99"/>
         <source>Not Acceptable</source>
-        <translation type="unfinished"/>
+        <translation>قابل‌قبول نیست</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="80"/>
         <source>Proxy Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>احراز هویت پروکسی مورد نیاز است</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Request Timeout</source>
-        <translation type="unfinished"/>
+        <translation>زمان انقضای درخواست</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="82"/>
         <source>Gone</source>
-        <translation type="unfinished"/>
+        <translation>از بین رفته</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Request Entity Too Large</source>
-        <translation type="unfinished"/>
+        <translation>درخواست بیش‌از‌حد بزرگ</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="84"/>
         <source>Request URI Too Long</source>
-        <translation type="unfinished"/>
+        <translation>درخواست URI بیش از حد طولانی</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="85"/>
         <source>Unsupported Media Type</source>
-        <translation type="unfinished"/>
+        <translation>نوع رسانه پشتیبانی‌نشده</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Unsupported URI Scheme</source>
-        <translation type="unfinished"/>
+        <translation>طرح URI پشتیبانی‌نشده</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Bad Extension</source>
-        <translation type="unfinished"/>
+        <translation>افزونه بی‌اعتبار</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="88"/>
         <source>Extension Required</source>
-        <translation type="unfinished"/>
+        <translation>افزونه مورد‌نیاز است</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Session Timer Too Small</source>
-        <translation type="unfinished"/>
+        <translation>زمان‌سنج جلسه خیلی کوچک است</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Interval Too Brief</source>
-        <translation type="unfinished"/>
+        <translation>بازه زمانی خیلی کوتاه</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
         <source>Temporarily Unavailable</source>
-        <translation type="unfinished"/>
+        <translation>به طور موقت در‌دسترس نیست</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="92"/>
         <source>Call TSX Does Not Exist</source>
-        <translation type="unfinished"/>
+        <translation>TSX تماس وجود ندارد</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Loop Detected</source>
-        <translation type="unfinished"/>
+        <translation>حلقه شناسایی شد</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
         <source>Too Many Hops</source>
-        <translation type="unfinished"/>
+        <translation>تعداد بیش‌از‌حد پرش (گام)</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="95"/>
         <source>Address Incomplete</source>
-        <translation type="unfinished"/>
+        <translation>آدرس ناقص</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="96"/>
         <source>Ambiguous</source>
-        <translation type="unfinished"/>
+        <translation>مبهم</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>مشغول</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Request Terminated</source>
-        <translation type="unfinished"/>
+        <translation>درخواست خاتمه یافت</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Bad Event</source>
-        <translation type="unfinished"/>
+        <translation>رویداد بی‌اعتبار</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="101"/>
         <source>Request Updated</source>
-        <translation type="unfinished"/>
+        <translation>درخواست به‌روز شد</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="102"/>
         <source>Request Pending</source>
-        <translation type="unfinished"/>
+        <translation>درخواست در‌انتظار</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="103"/>
         <source>Undecipherable</source>
-        <translation type="unfinished"/>
+        <translation>غیرقابل رمز‌گشایی</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="104"/>
         <source>Internal Server Error</source>
-        <translation type="unfinished"/>
+        <translation>خطای داخلی سرور</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="105"/>
         <source>Not Implemented</source>
-        <translation type="unfinished"/>
+        <translation>پیاه‌سازی نشده</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="106"/>
         <source>Bad Gateway</source>
-        <translation type="unfinished"/>
+        <translation>دروازه بی‌اعتبار</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="107"/>
         <source>Service Unavailable</source>
-        <translation type="unfinished"/>
+        <translation>سرویس غیر‌قابل‌دسترس</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Server Timeout</source>
-        <translation type="unfinished"/>
+        <translation>انقضای سرور</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="109"/>
         <source>Version Not Supported</source>
-        <translation type="unfinished"/>
+        <translation>این نسخه پشتیبانی نمی‌شود</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="110"/>
         <source>Message Too Large</source>
-        <translation type="unfinished"/>
+        <translation>پیام بیش‌از‌حد بزرگ</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="111"/>
         <source>Precondition Failure</source>
-        <translation type="unfinished"/>
+        <translation>پیش‌شرط ناموفق</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="112"/>
         <source>Busy Everywhere</source>
-        <translation type="unfinished"/>
+        <translation>همه‌جا مشغول</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="113"/>
         <source>Call Refused</source>
-        <translation type="unfinished"/>
+        <translation>تماس رد شد</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="114"/>
         <source>Does Not Exist Anywhere</source>
-        <translation type="unfinished"/>
+        <translation>هیچ‌جایی وجود ندارد</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="115"/>
         <source>Not Acceptable Anywhere</source>
-        <translation type="unfinished"/>
+        <translation>هیچ‎‌جا قابل قبول نیست</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
-        <translation type="unfinished"/>
+        <translation>مخفی‌کردن نمای گفتگو</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
-        <translation type="unfinished"/>
+        <translation>قرار تماس ویدیویی بگذار</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>نمایش افزونه‌های موجود</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
         <source>Place audio call</source>
-        <translation type="unfinished"/>
+        <translation>قرار تماس صوتی بگذار</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="34"/>
         <source>Add to conversations</source>
-        <translation type="unfinished"/>
+        <translation>افزودن به گفتگو‌ها</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="35"/>
         <source>Unban contact</source>
-        <translation type="unfinished"/>
+        <translation>رفع ممنوعیت مخاطب</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>ارسال</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>تنظیمات</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
         <source>Jump to latest</source>
-        <translation type="unfinished"/>
+        <translation>پرش به آخرین</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="39"/>
@@ -478,112 +478,112 @@
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Add emoji</source>
-        <translation type="unfinished"/>
+        <translation>شکلک اضافه کنید</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>یک پیام تصویری بگذارید</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>یک پیام صوتی بگذارید</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>کپی در دانلودها</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>نوشتن به {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>برای شما درخواست مکالمه ارسال کرده است.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>سلام، آیا مایل به شرکت در این گفتگو هستید؟</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>شما درخواست مکالمه را پذیرفته‌اید.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>ما منتظر دستگاه دیگری هستیم تا گفتگو را همگام‌سازی کند.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>پذیرش</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="68"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>رد کردن</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="71"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>برقراری تماس امکان‌پذیر نیست</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="76"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation> در انتظار برقراری تماس</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="77"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>انتقال ورودی</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="78"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>زمان انتظار برای تماس به پایان رسید</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
         <source>Block</source>
-        <translation type="unfinished"/>
+        <translation>مسدود</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="47"/>
         <source>Note: an interaction will create a new contact.</source>
-        <translation type="unfinished"/>
+        <translation>توجه: یک تعامل مخاطبی جدید ایجاد می‌کند.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="48"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>در مخاطبین شما نیست</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="58"/>
         <source>Note: you can automatically accept this invitation by sending a message.</source>
-        <translation type="unfinished"/>
+        <translation>توجه: شما می توانید با ارسال پیام به طور خودکار این دعوت را بپذیرید.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} روز پیش</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} ساعت قبل</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="62"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} دقیقه قبل</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
@@ -593,52 +593,52 @@
     <message>
         <location filename="../src/chatview.cpp" line="75"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>در جریان</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
         <source>%d days ago</source>
-        <translation type="unfinished"/>
+        <translation>%d روز پیش</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>%d hours ago</source>
-        <translation type="unfinished"/>
+        <translation>%d ساعت پیش</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="62"/>
         <source>%d minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>%d دقیقه قبل</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="63"/>
         <source>one day ago</source>
-        <translation type="unfinished"/>
+        <translation>یک روز پیش</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="64"/>
         <source>one hour ago</source>
-        <translation type="unfinished"/>
+        <translation>یک ساعت پیش</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="65"/>
         <source>just now</source>
-        <translation type="unfinished"/>
+        <translation>همین الان</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="66"/>
         <source>Failure</source>
-        <translation type="unfinished"/>
+        <translation>عدم موفقیت</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="69"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>حذف</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="70"/>
         <source>Retry</source>
-        <translation type="unfinished"/>
+        <translation>تلاش دوباره</translation>
     </message>
 </context>
 <context>
@@ -646,17 +646,17 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="474"/>
         <source>Searching…</source>
-        <translation type="unfinished"/>
+        <translation>در حال جستجو...</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="1009"/>
         <source>Invalid ID</source>
-        <translation type="unfinished"/>
+        <translation>شناسهٔ نامعتبر</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="1012"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>نام کاربری پیدا نشد</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="1015"/>
@@ -669,7 +669,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="435"/>
         <source>Bad URI scheme</source>
-        <translation type="unfinished"/>
+        <translation>شمای نشانی بد</translation>
     </message>
 </context>
 </TS>

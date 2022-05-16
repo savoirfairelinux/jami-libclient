@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="226"/>
         <source>%1 was invited to join</source>
-        <translation type="unfinished"/>
+        <translation>%1 inbjöds delta</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="228"/>
@@ -100,17 +100,17 @@
     <message>
         <location filename="../src/api/interaction.h" line="232"/>
         <source>%1 was kicked</source>
-        <translation type="unfinished"/>
+        <translation>%1 slängdes ut</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="234"/>
         <source>%1 was re-added</source>
-        <translation type="unfinished"/>
+        <translation>%1 lades till </translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="300"/>
         <source>Swarm created</source>
-        <translation type="unfinished"/>
+        <translation>Svärm skapad </translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="171"/>
@@ -268,7 +268,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="83"/>
         <source>Request Entity Too Large</source>
-        <translation type="unfinished"/>
+        <translation>Begärd enhet är för stor</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="84"/>
@@ -283,12 +283,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="86"/>
         <source>Unsupported URI Scheme</source>
-        <translation type="unfinished"/>
+        <translation>URL schema stöds ej </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="87"/>
         <source>Bad Extension</source>
-        <translation type="unfinished"/>
+        <translation>Felaktigt tillägg </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="88"/>
@@ -298,12 +298,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="89"/>
         <source>Session Timer Too Small</source>
-        <translation type="unfinished"/>
+        <translation>Sessionstiden är för kort</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="90"/>
         <source>Interval Too Brief</source>
-        <translation type="unfinished"/>
+        <translation>Intervallet är för kort</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="91"/>
@@ -313,12 +313,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="92"/>
         <source>Call TSX Does Not Exist</source>
-        <translation type="unfinished"/>
+        <translation>TSX samtalet existerar inte </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="93"/>
         <source>Loop Detected</source>
-        <translation type="unfinished"/>
+        <translation>Loop upptäckt </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="94"/>
@@ -343,12 +343,12 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="98"/>
         <source>Request Terminated</source>
-        <translation type="unfinished"/>
+        <translation>Begäran avslutad </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="100"/>
         <source>Bad Event</source>
-        <translation type="unfinished"/>
+        <translation>Misslyckat försök </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="101"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="108"/>
         <source>Server Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Tidsfel server </translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="109"/>
@@ -403,7 +403,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="111"/>
         <source>Precondition Failure</source>
-        <translation type="unfinished"/>
+        <translation>Förutsättningar felaktiga</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="112"/>
@@ -413,7 +413,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="113"/>
         <source>Call Refused</source>
-        <translation type="unfinished"/>
+        <translation>Samtal vägrat</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="114"/>
@@ -438,7 +438,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Visa tillgängliga tillägg </translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
@@ -493,7 +493,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>Kopiera till nedladdningar </translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
@@ -503,12 +503,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>har skickat konversationsförfrågan </translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Hej! Vill du gå med i konversationen? </translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
@@ -518,7 +518,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Vi inväntar en annan enhet att synkronisera konversationen. </translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
@@ -533,12 +533,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="71"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>Ej möjligt få kontakt </translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="76"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Inväntar kontakt </translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="77"/>
@@ -548,7 +548,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="78"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Tidsfel inväntar kontakt</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
@@ -661,7 +661,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="1015"/>
         <source>Couldn&apos;t lookup…</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte hitta...</translation>
     </message>
 </context>
 <context>
