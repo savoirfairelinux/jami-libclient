@@ -245,6 +245,7 @@ ShmRenderer::~ShmRenderer()
 void
 ShmRenderer::update(const QSize& res, const QString& shmPath)
 {
+    Q_EMIT stopped();
     Renderer::update(res);
 
     if (!pimpl_->thread.isRunning())
@@ -252,6 +253,7 @@ ShmRenderer::update(const QSize& res, const QString& shmPath)
 
     pimpl_->path = shmPath;
     VideoManager::instance().startShmSink(id(), true);
+    Q_EMIT started();
 }
 
 Frame
