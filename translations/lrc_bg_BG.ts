@@ -4,43 +4,43 @@
     <message>
         <location filename="../src/qtwrapper/callmanager_wrap.h" line="450"/>
         <source>Me</source>
-        <translation type="unfinished"/>
+        <translation>Аз</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="61"/>
         <source>Hold</source>
-        <translation type="unfinished"/>
+        <translation>Задържане</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="63"/>
         <source>Talking</source>
-        <translation type="unfinished"/>
+        <translation>Говорене</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="65"/>
         <source>ERROR</source>
-        <translation type="unfinished"/>
+        <translation>ГРЕШКА</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="67"/>
         <source>Incoming</source>
-        <translation type="unfinished"/>
+        <translation>Входящо</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="69"/>
         <source>Calling</source>
-        <translation type="unfinished"/>
+        <translation>Обаждане</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="71"/>
         <location filename="../src/chatview.cpp" line="72"/>
         <source>Connecting</source>
-        <translation type="unfinished"/>
+        <translation>Свързване</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="73"/>
         <source>Searching</source>
-        <translation type="unfinished"/>
+        <translation>Търсене</translation>
     </message>
     <message>
         <location filename="../src/api/call.h" line="75"/>
@@ -67,20 +67,20 @@
     <message>
         <location filename="../src/api/call.h" line="85"/>
         <source>Communication established</source>
-        <translation type="unfinished"/>
+        <translation>Комуникацията е установена</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="197"/>
         <location filename="../src/authority/storagehelper.cpp" line="952"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Поканата е приета</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="224"/>
         <location filename="../src/authority/storagehelper.cpp" line="194"/>
         <location filename="../src/authority/storagehelper.cpp" line="950"/>
         <source>Contact added</source>
-        <translation type="unfinished"/>
+        <translation>Контактът е добавен</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="226"/>
@@ -117,24 +117,24 @@
         <location filename="../src/authority/storagehelper.cpp" line="177"/>
         <location filename="../src/authority/storagehelper.cpp" line="948"/>
         <source>Outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Изходящо обаждане</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="173"/>
         <location filename="../src/authority/storagehelper.cpp" line="183"/>
         <source>Incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Входящо обаждане</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="179"/>
         <location filename="../src/authority/storagehelper.cpp" line="946"/>
         <source>Missed outgoing call</source>
-        <translation type="unfinished"/>
+        <translation>Пропуснато изходящо обаждане</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="185"/>
         <source>Missed incoming call</source>
-        <translation type="unfinished"/>
+        <translation>Пропуснато входящо обаждане</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="199"/>
@@ -161,7 +161,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="62"/>
         <source>Ringing</source>
-        <translation type="unfinished"/>
+        <translation>Позвъняване</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="63"/>
@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="81"/>
         <source>Request Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Време за изчакване на заявката</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="82"/>
@@ -338,7 +338,7 @@
     <message>
         <location filename="../src/newcallmodel.cpp" line="97"/>
         <source>Busy</source>
-        <translation type="unfinished"/>
+        <translation>Зает</translation>
     </message>
     <message>
         <location filename="../src/newcallmodel.cpp" line="98"/>
@@ -428,12 +428,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="30"/>
         <source>Hide chat view</source>
-        <translation type="unfinished"/>
+        <translation>Скрий чат изгледа</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="31"/>
         <source>Place video call</source>
-        <translation type="unfinished"/>
+        <translation>Започване на видео разговор</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
@@ -443,7 +443,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
         <source>Place audio call</source>
-        <translation type="unfinished"/>
+        <translation>Започване на гласов разговор</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="34"/>
@@ -458,7 +458,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="36"/>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Изпращане</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
@@ -523,12 +523,12 @@
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Приемане</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="68"/>
         <source>Refuse</source>
-        <translation type="unfinished"/>
+        <translation>Отказ</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="71"/>
@@ -553,7 +553,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
         <source>Block</source>
-        <translation type="unfinished"/>
+        <translation>Блокиране</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="47"/>
@@ -633,7 +633,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="69"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Изтриване</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="70"/>
@@ -646,7 +646,7 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="474"/>
         <source>Searching…</source>
-        <translation type="unfinished"/>
+        <translation>Търсене...</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="1009"/>

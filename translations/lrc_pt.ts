@@ -438,7 +438,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="32"/>
         <source>Show available plugins</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar extensões disponíveis</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="33"/>
@@ -463,7 +463,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="37"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Opções</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="38"/>
@@ -478,47 +478,47 @@
     <message>
         <location filename="../src/chatview.cpp" line="40"/>
         <source>Add emoji</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar emoji</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="41"/>
         <source>Leave video message</source>
-        <translation type="unfinished"/>
+        <translation>Deixe uma mensagem de vídeo</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="42"/>
         <source>Leave audio message</source>
-        <translation type="unfinished"/>
+        <translation>Deixe uma mensagem de áudio</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="44"/>
         <source>Copy to downloads</source>
-        <translation type="unfinished"/>
+        <translation>Copiar para downloads</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="45"/>
         <source>Write to {0}</source>
-        <translation type="unfinished"/>
+        <translation>Escrever para {0}</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="50"/>
         <source>has sent you a conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Enviou a você uma solicitação de conversa.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="52"/>
         <source>Hello, do you want to join the conversation?</source>
-        <translation type="unfinished"/>
+        <translation>Olá, gostaria de participar da conversa?</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="54"/>
         <source>You have accepted the conversation request.</source>
-        <translation type="unfinished"/>
+        <translation>Você aceitou o pedido de conversa.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="56"/>
         <source>We are waiting for another device to synchronize the conversation.</source>
-        <translation type="unfinished"/>
+        <translation>Estamos aguardando por outro dispositivo para sincronizar a conversa.</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="67"/>
@@ -533,22 +533,22 @@
     <message>
         <location filename="../src/chatview.cpp" line="71"/>
         <source>Unable to make contact</source>
-        <translation type="unfinished"/>
+        <translation>Não é possível fazer contato</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="76"/>
         <source>Waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>Aguardando pelo contato</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="77"/>
         <source>Incoming transfer</source>
-        <translation type="unfinished"/>
+        <translation>Recebendo transferência</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="78"/>
         <source>Timed out waiting for contact</source>
-        <translation type="unfinished"/>
+        <translation>O tempo de aguardo pelo contato chegou ao fim</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="43"/>
@@ -563,7 +563,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="48"/>
         <source>is not in your contacts</source>
-        <translation type="unfinished"/>
+        <translation>is not in your contacts</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="58"/>
@@ -573,17 +573,17 @@
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
         <source>{0} days ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} days ago</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="60"/>
         <source>{0} hours ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} hours ago</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="62"/>
         <source>{0} minutes ago</source>
-        <translation type="unfinished"/>
+        <translation>{0} minutes ago</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="74"/>
@@ -593,7 +593,7 @@
     <message>
         <location filename="../src/chatview.cpp" line="75"/>
         <source>Ongoing</source>
-        <translation type="unfinished"/>
+        <translation>Em andamento</translation>
     </message>
     <message>
         <location filename="../src/chatview.cpp" line="59"/>
@@ -656,12 +656,12 @@
     <message>
         <location filename="../src/contactmodel.cpp" line="1012"/>
         <source>Username not found</source>
-        <translation type="unfinished"/>
+        <translation>Nome de usuário não encontrado</translation>
     </message>
     <message>
         <location filename="../src/contactmodel.cpp" line="1015"/>
         <source>Couldn&apos;t lookup…</source>
-        <translation type="unfinished"/>
+        <translation>Não consegui procurar...</translation>
     </message>
 </context>
 <context>

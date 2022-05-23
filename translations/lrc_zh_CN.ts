@@ -85,7 +85,7 @@
     <message>
         <location filename="../src/api/interaction.h" line="226"/>
         <source>%1 was invited to join</source>
-        <translation type="unfinished"/>
+        <translation>%1 已被邀請加入</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="228"/>
@@ -95,22 +95,22 @@
     <message>
         <location filename="../src/api/interaction.h" line="230"/>
         <source>%1 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 已離開</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="232"/>
         <source>%1 was kicked</source>
-        <translation type="unfinished"/>
+        <translation>%1 已踢除</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="234"/>
         <source>%1 was re-added</source>
-        <translation type="unfinished"/>
+        <translation>%1 已重新新增</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="300"/>
         <source>Swarm created</source>
-        <translation type="unfinished"/>
+        <translation>已建立 Swarm</translation>
     </message>
     <message>
         <location filename="../src/authority/storagehelper.cpp" line="171"/>
