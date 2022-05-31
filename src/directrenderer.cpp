@@ -116,6 +116,8 @@ void
 DirectRenderer::update(const QSize& res, const QString&)
 {
     stopRendering();
+    VideoManager::instance().registerSinkTarget(id(), {});
+
     Renderer::update(res);
 
     VideoManager::instance().registerSinkTarget(id(), pimpl_->target);
