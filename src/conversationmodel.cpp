@@ -2280,8 +2280,12 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
 
     try {
         auto& conversation = getConversationForUid(conversationId).get();
+        QString oldLast;
+        if (!conversation.interactions->size() == 0) {
+            oldLast = conversation.interactions->rbegin()->first;
+        }
         for (const auto& message : messages) {
-            if (message["type"].isEmpty() || message["type"] == "application/update-profile") {
+            if (message["type"].isEmpty()) {
                 continue;
             }
             auto msgId = message["id"];
@@ -2338,11 +2342,25 @@ ConversationModelPimpl::slotConversationLoaded(uint32_t requestId,
         }
         if (conversation.lastMessageUid.isEmpty() && !conversation.allMessagesLoaded
             && messages.size() != 0) {
+            QString newLast = conversation.interactions->rbegin()->first;
+
+            if (conversationId == "f3b9d83499316d39c40139de94fa7908ae0856d9") {
+                for (const auto& m: messages) {
+                    qWarning() << "@@@ FOR " << conversationId << " - " << m["id"];
+                }
+                qWarning() << "@@@@@ LOAD WITH " << newLast << " - " << conversationId;
+
+            }
+            if (newLast == oldLast && !newLast.isEmpty()) {
+                qWarning() << "Loading loop detected for " << conversationId << "(" << newLast << ")";
+                return;
+            }
+
+
             // In this case, we only have loaded merge commits. Load more messages
             ConfigurationManager::instance().loadConversationMessages(linked.owner.id,
                                                                       conversationId,
-                                                                      messages.rbegin()->value(
-                                                                          "id"),
+                                                                      messages.rbegin()->value("id"),
                                                                       2);
             return;
         }
