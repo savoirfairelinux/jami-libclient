@@ -850,7 +850,7 @@ AVModelPimpl::addRenderer(const QString& id, const QSize& res, const QString& sh
                 &Renderer::started,
                 this,
                 [this, id] { Q_EMIT linked_.rendererStarted(id); },
-                Qt::QueuedConnection);
+                Qt::DirectConnection);
             connect(
                 renderer,
                 &Renderer::frameBufferRequested,
@@ -870,22 +870,25 @@ AVModelPimpl::addRenderer(const QString& id, const QSize& res, const QString& sh
                 [this, id] { Q_EMIT linked_.rendererStopped(id); },
                 Qt::DirectConnection);
         };
-        std::lock_guard<std::mutex> lk(renderers_mtx_);
+        std::unique_lock<std::mutex> lk(renderers_mtx_);
         Renderer* renderer {nullptr};
         auto it = renderers_.find(id);
         if (it == renderers_.end()) {
             renderers_.emplace(id, createRenderer(id, res, shmPath));
             renderer = renderers_.at(id).get();
             connectRenderer(renderer, id);
+            lk.unlock();
             renderer->startRendering();
         } else {
             renderer = it->second.get();
             if (renderer) {
+                lk.unlock();
                 renderer->update(res, shmPath);
             } else {
                 it->second.reset(createRenderer(id, res, shmPath).get());
                 renderer = it->second.get();
                 connectRenderer(renderer, id);
+                lk.unlock();
                 renderer->startRendering();
             }
         }

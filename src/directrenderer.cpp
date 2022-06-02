@@ -115,13 +115,16 @@ DirectRenderer::stopRendering()
 void
 DirectRenderer::update(const QSize& res, const QString&)
 {
-    stopRendering();
+    if (res == size())
+        return;
+
+    Q_EMIT stopped();
     VideoManager::instance().registerSinkTarget(id(), {});
 
     Renderer::update(res);
 
     VideoManager::instance().registerSinkTarget(id(), pimpl_->target);
-    startRendering();
+    Q_EMIT started();
 }
 
 Frame
