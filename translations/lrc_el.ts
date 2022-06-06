@@ -73,7 +73,7 @@
         <location filename="../src/authority/storagehelper.cpp" line="197"/>
         <location filename="../src/authority/storagehelper.cpp" line="952"/>
         <source>Invitation received</source>
-        <translation type="unfinished"/>
+        <translation>Η πρόσκληση παραλήφθηκε</translation>
     </message>
     <message>
         <location filename="../src/api/interaction.h" line="224"/>
